@@ -6,6 +6,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
+
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator'
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import {MatTableModule} from '@angular/material/table';
+
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
 
@@ -33,10 +42,19 @@ import {
   SharedModule,
   SidebarModule,
   TabsModule,
-  UtilitiesModule
+  UtilitiesModule,
+  TableModule,
+  ModalModule
 } from '@coreui/angular';
 
+
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { PRIComponent } from './views/pri/pri.component';
+import { BankofficerComponent } from './views/bankofficer/bankofficer.component';
+import { BankstockholderComponent } from './views/bankstockholder/bankstockholder.component';
+import { AffiliatesComponent } from './views/affiliates/affiliates.component';
+import { DRIComponent } from './views/dri/dri.component';
+import { DirectorsrelatedComponent } from './views/dri/directorsrelated/directorsrelated.component'
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -45,10 +63,19 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatTableModule,
+    TableModule,
+    ModalModule,
     AppRoutingModule,
     AvatarModule,
     BreadcrumbModule,

@@ -26,29 +26,29 @@ const routes: Routes = [
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
       {
-        path: 'theme',
+        path: 'dri',
         loadChildren: () =>
-          import('./views/theme/theme.module').then((m) => m.ThemeModule)
+          import('./views/dri/dri.module').then((m) => m.DRIModule)
       },
       {
-        path: 'base',
+        path: 'dri/directorsrelated',
         loadChildren: () =>
-          import('./views/base/base.module').then((m) => m.BaseModule)
+          import('./views/dri/directorsrelated/directorsrelated.module').then((m) => m.DirectorsrelatedModule)
       },
       {
-        path: 'buttons',
+        path: 'bankofficer',
         loadChildren: () =>
-          import('./views/buttons/buttons.module').then((m) => m.ButtonsModule)
+          import('./views/bankofficer/bankofficer.module').then((m) => m.BankofficerModule)
       },
       {
-        path: 'forms',
+        path: 'bankstockholder',
         loadChildren: () =>
-          import('./views/forms/forms.module').then((m) => m.CoreUIFormsModule)
+          import('./views/bankstockholder/bankstockholder.module').then((m) => m.BankstockholderModule)
       },
       {
-        path: 'charts',
+        path: 'affiliates',
         loadChildren: () =>
-          import('./views/charts/charts.module').then((m) => m.ChartsModule)
+          import('./views/affiliates/affiliates.module').then((m) => m.AffiliatesModule)
       },
       {
         path: 'icons',

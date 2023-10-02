@@ -1,0 +1,63 @@
+<c-container class="mb-3 p-0">
+    <table cTable bordered [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+        
+        
+        
+        <!-- Header row second group -->
+        <ng-container matColumnDef="company">
+            <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Company </th>
+            <td mat-cell *matCellDef="let element"> {{element.company}} </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="fullname">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.fullname}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <!-- <ng-container matColumnDef="company">
+            <th mat-header-cell *matHeaderCellDef> Company </th>
+        </ng-container> -->
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> Position </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="shares">
+            <th mat-header-cell *matHeaderCellDef> Shares </th>
+            <td mat-cell *matCellDef="let element"> {{element.shares}} </td>
+        </ng-container>
+
+        <!-- Header row first group -->
+        <ng-container matColumnDef="header-row-first-group">
+            <th  *matHeaderCellDef cTableColor class="cTableCol"
+                [attr.colspan]="5"> 
+            Stockholders 
+            </th>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['header-row-first-group']"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+      
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of data">
+    </mat-paginator>
+      
+      <!-- <div *ngIf="!clickedRows.size">
+        Clicked rows will be logged here
+      </div>
+      
+      <ul>
+        <li *ngFor="let clickedRow of clickedRows">
+          Clicked on {{clickedRow.name}}
+        </li>
+      </ul> -->
+      
+</c-container>

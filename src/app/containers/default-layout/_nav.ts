@@ -8,17 +8,32 @@ export const navItems: INavData[] = [
     badge: {
       color: 'info',
       text: 'NEW'
-    }
+    },
   },
   // {
   //   title: true,
-  //   name: 'Theme'
+  //   name: ''
   // },
-  // {
-  //   name: 'Colors',
-  //   url: '/theme/colors',
-  //   iconComponent: { name: 'cil-drop' }
-  // },
+  {
+    name: 'DRI',
+    url: '/dri',
+    iconComponent: { name: 'cil-' }
+  },
+  {
+    name: 'Bank Officer',
+    url: '/bankofficer',
+    iconComponent: { name: 'cil-' }
+  },
+  {
+    name: 'Banks Stockholder',
+    url: '/bankstockholder',
+    iconComponent: { name: 'cil-' }
+  },
+  {
+    name: 'Affiliates',
+    url: '/affiliates',
+    iconComponent: { name: 'cil-' }
+  },
   // {
   //   name: 'Typography',
   //   url: '/theme/typography',
