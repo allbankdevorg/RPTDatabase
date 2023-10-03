@@ -27,7 +27,8 @@ export interface Data {
 export class BankstockholderComponent implements AfterViewInit {
   sharedData: string | any;
 
-  displayedColumns: string[] = ['fullname', 'company', 'position', 'shares'];
+  displayedColumns: string[] = ['fullname', 'position', 'shares'];
+  displayedColumns1: string[] = ['company'];
   dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
