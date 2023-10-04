@@ -31,7 +31,7 @@ const routes: Routes = [
           import('./views/dri/dri.module').then((m) => m.DRIModule)
       },
       {
-        path: 'dri/directorsrelated',
+        path: 'dri/directorsrelated/bn',
         loadChildren: () =>
           import('./views/dri/directorsrelated/directorsrelated.module').then((m) => m.DirectorsrelatedModule)
       },

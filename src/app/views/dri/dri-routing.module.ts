@@ -13,7 +13,7 @@ const routes: Routes = [
       },
     },
     {
-        path: 'directorsrelated',
+        path: 'directorsrelated/:id',
       component: DirectorsrelatedComponent,
       data: {
         title: 'Directors Related Interest',

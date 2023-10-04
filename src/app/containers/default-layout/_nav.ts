@@ -17,22 +17,22 @@ export const navItems: INavData[] = [
   {
     name: 'DRI',
     url: '/dri',
-    iconComponent: { name: 'cil-' }
+    iconComponent: { name: '' }
   },
   {
     name: 'Bank Officer',
     url: '/bankofficer',
-    iconComponent: { name: 'cil-' }
+    iconComponent: { name: '' }
   },
   {
     name: 'Banks Stockholder',
     url: '/bankstockholder',
-    iconComponent: { name: 'cil-' }
+    iconComponent: { name: '' }
   },
   {
     name: 'Affiliates',
     url: '/affiliates',
-    iconComponent: { name: 'cil-' }
+    iconComponent: { name: '' }
   },
   // {
   //   name: 'Typography',

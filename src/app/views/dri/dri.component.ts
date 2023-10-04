@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 
 import { Injectable } from '@angular/core';
 import axios, { AxiosRequestConfig } from 'axios';
@@ -45,53 +46,20 @@ export class DRIComponent implements AfterViewInit {
   
   
 
-  // constructor(private sharedService: DataService) {
-  //   this.sharedService.sharedData$.subscribe(data => {
-  //     this.sharedData = data;
-  //   });
-  // }
+  constructor(private router: Router) {}
+  
 
   
   
 
   //All functions are below
-  
-  viewData(element: Data) {
-    // Implement the logic to display the data for the clicked element
-    console.log(`View data for BCH`);
-    console.log(`BCH: ${element.bn}`);
-    console.log(`Account No: ${element.Nodirectors}`);
-    console.log(`Terminal Name: ${element.LDUpdated}`);
-
-    fetch('https://jsonplaceholder.typicode.com/todos/1')
-      .then(response => response.json())
-      .then(json => console.log(json))
-
-      this.fetchData();
-  }  
-
-  async fetchData() {
-    const options: AxiosRequestConfig = {
-      method: 'GET',
-      url: 'https://realtor.p.rapidapi.com/locations/v2/auto-complete',
-      params: {
-        input: 'new york',
-        limit: '10'
-      },
-      headers: {
-        'X-RapidAPI-Key': '37dfb4d13amsh8aefdd321cce94ep1ff755jsnc672babb9a6c',
-        'X-RapidAPI-Host': 'realtor.p.rapidapi.com'
-      }
-    };
-
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+  onRowClick(row: any) {
+    // Capture the selected data and navigate to another component with it
+    // this.router.navigate(['/details', row.id]);
+    console.log('row has been clicked');
+    console.log('Clicked row data:', row);
+    this.router.navigate(['/dri/directorsrelated', row.bn]);
   }
-
 }
 
 
