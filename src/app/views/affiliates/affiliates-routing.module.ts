@@ -6,10 +6,18 @@ import { AffiliatesComponent } from './affiliates.component';
 const routes: Routes = [
     {
       path: '',
-      component: AffiliatesComponent,
       data: {
-        title: 'Bank Stockholder',
+        title: 'DOSRI',
       },
+      children: [
+        {
+          path: '',
+          component: AffiliatesComponent,
+          data: {
+            title: 'Affiliates ',
+          },
+        },
+      ]
     },
   ];
 

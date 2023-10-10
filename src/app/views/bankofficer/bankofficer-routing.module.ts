@@ -5,14 +5,21 @@ import { BankofficerComponent } from './bankofficer.component';
 
 const routes: Routes = [
     {
-      path: '',
-      component: BankofficerComponent,
-      data: {
-        title: 'Bank Officer',
-      },
+        path: '',
+        data: {
+          title: 'DOSRI',
+        },
+        children: [{
+          path: '',
+          component: BankofficerComponent,
+          data: {
+            title: 'Bank Officer',
+          },
+        }
+      ]
     },
-  ];
-
+];
+  
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

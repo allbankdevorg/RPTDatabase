@@ -16,6 +16,68 @@
     color: #000;
 }
 
+.add-button-spouse {
+    padding: 3px;
+    font-size: 10px;
+    right: 2px;
+    top: 2px;
+    position: absolute;
+}
+
+.add-button-children {
+    padding: 3px;
+    font-size: 10px;
+    right: 2px;
+    top: 2px;
+    color: #fff;
+    // position: absolute;
+}
+
+.sub-button-children {
+    padding: 3px;
+    font-size: 10px;
+    right: 2px;
+    top: 2px;
+    color: #fff;
+     position: absolute;
+}
+
+.add-button-fatherinlaw {
+    padding: 3px;
+    font-size: 10px;
+    right: 2px;
+    top: 2px;
+    position: absolute;
+}
+
+.add-button-motherinlaw {
+    padding: 1px 2px;
+    font-size: 12px;
+    right: 2px;
+    top: 2px;
+    position: absolute;
+}
+
+.mat-column-spouse {
+    width: 10%;
+    position: relative;
+    // display: flex;
+    // text-align: center;
+}
+
+.mat-column-children {
+    position: relative;
+    // display: flex;
+    // text-align: center;
+}
+
+.mat-column-fatherinlaw {
+    position: relative;
+}
+
+.mat-column-motherinlaw {
+    position: relative;
+}
 // .mat-column-bn {
 //     width: 15%;
 //     padding: 10px 24px;

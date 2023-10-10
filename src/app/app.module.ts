@@ -24,6 +24,7 @@ import { AppComponent } from './app.component';
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
 
+import {MatButtonModule} from '@angular/material/button';
 import {
   AvatarModule,
   BadgeModule,
@@ -44,7 +45,8 @@ import {
   TabsModule,
   UtilitiesModule,
   TableModule,
-  ModalModule
+  ModalModule,
+  AccordionModule,
 } from '@coreui/angular';
 
 
@@ -99,7 +101,10 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
-    NgScrollbarModule
+    NgScrollbarModule,
+    AccordionModule,
+    MatButtonModule,
+    FormsModule
   ],
   providers: [
     {

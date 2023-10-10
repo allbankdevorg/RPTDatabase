@@ -4,14 +4,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { BankstockholderComponent } from './bankstockholder.component';
 
 const routes: Routes = [
-    {
-      path: '',
-      component: BankstockholderComponent,
-      data: {
-        title: 'Bank Stockholder',
-      },
+  {
+    path: '',
+    data: {
+      title: 'DOSRI',
     },
-  ];
+    children: [{
+        path: '',
+        component: BankstockholderComponent,
+        data: {
+          title: 'Bank Stockholder',
+        },
+      }
+    ]
+  },
+];
 
 
 @NgModule({

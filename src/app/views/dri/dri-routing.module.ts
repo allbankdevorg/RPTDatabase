@@ -9,8 +9,22 @@ const routes: Routes = [
       path: '',
       component: DRIComponent,
       data: {
-        title: 'DRI',
+        title: 'DOSRI',
       },
+      children: [
+        {
+          path: '',
+          pathMatch: 'full',
+          redirectTo: 'dri',
+        },
+        {
+          path: 'dri',
+          component: DRIComponent,
+          data: {
+            title: 'DRI',
+          },
+        },
+      ]
     },
     {
         path: 'directorsrelated/:id',

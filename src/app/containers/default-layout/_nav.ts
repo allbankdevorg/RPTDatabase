@@ -15,25 +15,35 @@ export const navItems: INavData[] = [
   //   name: ''
   // },
   {
-    name: 'DRI',
-    url: '/dri',
-    iconComponent: { name: '' }
+      name: 'DOSRI',
+      url: '/',
+      iconComponent: { name: '' },
+      children: [
+            {
+            name: 'DRI',
+            url: '/dri',
+            iconComponent: { name: '' },
+            },
+            {
+              name: 'Bank Officer',
+              url: '/bankofficer',
+              iconComponent: { name: '' }
+            },
+            {
+              name: 'Banks Stockholder',
+              url: '/bankstockholder',
+              iconComponent: { name: '' }
+            },
+            {
+              name: 'Affiliates',
+              url: '/affiliates',
+              iconComponent: { name: '' }
+            },
+          ]
   },
-  {
-    name: 'Bank Officer',
-    url: '/bankofficer',
-    iconComponent: { name: '' }
-  },
-  {
-    name: 'Banks Stockholder',
-    url: '/bankstockholder',
-    iconComponent: { name: '' }
-  },
-  {
-    name: 'Affiliates',
-    url: '/affiliates',
-    iconComponent: { name: '' }
-  },
+ 
+  
+  
   // {
   //   name: 'Typography',
   //   url: '/theme/typography',
