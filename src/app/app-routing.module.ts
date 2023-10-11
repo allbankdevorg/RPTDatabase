@@ -56,6 +56,11 @@ const routes: Routes = [
           import('./views/rp-affiliates/rp-affiliates.module').then((m) => m.RpAffiliatesModule)
       },
       {
+        path: 'rp-affiliates/pac/cis',
+        loadChildren: () =>
+          import('./views/rp-affiliates/pac/pac.module').then((m) => m.PACModule)
+      },
+      {
         path: 'rp-related-companies',
         loadChildren: () =>
           import('./views/rp-related-companies/rp-related-companies.module').then((m) => m.RpRelatedCompaniesModule)

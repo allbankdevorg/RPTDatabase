@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { RpAffiliatesComponent } from './rp-affiliates.component';
-
+import { PACComponent } from './pac/pac.component';
 const routes: Routes = [
     {
       path: '',
@@ -19,6 +19,13 @@ const routes: Routes = [
         },
       ]
     },
+    {
+      path: 'pac/:id',
+    component: PACComponent,
+    data: {
+      title: 'Directors Related Interest',
+    },
+  },
   ];
 
 

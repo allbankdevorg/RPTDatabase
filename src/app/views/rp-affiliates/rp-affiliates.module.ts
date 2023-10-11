@@ -18,7 +18,8 @@ import { rpAffilitesRoutingModule} from './rp-affiliates-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     MatSortModule,

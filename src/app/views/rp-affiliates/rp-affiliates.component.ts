@@ -56,11 +56,11 @@ export class RpAffiliatesComponent implements AfterViewInit {
   
   dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
   ToDisplay: string[] = [];
-  columnsToDisplay: string[] = ['expand', 'cis', 'cn', 'type', 'LDUpdated'];
+  columnsToDisplay: string[] = ['expand', 'cis', 'cn', 'type', 'LDUpdated', 'view'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: Data | null = null;
 
-  DdisplayedColumns: string[] = ['comN', 'ofcrName', 'position', 'view'];
+  DdisplayedColumns: string[] = ['comN', 'ofcrName', 'position'];
   DdataSource = new MatTableDataSource<DData>(Directors_DATA);
 
 
@@ -104,7 +104,7 @@ export class RpAffiliatesComponent implements AfterViewInit {
     // this.router.navigate(['/details', row.id]);
     console.log('row has been clicked');
     console.log('Clicked row data:', row);
-    this.router.navigate(['/dri/directorsrelated', row.bn]);
+    this.router.navigate(['/rp-affiliates/pac', row.cis]);
   }
 }
 

@@ -40,6 +40,15 @@
             <th mat-header-cell *matHeaderCellDef> Date Updated </th>
             <td mat-cell *matCellDef="let element"> {{ element.LDUpdated }} </td>
           </ng-container>
+
+          <!-- View Column -->
+          <ng-container matColumnDef="view">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let row"> 
+              <!-- <button cButton class="mx-1 my-1" color="primary" routerLink="/listing/accountdetails" (click)="viewData(element)">View</button> -->
+              <button cButton class="my-1" color="dark" (click)="onRowClick(row)">View</button>
+            </td>
+          </ng-container>
   
           <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
           <ng-container matColumnDef="expandedDetail">
@@ -75,15 +84,6 @@
                         <td mat-cell *matCellDef="let element"> {{ element.position }} </td>
                       </ng-container>
 
-                      <!-- View Column -->
-                      <ng-container matColumnDef="view">
-                        <th mat-header-cell *matHeaderCellDef> Action </th>
-                        <td mat-cell *matCellDef="let row"> 
-                          <!-- <button cButton class="mx-1 my-1" color="primary" routerLink="/listing/accountdetails" (click)="viewData(element)">View</button> -->
-                          <button cButton class="my-1" color="dark" (click)="onRowClick(row)">View</button>
-                        </td>
-                      </ng-container>
-  
   
                       <tr mat-header-row  *matHeaderRowDef="DdisplayedColumns"></tr>
                       <tr mat-row *matRowDef="let row; columns: DdisplayedColumns;" (click)="onRowClick(row)"></tr>
