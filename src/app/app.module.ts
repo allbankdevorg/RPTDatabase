@@ -56,7 +56,12 @@ import { BankofficerComponent } from './views/bankofficer/bankofficer.component'
 import { BankstockholderComponent } from './views/bankstockholder/bankstockholder.component';
 import { AffiliatesComponent } from './views/affiliates/affiliates.component';
 import { DRIComponent } from './views/dri/dri.component';
-import { DirectorsrelatedComponent } from './views/dri/directorsrelated/directorsrelated.component'
+import { DirectorsrelatedComponent } from './views/dri/directorsrelated/directorsrelated.component';
+import { RpAffiliatesComponent } from './views/rp-affiliates/rp-affiliates.component';
+import { RpRelatedCompaniesComponent } from './views/rp-related-companies/rp-related-companies.component';
+import { RpOtherOfficerComponent } from './views/rp-other-officer/rp-other-officer.component';
+import { DIR2ndDegRelativesComponent } from './views/dir2nd-deg-relatives/dir2nd-deg-relatives.component';
+import { Officer2ndDegRelativesComponent } from './views/officer2nd-deg-relatives/officer2nd-deg-relatives.component'
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -65,7 +70,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

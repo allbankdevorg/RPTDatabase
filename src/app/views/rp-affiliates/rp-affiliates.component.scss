@@ -1,0 +1,107 @@
+tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    // display: flex;
+    width: 100%;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+  
+  .acc-access-add {
+    position: absolute;
+    right: 9px;
+    top: -42px;
+  }
+  
+  
+  .DRI-table {
+      width: 100%;
+  }
+  
+  .mat-column-action {
+    width: 1%;
+  }
+  
+  .mat-column-bn {
+      width: 15%;
+      padding: 10px 24px;
+      text-align: center;
+    }
+    
+    .mat-column-Nodirectors {
+      width: 30%px;
+      padding: 10px 4px;
+      text-align: center;
+    }
+    
+    .mat-column-LDUpdated {
+      width: 40%;
+      padding: 10px 4px;
+      text-align: center;
+    }
+  
+  
+    .mat-column-comN {
+      width: 33%;
+      padding: 10px 24px;
+      text-align: center;
+    }
+  
+    .mat-column-ofcrName {
+      width: 33%;
+      padding: 10px 24px;
+      text-align: center;
+    }
+  
+    .mat-column-position {
+      width: 33%;
+      padding: 10px 24px;
+      text-align: center;
+    }
+
+    .mat-column-view {
+      width: 9%;
+      padding: 10px 24px;
+      text-align: center;
+    }
+    
+    .mat-mdc-row .mat-mdc-cell {
+      cursor: pointer;
+    }
+    

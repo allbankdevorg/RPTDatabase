@@ -41,6 +41,38 @@ export const navItems: INavData[] = [
             },
           ]
   },
+  {
+    name: 'Affiliates of RP',
+    url: '/',
+    iconComponent: { name: '' },
+    children: [
+          {
+            name: 'Affiliates',
+            url: '/rp-affiliates',
+            iconComponent: { name: '' },
+          },
+          {
+            name: 'Other Related Companies',
+            url: '/rp-related-companies',
+            iconComponent: { name: '' },
+          },
+          {
+            name: 'Other RP Officers',
+            url: '/rp-other-officer',
+            iconComponent: { name: '' },
+          },
+          {
+            name: 'DIR 2nd Degree Relatives',
+            url: '/dir2nd-deg-relatives',
+            iconComponent: { name: '' },
+          },
+          {
+            name: 'Officer 2nd Deg Relatives',
+            url: '/officer2nd-deg-relatives',
+            iconComponent: { name: '' },
+          },
+        ]
+},
  
   
   

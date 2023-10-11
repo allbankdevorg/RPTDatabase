@@ -4,8 +4,13 @@
   class="d-print-none sidebar sidebar-fixed"
   id="sidebar"
   visible
+
 >
-  <c-sidebar-brand
+<c-sidebar-brand>
+  <h3>RPT Database</h3>
+</c-sidebar-brand>
+
+  <!-- <c-sidebar-brand
     [brandFull]="{
       src: 'assets/img/brand/coreui-angular.svg',
       width: 200,
@@ -19,7 +24,7 @@
       alt: 'CoreUI Logo'
     }"
     routerLink="./"
-  />
+  /> -->
 
   <ng-scrollbar pointerEventsMethod="scrollbar">
     <c-sidebar-nav
@@ -27,11 +32,11 @@
       dropdownMode="close"
     />
   </ng-scrollbar>
-  <c-sidebar-toggler
+  <!-- <c-sidebar-toggler
     *ngIf="!sidebar.narrow"
     toggle="unfoldable"
     cSidebarToggle="sidebar"
-  />
+  /> -->
 </c-sidebar>
 
 <!--main-->

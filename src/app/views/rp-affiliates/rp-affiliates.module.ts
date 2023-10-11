@@ -14,11 +14,11 @@ import {CurrencyPipe} from '@angular/common';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { DRIRoutingModule } from './dri-routing.module';
+import { rpAffilitesRoutingModule} from './rp-affiliates-routing.module';
+
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     MatSortModule,
@@ -30,7 +30,7 @@ import { DRIRoutingModule } from './dri-routing.module';
     ReactiveFormsModule,
     MatTableModule,
     CurrencyPipe,
-    DRIRoutingModule,
+    rpAffilitesRoutingModule
   ]
 })
-export class DRIModule { }
+export class RpAffiliatesModule { }

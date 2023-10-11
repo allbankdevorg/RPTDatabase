@@ -51,6 +51,31 @@ const routes: Routes = [
           import('./views/affiliates/affiliates.module').then((m) => m.AffiliatesModule)
       },
       {
+        path: 'rp-affiliates',
+        loadChildren: () =>
+          import('./views/rp-affiliates/rp-affiliates.module').then((m) => m.RpAffiliatesModule)
+      },
+      {
+        path: 'rp-related-companies',
+        loadChildren: () =>
+          import('./views/rp-related-companies/rp-related-companies.module').then((m) => m.RpRelatedCompaniesModule)
+      },
+      {
+        path: 'rp-other-officer',
+        loadChildren: () =>
+          import('./views/rp-other-officer/rp-other-officer.module').then((m) => m.RpOtherOfficerModule)
+      },
+      {
+        path: 'dir2nd-deg-relatives',
+        loadChildren: () =>
+          import('./views/dir2nd-deg-relatives/dir2nd-deg-relatives.module').then((m) => m.DIR2ndDegRelativesModule)
+      },      
+      {
+        path: 'officer2nd-deg-relatives',
+        loadChildren: () =>
+          import('./views/officer2nd-deg-relatives/officer2nd-deg-relatives.module').then((m) => m.Officer2ndDegRelativesModule)
+      },
+      {
         path: 'icons',
         loadChildren: () =>
           import('./views/icons/icons.module').then((m) => m.IconsModule)
