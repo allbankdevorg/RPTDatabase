@@ -3,6 +3,10 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { MatPaginator } from '@angular/material/paginator';
 
+
+// Functions Import
+import {createBankOfficer} from '../../functions-files/addBankOfficer';
+import {createBankOfficerRelationship} from '../../functions-files/addBankOfficerRelationship';
 export interface Child {
   name: string;
 }
@@ -46,8 +50,16 @@ export class BankofficerComponent implements AfterViewInit {
 
   // Start of Button Click
   onButtonClick() {
-    console.log('Add Data');
+    console.log('Show Modal Form');
     
+  }
+
+  addBankOfficer() {
+    createBankOfficer()
+  }
+
+  addBankOfficerRS() {
+    createBankOfficerRelationship()
   }
 
 }

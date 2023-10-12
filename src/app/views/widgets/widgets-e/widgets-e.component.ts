@@ -67,13 +67,20 @@ export class WidgetsEComponent implements AfterContentInit {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  get randomData() {
-    const data = [];
+  get randomData(): number[] {
+    const data: number[] = [];
     for (let i = 0; i < 15; i++) {
       data.push(this.random);
     }
     return data;
   }
+  // get randomData() {
+  //   const data = [];
+  //   for (let i = 0; i < 15; i++) {
+  //     data.push(this.random);
+  //   }
+  //   return data;
+  // }
 
   get baseDatasets(): Array<any> {
     return [

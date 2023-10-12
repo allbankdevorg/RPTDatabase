@@ -2,6 +2,10 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
+
+
+// Functions Import
+import {updateShares} from '../../functions-files/updateFunctions'
 // export interface Child {
 //   name: string;
 // }
@@ -45,9 +49,12 @@ export class BankstockholderComponent implements AfterViewInit {
   onRowClick(row: any) {
     // Capture the selected data and navigate to another component with it
     // this.router.navigate(['/details', row.id]);
-    console.log('row has been clicked');
-    console.log('Clicked row data:', row);
+    console.log('Show Update Modal Form');
     // this.router.navigate(['/dri/directorsrelated', row.bn]);
+  }
+
+  updateShares() {
+    updateShares()
   }
 
 }

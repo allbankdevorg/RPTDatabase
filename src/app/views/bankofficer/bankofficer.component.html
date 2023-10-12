@@ -194,7 +194,7 @@
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button cButton color="success">Proceed</button>
+        <button cButton color="success" [cModalToggle]="staticBackdropModal.id" (click)="addBankOfficer()">Proceed</button>
       </c-modal-footer>
     </form>
         
@@ -247,7 +247,7 @@
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button cButton color="success">Proceed</button>
+        <button cButton color="success" [cModalToggle]="relationShipModal.id" (click)="addBankOfficerRS()">Proceed</button>
       </c-modal-footer>
     </form>
         

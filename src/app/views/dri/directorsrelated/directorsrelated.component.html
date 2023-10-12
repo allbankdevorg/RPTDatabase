@@ -23,7 +23,7 @@
         <ng-container matColumnDef="mothersname" class="position-reative">
             <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
             <td mat-cell *matCellDef="let element"> 
-                <button class="sub-button" cButton color="danger" *ngIf="element.mothersname">-</button>
+                <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.mothersname">-</button>
                 {{element.mothersname}}
                 <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button>
             </td>
@@ -32,7 +32,7 @@
         <ng-container matColumnDef="fathersname">
             <th mat-header-cell *matHeaderCellDef> Father's Name </th>
             <td mat-cell *matCellDef="let element">
-                <button class="sub-button" cButton color="danger" *ngIf="element.fathersname">-</button>
+                <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.fathersname">-</button>
                 {{element.fathersname}}
                 <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button>
             </td>
@@ -41,7 +41,7 @@
         <ng-container matColumnDef="spouse">
             <th mat-header-cell *matHeaderCellDef> Spouse  </th>
             <td mat-cell *matCellDef="let element">
-                <button class="sub-button" cButton color="danger" *ngIf="element.fathersname">-</button>
+                <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.fathersname">-</button>
                 {{element.fathersname}}
                 <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button>
             </td>
@@ -51,7 +51,7 @@
             <th mat-header-cell *matHeaderCellDef> Children </th>
             <td mat-cell *matCellDef="let element">
                 <ng-container *ngFor="let child of element.children">
-                    <button class="sub-button" cButton color="danger" *ngIf="element.children">-</button>
+                    <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.children">-</button>
                     {{ child.name }} 
                 <br>
                 </ng-container>
@@ -62,7 +62,7 @@
         <ng-container matColumnDef="motherinlaw">
             <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
             <td mat-cell *matCellDef="let element"> 
-                <button class="sub-button" cButton color="danger" *ngIf="element.motherinlaw">-</button>
+                <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.motherinlaw">-</button>
                     {{element.motherinlaw}}
                 <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button></td>
         </ng-container>
@@ -70,7 +70,7 @@
         <ng-container matColumnDef="fatherinlaw">
             <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
             <td mat-cell *matCellDef="let element">
-                <button class="sub-button" cButton color="danger" *ngIf="element.fatherinlaw">-</button> 
+                <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.fatherinlaw">-</button> 
                     {{element.fatherinlaw}}
                 <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button></td>
         </ng-container>
@@ -190,7 +190,7 @@
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button cButton color="success">Proceed</button>
+        <button cButton color="success" (click)="addDirectors()" [cModalToggle]="staticBackdropModal.id">Proceed</button>
       </c-modal-footer>
     </form>
         
@@ -243,8 +243,9 @@
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button cButton color="success">Proceed</button>
+        <button cButton color="success" (click)="addRelatedInterest()" [cModalToggle]="relationShipModal.id">Proceed</button>
       </c-modal-footer>
     </form>
         
 </c-modal>
+

@@ -3,6 +3,12 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { MatPaginator } from '@angular/material/paginator';
 
+// Imports for Functions
+import {createDirectors} from '../../../functions-files/addDirectors';
+import {createRelatedInterest} from '../../../functions-files/addRelatedInterest';
+import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
+
+
 export interface Child {
   name: string;
 }
@@ -56,8 +62,28 @@ export class DirectorsrelatedComponent implements AfterViewInit {
 
   // Start of Button Click
   onButtonClick() {
-    console.log('Add Data');
+    console.log('Show Modal Form');
     
+  }
+
+  addDirectors() {
+    createDirectors()
+  }
+
+  addRelatedInterest() {
+    createRelatedInterest()
+  }
+
+  delDosri() {
+    deleteDosri()
+  }
+
+  delDirector() {
+    deleteDirector()
+  }
+
+  delRelationship() {
+    deleteRelationship()
   }
 
 }
