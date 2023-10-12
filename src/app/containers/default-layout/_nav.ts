@@ -34,11 +34,6 @@ export const navItems: INavData[] = [
               url: '/bankstockholder',
               iconComponent: { name: '' }
             },
-            {
-              name: 'Affiliates',
-              url: '/affiliates',
-              iconComponent: { name: '' }
-            },
           ]
   },
   {

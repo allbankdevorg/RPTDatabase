@@ -11,6 +11,7 @@ export interface Data {
   company: string,
   position: String,
   shares: String,
+  action: string,
   // mothersname: String,
   // fathersname: String,
   // spouse: String,
@@ -27,7 +28,7 @@ export interface Data {
 export class BankstockholderComponent implements AfterViewInit {
   sharedData: string | any;
 
-  displayedColumns: string[] = ['fullname', 'position', 'shares'];
+  displayedColumns: string[] = ['fullname', 'position', 'shares', 'action'];
   displayedColumns1: string[] = ['company'];
   dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
@@ -40,6 +41,15 @@ export class BankstockholderComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  // Functions
+  onRowClick(row: any) {
+    // Capture the selected data and navigate to another component with it
+    // this.router.navigate(['/details', row.id]);
+    console.log('row has been clicked');
+    console.log('Clicked row data:', row);
+    // this.router.navigate(['/dri/directorsrelated', row.bn]);
+  }
+
 }
 
 
@@ -49,6 +59,7 @@ const ELEMENT_DATA: Data[] = [
     fullname: "John Doe",
     position: 'Director',
     shares: '1.2',
+    action: '',
     company: 'All Bank',
     // mothersname: 'sample',
     // fathersname: 'sample',

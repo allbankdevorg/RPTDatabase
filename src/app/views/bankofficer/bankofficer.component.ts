@@ -41,6 +41,15 @@ export class BankofficerComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+
+  // Functions
+
+  // Start of Button Click
+  onButtonClick() {
+    console.log('Add Data');
+    
+  }
+
 }
 
 

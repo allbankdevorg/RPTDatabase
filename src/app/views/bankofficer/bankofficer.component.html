@@ -1,6 +1,24 @@
+
+
 <c-container class="mb-3 p-0">
     <table cTable bordered [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
         
+        <!-- Header row first group -->
+        <ng-container matColumnDef="header-row-first-group">
+            <th  *matHeaderCellDef cTableColor class="cTableCol position-relative"
+                
+                [attr.colspan]="3"> 
+            Officers  
+            <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="onButtonClick()" cButton>+</button>    
+
+            </th>
+        </ng-container>
+        
+        <!-- Header row second group -->
+        <ng-container matColumnDef="header-row-second-group">
+            <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
+        </ng-container>
+
         <!-- Position Column -->
         <ng-container matColumnDef="fullname">
             <th mat-header-cell *matHeaderCellDef> Full Name </th>
@@ -20,64 +38,73 @@
         </ng-container>
 
         <!-- Symbol Column -->
-        <ng-container matColumnDef="mothersname">
+        <ng-container matColumnDef="mothersname" class="position-reative">
             <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.mothersname}} </td>
+            <td mat-cell *matCellDef="let element"> 
+                <button class="sub-button" cButton color="danger" *ngIf="element.mothersname">-</button>
+                {{element.mothersname}}
+                <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="fathersname">
             <th mat-header-cell *matHeaderCellDef> Father's Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.fathersname}} </td>
+            <td mat-cell *matCellDef="let element">
+                <button class="sub-button" cButton color="danger" *ngIf="element.fathersname">-</button>
+                {{element.fathersname}}
+                <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="spouse">
-            <th mat-header-cell *matHeaderCellDef> Spouse </th>
-            <td mat-cell *matCellDef="let element"> {{element.spouse}} </td>
+            <th mat-header-cell *matHeaderCellDef> Spouse  </th>
+            <td mat-cell *matCellDef="let element">
+                <button class="sub-button" cButton color="danger" *ngIf="element.fathersname">-</button>
+                {{element.fathersname}}
+                <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="children">
             <th mat-header-cell *matHeaderCellDef> Children </th>
             <td mat-cell *matCellDef="let element">
                 <ng-container *ngFor="let child of element.children">
-                {{ child.name }}
+                    <button class="sub-button" cButton color="danger" *ngIf="element.children">-</button>
+                    {{ child.name }} 
                 <br>
-                </ng-container> </td>
+                </ng-container>
+                <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button> 
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="motherinlaw">
-            <th mat-header-cell *matHeaderCellDef> Mother-In-Law </th>
-            <td mat-cell *matCellDef="let element"> {{element.motherinlaw}} </td>
+            <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
+            <td mat-cell *matCellDef="let element"> 
+                <button class="sub-button" cButton color="danger" *ngIf="element.motherinlaw">-</button>
+                    {{element.motherinlaw}}
+                <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button></td>
         </ng-container>
 
         <ng-container matColumnDef="fatherinlaw">
             <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
-            <td mat-cell *matCellDef="let element"> {{element.fatherinlaw}} </td>
+            <td mat-cell *matCellDef="let element">
+                <button class="sub-button" cButton color="danger" *ngIf="element.fatherinlaw">-</button> 
+                    {{element.fatherinlaw}}
+                <button [cModalToggle]="relationShipModal.id" (click)="onButtonClick()" class="add-button" cButton color="primary">+</button></td>
         </ng-container>
 
-        <!-- Header row first group -->
-        <ng-container matColumnDef="header-row-first-group">
-            <th  *matHeaderCellDef cTableColor class="cTableCol"
-                
-                [attr.colspan]="3"> 
-            Officers 
-            </th>
-        </ng-container>
         
-        <!-- Header row second group -->
-        <ng-container matColumnDef="header-row-second-group">
-            <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
-        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-      
     <mat-paginator [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons
         aria-label="Select page of data">
     </mat-paginator>
+    
       
       <!-- <div *ngIf="!clickedRows.size">
         Clicked rows will be logged here
@@ -90,3 +117,138 @@
       </ul> -->
       
 </c-container>
+
+
+
+
+
+<!-- All Modals are below -->
+<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
+    <c-modal-header>
+      <h3 cModalTitle>Directors</h3>
+      <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
+    </c-modal-header>
+  
+    <form cForm class="mb-2">
+      <c-modal-body>
+        <c-row class="align-items-center">
+          
+            <c-col [sm]="4">
+                <label cLabel="col" for="dFirstName">First Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="fullName"
+                  placeholder="Full Name"
+                  type="text">
+            </c-col>
+    
+            <c-col [sm]="4">
+                <label cLabel="col" for="dMiddleName">Middle Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="dMiddleName"
+                  placeholder="Full Name"
+                  type="text">
+            </c-col>
+
+            <c-col [sm]="4">
+                <label cLabel="col" for="dLastName">Last Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="dLastName"
+                  placeholder="Full Name"
+                  type="text">
+            </c-col>
+    
+    
+        </c-row>
+
+        <c-row class="align-items-center">
+  
+          <c-col [sm]="6">
+              <label cLabel="col" for="company">Company</label>
+              <input
+                cFormControl
+                id="company"
+                placeholder="Company"
+                type="text">
+          </c-col>
+  
+          <c-col [sm]="6">
+            <label cLabel="col" for="position">Position</label>
+            <input
+              cFormControl
+              id="position"
+              placeholder="Position"
+              type="text">
+          </c-col>
+  
+          <!-- <c-col [sm]="3">
+              <label cLabel="col" for="prodT">P2M/P2E</label>
+              <select aria-label="Default select example" cSelect>
+                <option>P2M/P2E</option>
+                <option value="1">P2M</option>
+                <option value="2">P2E</option>
+              </select>
+          </c-col> -->
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button cButton color="success">Proceed</button>
+      </c-modal-footer>
+    </form>
+        
+</c-modal>
+
+
+<c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
+    <c-modal-header>
+      <h3 cModalTitle> Relationship </h3>
+      <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
+    </c-modal-header>
+  
+    <form cForm class="mb-2">
+      <c-modal-body>
+        <c-row class="align-items-center">
+          
+            <c-row class="align-items-center">
+          
+                <c-col [sm]="4">
+                    <label cLabel="col" for="dFirstName">First Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="First Name"
+                      placeholder="Full Name"
+                      type="text">
+                </c-col>
+        
+                <c-col [sm]="4">
+                    <label cLabel="col" for="dMiddleName">Middle Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="Middle Name"
+                      placeholder="Full Name"
+                      type="text">
+                </c-col>
+    
+                <c-col [sm]="4">
+                    <label cLabel="col" for="dLastName">Last Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="Last Name"
+                      placeholder="Full Name"
+                      type="text">
+                </c-col>
+        
+        
+            </c-row>
+  
+  
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button cButton color="success">Proceed</button>
+      </c-modal-footer>
+    </form>
+        
+</c-modal>

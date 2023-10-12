@@ -119,7 +119,7 @@
 
 
 <!-- All Modals are below -->
-<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal">
+<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
     <c-modal-header>
       <h3 cModalTitle>Directors</h3>
       <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
@@ -129,16 +129,39 @@
       <c-modal-body>
         <c-row class="align-items-center">
           
-          <c-col [sm]="3">
-              <label cLabel="col" for="fullName">Full Name</label>
-              <input
-                aria-describedby="passwordHelpInline-3"cFormControl
-                id="fullName"
-                placeholder="Full Name"
-                type="text">
-          </c-col>
+            <c-col [sm]="4">
+                <label cLabel="col" for="dFirstName">First Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="fullName"
+                  placeholder="Full Name"
+                  type="text">
+            </c-col>
+    
+            <c-col [sm]="4">
+                <label cLabel="col" for="dMiddleName">Middle Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="dMiddleName"
+                  placeholder="Full Name"
+                  type="text">
+            </c-col>
+
+            <c-col [sm]="4">
+                <label cLabel="col" for="dLastName">Last Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="dLastName"
+                  placeholder="Full Name"
+                  type="text">
+            </c-col>
+    
+    
+        </c-row>
+
+        <c-row class="align-items-center">
   
-          <c-col [sm]="5">
+          <c-col [sm]="6">
               <label cLabel="col" for="company">Company</label>
               <input
                 cFormControl
@@ -147,7 +170,7 @@
                 type="text">
           </c-col>
   
-          <c-col [sm]="4">
+          <c-col [sm]="6">
             <label cLabel="col" for="position">Position</label>
             <input
               cFormControl
@@ -174,7 +197,7 @@
 </c-modal>
 
 
-<c-modal #relationShipModal backdrop="static" id="relationShipModal">
+<c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
     <c-modal-header>
       <h3 cModalTitle> Relationship </h3>
       <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
@@ -184,23 +207,37 @@
       <c-modal-body>
         <c-row class="align-items-center">
           
-          <c-col [sm]="8">
-              <label cLabel="col" for="fullName">Full Name</label>
-              <input
-                aria-describedby="passwordHelpInline-3"cFormControl
-                id="fullName"
-                placeholder="Full Name"
-                type="text">
-          </c-col>
-  
-          <c-col [sm]="4">
-              <label cLabel="col" for="rSC">Relationship Code</label>
-              <input
-                cFormControl
-                id="rSC"
-                placeholder="Relationship"
-                type="text">
-          </c-col>
+            <c-row class="align-items-center">
+          
+                <c-col [sm]="4">
+                    <label cLabel="col" for="dFirstName">First Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="First Name"
+                      placeholder="Full Name"
+                      type="text">
+                </c-col>
+        
+                <c-col [sm]="4">
+                    <label cLabel="col" for="dMiddleName">Middle Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="Middle Name"
+                      placeholder="Full Name"
+                      type="text">
+                </c-col>
+    
+                <c-col [sm]="4">
+                    <label cLabel="col" for="dLastName">Last Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="Last Name"
+                      placeholder="Full Name"
+                      type="text">
+                </c-col>
+        
+        
+            </c-row>
   
   
         </c-row>
