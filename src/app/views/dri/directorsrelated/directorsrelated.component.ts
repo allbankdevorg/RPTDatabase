@@ -10,7 +10,7 @@ export interface Child {
 export interface Data {
   fullname: string;
   company: string,
-  directors: String,
+  position: String,
   mothersname: String,
   fathersname: String,
   spouse: String,
@@ -35,8 +35,9 @@ export interface Data {
 export class DirectorsrelatedComponent implements AfterViewInit {
   
   sharedData: string | any;
+  // relationShipModal: any;
 
-  displayedColumns: string[] = ['fullname', 'company', 'directors', 'mothersname', 'fathersname', 'spouse',
+  displayedColumns: string[] = ['fullname', 'company', 'position', 'mothersname', 'fathersname', 'spouse',
   'children', 'motherinlaw', 'fatherinlaw'];
   dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
@@ -49,6 +50,16 @@ export class DirectorsrelatedComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+
+
+  // Functions
+
+  // Start of Button Click
+  onButtonClick() {
+    console.log('Add Data');
+    
+  }
+
 }
 
 
@@ -57,7 +68,7 @@ const ELEMENT_DATA: Data[] = [
   {
     fullname: "John Doe",
     company: 'All Bank',
-    directors: '4',
+    position: 'Executive Director',
     mothersname: 'sample',
     fathersname: 'sample',
     spouse: 'sample',

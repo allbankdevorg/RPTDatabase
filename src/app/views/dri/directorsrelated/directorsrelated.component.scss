@@ -1,5 +1,6 @@
 .DRI-table {
-    width: 100%;
+    min-width: 2500px;
+    max-width:max-content;
 }
 
 .cTableCol{
@@ -16,7 +17,14 @@
     color: #000;
 }
 
-.add-button-spouse {
+.acc-access-add {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  padding: 3px;;
+}
+
+.add-button {
     padding: 3px;
     font-size: 10px;
     right: 2px;
@@ -24,64 +32,25 @@
     position: absolute;
 }
 
-.add-button-children {
+.sub-button {
     padding: 3px;
     font-size: 10px;
-    right: 2px;
-    top: 2px;
+    // right: 2px;
+    // top: 2px;
     color: #fff;
     // position: absolute;
 }
 
-.sub-button-children {
-    padding: 3px;
-    font-size: 10px;
-    right: 2px;
-    top: 2px;
-    color: #fff;
-     position: absolute;
-}
 
-.add-button-fatherinlaw {
-    padding: 3px;
-    font-size: 10px;
-    right: 2px;
-    top: 2px;
-    position: absolute;
-}
-
-.add-button-motherinlaw {
-    padding: 1px 2px;
-    font-size: 12px;
-    right: 2px;
-    top: 2px;
-    position: absolute;
-}
-
-.mat-cell-company,  .mat-header-cell-company {
-    width: 25%; /* Adjust the width to your preference */
-  }
-
-.mat-column-spouse {
-    width: 20%;
+ .mat-column-fullname, .mat-column-company, .mat-column-position,
+ .mat-column-mothersname, .mat-column-fathersname,
+ .mat-column-spouse, .mat-column-children, .mat-column-motherinlaw, .mat-column-fatherinlaw {
+    width: 11%;
     position: relative;
     // display: flex;
-    // text-align: center;
+    text-align: left;
 }
 
-.mat-column-children {
-    position: relative;
-    // display: flex;
-    // text-align: center;
-}
-
-.mat-column-fatherinlaw {
-    position: relative;
-}
-
-.mat-column-motherinlaw {
-    position: relative;
-}
 // .mat-column-bn {
 //     width: 15%;
 //     padding: 10px 24px;
