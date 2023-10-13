@@ -4,6 +4,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+
+import { Injectable } from '@angular/core';
+
+// Services
+import { DataTransferService } from '../../services/data-transfer.service';
+
 // Functions Import
 import {createBankOfficer} from '../../functions-files/addBankOfficer';
 import {createBankOfficerRelationship} from '../../functions-files/addBankOfficerRelationship';
@@ -28,9 +38,18 @@ export interface Data {
   templateUrl: './bankofficer.component.html',
   styleUrls: ['./bankofficer.component.scss']
 })
+
+@Injectable({
+  providedIn: 'root',
+})
+
 export class BankofficerComponent implements AfterViewInit {
   
   sharedData: string | any;
+  
+  boForm: FormGroup;
+  boRIForm: FormGroup;
+  buttonId: number = 0;
 
   displayedColumns: string[] = ['fullname', 'company', 'position', 'mothersname', 'fathersname', 'spouse',
   'children', 'motherinlaw', 'fatherinlaw'];
@@ -46,7 +65,52 @@ export class BankofficerComponent implements AfterViewInit {
   }
 
 
+  constructor(private router: Router,
+          private formBuilder: FormBuilder, 
+          private http: HttpClient, 
+          private dataTransferService: DataTransferService)
+          {
+            this.boForm = this.formBuilder.group({
+              boCisNumber: [''],
+              boFirstName: [''],
+              boMiddleName: [''],
+              boLastName: [''],
+              boPosition: [''],
+          });
+          this.boRIForm = this.formBuilder.group({
+            boRICisNumber: [''],
+            boRIFirstName: [''],
+            boRIMiddleName: [''],
+            boRILastName: [''],
+        });
+    }
+
+
   // Functions
+
+  setButtonId(id: number) {
+    this.buttonId = id;
+  }
+
+  onBOSubmit() {
+ 
+    if (this.boForm.valid) {
+      const boData = this.boForm.value;
+  
+      // Call the JavaScript function with form data
+      createBankOfficer(boData); // Pass the entire formData object
+    }
+  }
+
+  onBORISubmit() {
+ 
+    if (this.boRIForm.valid) {
+      const boRIData = this.boRIForm.value;
+  
+      // Call the JavaScript function with form data
+      createBankOfficerRelationship(boRIData); // Pass the entire formData object
+    }
+  }
 
   // Start of Button Click
   onButtonClick() {
@@ -54,13 +118,13 @@ export class BankofficerComponent implements AfterViewInit {
     
   }
 
-  addBankOfficer() {
-    createBankOfficer()
-  }
+  // addBankOfficer() {
+  //   createBankOfficer()
+  // }
 
-  addBankOfficerRS() {
-    createBankOfficerRelationship()
-  }
+  // addBankOfficerRS() {
+  //   createBankOfficerRelationship()
+  // }
 
 }
 

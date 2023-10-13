@@ -123,32 +123,43 @@
 
 
 <!-- All Modals are below -->
+
+<!-- Start of Bank Officer Modal -->
 <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
     <c-modal-header>
       <h3 cModalTitle>Directors</h3>
       <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
     </c-modal-header>
   
-    <form cForm class="mb-2">
+    <form cForm class="mb-2" [formGroup]="boForm" (ngSubmit)="onBOSubmit()">
       <c-modal-body>
         <c-row class="align-items-center">
+
+          <c-col [sm]="4">
+            <label cLabel="col" for="boCisNumber">CIS Number</label>
+            <input
+              aria-describedby="passwordHelpInline-3"cFormControl
+              id="boCisNumber" name="boCisNumber"
+              placeholder="CIS Number" 
+              type="text" formControlName="boCisNumber">
+          </c-col>
           
-            <c-col [sm]="6">
-                <label cLabel="col" for="dFirstName">First Name</label>
+            <c-col [sm]="4">
+                <label cLabel="col" for="boFirstName">First Name</label>
                 <input
                   aria-describedby="passwordHelpInline-3"cFormControl
-                  id="fullName"
+                  id="boFirstName" name="boFirstName"
                   placeholder="First Name"
-                  type="text">
+                  type="text" formControlName="boFirstName">
             </c-col>
     
-            <c-col [sm]="6">
-                <label cLabel="col" for="dMiddleName">Middle Name</label>
+            <c-col [sm]="4">
+                <label cLabel="col" for="boMiddleName">Middle Name</label>
                 <input
                   aria-describedby="passwordHelpInline-3"cFormControl
-                  id="dMiddleName"
+                  id="boMiddleName" name="boMiddleName"
                   placeholder="Middle Name"
-                  type="text">
+                  type="text" formControlName="boMiddleName">
             </c-col>
         </c-row>
 
@@ -164,21 +175,21 @@
           </c-col> -->
 
           <c-col [sm]="6">
-            <label cLabel="col" for="dLastName">Last Name</label>
+            <label cLabel="col" for="boLastName">Last Name</label>
             <input
               aria-describedby="passwordHelpInline-3"cFormControl
-              id="dLastName"
+              id="boLastName" name="boLastName"
               placeholder="Last Name"
-              type="text">
+              type="text" formControlName="boLastName">
         </c-col>
   
           <c-col [sm]="6">
-            <label cLabel="col" for="position">Position</label>
+            <label cLabel="col" for="boPosition">Position</label>
             <input
               cFormControl
-              id="position"
+              id="boPosition" name="boPosition"
               placeholder="Position"
-              type="text">
+              type="text" formControlName="boPosition">
           </c-col>
   
           <!-- <c-col [sm]="3">
@@ -192,61 +203,76 @@
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button cButton color="success" [cModalToggle]="staticBackdropModal.id" (click)="addBankOfficer()">Proceed</button>
+        <button type="submit" cButton color="success">Proceed</button>
       </c-modal-footer>
     </form>
         
 </c-modal>
 
+<!-- End of Officers Modal -->
 
+<!-- Start of Modal for Related Interest -->
 <c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
-    <c-modal-header>
-      <h3 cModalTitle> Relationship </h3>
-      <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
-    </c-modal-header>
-  
-    <form cForm class="mb-2">
-      <c-modal-body>
-        <c-row class="align-items-center">
+  <c-modal-header>
+    <h3 cModalTitle> Bank Relationship </h3>
+    <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
+  </c-modal-header>
+
+  <form cForm class="mb-2" [formGroup]="boRIForm" (ngSubmit)="onBORISubmit()">
+    <c-modal-body>
+      <c-row class="align-items-center">
+        
+          <c-row class="align-items-center">
+
+            <c-col [sm]="6">
+              <label cLabel="col" for="boRICisNumber">CIS Number</label>
+              <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="boRICisNumber" name="boRICisNumber"
+                placeholder="CIS Number"
+                type="text" formControlName="boRICisNumber">
+            </c-col>
+        
+              <c-col [sm]="6">
+                  <label cLabel="col" for="boRIFirstName">First Name</label>
+                  <input
+                    aria-describedby="passwordHelpInline-3"cFormControl
+                    id="boRIFirstName" name="boRIFirstName"
+                    placeholder="First Name"
+                    type="text" formControlName="boRIFirstName">
+              </c-col>
+          </c-row>
           
-            <c-row class="align-items-center">
-          
-                <c-col [sm]="4">
-                    <label cLabel="col" for="dFirstName">First Name</label>
-                    <input
-                      aria-describedby="passwordHelpInline-3"cFormControl
-                      id="First Name"
-                      placeholder="First Name"
-                      type="text">
-                </c-col>
-        
-                <c-col [sm]="4">
-                    <label cLabel="col" for="dMiddleName">Middle Name</label>
-                    <input
-                      aria-describedby="passwordHelpInline-3"cFormControl
-                      id="Middle Name"
-                      placeholder="Middle Name"
-                      type="text">
-                </c-col>
-    
-                <c-col [sm]="4">
-                    <label cLabel="col" for="dLastName">Last Name</label>
-                    <input
-                      aria-describedby="passwordHelpInline-3"cFormControl
-                      id="Last Name"
-                      placeholder="Last Name"
-                      type="text">
-                </c-col>
-        
-        
-            </c-row>
+          <c-row class="align-items-center">
+              <c-col [sm]="6">
+                  <label cLabel="col" for="boRIMiddleName">Middle Name</label>
+                  <input
+                    aria-describedby="passwordHelpInline-3"cFormControl
+                    id="boRIMiddleName" name="boRIMiddleName"
+                    placeholder="Middle Name"
+                    type="text" formControlName="boRIMiddleName">
+              </c-col>
   
-  
-        </c-row>
-      </c-modal-body>
-      <c-modal-footer>
-        <button cButton color="success" [cModalToggle]="relationShipModal.id" (click)="addBankOfficerRS()">Proceed</button>
-      </c-modal-footer>
-    </form>
-        
+              <c-col [sm]="6">
+                  <label cLabel="col" for="boRILastName">Last Name</label>
+                  <input
+                    aria-describedby="passwordHelpInline-3"cFormControl
+                    id="boRILastName" name="boRILastName"
+                    placeholder="Last Name"
+                    type="text" formControlName="boRILastName">
+              </c-col>
+      
+      
+          </c-row>
+
+
+      </c-row>
+    </c-modal-body>
+    <c-modal-footer>
+      <button type="submit" cButton color="success">Proceed</button>
+    </c-modal-footer>
+  </form>
+      
 </c-modal>
+
+<!-- End of Bank Officers Related Interest Modal -->
