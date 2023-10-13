@@ -112,35 +112,35 @@
     <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
   </c-modal-header>
 
-  <form cForm class="mb-2">
+  <form cForm class="mb-2" [formGroup]="dosriForm" (ngSubmit)="onSubmit()">
     <c-modal-body>
       <c-row class="align-items-center">
         
         <c-col [sm]="3">
-            <label cLabel="col" for="bchm">CIS Number</label>
+            <label cLabel="col" for="cisNumber">CIS Number</label>
             <input
               aria-describedby="passwordHelpInline-3"cFormControl
-              id="bchm"
+              id="cisNumber" name="cisNumber"
               placeholder="CIS"
-              type="text">
+              type="text" formControlName="cisNumber">
         </c-col>
 
         <c-col [sm]="5">
-            <label cLabel="col" for="AccountNom">Account Name</label>
+            <label cLabel="col" for="accountName">Account Name</label>
             <input
               cFormControl
-              id="AccountNom"
+              id="accountName" name="accountName"
               placeholder="Account Name"
-              type="text">
+              type="text" formControlName="accountName">
         </c-col>
 
         <c-col [sm]="4">
           <label cLabel="col" for="companyName">Company Name</label>
           <input
             cFormControl
-            id="companyName"
+            id="companyName" name="companyName"
             placeholder="Company Name"
-            type="text">
+            type="text" formControlName="companyName">
         </c-col>
 
         <!-- <c-col [sm]="3">
@@ -154,22 +154,11 @@
       </c-row>
     </c-modal-body>
     <c-modal-footer>
-      <button cButton color="success" (click)="addData()">Proceed</button>
+      <button type="submit" cButton color="success" (click)="addData()">Proceed</button>
+      <!-- (click)="addData()" -->
     </c-modal-footer>
   </form>
       
 </c-modal>
 
 
-
-
-
-<form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-  <label for="title">Title:</label>
-  <input type="text" id="title" formControlName="title">
-
-  <label for="body">Body:</label>
-  <textarea id="body" formControlName="body"></textarea>
-
-  <button type="submit" (click)="addData()">Submit</button>
-</form>

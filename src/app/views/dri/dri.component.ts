@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import axios, { AxiosRequestConfig } from 'axios';
 
+// Services
+import { DataTransferService } from '../../services/data-transfer.service';
 
 // Functions Imports
 import {callJSFun} from '../../functions-files/javascriptfun.js';
@@ -61,7 +63,10 @@ export interface DData {
 export class DRIComponent implements AfterViewInit {
   sharedData: string | any;
   postForm: FormGroup;
+  dosriForm: FormGroup;
 
+
+  cis: { cisNumber: string, accountName: string, businessName: string } = { cisNumber: '', accountName: '', businessName: '' };
 
   //  displayedColumns: string[] = ['bn', 'Nodirectors', 'LDUpdated', 'view'];
   
@@ -88,10 +93,17 @@ export class DRIComponent implements AfterViewInit {
   
 
   constructor(private router: Router,
-    private formBuilder: FormBuilder, private http: HttpClient) {
-      this.postForm = this.formBuilder.group({
+              private formBuilder: FormBuilder, 
+              private http: HttpClient, 
+              private dataTransferService: DataTransferService) {
+        this.postForm = this.formBuilder.group({
         title: ['', Validators.required],
         body: ['', Validators.required]
+      });
+      this.dosriForm = this.formBuilder.group({
+        cisNumber: [''],
+        accountName: [''],
+        companyName: ['']
       });
     }
 
@@ -99,18 +111,54 @@ export class DRIComponent implements AfterViewInit {
     callJSFun()
     
   }
+  
+onSubmit() {
+  if (this.dosriForm.valid) {
+    const formData = this.dosriForm.value;
 
-  onSubmit() {
-    if (this.postForm.valid) {
-      const postData = this.postForm.value;
-
-      // Send the postData to the API endpoint
-      this.http.post('https://jsonplaceholder.typicode.com/posts', postData)
-        .subscribe((response) => {
-          console.log('Data inserted:', response);
-        });
-    }
+    // Call the JavaScript function with form data
+    createDosri(formData); // Pass the entire formData object
   }
+  // if (this.dosriForm.valid) {
+  //   const formData = this.dosriForm.value;
+
+  //   // Call the JavaScript function with form data
+  //   createDosri(
+  //     formData.cisNumber,
+  //     formData.accountName,
+  //     formData.companyName
+  //   );
+  // }
+}
+
+  // onSubmit() {
+    // if (this.dosriForm.valid) {
+    //   const formData = this.dosriForm.value;
+    //   this.dataTransferService.sendDataToJavaScript(formData);
+    // }
+
+    // if (this.dosriForm.valid) {
+    //   const postData = this.dosriForm.value;
+    //   console.log(postData); // Log the form data
+    
+    //   // Send the postData to the API endpoint
+    //   this.http.post('http://10.0.0.208:8090/api/addData', postData)
+    //     .subscribe((response) => {
+    //       console.log('Data inserted:', response); // Log the response data
+    //     });
+    // }
+    
+    
+    // if (this.postForm.valid) {
+    //   const postData = this.postForm.value;
+
+    //   // Send the postData to the API endpoint
+    //   this.http.post('https://jsonplaceholder.typicode.com/posts', postData)
+    //     .subscribe((response) => {
+    //       console.log('Data inserted:', response);
+    //     });
+    // }
+  // }
 
   
   
@@ -119,7 +167,9 @@ export class DRIComponent implements AfterViewInit {
   //All Function below
   addData() {
     // callJSFun(); // Call your JS function
-    createDosri() // Call your createDosri function
+   // createDosri() // Call your createDosri function
+    // const postData = this.dosriForm.value;
+    // console.log(postData);
   }
 
   onButtonClick() {

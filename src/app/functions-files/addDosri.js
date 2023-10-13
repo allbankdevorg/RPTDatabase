@@ -2,36 +2,86 @@
 
 // }
 
-function createDosri(dosriData) {
-    console.log("Data Added")
-    document.getElementById("postForm").addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevent the form from actually submitting.
+// function createDosri(formData) {
+//   console.log(formData.cisNumber);    // Correct property name
+//   console.log(formData.accountName);  // Correct property name
+//   console.log(formData.companyName);  // Correct property name
+// }
+
+
+function createDosri(formData) {
+     console.log(formData)
+    var settings = {
+      "url": "http://10.0.0.208:8090/api/addData",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "cmd": 1,
+        "request": {
+              "cis_number": formData.cisNumber,       // Use form data
+              "account_name": formData.accountName,   // Use form data
+              "company_name": formData.companyName    // Use form data
+            }
+      }),
+    };
+
     
-      const formData = new FormData(event.target);
-    
-      const postData = {
-        title: formData.get("title"),
-        body: formData.get("body"),
-      };
-    
-      fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        body: JSON.stringify(postData),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Data inserted:", data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+    $.ajax(settings).done(function (response) {
+      console.log(response);
     });
-    
-    // Implement code to insert a new director into the database
+
   }
+
+//     // var settings = {
+//     //   "url": "http://10.0.0.208:8090/api/addData",
+//     //   "method": "POST",
+//     //   "timeout": 0,
+//     //   "headers": {
+//     //     "Content-Type": "application/json"
+//     //   },
+//     //   "data": JSON.stringify({
+//     //     "cmd": 1,
+//     //           "request": {
+//     //     "cis_number": formData.cisNumber,       // Use form data
+//     //     "account_name": formData.accountName,   // Use form data
+//     //     "company_name": formData.companyName    // Use form data
+//     //   }
+
+//     //   }),
+//     // };
+    
+    
+//     // document.getElementById("postForm").addEventListener("submit", function (event) {
+//     //   event.preventDefault(); // Prevent the form from actually submitting.
+    
+//     //   const formData = new FormData(event.target);
+    
+//     //   const postData = {
+//     //     title: formData.get("title"),
+//     //     body: formData.get("body"),
+//     //   };
+    
+//     //   fetch("https://jsonplaceholder.typicode.com/posts", {
+//     //     method: "POST",
+//     //     body: JSON.stringify(postData),
+//     //     headers: {
+//     //       "Content-type": "application/json; charset=UTF-8",
+//     //     },
+//     //   })
+//     //     .then((response) => response.json())
+//     //     .then((data) => {
+//     //       console.log("Data inserted:", data);
+//     //     })
+//     //     .catch((error) => {
+//     //       console.error("Error:", error);
+//     //     });
+//     // });
+    
+//     // Implement code to insert a new director into the database
+//   }
   
 //   function readDosri(dosriId) {
 //     // Implement code to retrieve a director from the database
