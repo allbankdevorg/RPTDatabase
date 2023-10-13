@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+
 import {animate, state, style, transition, trigger} from '@angular/animations'
 import {NgFor, NgIf} from '@angular/common';
 
@@ -57,6 +60,7 @@ export interface DData {
 
 export class DRIComponent implements AfterViewInit {
   sharedData: string | any;
+  postForm: FormGroup;
 
 
   //  displayedColumns: string[] = ['bn', 'Nodirectors', 'LDUpdated', 'view'];
@@ -83,12 +87,29 @@ export class DRIComponent implements AfterViewInit {
   
   
 
-  constructor(private router: Router) {}
-  
+  constructor(private router: Router,
+    private formBuilder: FormBuilder, private http: HttpClient) {
+      this.postForm = this.formBuilder.group({
+        title: ['', Validators.required],
+        body: ['', Validators.required]
+      });
+    }
 
   ngOnInit(): void {
     callJSFun()
     
+  }
+
+  onSubmit() {
+    if (this.postForm.valid) {
+      const postData = this.postForm.value;
+
+      // Send the postData to the API endpoint
+      this.http.post('https://jsonplaceholder.typicode.com/posts', postData)
+        .subscribe((response) => {
+          console.log('Data inserted:', response);
+        });
+    }
   }
 
   

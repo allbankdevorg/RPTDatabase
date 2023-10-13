@@ -104,7 +104,6 @@
 
 </c-container>
 
-
 <!-- Modals -->
 
 <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal">
@@ -136,11 +135,11 @@
         </c-col>
 
         <c-col [sm]="4">
-          <label cLabel="col" for="BusinessName">Business Name</label>
+          <label cLabel="col" for="companyName">Company Name</label>
           <input
             cFormControl
-            id="BusinessName"
-            placeholder="Business Name"
+            id="companyName"
+            placeholder="Company Name"
             type="text">
         </c-col>
 
@@ -160,3 +159,17 @@
   </form>
       
 </c-modal>
+
+
+
+
+
+<form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+  <label for="title">Title:</label>
+  <input type="text" id="title" formControlName="title">
+
+  <label for="body">Body:</label>
+  <textarea id="body" formControlName="body"></textarea>
+
+  <button type="submit" (click)="addData()">Submit</button>
+</form>
