@@ -37,9 +37,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/scss/styles.scss"
+              "src/scss/styles.scss",
+              "src/assets/package/dist/sweetalert2.min.css"
             ],
-            "scripts": ["src/assets/jquery-3.7.1.min.js"],
+            "scripts": [
+              "src/assets/jquery-3.7.1.min.js"
+            ],
             "allowedCommonJsDependencies": [
               "chart.js"
             ]

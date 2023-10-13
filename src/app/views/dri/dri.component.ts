@@ -66,7 +66,7 @@ export class DRIComponent implements AfterViewInit {
   dosriForm: FormGroup;
 
 
-  cis: { cisNumber: string, accountName: string, businessName: string } = { cisNumber: '', accountName: '', businessName: '' };
+  // cis: { cisNumber: string, accountName: string, businessName: string } = { cisNumber: '', accountName: '', businessName: '' };
 
   //  displayedColumns: string[] = ['bn', 'Nodirectors', 'LDUpdated', 'view'];
   
@@ -113,6 +113,7 @@ export class DRIComponent implements AfterViewInit {
   }
   
 onSubmit() {
+ 
   if (this.dosriForm.valid) {
     const formData = this.dosriForm.value;
 
