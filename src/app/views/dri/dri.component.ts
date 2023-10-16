@@ -80,11 +80,11 @@ export class DRIComponent implements AfterViewInit {
   
   compDataSource = new MatTableDataSource<compData>([]);
   ToDisplay: string[] = [];
-  columnsToDisplay: string[] = ['expand', 'com_cis_number', 'com_company_name', 'date_inserted'];
+  columnsToDisplay: string[] = ['expand', 'com_cis_number', 'com_company_name', 'directorCount', 'date_inserted', 'view'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: compData | null = null;
 
-  DdisplayedColumns: string[] = ['dir_cisnumber', 'fname', 'position'];
+  DdisplayedColumns: string[] = ['dir_cisnumber', 'directorName', 'position'];
   dDataSource = new MatTableDataSource<DData>([]);
 
 
@@ -114,16 +114,78 @@ export class DRIComponent implements AfterViewInit {
 
   ngOnInit(): void {
     callJSFun()
+
+    // Fetch company data
     getCompany((compData) => {
-      // Handle the compData in your callback function
-      console.log(compData);
-      this.compDataSource.data = compData;
+      // Process the data to count directors related to each company
+        const companiesWithDirectors = compData.map(company => {
+          const directors = company.directors || []; // Ensure there is a directors array
+          const directorCount = directors.length;
+          return { ...company, directorCount, directors };
+        });
+
+        // Set the data source for your MatTable
+        this.compDataSource.data = companiesWithDirectors;
+      // // Fetch director data
+      // getDirectors((DData) => {
+      //   // Process the data to count directors related to each company
+      //   const companiesWithDirectorCount = compData.map(company => ({
+      //     ...company,
+      //     directorCount: DData.filter(director => director.com_related === company.com_cis_number).length
+      //   }));
+
+      //   // Now, you can use 'companiesWithDirectorCount' in your DataTable
+      //   this.compDataSource.data = companiesWithDirectorCount;
+      //   console.log(companiesWithDirectorCount);
+      // });
     });
-    getDirectors((DData) => {
-      // Handle the compData in your callback function
-      console.log(DData);
-      this.dDataSource.data = DData;
+
+    getCompany((compData) => {
+      // Fetch director data
+      getDirectors((DData) => {
+        // Process the data to count directors related to each company
+        const companiesWithDirectors: DData[] = compData.map(company => {
+          const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+          return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+        });
+    
+        // Set the data source for your MatTable
+        this.dDataSource.data = companiesWithDirectors;
+        console.log(companiesWithDirectors)
+      });
     });
+
+
+    
+
+
+
+    // getCompany((compData) => {
+    //   // Handle the compData in your callback function
+    //   console.log(compData);
+    //   this.compDataSource.data = compData;
+    // });
+  //   getCompany((compData) => {
+  //     // Fetch director data
+  //     getDirectors((DData) => {
+  //       // Process the data to count directors related to each company
+  //       const companiesWithDirectors: DData[] = compData.map(company => {
+  //         const relatedDirectors = DData.filter(director => director.com_related === company.com_cisnumber);
+  //         return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+  //       });
+    
+  //       // Set the data source for your MatTable
+  //       this.dDataSource.data = companiesWithDirectors;
+  //       console.log(companiesWithDirectors);
+  //     });
+  //   });
+  // }
+
+    // getDirectors((DData) => {
+    //   // Handle the compData in your callback function
+    //   console.log(DData);
+    //   this.dDataSource.data = DData;
+    // });
     
     // const requestData = { cmd: 100 };
 
@@ -136,8 +198,9 @@ export class DRIComponent implements AfterViewInit {
     // });
 
     
-}
 
+
+  }
 
 
 onSubmit() {
@@ -165,7 +228,7 @@ onSubmit() {
     // this.router.navigate(['/details', row.id]);
     console.log('row has been clicked');
     console.log('Clicked row data:', row);
-    this.router.navigate(['/dri/directorsrelated', row.bn]);
+    this.router.navigate(['/dri/directorsrelated', row.com_cis_number]);
   }
   
 }

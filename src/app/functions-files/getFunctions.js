@@ -36,10 +36,10 @@ function getCompany(callback) {
           };
           
           $.ajax(settings).done(function (response) {
-           var compData = response.result[0].Data;
+           var dirData = response.result[0].Data;
             //console.log(compData);
             if (callback) {
-                callback(compData);
+                callback(dirData);
               }
           });
         }
