@@ -1,14 +1,18 @@
+<!-- Main Container -->
 <c-container class="mb-3 p-0 position-relative mt-4">
+  <!-- Button to open a modal -->
   <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="onButtonClick()" cButton>+</button>    
 
     <c-container>
+       <!-- Data Table -->
       <table cTable [responsive]="true" mat-table
-            [dataSource]="dataSource" multiTemplateDataRows
+            [dataSource]="compDataSource" multiTemplateDataRows
             class="mat-elevation-z8 DRI-table">
-
+            <!-- Expand Button Column -->
             <ng-container matColumnDef="expand">
               <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
               <td mat-cell *matCellDef="let element">
+                <!-- Button to expand/collapse row -->
                 <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
                   <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
                   <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
@@ -16,148 +20,143 @@
               </td>
             </ng-container>    
 
-        <!-- Business Name -->
-        <ng-container matColumnDef="bn">
-          <th mat-header-cell *matHeaderCellDef> Business Name </th>
-          <td mat-cell *matCellDef="let element"> {{ element.bn }} </td>
-        </ng-container>
+            <!-- Business Name -->
+            <ng-container matColumnDef="com_cis_number">
+              <th mat-header-cell *matHeaderCellDef> CIS Number </th>
+              <td mat-cell *matCellDef="let element"> {{ element.com_cis_number }} </td>
+            </ng-container>
 
-        <!-- Number of  Directors -->
-        <ng-container matColumnDef="Nodirectors">
-          <th mat-header-cell *matHeaderCellDef> # of Directors </th>
-          <td mat-cell *matCellDef="let element"> {{ element.Nodirectors }} </td>
-        </ng-container>
+            <!-- Number of  Directors -->
+            <ng-container matColumnDef="com_company_name">
+              <th mat-header-cell *matHeaderCellDef> Company Name </th>
+              <td mat-cell *matCellDef="let element"> {{ element.com_company_name }} </td>
+            </ng-container>
 
-        <!-- Date Updated Column -->
-        <ng-container matColumnDef="LDUpdated">
-          <th mat-header-cell *matHeaderCellDef> Date Updated </th>
-          <td mat-cell *matCellDef="let element"> {{ element.LDUpdated }} </td>
-        </ng-container>
+            <!-- Date Updated Column -->
+            <ng-container matColumnDef="date_inserted">
+              <th mat-header-cell *matHeaderCellDef> Date Inserted </th>
+              <td mat-cell *matCellDef="let element"> {{ element.date_inserted }} </td>
+            </ng-container>
 
-        <!-- View Column -->
-        <ng-container matColumnDef="view">
-          <th mat-header-cell *matHeaderCellDef> Action </th>
-          <td mat-cell *matCellDef="let row"> 
-            <!-- <button cButton class="mx-1 my-1" color="primary" routerLink="/listing/accountdetails" (click)="viewData(element)">View</button> -->
-            <button cButton class="my-1" color="dark" (click)="onRowClick(row)">View</button>
-          </td>
-        </ng-container>
+            <!-- View/Action Column -->
+            <!-- <ng-container matColumnDef="view">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let row"> 
+                 <!- Button to view details --> 
+                <!-- <button cButton class="my-1" color="dark" (click)="onRowClick(row)">View</button>
+              </td>
+            </ng-container> -->
 
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-            <div class="example-element-detail"
-                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-              <!-- <div class="example-element-diagram">
-                <div class="example-element-position"> {{element.bn}} </div>
-                <div class="example-element-symbol"> {{element.Nodirectors}} </div>
-                <div class="example-element-name"> {{element.LDUpdated}} </div>
-                <div class="example-element-weight"> {{element.view}} </div>
-              </div>
-              <div class="example-element-description">
-                {{element.description}} -->
-      <!--           
-                <span class="example-element-description-attribution"> -- Wikipedia </span> -->
-                <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="DdataSource" >
-                  <!-- Business Name -->
-                    <ng-container matColumnDef="Cis">
-                      <th mat-header-cell *matHeaderCellDef> CIS Number </th>
-                      <td mat-cell *matCellDef="let element"> {{ element.Cis }} </td>
-                    </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <!-- Details of the selected element -->
+                    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dDataSource" >
+                        <!-- CIS Number Column -->
+                        <ng-container matColumnDef="dir_cisnumber">
+                          <th mat-header-cell *matHeaderCellDef> CIS Number </th>
+                          <td mat-cell *matCellDef="let element"> {{ element.dir_cisnumber }} </td>
+                        </ng-container>
 
-                    <!-- Number of  Directors -->
-                    <ng-container matColumnDef="Dname">
-                      <th mat-header-cell *matHeaderCellDef> Directors Name </th>
-                      <td mat-cell *matCellDef="let element"> {{ element.Dname }} </td>
-                    </ng-container>
+                        <!-- Directors Name Column -->
+                        <ng-container matColumnDef="fname">
+                          <th mat-header-cell *matHeaderCellDef> Directors Name </th>
+                          <td mat-cell *matCellDef="let element"> {{ element.fname + " " + element.mname + " " + element.lname }} </td>
+                        </ng-container>
 
-                    <!-- Date Updated Column -->
-                    <ng-container matColumnDef="position">
-                      <th mat-header-cell *matHeaderCellDef> Position </th>
-                      <td mat-cell *matCellDef="let element"> {{ element.position }} </td>
-                    </ng-container>
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="position">
+                          <th mat-header-cell *matHeaderCellDef> Position </th>
+                          <td mat-cell *matCellDef="let element"> {{ element.position }} </td>
+                        </ng-container>
 
+                        <!-- Header Row -->
+                        <tr mat-header-row  *matHeaderRowDef="DdisplayedColumns"></tr>
+                        <!-- Data Rows -->
+                        <tr mat-row *matRowDef="let row; columns: DdisplayedColumns;"></tr>
+                    </table>
+                </div>
+              </td>
+            </ng-container>
+            
+            <!-- Header Row with Expand Button -->
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+            
+            <!-- Data Rows with Expandable Detail -->
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+            </tr>
 
-                    <tr mat-header-row  *matHeaderRowDef="DdisplayedColumns"></tr>
-                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr> -->
-                    <tr mat-row *matRowDef="let row; columns: DdisplayedColumns;"></tr>
-                </table>
-              <!-- </div> -->
-            </div>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-        <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-            class="example-element-row"
-            [class.example-expanded-row]="expandedElement === element"
-            (click)="expandedElement = expandedElement === element ? null : element">
-        </tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            <!-- Detail Row -->
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
       </table>
 
+      <!-- Paginator for Data Table -->
       <mat-paginator [pageSizeOptions]="[5, 10, 20]"
             showFirstLastButtons
             aria-label="Select page of data">
         </mat-paginator>
     </c-container>
-
 </c-container>
 
+
 <!-- Modals -->
-
 <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal">
-  <c-modal-header>
-    <h3 cModalTitle> </h3>
-    <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
-  </c-modal-header>
+    <c-modal-header>
+      <h3 cModalTitle> </h3>
+      <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
+    </c-modal-header>
 
-  <form cForm class="mb-2" [formGroup]="dosriForm" (ngSubmit)="onSubmit()">
-    <c-modal-body>
-      <c-row class="align-items-center">
-        
-        <c-col [sm]="3">
-            <label cLabel="col" for="cisNumber">CIS Number</label>
-            <input
-              aria-describedby="passwordHelpInline-3"cFormControl
-              id="cisNumber" name="cisNumber"
-              placeholder="CIS"
-              type="text" formControlName="cisNumber">
-        </c-col>
+    <!-- Modal Form -->
+    <form cForm class="mb-2" [formGroup]="dosriForm" (ngSubmit)="onSubmit()">
+      <c-modal-body>
+        <c-row class="align-items-center">
+           CIS Number Input
+          <c-col [sm]="3">
+              <label cLabel="col" for="cisNumber">CIS Number</label>
+              <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="cisNumber" name="cisNumber"
+                placeholder="CIS"
+                type="text" formControlName="cisNumber">
+          </c-col>
 
-        <c-col [sm]="5">
-            <label cLabel="col" for="accountName">Account Name</label>
+          <c-col [sm]="5">
+              <label cLabel="col" for="accountName">Account Name</label>
+              <input
+                cFormControl
+                id="accountName" name="accountName"
+                placeholder="Account Name"
+                type="text" formControlName="accountName">
+          </c-col>
+
+          <c-col [sm]="4">
+            <label cLabel="col" for="companyName">Company Name</label>
             <input
               cFormControl
-              id="accountName" name="accountName"
-              placeholder="Account Name"
-              type="text" formControlName="accountName">
-        </c-col>
+              id="companyName" name="companyName"
+              placeholder="Company Name"
+              type="text" formControlName="companyName">
+          </c-col>
 
-        <c-col [sm]="4">
-          <label cLabel="col" for="companyName">Company Name</label>
-          <input
-            cFormControl
-            id="companyName" name="companyName"
-            placeholder="Company Name"
-            type="text" formControlName="companyName">
-        </c-col>
-
-        <!-- <c-col [sm]="3">
-            <label cLabel="col" for="prodT">P2M/P2E</label>
-            <select aria-label="Default select example" cSelect>
-              <option>P2M/P2E</option>
-              <option value="1">P2M</option>
-              <option value="2">P2E</option>
-            </select>
-        </c-col> -->
-      </c-row>
-    </c-modal-body>
-    <c-modal-footer>
-      <button type="submit" cButton color="success" (click)="addData()">Proceed</button>
-      <!-- (click)="addData()" -->
-    </c-modal-footer>
-  </form>
+          <!-- <c-col [sm]="3">
+              <label cLabel="col" for="prodT">P2M/P2E</label>
+              <select aria-label="Default select example" cSelect>
+                <option>P2M/P2E</option>
+                <option value="1">P2M</option>
+                <option value="2">P2E</option>
+              </select>
+          </c-col> -->
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button type="submit" cButton color="success" (click)="addData()">Proceed</button>
+        <!-- (click)="addData()" -->
+      </c-modal-footer>
+    </form>
       
 </c-modal>
 

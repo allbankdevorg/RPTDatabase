@@ -1,47 +1,53 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-
 import {animate, state, style, transition, trigger} from '@angular/animations'
-import {NgFor, NgIf} from '@angular/common';
-
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-
 import { Injectable } from '@angular/core';
-import axios, { AxiosRequestConfig } from 'axios';
 
 // Services
 import { DataTransferService } from '../../services/data-transfer.service';
 
 // Functions Imports
 import {callJSFun} from '../../functions-files/javascriptfun.js';
+import {getCompany, getDirectors} from '../../functions-files/getFunctions'
 import {createDosri} from '../../functions-files/addDosri.js'
 
+
+// Interfaces
 export interface Child {
   name: string;
 }
 
 
-export interface Data {
-  bn: string;
-  Nodirectors: string,
-  LDUpdated: String,
-  action: string,
+export interface compData {
+  com_cis_number: string;
+  com_company_name: string,
+  date_inserted: String,
+  // action: string,
   view: string,
-  children?: Child[];
+  // children?: Child[];
 }
 
 export interface DData {
-  Cis: string;
-  Dname: string,
-  position: String,
-  action: string,
+  dir_cisnumber: string;
+  fname: string,
+  mname: String,
+  lname: string,
+  fullname: string,
   view: string,
 }
+
+// export interface compData {
+//   com_cis_number: string;
+//   com_company_name: string;
+//   date_inserted: Date;
+//   action: string,
+//   view: string,
+// }
+
 
 @Component({
   selector: 'app-dri',
@@ -64,34 +70,32 @@ export class DRIComponent implements AfterViewInit {
   sharedData: string | any;
   postForm: FormGroup;
   dosriForm: FormGroup;
+  data: any = [];
 
-
-  // cis: { cisNumber: string, accountName: string, businessName: string } = { cisNumber: '', accountName: '', businessName: '' };
-
-  //  displayedColumns: string[] = ['bn', 'Nodirectors', 'LDUpdated', 'view'];
   
-  dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
+  // compDisplayColumns: string[] = [ 'com_cis_number', 'com_company_name', 'date_inserted'];
+  // compToDisplayWithExpand = [...this.compDisplayColumns,];
+  // expandedElement: compData | null = null;
+  // compDataSource = new MatTableDataSource<compData>([]);
+  
+  compDataSource = new MatTableDataSource<compData>([]);
   ToDisplay: string[] = [];
-  columnsToDisplay: string[] = ['expand', 'bn', 'Nodirectors', 'LDUpdated', 'view'];
+  columnsToDisplay: string[] = ['expand', 'com_cis_number', 'com_company_name', 'date_inserted'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
-  expandedElement: Data | null = null;
+  expandedElement: compData | null = null;
 
-  DdisplayedColumns: string[] = ['Cis', 'Dname', 'position'];
-  DdataSource = new MatTableDataSource<DData>(Directors_DATA);
+  DdisplayedColumns: string[] = ['dir_cisnumber', 'fname', 'position'];
+  dDataSource = new MatTableDataSource<DData>([]);
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-
   
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.compDataSource.paginator = this.paginator;
   }
 
   
-  
-
   constructor(private router: Router,
               private formBuilder: FormBuilder, 
               private http: HttpClient, 
@@ -107,11 +111,35 @@ export class DRIComponent implements AfterViewInit {
       });
     }
 
+
   ngOnInit(): void {
     callJSFun()
+    getCompany((compData) => {
+      // Handle the compData in your callback function
+      console.log(compData);
+      this.compDataSource.data = compData;
+    });
+    getDirectors((DData) => {
+      // Handle the compData in your callback function
+      console.log(DData);
+      this.dDataSource.data = DData;
+    });
     
-  }
-  
+    // const requestData = { cmd: 100 };
+
+    // this.http.post<any>('http://10.0.0.208:8090/api/dataTables', requestData)
+    // .subscribe((response: any) => {
+    //   // Assuming response.result is an array with the Data array you want
+    //   const data = response.result[0].Data;
+    //   console.log(data);
+    //   this.compDataSource.data = data;
+    // });
+
+    
+}
+
+
+
 onSubmit() {
  
   if (this.dosriForm.valid) {
@@ -120,57 +148,11 @@ onSubmit() {
     // Call the JavaScript function with form data
     createDosri(formData); // Pass the entire formData object
   }
-  // if (this.dosriForm.valid) {
-  //   const formData = this.dosriForm.value;
-
-  //   // Call the JavaScript function with form data
-  //   createDosri(
-  //     formData.cisNumber,
-  //     formData.accountName,
-  //     formData.companyName
-  //   );
-  // }
+  
 }
 
-  // onSubmit() {
-    // if (this.dosriForm.valid) {
-    //   const formData = this.dosriForm.value;
-    //   this.dataTransferService.sendDataToJavaScript(formData);
-    // }
-
-    // if (this.dosriForm.valid) {
-    //   const postData = this.dosriForm.value;
-    //   console.log(postData); // Log the form data
-    
-    //   // Send the postData to the API endpoint
-    //   this.http.post('http://10.0.0.208:8090/api/addData', postData)
-    //     .subscribe((response) => {
-    //       console.log('Data inserted:', response); // Log the response data
-    //     });
-    // }
-    
-    
-    // if (this.postForm.valid) {
-    //   const postData = this.postForm.value;
-
-    //   // Send the postData to the API endpoint
-    //   this.http.post('https://jsonplaceholder.typicode.com/posts', postData)
-    //     .subscribe((response) => {
-    //       console.log('Data inserted:', response);
-    //     });
-    // }
-  // }
-
-  
-  
-
-  //All functions are below
-  //All Function below
   addData() {
-    // callJSFun(); // Call your JS function
-   // createDosri() // Call your createDosri function
-    // const postData = this.dosriForm.value;
-    // console.log(postData);
+    
   }
 
   onButtonClick() {
@@ -185,104 +167,103 @@ onSubmit() {
     console.log('Clicked row data:', row);
     this.router.navigate(['/dri/directorsrelated', row.bn]);
   }
+  
 }
 
 
-
-
 // Data Sets
-const ELEMENT_DATA: Data[] = [
-  {
-    bn: "Business001",
-    Nodirectors: '3',
-    LDUpdated: '2023-10-02 00:00:00',
-    action: '',
-    view: '',
-    // children: [
-    //   { name: 'CAMACHO, JAVIER FAUSTO' },
-    //   { name: 'CAMACHO, GERARDO FAUSTO' },
-    //   {name: 'CAMACHO, ELIRITA FAUSTO'},
-    //   {name: 'CAMACHO, REGINA FAUSTO'},
-    //   {name: 'CAMACHO, ISABEL FAUSTO'},
-    //   {name: 'CAMACHO, RAFAEL FAUSTO'},
-    //   {name: 'CAMACHO, MIGUEL FAUSTO'},
-    // ]
-    // LDUpdated: '2021-11-01 00:00:00',
-  },
-  {
-    bn: "Business002",
-    Nodirectors: '4',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business003",
-    Nodirectors: '5',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business004",
-    Nodirectors: '2',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business005",
-    Nodirectors: '3',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business006",
-    Nodirectors: '3',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business007",
-    Nodirectors: '3',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business008",
-    Nodirectors: '3',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business009",
-    Nodirectors: '3',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-  {
-    bn: "Business010",
-    Nodirectors: '3',
-    LDUpdated: '2021-11-01 00:00:00',
-    action: '',
-    view: '',
-  },
-];
+// const ELEMENT_DATA: Data[] = [
+//   {
+//     bn: "Business001",
+//     Nodirectors: '3',
+//     LDUpdated: '2023-10-02 00:00:00',
+//     action: '',
+//     view: '',
+//     // children: [
+//     //   { name: 'CAMACHO, JAVIER FAUSTO' },
+//     //   { name: 'CAMACHO, GERARDO FAUSTO' },
+//     //   {name: 'CAMACHO, ELIRITA FAUSTO'},
+//     //   {name: 'CAMACHO, REGINA FAUSTO'},
+//     //   {name: 'CAMACHO, ISABEL FAUSTO'},
+//     //   {name: 'CAMACHO, RAFAEL FAUSTO'},
+//     //   {name: 'CAMACHO, MIGUEL FAUSTO'},
+//     // ]
+//     // LDUpdated: '2021-11-01 00:00:00',
+//   },
+//   {
+//     bn: "Business002",
+//     Nodirectors: '4',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business003",
+//     Nodirectors: '5',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business004",
+//     Nodirectors: '2',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business005",
+//     Nodirectors: '3',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business006",
+//     Nodirectors: '3',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business007",
+//     Nodirectors: '3',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business008",
+//     Nodirectors: '3',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business009",
+//     Nodirectors: '3',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+//   {
+//     bn: "Business010",
+//     Nodirectors: '3',
+//     LDUpdated: '2021-11-01 00:00:00',
+//     action: '',
+//     view: '',
+//   },
+// ];
 
 
-const Directors_DATA: DData[] = [
-  {
-    Cis: "1480001",
-    Dname: 'John',
-    position: 'Director',
-    action: '',
-    view: '',
-  },
-]
+// const Directors_DATA: DData[] = [
+//   {
+//     Cis: "1480001",
+//     Dname: 'John',
+//     position: 'Director',
+//     action: '',
+//     view: '',
+//   },
+// ]
 
 
