@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 
 // Services
 import { DataTransferService } from '../../services/data-transfer.service';
+import { SharedService } from './dataintegration/shared.service';
 
 // Functions Imports
 import {callJSFun} from '../../functions-files/javascriptfun.js';
@@ -17,18 +18,11 @@ import {createDosri} from '../../functions-files/addDosri.js'
 
 
 // Interfaces
-export interface Child {
-  name: string;
-}
-
-
 export interface compData {
   com_cis_number: string;
   com_company_name: string,
   date_inserted: String,
-  // action: string,
   view: string,
-  // children?: Child[];
 }
 
 export interface DData {
@@ -40,13 +34,6 @@ export interface DData {
   view: string,
 }
 
-// export interface compData {
-//   com_cis_number: string;
-//   com_company_name: string;
-//   date_inserted: Date;
-//   action: string,
-//   view: string,
-// }
 
 
 @Component({
@@ -71,12 +58,6 @@ export class DRIComponent implements AfterViewInit {
   postForm: FormGroup;
   dosriForm: FormGroup;
   data: any = [];
-
-  
-  // compDisplayColumns: string[] = [ 'com_cis_number', 'com_company_name', 'date_inserted'];
-  // compToDisplayWithExpand = [...this.compDisplayColumns,];
-  // expandedElement: compData | null = null;
-  // compDataSource = new MatTableDataSource<compData>([]);
   
   compDataSource = new MatTableDataSource<compData>([]);
   ToDisplay: string[] = [];
@@ -99,7 +80,7 @@ export class DRIComponent implements AfterViewInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder, 
               private http: HttpClient, 
-              private dataTransferService: DataTransferService) {
+              private sharedService: SharedService) {
         this.postForm = this.formBuilder.group({
         title: ['', Validators.required],
         body: ['', Validators.required]
@@ -113,220 +94,66 @@ export class DRIComponent implements AfterViewInit {
 
 
   ngOnInit(): void {
-    callJSFun()
+        // Fetch company data
+        getCompany((compData) => {
+          // Process the data to count directors related to each company
+            const companiesWithDirectors = compData.map(company => {
+              const directors = company.directors || []; // Ensure there is a directors array
+              const directorCount = directors.length;
+              return { ...company, directorCount, directors };
+            });
 
-    // Fetch company data
-    getCompany((compData) => {
-      // Process the data to count directors related to each company
-        const companiesWithDirectors = compData.map(company => {
-          const directors = company.directors || []; // Ensure there is a directors array
-          const directorCount = directors.length;
-          return { ...company, directorCount, directors };
+            // Set the data source for your MatTable
+            this.compDataSource.data = companiesWithDirectors;
         });
 
-        // Set the data source for your MatTable
-        this.compDataSource.data = companiesWithDirectors;
-      // // Fetch director data
-      // getDirectors((DData) => {
-      //   // Process the data to count directors related to each company
-      //   const companiesWithDirectorCount = compData.map(company => ({
-      //     ...company,
-      //     directorCount: DData.filter(director => director.com_related === company.com_cis_number).length
-      //   }));
-
-      //   // Now, you can use 'companiesWithDirectorCount' in your DataTable
-      //   this.compDataSource.data = companiesWithDirectorCount;
-      //   console.log(companiesWithDirectorCount);
-      // });
-    });
-
-    getCompany((compData) => {
-      // Fetch director data
-      getDirectors((DData) => {
-        // Process the data to count directors related to each company
-        const companiesWithDirectors: DData[] = compData.map(company => {
-          const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
-          return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+        getCompany((compData) => {
+          // Fetch director data
+          getDirectors((DData) => {
+            // Process the data to count directors related to each company
+            const companiesWithDirectors: DData[] = compData.map(company => {
+              const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+              return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+            });
+        
+            // Set the data source for your MatTable
+            this.dDataSource.data = companiesWithDirectors;
+            console.log(companiesWithDirectors)
+          });
         });
-    
-        // Set the data source for your MatTable
-        this.dDataSource.data = companiesWithDirectors;
-        console.log(companiesWithDirectors)
-      });
-    });
-
-
-    
-
-
-
-    // getCompany((compData) => {
-    //   // Handle the compData in your callback function
-    //   console.log(compData);
-    //   this.compDataSource.data = compData;
-    // });
-  //   getCompany((compData) => {
-  //     // Fetch director data
-  //     getDirectors((DData) => {
-  //       // Process the data to count directors related to each company
-  //       const companiesWithDirectors: DData[] = compData.map(company => {
-  //         const relatedDirectors = DData.filter(director => director.com_related === company.com_cisnumber);
-  //         return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
-  //       });
-    
-  //       // Set the data source for your MatTable
-  //       this.dDataSource.data = companiesWithDirectors;
-  //       console.log(companiesWithDirectors);
-  //     });
-  //   });
-  // }
-
-    // getDirectors((DData) => {
-    //   // Handle the compData in your callback function
-    //   console.log(DData);
-    //   this.dDataSource.data = DData;
-    // });
-    
-    // const requestData = { cmd: 100 };
-
-    // this.http.post<any>('http://10.0.0.208:8090/api/dataTables', requestData)
-    // .subscribe((response: any) => {
-    //   // Assuming response.result is an array with the Data array you want
-    //   const data = response.result[0].Data;
-    //   console.log(data);
-    //   this.compDataSource.data = data;
-    // });
-
-    
-
-
   }
 
 
-onSubmit() {
- 
-  if (this.dosriForm.valid) {
-    const formData = this.dosriForm.value;
+  // All Functions below
+    onSubmit() {
 
-    // Call the JavaScript function with form data
-    createDosri(formData); // Pass the entire formData object
-  }
-  
+    if (this.dosriForm.valid) {
+      const formData = this.dosriForm.value;
+
+      // Call the JavaScript function with form data
+      createDosri(formData); // Pass the entire formData object
+    }
+
+    }
+
+    addData() {
+      
+    }
+
+    onButtonClick() {
+      console.log('Show Modal');
+      
+    }
+
+    onRowClick(row: any) {
+      // Capture the selected data and navigate to another component with it
+      // this.router.navigate(['/details', row.id]);
+      const directorId = row.com_cis_number; // Extract the ID from the clicked row
+      this.sharedService.setDirectorId(directorId);
+      console.log(directorId);
+      console.log('row has been clicked');
+      console.log('Clicked row data:', row);
+      this.router.navigate(['/dri/directorsrelated', row.com_cis_number]);
+    }
+    
 }
-
-  addData() {
-    
-  }
-
-  onButtonClick() {
-    console.log('Show Modal');
-    
-  }
-
-  onRowClick(row: any) {
-    // Capture the selected data and navigate to another component with it
-    // this.router.navigate(['/details', row.id]);
-    console.log('row has been clicked');
-    console.log('Clicked row data:', row);
-    this.router.navigate(['/dri/directorsrelated', row.com_cis_number]);
-  }
-  
-}
-
-
-// Data Sets
-// const ELEMENT_DATA: Data[] = [
-//   {
-//     bn: "Business001",
-//     Nodirectors: '3',
-//     LDUpdated: '2023-10-02 00:00:00',
-//     action: '',
-//     view: '',
-//     // children: [
-//     //   { name: 'CAMACHO, JAVIER FAUSTO' },
-//     //   { name: 'CAMACHO, GERARDO FAUSTO' },
-//     //   {name: 'CAMACHO, ELIRITA FAUSTO'},
-//     //   {name: 'CAMACHO, REGINA FAUSTO'},
-//     //   {name: 'CAMACHO, ISABEL FAUSTO'},
-//     //   {name: 'CAMACHO, RAFAEL FAUSTO'},
-//     //   {name: 'CAMACHO, MIGUEL FAUSTO'},
-//     // ]
-//     // LDUpdated: '2021-11-01 00:00:00',
-//   },
-//   {
-//     bn: "Business002",
-//     Nodirectors: '4',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business003",
-//     Nodirectors: '5',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business004",
-//     Nodirectors: '2',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business005",
-//     Nodirectors: '3',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business006",
-//     Nodirectors: '3',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business007",
-//     Nodirectors: '3',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business008",
-//     Nodirectors: '3',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business009",
-//     Nodirectors: '3',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-//   {
-//     bn: "Business010",
-//     Nodirectors: '3',
-//     LDUpdated: '2021-11-01 00:00:00',
-//     action: '',
-//     view: '',
-//   },
-// ];
-
-
-// const Directors_DATA: DData[] = [
-//   {
-//     Cis: "1480001",
-//     Dname: 'John',
-//     position: 'Director',
-//     action: '',
-//     view: '',
-//   },
-// ]
-
-

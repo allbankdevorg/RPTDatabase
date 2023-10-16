@@ -6,32 +6,61 @@ import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 
 import { Injectable } from '@angular/core';
 
 // Services
 import { DataTransferService } from '../../../services/data-transfer.service';
+import { SharedService } from '../dataintegration/shared.service';
 
 // Imports for Functions
 import {createDirectors} from '../../../functions-files/addDirectors';
 import {createRelatedInterest} from '../../../functions-files/addRelatedInterest';
+import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
 
 export interface Child {
   name: string;
 }
 
-export interface Data {
-  fullname: string;
-  company: string,
-  position: String,
-  mothersname: String,
-  fathersname: String,
-  spouse: String,
-  children?: Child[];
-  motherinlaw: String,
-  fatherinlaw: String,
+// export interface Data {
+//   com_related: string;
+//   dir_cisnumber: string;
+//   fname: string;
+//   company: string,
+//   position: String,
+//   mothersname: String,
+//   fathersname: String,
+//   spouse: String,
+//   children?: Child[];
+//   motherinlaw: String,
+//   fatherinlaw: String,
+// }
+
+// Interface for the related interest item
+interface RelatedInterest {
+  id: number;
+  cis_number: string;
+  fname: string;
+  mname: string;
+  lname: string;
+  dir_related: string;
+  relation: number;
+  date_inserted: Date;
+  status: number;
+}
+
+// Interface for the director item
+interface Director {
+  id: number;
+  com_related: string;
+  dir_cisnumber: string;
+  fname: string;
+  mname: string;
+  lname: string;
+  related_interest: RelatedInterest[];
 }
 
 
@@ -53,17 +82,20 @@ export interface Data {
   providedIn: 'root',
 })
 export class DirectorsrelatedComponent implements AfterViewInit {
-  
+  companyDetails: any; //a variable to hold the fetched company details:\
   sharedData: string | any;
   // relationShipModal: any;
   drctrForm: FormGroup;
   riForm: FormGroup;
   buttonId: number = 0;
+  directorsData: Director[] = []; // This should be populated with your director data
+  filteredDirectors: Director[] = [];
 
-  displayedColumns: string[] = ['fullname', 'company', 'position', 'mothersname', 'fathersname', 'spouse',
+  // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Director>([]);
+  displayedColumns: string[] = ['fname', 'company', 'position', 'mothersname', 'fathersname', 'spouse',
   'children', 'motherinlaw', 'fatherinlaw'];
-  dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
-
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
@@ -76,8 +108,10 @@ export class DirectorsrelatedComponent implements AfterViewInit {
 
   constructor(private router: Router,
               private formBuilder: FormBuilder, 
-              private http: HttpClient, 
-              private dataTransferService: DataTransferService)
+              private http: HttpClient,
+              private sharedService: SharedService,
+              private dataTransferService: DataTransferService,
+              private route: ActivatedRoute)
   {
     this.drctrForm = this.formBuilder.group({
       cisNumber: [''],
@@ -92,12 +126,49 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       riMiddleName: [''],
       riLastName: [''],
     });
+
+    this.route.params.subscribe(params => {
+      const companyId = params['id'];
+      // Fetch director data and related interests based on companyId
+      // Display this data in your component's data tables
+    });
   }
 
 
   ngOnInit(): void {
-    
+    const directorId = this.sharedService.getDirectorId();
+
+    getDirectors((Director) => {
+      // Get the directorId to display
+        const directorIdToDisplay = directorId;
+
+        // Filter the directors based on directorIdToDisplay
+        const filteredDirectors = Director.filter((director) => director.com_related === directorIdToDisplay);
+
+        // Set the data source for your MatTable
+        this.dataSource.data = filteredDirectors;
+        console.log(filteredDirectors);
+    });
+    // this.route.params.subscribe(params => {
+    //   const companyId = params['companyId'];
+    //   // Use the companyId to fetch related data
+    //   // this.fetchDataForCompany(companyId);
+    // });
+    //   // this.dataTransferService.getCompanyData().subscribe((data) => {
+    //   //   this.companyDetails = data;
+    //   // });
+
+    //   this.dataTransferService.getDirectors().subscribe((data) => {
+    //     // this.directorsData = data;
+    //     this.dataSource = data;
+    //   });
+      
+    //   // Fetch data using your service
+    // this.dataTransferService.getCompanyData().subscribe((data) => {
+    //   this.dataSource = data;
+    // });
   }
+  
   
 
   // Functions
@@ -155,21 +226,21 @@ export class DirectorsrelatedComponent implements AfterViewInit {
 
 
 // Data Sets
-const ELEMENT_DATA: Data[] = [
-  {
-    fullname: "John Doe",
-    company: 'All Bank',
-    position: 'Executive Director',
-    mothersname: 'sample',
-    fathersname: 'sample',
-    spouse: 'sample',
-    children: [
-      { name: 'CAMACHO, JAVIER FAUSTO' },
-      { name: 'CAMACHO, GERARDO FAUSTO' },
-      {name: 'CAMACHO, ELIRITA FAUSTO'},
-      {name: 'CAMACHO, REGINA FAUSTO'},
-    ],
-    motherinlaw: 'sample',
-    fatherinlaw: '',
-  },
-];
+// const ELEMENT_DATA: Data[] = [
+//   {
+//     fullname: "John Doe",
+//     company: 'All Bank',
+//     position: 'Executive Director',
+//     mothersname: 'sample',
+//     fathersname: 'sample',
+//     spouse: 'sample',
+//     children: [
+//       { name: 'CAMACHO, JAVIER FAUSTO' },
+//       { name: 'CAMACHO, GERARDO FAUSTO' },
+//       {name: 'CAMACHO, ELIRITA FAUSTO'},
+//       {name: 'CAMACHO, REGINA FAUSTO'},
+//     ],
+//     motherinlaw: 'sample',
+//     fatherinlaw: '',
+//   },
+// ];
