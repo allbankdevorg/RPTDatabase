@@ -1,5 +1,5 @@
 <c-container class="mb-3 p-0">
-    <table cTable bordered [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
         
         <!-- Position Column -->
         <ng-container matColumnDef="FullName">
@@ -28,8 +28,9 @@
                 {{motherName}}
                 <br>
               </ng-container> 
-                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1)" class="add-button" cButton color="primary">+</button>
-            </td>
+              <ng-container *ngFor="let director">
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+              </ng-container></td>
         </ng-container>
 
         <ng-container matColumnDef="FathersName">

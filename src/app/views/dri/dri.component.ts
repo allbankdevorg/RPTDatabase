@@ -149,8 +149,11 @@ export class DRIComponent implements AfterViewInit {
       // Capture the selected data and navigate to another component with it
       // this.router.navigate(['/details', row.id]);
       const directorId = row.com_cis_number; // Extract the ID from the clicked row
+      const companyName = row.com_company_name;
+      this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       console.log(directorId);
+      console.log(companyName);
       console.log('row has been clicked');
       console.log('Clicked row data:', row);
       this.router.navigate(['/dri/directorsrelated', row.com_cis_number]);

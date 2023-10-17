@@ -1,13 +1,10 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-
 import { MatPaginator } from '@angular/material/paginator';
-
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
 
 import { Injectable } from '@angular/core';
 
@@ -17,6 +14,8 @@ import { DataTransferService } from '../../services/data-transfer.service';
 // Functions Import
 import {createBankOfficer} from '../../functions-files/addBankOfficer';
 import {createBankOfficerRelationship} from '../../functions-files/addBankOfficerRelationship';
+import {getOfficers, getOfficersRI} from '../../functions-files/getFunctions'
+
 export interface Child {
   name: string;
 }
@@ -51,7 +50,7 @@ export class BankofficerComponent implements AfterViewInit {
   boRIForm: FormGroup;
   buttonId: number = 0;
 
-  displayedColumns: string[] = ['fullname', 'company', 'position', 'mothersname', 'fathersname', 'spouse',
+  displayedColumns: string[] = ['fname', 'com_related', 'position', 'mothersname', 'fathersname', 'spouse',
   'children', 'motherinlaw', 'fatherinlaw'];
   dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
@@ -85,6 +84,20 @@ export class BankofficerComponent implements AfterViewInit {
         });
     }
 
+  ngOnInit(): void {
+    getOfficers((Data) => {
+      // Process the data to count directors related to each company
+        const companiesWithDirectors = Data.map(company => {
+          const directors = company.directors || []; // Ensure there is a directors array
+          const directorCount = directors.length;
+          return { ...company, directorCount, directors };
+        });
+
+        // Set the data source for your MatTable
+        this.dataSource.data = companiesWithDirectors;
+    });
+    getOfficersRI()
+  }
 
   // Functions
 
