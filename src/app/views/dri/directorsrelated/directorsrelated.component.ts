@@ -306,19 +306,12 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       });
     
       this.dataSource.data = tableData;
-      console.log(tableData);
-      console.log(filteredDirectors);
     });
 
 
     }
-
-    
       // Trigger change detection
       this.changeDetectorRef.detectChanges();
-
-      console.log(this.dataSource);
-      console.log(this.changeDetectorRef);
   }
 
   // Start of Button Click
