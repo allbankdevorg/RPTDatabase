@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
-
+import { ChangeDetectorRef } from '@angular/core';
 import { Injectable } from '@angular/core';
 
 // Services
@@ -89,12 +89,13 @@ export class DirectorsrelatedComponent implements AfterViewInit {
   drctrForm: FormGroup;
   riForm: FormGroup;
   buttonId: number = 0;
+  selectedDirCisNumber: number = 0;
   directorsData: Director[] = []; // This should be populated with your director data
   filteredDirectors: Director[] = [];
 
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  displayedColumns: string[] = [ 'FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
 
   // displayedColumns: string[] = ['fname', 'company', 'position', 'mothersname', 'fathersname', 'spouse',
   // 'children', 'motherinlaw', 'fatherinlaw'];
@@ -116,7 +117,8 @@ export class DirectorsrelatedComponent implements AfterViewInit {
               private http: HttpClient,
               private sharedService: SharedService,
               private dataTransferService: DataTransferService,
-              private route: ActivatedRoute)
+              private route: ActivatedRoute,
+              private changeDetectorRef: ChangeDetectorRef)
   {
     this.drctrForm = this.formBuilder.group({
       cisNumber: [''],
@@ -162,7 +164,8 @@ export class DirectorsrelatedComponent implements AfterViewInit {
         const row = {
           'FullName': `${director.fname} ${director.lname}`,
           'Company': companytoDisplay,
-          'Position': director.position
+          'Position': director.position,
+          'dir_CisNumber': director.dir_cisnumber,
         };
 
         row['MothersName'] = director.related_interest
@@ -200,6 +203,7 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       });
     
       this.dataSource.data = tableData;
+      console.log(tableData);
       console.log(filteredDirectors);
     }); 
   }
@@ -217,9 +221,10 @@ export class DirectorsrelatedComponent implements AfterViewInit {
   }
 
  
-  setButtonId(id: number) {
+  setButtonId(id: number, dirCisNumber: number) {
     this.buttonId = id;
-
+    this.selectedDirCisNumber = dirCisNumber
+    console.log(dirCisNumber);
     
   }
 
@@ -244,8 +249,76 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       const riData = this.riForm.value;
   
       // Call the JavaScript function with form data
-      createRelatedInterest(riData, this.buttonId); // Pass the entire formData object
+      createRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber); // Pass the entire formData object
+      
+      const directorId = this.sharedService.getDirectorId();
+    const companyName = this.sharedService.getCompName();
+
+    getDirectors((Director) => {
+      const directorIdToDisplay = directorId;
+      const companytoDisplay = companyName;
+      console.log(companytoDisplay);
+      const filteredDirectors = Director.filter((director) => director.com_related === directorIdToDisplay);
+      
+      
+      const tableData = filteredDirectors.map(director => {
+        const dir_relatedId = director.dir_cisnumber
+        console.log(dir_relatedId);
+        const row = {
+          'FullName': `${director.fname} ${director.lname}`,
+          'Company': companytoDisplay,
+          'Position': director.position,
+          'dir_CisNumber': director.dir_cisnumber,
+        };
+
+        row['MothersName'] = director.related_interest
+        .filter(related => related.relation === 1) // Assuming 1 is the relation for Mother's Name
+        .map(related => `${related.fname} ${related.lname}`)
+        .filter(name => name.trim() !== '');
+
+        row['FathersName'] = director.related_interest
+        .filter(related => related.relation === 2) // Assuming 1 is the relation for Mother's Name
+        .map(related => `${related.fname} ${related.lname}`)
+        .filter(name => name.trim() !== '');
+
+        row['Spouse'] = director.related_interest
+        .filter(related => related.relation === 3) // Assuming 1 is the relation for Mother's Name
+        .map(related => `${related.fname} ${related.lname}`)
+        .filter(name => name.trim() !== '');
+
+        row['Children'] = director.related_interest
+        .filter(related => related.relation === 4) // Assuming 1 is the relation for Mother's Name
+        .map(related => `${related.fname} ${related.lname}`)
+        .filter(name => name.trim() !== '');
+
+        row['MotherinLaw'] = director.related_interest
+        .filter(related => related.relation === 5) // Assuming 1 is the relation for Mother's Name
+        .map(related => `${related.fname} ${related.lname}`)
+        .filter(name => name.trim() !== '');
+
+        row['FatherinLaw'] = director.related_interest
+        .filter(related => related.relation === 6) // Assuming 1 is the relation for Mother's Name
+        .map(related => `${related.fname} ${related.lname}`)
+        .filter(name => name.trim() !== '');
+
+        return row;
+        
+      });
+    
+      this.dataSource.data = tableData;
+      console.log(tableData);
+      console.log(filteredDirectors);
+    });
+
+
     }
+
+    
+      // Trigger change detection
+      this.changeDetectorRef.detectChanges();
+
+      console.log(this.dataSource);
+      console.log(this.changeDetectorRef);
   }
 
   // Start of Button Click

@@ -1,6 +1,7 @@
-function createRelatedInterest(riData, buttonId) {
+function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
 
     console.log(buttonId)
+    console.log(selectedDirCisNumber)
     console.log(riData)
     var settings = {
       "url": "http://10.0.0.208:8090/api/addData",
@@ -16,7 +17,7 @@ function createRelatedInterest(riData, buttonId) {
           "fname": riData.riFirstName,
           "mname": riData.riMiddleName,
           "lname": riData.riLastName,
-          "dir_related": "23213213",
+          "dir_related": selectedDirCisNumber,
           "relation": buttonId
         }
       }),

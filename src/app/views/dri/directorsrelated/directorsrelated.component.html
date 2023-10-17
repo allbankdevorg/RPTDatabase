@@ -28,9 +28,8 @@
                 {{motherName}}
                 <br>
               </ng-container> 
-              <ng-container *ngFor="let director">
-                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-              </ng-container></td>
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+              </td>
         </ng-container>
 
         <ng-container matColumnDef="FathersName">
@@ -40,7 +39,7 @@
                   <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.FathersName">-</button>
                   {{fatherName}}
                 </ng-container>
-                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2)" class="add-button" cButton color="primary">+</button>
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button>
             </td>
         </ng-container>
         
@@ -53,7 +52,7 @@
                     {{spouse}}
                     <br>
                 </ng-container>
-                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3)" class="add-button" cButton color="primary">+</button>
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button>
             </td>
         </ng-container>
 
@@ -65,7 +64,7 @@
                     {{ child }} 
                     <br>
                 </ng-container>
-                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4)" class="add-button" cButton color="primary">+</button> 
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button> 
             </td>
         </ng-container>
 
@@ -77,7 +76,7 @@
                       {{motherinlaw}}
                       <br>
                 </ng-container>
-                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5)" class="add-button" cButton color="primary">+</button></td>
+                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button></td>
         </ng-container>
 
         <ng-container matColumnDef="FatherinLaw">
@@ -88,7 +87,7 @@
                   {{fatherinlaw}}
                   <br>
                 </ng-container>  
-                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6)" class="add-button" cButton color="primary">+</button></td>
+                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button></td>
         </ng-container>
 
         <!-- Header row first group -->
