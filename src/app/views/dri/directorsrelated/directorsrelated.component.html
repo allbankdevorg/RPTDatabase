@@ -39,7 +39,7 @@
                   <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.FathersName">-</button>
                   {{fatherName}}
                 </ng-container>
-                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button>
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.comp_CIS)" class="add-button" cButton color="primary">+</button>
             </td>
         </ng-container>
         
@@ -96,7 +96,7 @@
                 
                 [attr.colspan]="3"> 
             Directors  
-            <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="onButtonClick()" cButton>+</button>    
+            <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="setComp()" cButton>+</button>    
 
             </th>
         </ng-container>

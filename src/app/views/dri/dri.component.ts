@@ -152,6 +152,7 @@ export class DRIComponent implements AfterViewInit {
       const companyName = row.com_company_name;
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
+      this.sharedService.setCompanyCis(companyName);
       console.log(directorId);
       console.log(companyName);
       console.log('row has been clicked');

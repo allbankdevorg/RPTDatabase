@@ -1,8 +1,5 @@
-function createDirectors(directData) {
-  console.log(directData.dFirstName);    // Correct property name
-  console.log(directData.dMiddleName);  // Correct property name
-  console.log(directData.dLastName);  // Correct property name
-  console.log(directData.dPosition);
+function createDirectors(directData, selectedCompCISNumber) {
+  console.log(selectedCompCISNumber);
   
     var settings = {
       "url": "http://10.0.0.208:8090/api/addData",
@@ -19,7 +16,7 @@ function createDirectors(directData) {
           "mname": directData.dMiddleName,
           "lname": directData.dLastName,
           "position": directData.dPosition,
-          "com_cisnumber": 23213213
+          "com_cisnumber": selectedCompCISNumber
         }
       }),
     };
