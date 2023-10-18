@@ -73,6 +73,7 @@ export class DirectorsrelatedComponent implements AfterViewInit {
   directorsData: Director[] = []; // This should be populated with your director data
   filteredDirectors: Director[] = [];
   compId: any;
+  compN: any;
 
   // Populating the dataSource
   dataSource = new MatTableDataSource();
@@ -81,6 +82,7 @@ export class DirectorsrelatedComponent implements AfterViewInit {
    directorData: Director[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('relationShipModal', { static: true }) relationShipModal: any;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -112,9 +114,8 @@ export class DirectorsrelatedComponent implements AfterViewInit {
     
     this.route.params.subscribe(params => {
       this.compId = params['id'];
-      console.log(this.compId);
-
-      
+      this.compN = params['CompanyName']
+      // console.log(this.compId);      
       // Fetch director data and related interests based on companyId
       // Display this data in your component's data tables
     });
@@ -126,7 +127,7 @@ export class DirectorsrelatedComponent implements AfterViewInit {
     return companyDetails?.name || 'N/A';
   }
 
-  ngOnInit(): void {
+ async  ngOnInit() {
     const directorId = this.sharedService.getDirectorId();
     const companyName = this.sharedService.getCompName();
     const companyCIS = this.sharedService.getCompCIS();
@@ -135,14 +136,14 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       const directorIdToDisplay = directorId;
       const companytoDisplay = companyName;
 
-      console.log('directorIdToDisplay:', directorIdToDisplay)
-      console.log(companytoDisplay);
+      // console.log('directorIdToDisplay:', directorIdToDisplay)
+      // console.log(companytoDisplay);
       const filteredDirectors = Director.filter((director) => director.com_related === this.compId);
       
       
       const tableData = filteredDirectors.map(director => {
         const dir_relatedId = director.dir_cisnumber
-        console.log(dir_relatedId);
+        // console.log(dir_relatedId);
         const row = {
           'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
           'Company': companytoDisplay,
@@ -150,50 +151,60 @@ export class DirectorsrelatedComponent implements AfterViewInit {
           'dir_CisNumber': director.dir_cisnumber,
           'comp_CIS': director.com_related,
         };
-
-        row['MothersName'] = director.related_interest
-        .filter(related => related.relation === 1) // Assuming 1 is the relation for Mother's Name
+        const relationColumn = ['Others','MothersName','FathersName','Spouse','Children','MotherinLaw','FatherinLaw']
+        
+        for (let index = 0; index < director.related_interest.length; index++) {
+          console.log(director.related_interest[index].relation);
+          const element = director.related_interest[index];
+          console.log(relationColumn[director.related_interest[index].relation]);
+          row[relationColumn[director.related_interest[index].relation]] = director.related_interest
+        .filter(related => related.relation === director.related_interest[index].relation) // Assuming 1 is the relation for Mother's Name
         .map(related => `${related.fname} ${related.mname} ${related.lname}`)
         .filter(name => name.trim() !== '');
+        }
+        
 
-        row['FathersName'] = director.related_interest
-        .filter(related => related.relation === 2) // Assuming 1 is the relation for Mother's Name
-        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        .filter(name => name.trim() !== '');
+        // row['FathersName'] = director.related_interest
+        // .filter(related => related.relation === 2) // Assuming 1 is the relation for Mother's Name
+        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+        // .filter(name => name.trim() !== '');
 
-        row['Spouse'] = director.related_interest
-        .filter(related => related.relation === 3) // Assuming 1 is the relation for Mother's Name
-        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        .filter(name => name.trim() !== '');
+        // row['Spouse'] = director.related_interest
+        // .filter(related => related.relation === 3) // Assuming 1 is the relation for Mother's Name
+        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+        // .filter(name => name.trim() !== '');
 
-        row['Children'] = director.related_interest
-        .filter(related => related.relation === 4) // Assuming 1 is the relation for Mother's Name
-        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        .filter(name => name.trim() !== '');
+        // row['Children'] = director.related_interest
+        // .filter(related => related.relation === 4) // Assuming 1 is the relation for Mother's Name
+        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+        // .filter(name => name.trim() !== '');
 
-        row['MotherinLaw'] = director.related_interest
-        .filter(related => related.relation === 5) // Assuming 1 is the relation for Mother's Name
-        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        .filter(name => name.trim() !== '');
+        // row['MotherinLaw'] = director.related_interest
+        // .filter(related => related.relation === 5) // Assuming 1 is the relation for Mother's Name
+        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+        // .filter(name => name.trim() !== '');
 
-        row['FatherinLaw'] = director.related_interest
-        .filter(related => related.relation === 6) // Assuming 1 is the relation for Mother's Name
-        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        .filter(name => name.trim() !== '');
+        // row['FatherinLaw'] = director.related_interest
+        // .filter(related => related.relation === 6) // Assuming 1 is the relation for Mother's Name
+        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+        // .filter(name => name.trim() !== '');
 
+        //console.log(row);
         // this.setComp(director.com_related);
         return row;
         
       });
-    
+      // for (let index = 0; index < tableData.length; index++) {
+      //   const element = tableData[index];
+      //   console.log(element);
+        
+      // } 
       this.dataSource.data = tableData;
-      this.ngZone.run(() => {
-        this.changeDetectorRef.detectChanges();
-      });
-      console.log(tableData);
-      console.log(filteredDirectors);
+      
+      // console.log(tableData);
+      // console.log(filteredDirectors);
 
-      this.changeDetectorRef.markForCheck()
+      
     }); 
   }
 
@@ -234,32 +245,40 @@ export class DirectorsrelatedComponent implements AfterViewInit {
  
     if (this.drctrForm.valid) {
       const directData = this.drctrForm.value;
-  
+      const directorId = this.sharedService.getDirectorId();
+      const companyName = this.sharedService.getCompName();
+    
       // Call the JavaScript function with form data
       createDirectors(directData, this.selectedCompCISNumber); // Pass the entire formData object
-    
-      this.ngOnInit();
-
-      
     }
-    // Run change detection immediately within the NgZone
-    
+
+    this.ngOnInit();
+      // Trigger change detection
+    this.changeDetectorRef.detectChanges();
+    console.log(this.changeDetectorRef.detectChanges);
+    console.log(this.dataSource);
   }
 
   //Adding Related Interest 
   onRISubmit() {
- 
+    const directorId = this.sharedService.getDirectorId();
+    const companyName = this.sharedService.getCompName();
+    
     if (this.riForm.valid) {
       const riData = this.riForm.value;
       
       // Call the JavaScript function with form data
       createRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber); // Pass the entire formData object
-
-      this.ngOnInit();
-
+      
+      // Close the modal
+      this.relationShipModal.hide();
     }
+
+    this.ngOnInit();
       // Trigger change detection
-      // this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.detectChanges();
+    console.log(this.changeDetectorRef.detectChanges);
+    console.log(this.dataSource);
   }
 
   //Showing Modal

@@ -50,6 +50,8 @@ function getDirectors(callback) {
             callback(dirData);
           }
       });
+
+      
     }
 
 
