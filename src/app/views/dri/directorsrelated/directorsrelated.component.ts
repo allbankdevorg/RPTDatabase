@@ -73,8 +73,8 @@ export class DirectorsrelatedComponent implements AfterViewInit {
   directorsData: Director[] = []; // This should be populated with your director data
   filteredDirectors: Director[] = [];
   compId: any;
-  compN: any;
-
+  compN: string = this.sharedService.getCompName();
+  Company: any;
   // Populating the dataSource
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = [ 'FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
@@ -114,7 +114,20 @@ export class DirectorsrelatedComponent implements AfterViewInit {
     
     this.route.params.subscribe(params => {
       this.compId = params['id'];
-      this.compN = params['CompanyName']
+    const companyName = this.sharedService.getCompName();
+
+      getCompany((compData) => {
+        // Process the data to count directors related to each company
+        const companytoDisplay = companyName;
+        
+        const filteredCompany = compData.filter((company) => company.com_cis_number === this.compId);
+        
+        for (const company of filteredCompany ) {
+          const Company = company.com_company_name;
+          this.Company = Company;
+        }
+          // Set the data source for your MatTable
+      });
       // console.log(this.compId);      
       // Fetch director data and related interests based on companyId
       // Display this data in your component's data tables
@@ -129,71 +142,106 @@ export class DirectorsrelatedComponent implements AfterViewInit {
 
  async  ngOnInit() {
     const directorId = this.sharedService.getDirectorId();
-    const companyName = this.sharedService.getCompName();
     const companyCIS = this.sharedService.getCompCIS();
 
     getDirectors((Director) => {
-      const directorIdToDisplay = directorId;
-      const companytoDisplay = companyName;
-
+      // const directorIdToDisplay = directorId;
+      
       // console.log('directorIdToDisplay:', directorIdToDisplay)
       // console.log(companytoDisplay);
       const filteredDirectors = Director.filter((director) => director.com_related === this.compId);
       
+      const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+      const tableData: Record<string, any>[] = [];
       
-      const tableData = filteredDirectors.map(director => {
-        const dir_relatedId = director.dir_cisnumber
-        // console.log(dir_relatedId);
-        const row = {
-          'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
-          'Company': companytoDisplay,
-          'Position': director.position,
-          'dir_CisNumber': director.dir_cisnumber,
-          'comp_CIS': director.com_related,
-        };
-        const relationColumn = ['Others','MothersName','FathersName','Spouse','Children','MotherinLaw','FatherinLaw']
+      for (const director of filteredDirectors) {
+          // const dir_relatedId = director.dir_cisnumber;
+          const row: Record<string, any> = {
+              'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
+              'Company': this.Company,
+              'Position': director.position,
+              'dir_CisNumber': director.dir_cisnumber,
+              'comp_CIS': director.com_related,
+          };
+      
+          for (let index = 0; index < relationColumn.length; index++) {
+              const relationName = relationColumn[index];
+              const relatedNames = director.related_interest
+                  .filter(related => related.relation === index + 1)
+                  .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+                  .filter(name => name.trim() !== '');
+              row[relationName] = relatedNames;
+          }
+      
+          tableData.push(row);
+      }
+      
+
+// Now tableData contains the data you need.
+
+      
+      // const tableData = filteredDirectors.map(director => {
+      //   const dir_relatedId = director.dir_cisnumber
+      //   // console.log(dir_relatedId);
+      //   const row = {
+      //     'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
+      //     'Company': companytoDisplay,
+      //     'Position': director.position,
+      //     'dir_CisNumber': director.dir_cisnumber,
+      //     'comp_CIS': director.com_related,
+      //   };
+      //   const relationColumn = [ 'MothersName','FathersName','Spouse','Children','MotherinLaw','FatherinLaw']
+
+      //   for (let index = 0; index < relationColumn.length; index++) {
+      //     const relationName = relationColumn[index];
+      //     const relatedNames = director.related_interest
+      //       .filter(related => related.relation === index + 1) // Assuming 1 is the relation for Mother's Name
+      //       .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+      //       .filter(name => name.trim() !== '');
+      //     row[relationName] = relatedNames;
+      //   }
+
+      //   // for (let index = 0; index < director.related_interest.length; index++) {
+      //   //   console.log(director.related_interest[index].relation);
+      //   //   const element = director.related_interest[index];
+      //   //   console.log(relationColumn[director.related_interest[index].relation]);
+      //   //   row[relationColumn[director.related_interest[index].relation]] = director.related_interest
+      //   // .filter(related => related.relation === director.related_interest[index].relation) // Assuming 1 is the relation for Mother's Name
+      //   // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+      //   // .filter(name => name.trim() !== '');
+      //   // }
         
-        for (let index = 0; index < director.related_interest.length; index++) {
-          console.log(director.related_interest[index].relation);
-          const element = director.related_interest[index];
-          console.log(relationColumn[director.related_interest[index].relation]);
-          row[relationColumn[director.related_interest[index].relation]] = director.related_interest
-        .filter(related => related.relation === director.related_interest[index].relation) // Assuming 1 is the relation for Mother's Name
-        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        .filter(name => name.trim() !== '');
-        }
+
+      //   // row['FathersName'] = director.related_interest
+      //   // .filter(related => related.relation === 2) // Assuming 1 is the relation for Mother's Name
+      //   // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+      //   // .filter(name => name.trim() !== '');
+
+      //   // row['Spouse'] = director.related_interest
+      //   // .filter(related => related.relation === 3) // Assuming 1 is the relation for Mother's Name
+      //   // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+      //   // .filter(name => name.trim() !== '');
+
+      //   // row['Children'] = director.related_interest
+      //   // .filter(related => related.relation === 4) // Assuming 1 is the relation for Mother's Name
+      //   // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+      //   // .filter(name => name.trim() !== '');
+
+      //   // row['MotherinLaw'] = director.related_interest
+      //   // .filter(related => related.relation === 5) // Assuming 1 is the relation for Mother's Name
+      //   // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+      //   // .filter(name => name.trim() !== '');
+
+      //   // row['FatherinLaw'] = director.related_interest
+      //   // .filter(related => related.relation === 6) // Assuming 1 is the relation for Mother's Name
+      //   // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+      //   // .filter(name => name.trim() !== '');
+
+      //   //console.log(row);
+      //   // this.setComp(director.com_related);
+      //   return row;
         
-
-        // row['FathersName'] = director.related_interest
-        // .filter(related => related.relation === 2) // Assuming 1 is the relation for Mother's Name
-        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        // .filter(name => name.trim() !== '');
-
-        // row['Spouse'] = director.related_interest
-        // .filter(related => related.relation === 3) // Assuming 1 is the relation for Mother's Name
-        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        // .filter(name => name.trim() !== '');
-
-        // row['Children'] = director.related_interest
-        // .filter(related => related.relation === 4) // Assuming 1 is the relation for Mother's Name
-        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        // .filter(name => name.trim() !== '');
-
-        // row['MotherinLaw'] = director.related_interest
-        // .filter(related => related.relation === 5) // Assuming 1 is the relation for Mother's Name
-        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        // .filter(name => name.trim() !== '');
-
-        // row['FatherinLaw'] = director.related_interest
-        // .filter(related => related.relation === 6) // Assuming 1 is the relation for Mother's Name
-        // .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-        // .filter(name => name.trim() !== '');
-
-        //console.log(row);
-        // this.setComp(director.com_related);
-        return row;
-        
-      });
+      // });
       // for (let index = 0; index < tableData.length; index++) {
       //   const element = tableData[index];
       //   console.log(element);
@@ -208,17 +256,17 @@ export class DirectorsrelatedComponent implements AfterViewInit {
     }); 
   }
 
-  generateDisplayedColumns(data: any[]): string[] {
-    const columns = new Set<string>();
+  // generateDisplayedColumns(data: any[]): string[] {
+  //   const columns = new Set<string>();
 
-    data.forEach((item) => {
-      Object.keys(item).forEach((key) => {
-        columns.add(key);
-      });
-    });
+  //   data.forEach((item) => {
+  //     Object.keys(item).forEach((key) => {
+  //       columns.add(key);
+  //     });
+  //   });
 
-    return Array.from(columns);
-  }
+  //   return Array.from(columns);
+  // }
 
 
   // All Functions Below

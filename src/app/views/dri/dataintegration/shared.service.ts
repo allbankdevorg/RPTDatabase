@@ -12,7 +12,7 @@ export class SharedService {
     this.directorIdToDisplay = id;
   }
 
-  setCompName(name: string) {
+  setCompName(name: string):  void {
     this.companytoDisplay = name;
   }
 
