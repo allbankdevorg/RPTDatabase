@@ -1,5 +1,5 @@
 <c-container class="mb-3 p-0">
-    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table table table-bordered" mat-table [dataSource]="dataSource" >
         
         <!-- Position Column -->
         <ng-container matColumnDef="FullName">
@@ -38,8 +38,9 @@
                 <ng-container *ngFor="let fatherName of element['FathersName']">
                   <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.FathersName">-</button>
                   {{fatherName}}
+                  <br>
                 </ng-container>
-                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.comp_CIS)" class="add-button" cButton color="primary">+</button>
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button>
             </td>
         </ng-container>
         
@@ -147,8 +148,14 @@
       <c-modal-body>
         <c-row class="align-items-center">
 
+
             <c-col [sm]="4">
               <label cLabel="col" for="cisNumber">CIS Number</label>
+              <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="comp_CIS" name="comp_CIS"
+                placeholder="comp_CIS"
+                type="text" [value]="selectedCompCISNumber" hidden>
               <input
                 aria-describedby="passwordHelpInline-3"cFormControl
                 id="cisNumber" name="cisNumber"
@@ -235,6 +242,11 @@
               <c-col [sm]="6">
                 <label cLabel="col" for="riCisNumber">CIS Number</label>
                 <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="dir_CIS" name="dir_CIS"
+                placeholder="dir_CIS"
+                type="text" [value]="selectedDirCisNumber || ''" hidden>
+                <input
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="riCisNumber" name="riCisNumber"
                   placeholder="CIS Number"
@@ -245,7 +257,7 @@
                     <label cLabel="col" for="riFirstName">First Name</label>
                     <input
                       aria-describedby="passwordHelpInline-3"cFormControl
-                      id="riFirstName" name=""
+                      id="riFirstName" name="riFirstName"
                       placeholder="First Name"
                       type="text" formControlName="riFirstName">
                 </c-col>

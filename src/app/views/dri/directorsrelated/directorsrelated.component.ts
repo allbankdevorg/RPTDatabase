@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -54,7 +54,8 @@ interface Director {
 @Component({
   selector: 'app-directorsrelated',
   templateUrl: './directorsrelated.component.html',
-  styleUrls: ['./directorsrelated.component.scss']
+  styleUrls: ['./directorsrelated.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 @Injectable({
@@ -91,7 +92,8 @@ export class DirectorsrelatedComponent implements AfterViewInit {
               private sharedService: SharedService,
               private dataTransferService: DataTransferService,
               private route: ActivatedRoute,
-              private changeDetectorRef: ChangeDetectorRef)
+              private changeDetectorRef: ChangeDetectorRef,
+              private ngZone: NgZone)
   {
     this.drctrForm = this.formBuilder.group({
       cisNumber: [''],
@@ -133,8 +135,9 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       const directorIdToDisplay = directorId;
       const companytoDisplay = companyName;
 
+      console.log('directorIdToDisplay:', directorIdToDisplay)
       console.log(companytoDisplay);
-      const filteredDirectors = Director.filter((director) => director.com_related === directorIdToDisplay);
+      const filteredDirectors = Director.filter((director) => director.com_related === this.compId);
       
       
       const tableData = filteredDirectors.map(director => {
@@ -184,8 +187,13 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       });
     
       this.dataSource.data = tableData;
+      this.ngZone.run(() => {
+        this.changeDetectorRef.detectChanges();
+      });
       console.log(tableData);
       console.log(filteredDirectors);
+
+      this.changeDetectorRef.markForCheck()
     }); 
   }
 
@@ -231,9 +239,11 @@ export class DirectorsrelatedComponent implements AfterViewInit {
       createDirectors(directData, this.selectedCompCISNumber); // Pass the entire formData object
     
       this.ngOnInit();
+
+      
     }
-    // Trigger change detection
-    this.changeDetectorRef.detectChanges();
+    // Run change detection immediately within the NgZone
+    
   }
 
   //Adding Related Interest 
@@ -241,7 +251,7 @@ export class DirectorsrelatedComponent implements AfterViewInit {
  
     if (this.riForm.valid) {
       const riData = this.riForm.value;
-  
+      
       // Call the JavaScript function with form data
       createRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber); // Pass the entire formData object
 
@@ -249,7 +259,7 @@ export class DirectorsrelatedComponent implements AfterViewInit {
 
     }
       // Trigger change detection
-      this.changeDetectorRef.detectChanges();
+      // this.changeDetectorRef.detectChanges();
   }
 
   //Showing Modal
