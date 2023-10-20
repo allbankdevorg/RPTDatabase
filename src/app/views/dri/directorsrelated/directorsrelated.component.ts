@@ -168,13 +168,18 @@ export class DirectorsrelatedComponent implements AfterViewInit {
               'dir_CisNumber': director.dir_cisnumber,
               'comp_CIS': director.com_related,
           };
-      
+          // Loop through each element in the 'relationColumn' array
           for (let index = 0; index < relationColumn.length; index++) {
-              const relationName = relationColumn[index];
-              const relatedNames = director.related_interest
+              const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
+              // Filter 'director.related_interest' array to get related names based on the relation index
+              const relatedNames = director.related_interest 
                   .filter(related => related.relation === index + 1)
+                  // Create a full name by concatenating 'fname', 'mname', and 'lname'
                   .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+                  // Filter out empty names (names with only whitespace)
                   .filter(name => name.trim() !== '');
+
+              // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
               row[relationName] = relatedNames;
           }
       
