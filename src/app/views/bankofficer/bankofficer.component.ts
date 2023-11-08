@@ -85,7 +85,11 @@ export class BankofficerComponent implements AfterViewInit {
   displayedColumns: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
+  directorData: Officers[] = [];
+
+  // @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('relationShipModal', { static: true }) relationShipModal: any;
 
 
   
@@ -121,7 +125,7 @@ export class BankofficerComponent implements AfterViewInit {
     this.updateTableData();
    }
 
-
+   
 
   // Functions Below
   updateTableData(): void {
@@ -134,21 +138,57 @@ export class BankofficerComponent implements AfterViewInit {
         const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
         const tableData: Record<string, any>[] = [];
     
+        // for (const officer of Officers) {
+        //   const officerData = officer.Officers || [];
+    
+        //   // Find the company that matches the officer's com_related
+        //   const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
+        //   const companyName = matchingCompany ? matchingCompany.com_company_name : '';
+    
+        //   const row: Record<string, any> = {
+        //     'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
+        //     'Company': companyName,
+        //     'Position': officer.position,
+        //     'offc_CisNumber': officer.off_cisnumber,
+        //   };
+        //   tableData.push(row);
+        // }
+
         for (const officer of Officers) {
+          // const dir_relatedId = director.dir_cisnumber;
           const officerData = officer.Officers || [];
     
           // Find the company that matches the officer's com_related
           const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
           const companyName = matchingCompany ? matchingCompany.com_company_name : '';
-    
+
           const row: Record<string, any> = {
-            'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
-            'Company': companyName,
-            'Position': officer.position,
-            'offc_CisNumber': officer.off_cisnumber,
+              'FullName': `(${officer.off_cisnumber}) ${officer.fname} ${officer.mname}  ${officer.lname}`,
+              'Company': companyName,
+              'Position': officer.position,
+              'offc_CisNumber': officer.off_cisnumber,
+              'comp_CIS': officer.com_related,
           };
+
+          console.log(officer.off_cisnumber);
+          // Loop through each element in the 'relationColumn' array
+          for (let index = 0; index < relationColumn.length; index++) {
+              const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
+              // Filter 'director.related_interest' array to get related names based on the relation index
+              const relatedNames = officer.related_interest 
+                  .filter(related => related.relation === index + 1)
+                  // Create a full name by concatenating 'fname', 'mname', and 'lname'
+                  .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+                  // Filter out empty names (names with only whitespace)
+                  .filter(name => name.trim() !== '');
+
+              // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
+              row[relationName] = relatedNames;
+          }
+          tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
           tableData.push(row);
-        }
+          
+      }
         
         this.dataSource.data = tableData;
         // Trigger change detection
