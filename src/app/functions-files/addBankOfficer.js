@@ -15,7 +15,8 @@ function createBankOfficer(boData) {
           "fname": boData.boFirstName,
           "mname": boData.boMiddleName,
           "lname": boData.boLastName,
-          "com_cisnumber": 11111111
+          "position": boData.boPosition,
+          "com_cisnumber": "1111111"
         }
       }),
     };

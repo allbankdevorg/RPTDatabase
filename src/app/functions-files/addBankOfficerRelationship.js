@@ -1,5 +1,7 @@
-function createBankOfficerRelationship(boRIData) {
+function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber) {
     console.log(boRIData)
+    console.log(buttonId)
+    console.log(selectedcomCisNumber)
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.0.0.208:8090/api/addData",
@@ -15,8 +17,8 @@ function createBankOfficerRelationship(boRIData) {
           "fname": boRIData.boRIFirstName,
           "mname": boRIData.boRIMiddleName,
           "lname": boRIData.boRILastName,
-          "off_related": "23213213",
-          "relation": 1
+          "off_related": selectedcomCisNumber,
+          "relation": buttonId
         }
       }),
     };
