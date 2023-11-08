@@ -1,1 +1,295 @@
-<p>rp-other-officer works!</p>
+<!-- Main Container -->
+<c-container class="mb-3 p-0">
+    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+        
+        <!-- Header row first group -->
+        <ng-container matColumnDef="header-row-first-group">
+            <th  *matHeaderCellDef cTableColor class="cTableCol position-relative"
+                
+                [attr.colspan]="3"> 
+            Officers  
+            <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="onButtonClick()" cButton>+</button>    
+
+            </th>
+        </ng-container>
+        
+        <!-- Header row second group -->
+        <ng-container matColumnDef="header-row-second-group">
+            <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
+        </ng-container>
+
+        <!-- FullName Column -->
+        <ng-container matColumnDef="FullName">
+          <th mat-header-cell *matHeaderCellDef> Full Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.FullName}} </td>
+      </ng-container>
+
+      <!-- Company Name Column -->
+      <ng-container matColumnDef="Company">
+          <th mat-header-cell *matHeaderCellDef> Company </th>
+          <td mat-cell *matCellDef="let element"> {{element.Company}} </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="Position">
+          <th mat-header-cell *matHeaderCellDef> Position </th>
+          <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
+      </ng-container>
+
+        <!-- Mother's Name Column -->
+        <ng-container matColumnDef="MothersName" class="position-reative">
+          <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngFor="let motherName of element['MothersName']">
+              <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.MothersName">-</button>
+              {{motherName}}
+              <br>
+            </ng-container> 
+              <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.offc_CisNumber)" (click)="setoffcRelated()" class="add-button" cButton color="primary">+</button>
+            </td>
+      </ng-container>
+
+      <!-- Father's Name -->
+      <ng-container matColumnDef="FathersName">
+          <th mat-header-cell *matHeaderCellDef> Father's Name </th>
+          <td mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let fatherName of element['FathersName']">
+                <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.FathersName">-</button>
+                {{fatherName}}
+                <br>
+              </ng-container>
+              <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button>
+          </td>
+      </ng-container>
+      
+      <!-- Spouse -->
+      <ng-container matColumnDef="Spouse">
+          <th mat-header-cell *matHeaderCellDef> Spouse  </th>
+          <td mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let spouse of element['Spouse']">
+                  <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.Spouse">-</button>
+                  {{spouse}}
+                  <br>
+              </ng-container>
+              <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button>
+          </td>
+      </ng-container>
+
+      <!-- Children -->
+      <ng-container matColumnDef="Children">
+          <th mat-header-cell *matHeaderCellDef> Children </th>
+          <td mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let child of element['Children']">
+                  <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.Children">-</button>
+                  {{ child }} 
+                  <br>
+              </ng-container>
+              <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button> 
+          </td>
+      </ng-container>
+
+      <!-- Mother in Law -->
+      <ng-container matColumnDef="MotherinLaw">
+          <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
+          <td mat-cell *matCellDef="let element"> 
+              <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
+                    <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.MotherinLaw">-</button>
+                    {{motherinlaw}}
+                    <br>
+              </ng-container>
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button></td>
+      </ng-container>
+
+      <!-- Father in Law -->
+      <ng-container matColumnDef="FatherinLaw">
+          <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
+          <td mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
+                <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="element.FatherinLaw">-</button> 
+                {{fatherinlaw}}
+                <br>
+              </ng-container>  
+                <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button></td>
+      </ng-container>
+        
+
+        <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of data">
+    </mat-paginator>
+    
+      
+      <!-- <div *ngIf="!clickedRows.size">
+        Clicked rows will be logged here
+      </div>
+      
+      <ul>
+        <li *ngFor="let clickedRow of clickedRows">
+          Clicked on {{clickedRow.name}}
+        </li>
+      </ul> -->
+      
+</c-container>
+<!-- End of Main Container -->
+
+
+
+<!-- All Modals are below -->
+
+<!-- Start of Bank Officer Modal -->
+<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
+    <c-modal-header>
+      <h3 cModalTitle>Officer</h3>
+      <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
+    </c-modal-header>
+  
+    <form cForm class="mb-2" [formGroup]="boForm" (ngSubmit)="onBOSubmit()">
+      <c-modal-body>
+        <c-row class="align-items-center">
+
+          <c-col [sm]="4">
+            <label cLabel="col" for="boCisNumber">CIS Number</label>
+            <input
+              aria-describedby="passwordHelpInline-3"cFormControl
+              id="boCisNumber" name="boCisNumber"
+              placeholder="CIS Number" 
+              type="text" formControlName="boCisNumber">
+          </c-col>
+          
+            <c-col [sm]="4">
+                <label cLabel="col" for="boFirstName">First Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="boFirstName" name="boFirstName"
+                  placeholder="First Name"
+                  type="text" formControlName="boFirstName">
+            </c-col>
+    
+            <c-col [sm]="4">
+                <label cLabel="col" for="boMiddleName">Middle Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="boMiddleName" name="boMiddleName"
+                  placeholder="Middle Name"
+                  type="text" formControlName="boMiddleName">
+            </c-col>
+        </c-row>
+
+        <c-row class="align-items-center">
+  
+          <!-- <c-col [sm]="6">
+              <label cLabel="col" for="company">Company</label>
+              <input
+                cFormControl
+                id="company"
+                placeholder="Company"
+                type="text">
+          </c-col> -->
+
+          <c-col [sm]="6">
+            <label cLabel="col" for="boLastName">Last Name</label>
+            <input
+              aria-describedby="passwordHelpInline-3"cFormControl
+              id="boLastName" name="boLastName"
+              placeholder="Last Name"
+              type="text" formControlName="boLastName">
+        </c-col>
+  
+          <c-col [sm]="6">
+            <label cLabel="col" for="boPosition">Position</label>
+            <input
+              cFormControl
+              id="boPosition" name="boPosition"
+              placeholder="Position"
+              type="text" formControlName="boPosition">
+          </c-col>
+  
+          <!-- <c-col [sm]="3">
+              <label cLabel="col" for="prodT">P2M/P2E</label>
+              <select aria-label="Default select example" cSelect>
+                <option>P2M/P2E</option>
+                <option value="1">P2M</option>
+                <option value="2">P2E</option>
+              </select>
+          </c-col> -->
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button type="submit" cButton color="success">Proceed</button>
+      </c-modal-footer>
+    </form>
+        
+</c-modal>
+<!-- End of Officers Modal -->
+
+
+<!-- Start of Modal for Related Interest -->
+<c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
+  <c-modal-header>
+    <h3 cModalTitle> Bank Officer Related Interest </h3>
+    <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
+  </c-modal-header>
+
+  <form cForm class="mb-2" [formGroup]="boRIForm" (ngSubmit)="onBORISubmit()">
+    <c-modal-body>
+      <c-row class="align-items-center">
+        
+          <c-row class="align-items-center">
+
+            <c-col [sm]="6">
+              <label cLabel="col" for="boRICisNumber">CIS Number</label>
+              <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="boRICisNumber" name="boRICisNumber"
+                placeholder="CIS Number"
+                type="text" formControlName="boRICisNumber">
+            </c-col>
+        
+              <c-col [sm]="6">
+                  <label cLabel="col" for="boRIFirstName">First Name</label>
+                  <input
+                    aria-describedby="passwordHelpInline-3"cFormControl
+                    id="boRIFirstName" name="boRIFirstName"
+                    placeholder="First Name"
+                    type="text" formControlName="boRIFirstName">
+              </c-col>
+          </c-row>
+          
+          <c-row class="align-items-center">
+              <c-col [sm]="6">
+                  <label cLabel="col" for="boRIMiddleName">Middle Name</label>
+                  <input
+                    aria-describedby="passwordHelpInline-3"cFormControl
+                    id="boRIMiddleName" name="boRIMiddleName"
+                    placeholder="Middle Name"
+                    type="text" formControlName="boRIMiddleName">
+              </c-col>
+  
+              <c-col [sm]="6">
+                  <label cLabel="col" for="boRILastName">Last Name</label>
+                  <input
+                    aria-describedby="passwordHelpInline-3"cFormControl
+                    id="boRILastName" name="boRILastName"
+                    placeholder="Last Name"
+                    type="text" formControlName="boRILastName">
+              </c-col>
+      
+      
+          </c-row>
+
+
+      </c-row>
+    </c-modal-body>
+    <c-modal-footer>
+      <button type="submit" cButton color="success">Proceed</button>
+    </c-modal-footer>
+  </form>
+      
+</c-modal>
+
+<!-- End of Bank Officers Related Interest Modal -->
