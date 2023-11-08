@@ -1,112 +1,138 @@
 <!-- Main Container -->
-<c-container class="mb-3 p-0 position-relative mt-4">
+<c-container fluid class="mb-3 p-0 position-relative">
   <!-- Button to open a modal -->
-  <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="onButtonClick()" cButton>+</button>    
+  <c-row>
+    <c-col xs>
+      <c-card class="mb-4">
+        <c-card-header>DOSRI
+          <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add btn btn-primary rounded-pill" (click)="onButtonClick()" cButton>+ Add</button>
+        </c-card-header>
+        <c-card-body>
+          <c-container fluid>
+            <!-- Data Table -->
+            <table [hover]="true" [striped]="true"
+                  cTable [responsive]="true" mat-table
+                  [dataSource]="compDataSource" multiTemplateDataRows
+                  class="mat-elevation-z8 DRI-table mb-0 border">
+                  <thead cTableColor="light">
+                    <tr>
+                      <th class="text-center">
+                        <svg cIcon name="cilPeople"></svg>
+                      </th>
+                      <th>User</th>
+                      <th class="text-center">Country</th>
+                      <th>Usage</th>
+                      <th class="text-center">Payment Method</th>
+                      <th>Activity</th>
+                    </tr>
+                  </thead>
 
-    <c-container>
-       <!-- Data Table -->
-      <table cTable [responsive]="true" mat-table
-            [dataSource]="compDataSource" multiTemplateDataRows
-            class="mat-elevation-z8 DRI-table">
-            <!-- Expand Button Column -->
-            <ng-container matColumnDef="expand">
-              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-              <td mat-cell *matCellDef="let element">
-                <!-- Button to expand/collapse row -->
-                <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-                  <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                  <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-                </button>
-              </td>
-            </ng-container>    
+              <tbody>
+                  <!-- Expand Button Column -->
+                  <ng-container matColumnDef="expand">
+                    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                    <td mat-cell *matCellDef="let element">
+                      <!-- Button to expand/collapse row -->
+                      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                      </button>
+                    </td>
+                  </ng-container>    
 
-            <!-- Business Name -->
-            <ng-container matColumnDef="com_cis_number">
-              <th mat-header-cell *matHeaderCellDef> CIS Number </th>
-              <td mat-cell *matCellDef="let element"> {{ element.com_cis_number }} </td>
-            </ng-container>
+                  <!-- Business Name -->
+                  <ng-container matColumnDef="com_cis_number">
+                    <thead>
+                      <th mat-header-cell *matHeaderCellDef> CIS Number </th></thead>
+                    <td mat-cell *matCellDef="let element"> {{ element.com_cis_number }} </td>
+                  </ng-container>
 
-            <!-- Number of  Directors -->
-            <ng-container matColumnDef="com_company_name">
-              <th mat-header-cell *matHeaderCellDef> Company Name </th>
-              <td mat-cell *matCellDef="let element"> {{ element.com_company_name }} </td>
-            </ng-container>
+                  <!-- Number of  Directors -->
+                  <ng-container matColumnDef="com_company_name">
+                    <th mat-header-cell *matHeaderCellDef> Company Name </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.com_company_name }} </td>
+                  </ng-container>
 
-            <!-- Directors Count -->
-            <ng-container matColumnDef="directorCount">
-              <th mat-header-cell *matHeaderCellDef> # of Directors </th>
-              <td mat-cell *matCellDef="let element">{{ element.directorCount }}</td>
-            </ng-container>
+                  <!-- Directors Count -->
+                  <ng-container matColumnDef="directorCount">
+                    <th mat-header-cell *matHeaderCellDef> # of Directors </th>
+                    <td mat-cell *matCellDef="let element">{{ element.directorCount }}</td>
+                  </ng-container>
 
-            <!-- Date Updated Column -->
-            <ng-container matColumnDef="date_inserted">
-              <th mat-header-cell *matHeaderCellDef> Date Inserted </th>
-              <td mat-cell *matCellDef="let element"> {{ element.date_inserted }} </td>
-            </ng-container>
+                  <!-- Date Updated Column -->
+                  <ng-container matColumnDef="date_inserted">
+                    <th mat-header-cell *matHeaderCellDef> Date Inserted </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.date_inserted }} </td>
+                  </ng-container>
 
-            <!-- View/Action Column -->
-            <ng-container matColumnDef="view">
-              <th mat-header-cell *matHeaderCellDef> Action </th>
-              <td mat-cell *matCellDef="let row"> 
-                 <!-- Button to view details --> 
-                 <button cButton class="my-1" color="dark" (click)="onRowClick(row)">View</button>
-              </td>
-            </ng-container>
+                  <!-- View/Action Column -->
+                  <ng-container matColumnDef="view">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let row"> 
+                      <!-- Button to view details --> 
+                      <button cButton class="my-1" color="dark" (click)="onRowClick(row)">View</button>
+                    </td>
+                  </ng-container>
 
-            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-            <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                    <!-- Details of the selected element -->
-                    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="element.directors" >
-                        <!-- CIS Number Column -->
+                  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                  <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                      <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                          <!-- Details of the selected element -->
+                          <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="element.directors" >
+                              <!-- CIS Number Column -->
 
-                        <ng-container matColumnDef="dir_cisnumber">
-                          <th mat-header-cell *matHeaderCellDef> CIS Number </th>
-                          <td mat-cell *matCellDef="let element"> {{ element.dir_cisnumber }} </td>
-                        </ng-container>
+                              <ng-container matColumnDef="dir_cisnumber">
+                                <th mat-header-cell *matHeaderCellDef> CIS Number </th>
+                                <td mat-cell *matCellDef="let element"> {{ element.dir_cisnumber }} </td>
+                              </ng-container>
 
-                        <!-- Directors Name Column -->
-                        <ng-container matColumnDef="directorName">
-                          <th mat-header-cell *matHeaderCellDef> Directors Name </th>
-                          <td mat-cell *matCellDef="let element"> {{ element.fname + " " + element.mname + " " + element.lname}} </td>
-                        </ng-container>
+                              <!-- Directors Name Column -->
+                              <ng-container matColumnDef="directorName">
+                                <th mat-header-cell *matHeaderCellDef> Directors Name </th>
+                                <td mat-cell *matCellDef="let element"> {{ element.fname + " " + element.mname + " " + element.lname}} </td>
+                              </ng-container>
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="position">
-                          <th mat-header-cell *matHeaderCellDef> Position </th>
-                          <td mat-cell *matCellDef="let element"> {{ element.position }} </td>
-                        </ng-container>
+                              <!-- Position Column -->
+                              <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef> Position </th>
+                                <td mat-cell *matCellDef="let element"> {{ element.position }} </td>
+                              </ng-container>
 
-                        <!-- Header Row -->
-                        <tr mat-header-row  *matHeaderRowDef="DdisplayedColumns"></tr>
-                        <!-- Data Rows -->
-                        <tr mat-row *matRowDef="let row; columns: DdisplayedColumns;"></tr>
-                    </table>
-                </div>
-              </td>
-            </ng-container>
-            
-            <!-- Header Row with Expand Button -->
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-            
-            <!-- Data Rows with Expandable Detail -->
-            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-                class="example-element-row"
-                [class.example-expanded-row]="expandedElement === element"
-                (click)="expandedElement = expandedElement === element ? null : element">
-            </tr>
+                              <!-- Header Row -->
+                              <tr mat-header-row  *matHeaderRowDef="DdisplayedColumns"></tr>
+                              <!-- Data Rows -->
+                              <tr mat-row *matRowDef="let row; columns: DdisplayedColumns;"></tr>
+                          </table>
+                      </div>
+                    </td>
+                  </ng-container>
+                  
+                  <!-- Header Row with Expand Button -->
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                  
+                  <!-- Data Rows with Expandable Detail -->
+                  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                      class="example-element-row"
+                      [class.example-expanded-row]="expandedElement === element"
+                      (click)="expandedElement = expandedElement === element ? null : element">
+                  </tr>
 
-            <!-- Detail Row -->
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-      </table>
+                  <!-- Detail Row -->
+                  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+              </tbody>
+            </table>
 
-      <!-- Paginator for Data Table -->
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-            showFirstLastButtons
-            aria-label="Select page of data">
-        </mat-paginator>
-    </c-container>
+            <!-- Paginator for Data Table -->
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                  showFirstLastButtons
+                  aria-label="Select page of data">
+              </mat-paginator>
+          </c-container>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
 </c-container>
 
 

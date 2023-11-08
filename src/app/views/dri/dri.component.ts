@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import {animate, state, style, transition, trigger} from '@angular/animations'
@@ -80,7 +80,9 @@ export class DRIComponent implements AfterViewInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder, 
               private http: HttpClient, 
-              private sharedService: SharedService) {
+              private sharedService: SharedService,
+              private changeDetectorRef: ChangeDetectorRef,
+          private ngZone: NgZone) {
         this.postForm = this.formBuilder.group({
         title: ['', Validators.required],
         body: ['', Validators.required]
@@ -94,37 +96,46 @@ export class DRIComponent implements AfterViewInit {
 
 
   ngOnInit(): void {
-        // Fetch company data
-        getCompany((compData) => {
-          // Process the data to count directors related to each company
-            const companiesWithDirectors = compData.map(company => {
-              const directors = company.directors || []; // Ensure there is a directors array
-              const directorCount = directors.length;
-              return { ...company, directorCount, directors };
-            });
-
-            // Set the data source for your MatTable
-            this.compDataSource.data = companiesWithDirectors;
-        });
-
-        getCompany((compData) => {
-          // Fetch director data
-          getDirectors((DData) => {
-            // Process the data to count directors related to each company
-            const companiesWithDirectors: DData[] = compData.map(company => {
-              const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
-              return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
-            });
-        
-            // Set the data source for your MatTable
-            this.dDataSource.data = companiesWithDirectors;
-            console.log(companiesWithDirectors)
-          });
-        });
+    this.updateTableData();
   }
 
 
   // All Functions below
+  updateTableData(): void {
+    getCompany((compData) => {
+      // Process the data to count directors related to each company
+        const companiesWithDirectors = compData.map(company => {
+          const directors = company.directors || []; // Ensure there is a directors array
+          const directorCount = directors.length;
+          return { ...company, directorCount, directors };
+        });
+
+        // Set the data source for your MatTable
+        this.compDataSource.data = companiesWithDirectors;
+    });
+
+      getCompany((compData) => {
+        // Fetch director data
+        getDirectors((DData) => {
+          // Process the data to count directors related to each company
+          const companiesWithDirectors: DData[] = compData.map(company => {
+            const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+            return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+          });
+      
+          // Set the data source for your MatTable
+          console.log(companiesWithDirectors)
+          this.dDataSource.data = companiesWithDirectors;
+        // Trigger change detection
+        this.changeDetectorRef.detectChanges();
+        });
+        
+      });
+
+
+
+   }
+
     onSubmit() {
 
     if (this.dosriForm.valid) {
