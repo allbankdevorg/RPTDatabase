@@ -23,7 +23,7 @@ const routes: Routes = [
       path: 'pac/:id',
     component: PACComponent,
     data: {
-      title: 'Directors Related Interest',
+      title: 'Persons in Affiliated Companies',
     },
   },
   ];
