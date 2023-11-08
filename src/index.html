@@ -23,6 +23,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+
+  <!-- New Script for Other related Companies -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- Include Bootstrap CSS for styling -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Include jQuery for basic functionality -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Include jQuery UI for draggable and resizable functionality -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <!-- Include Bootstrap JavaScript for modal functionality -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 <body class="mat-typography">
 <!-- <noscript>You need to enable JavaScript to run this app.</noscript> -->
@@ -32,7 +44,164 @@
     <span class="m-1">Loading...</span>
   </div>
 </app-root>
+<link rel="stylesheet" href="/assets/dataTables.min.css">
 <link rel="stylesheet" href="assets/package/dist/sweetalert2.min.css">
-<script src="assets/package/dist/sweetalert2.min.js"></script>
+<script src="/assets/package/dist/sweetalert2.min.js"></script>
+<!-- <script src="app/functions-files/relatedcompanies.js"></script> -->
+<!-- <script src="/assets/jquery-3.7.1.min.js"></script>
+<script src="/assets/jquery.dataTables.min.js"></script>
+<script src="/assets/jqueryTables.js"></script> -->
+<!-- <script src="/app/functions-files/relatedcompanies.js"></script> -->
+<style>
+
+</style>
+
+
+<!-- // "/src/assets/jquery-3.7.1.min.js",
+// "/src/assets/jquery.dataTables.min.js",
+// "/src/assets/jqueryTables.js" -->
 </body>
 </html>
+<script>
+  // google.charts.load('current', { 'packages': ['orgchart'] });
+  // google.charts.setOnLoadCallback(drawChart);
+
+  // var orgData = [
+  //   ['FINE PROPERTIES, INC.', ''],
+  //   ['ALLVALUE HOLDINGS CORP.', 'FINE PROPERTIES, INC.'],
+  //   ['GOLDEN MV  HOLDINGS INC. (PUBLICLY LISTED)', 'FINE PROPERTIES, INC.'],
+  //   ['GETS.PH HOLDINGS INC.', 'FINE PROPERTIES, INC.'],
+  //   ['VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)', 'FINE PROPERTIES, INC.'],
+
+  //   ['ALLDAY MARTS, INC. (PUBLICLY LISTED)', 'ALLVALUE HOLDINGS CORP.'],
+  //   ['ALLHOME CORP. (PUBLICLY LISTED)', 'ALLDAY MARTS, INC. (PUBLICLY LISTED)'],
+  //   ['THE VILLAGE SERVER INC.', 'ALLHOME CORP. (PUBLICLY LISTED)'],
+  //   ['FAMILY SHOPPERS UNLIMITED, INC.', 'THE VILLAGE SERVER INC.'],
+    
+  //   ['BRIA HOMES, INC.', 'GOLDEN MV  HOLDINGS INC. (PUBLICLY LISTED)'],
+  //   ['GOLDEN HAVEN', 'GOLDEN MV  HOLDINGS INC. (PUBLICLY LISTED)'],
+
+  //   ['GLOBALLAND PROPERTY MANAGEMENT, INC.', 'GETS.PH HOLDINGS INC.'],
+
+
+  //   ['BRITTANY CORPORATION', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
+  //   ['CROWN ASIA PROPERTIES INC,', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
+  //   ['CAMELLA HOMES, INC.', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
+  //   ['VISTA RESIDENCES INC.', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
+  //   ['COMMUNITIES PHILIPPINES, INC.', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
+  //   ['VISTAMALLS. INC.', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
+  //   ['Marketing5', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
+
+
+  //   ['PRIMA CASA LAND & HOUSES INC.', 'BRITTANY CORPORATION'],
+  //   ['PRIMA CASA LAND & HOUSES INC.', 'CROWN ASIA PROPERTIES INC,'],
+
+  //   ['PRIMA CASA LAND & HOUSES INC.', 'CAMELLA HOMES, INC.'],
+  //   ['HOUSEHOLD DEVELOPMENT CORPORATION', 'CAMELLA HOMES, INC.'],
+  //   ['MANDALAY RESOURCES CORP.', 'CAMELLA HOMES, INC.'],
+
+  //   ['PRIMA CASA LAND & HOUSES INC.', 'VISTA RESIDENCES INC.'],
+  //   ['VISTA LEISURE CLUB CORP.', 'VISTA RESIDENCES INC.'],
+  //   ['VISTA VENTURES TAFT, INC.', 'VISTA RESIDENCES INC.'],
+    
+  //   ['COMMUNITIES BATANGAS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES BOHOL, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES BULACAN, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES CEBU, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES DAVAO, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES GENERAL SANTOS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES ILOCOS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES ILOILO, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES ISABELA, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES LEYTE, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES NAGA, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
+  //   ['COMMUNITIES PAMPANGA INC.,', 'COMMUNITIES PHILIPPINES, INC.'],
+
+  //   ['MASTERPIECE ASIA PROPERTIES', 'VISTAMALLS. INC.'],
+  //   ['VISTAREIT, INC. (PUBLICLY LISTED)', 'VISTAMALLS. INC.'],]
+
+  // var chart;
+
+  // function drawChart() {
+  //   var data = new google.visualization.DataTable();
+  //   data.addColumn('string', 'Name');
+  //   data.addColumn('string', 'Manager');
+
+  //   data.addRows(orgData);
+
+  //   var options = {
+  //     allowCollapse: true,
+  //     nodeClass: 'org-chart-node', // Apply custom class to nodes
+  //     nodeStyle: {
+  //       background: '#f0f0f0', // Background color for nodes
+  //       border: '1px solid #ccc',
+  //       borderRadius: '5px',
+  //     },
+  //   };
+
+  //   chart = new google.visualization.OrgChart(document.getElementById('org-chart-container'));
+
+  //   var lastClickTime = 0; // Variable to store the last click time
+  //   google.visualization.events.addListener(chart, 'select', function () {
+  //     // Check if the time since the last click is less than 300 milliseconds (double-click)
+  //     if (Date.now() - lastClickTime < 300) {
+  //       $('#actionModal').modal('show'); // Show the modal dialog on double-click
+  //     } else {
+  //       chart.collapse(data.getValue(chart.getSelection()[0].row, 0)); // Collapse on single-click
+  //     }
+  //     lastClickTime = Date.now(); // Update the last click time
+  //   });
+
+  //   // Button click events inside the modal
+  //   $('#addButton').click(function() {
+  //     var selectedItem = orgData[chart.getSelection()[0].row];
+  //     var newName = prompt("Enter the name of the new child:", 'New Employee');
+  //     if (newName !== null) {
+  //       var newId = "NewID" + Math.floor(Math.random() * 1000);
+  //       var newItem = [newName, selectedItem[0]];
+  //       orgData.push(newItem);
+  //       drawChart();
+  //     }
+  //   });
+
+  //   $('#updateButton').click(function() {
+  //     var selectedItem = orgData[chart.getSelection()[0].row];
+  //     var newName = prompt("Enter the new name for the node:", selectedItem[0]);
+  //     if (newName !== null) {
+  //       selectedItem[0] = newName;
+  //       drawChart();
+  //     }
+  //   });
+
+  //   $('#detailsButton').click(function() {
+  //     var selectedItem = orgData[chart.getSelection()[0].row];
+  //     alert("Selected Node: " + selectedItem[0] + "\nManager: " + selectedItem[1]);
+  //   });
+
+  //   chart.draw(data, options);
+    
+  //   // Enable zoom functionality
+  //   $('#org-chart-container').draggable().resizable();
+  //   $('#zoom-in').click(function() {
+  //     var currentScale = $('#org-chart-container').css('transform');
+  //     if (currentScale === 'none') {
+  //       currentScale = 1.0;
+  //     } else {
+  //       currentScale = parseFloat(currentScale.split(',')[3]);
+  //     }
+  //     var newScale = currentScale + 0.2;
+  //     $('#org-chart-container').css('transform', 'scale(' + newScale + ')');
+  //   });
+
+  //   $('#zoom-out').click(function() {
+  //     var currentScale = $('#org-chart-container').css('transform');
+  //     if (currentScale === 'none') {
+  //       currentScale = 1.0;
+  //     } else {
+  //       currentScale = parseFloat(currentScale.split(',')[3]);
+  //     }
+  //     var newScale = currentScale - 0.2;
+  //     $('#org-chart-container').css('transform', 'scale(' + newScale + ')');
+  //   });
+  // }
+</script>
