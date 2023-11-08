@@ -46,12 +46,17 @@ tr.example-element-row:not(.example-expanded-row):active {
 .acc-access-add {
   position: absolute;
   right: 9px;
-  top: -42px;
+  top: 0;
 }
 
 
 .DRI-table {
     width: 100%;
+}
+
+.mat-column-expand, .mat-column-com_cis_number, .mat-column-com_company_name, .mat-column-directorCount, 
+.mat-column-date_inserted, .mat-column-view {
+  border-left: 1px solid #d3d3d3;
 }
 
 .mat-column-action {

@@ -53,6 +53,10 @@ tr.example-detail-row {
   .DRI-table {
       width: 100%;
   }
+
+  .mat-column-expand, .mat-column-cis {
+    border-left: 1px solid #d3d3d3;
+  }
   
   .mat-column-action {
     width: 1%;

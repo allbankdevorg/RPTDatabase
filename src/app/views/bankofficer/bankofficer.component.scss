@@ -4,25 +4,29 @@
 }
 
 .cTableCol{
-     text-align: center;
-     background-color: #B5E3E8;
+     text-align: left;
+     background-color: #e5e5e6;
      font-size: 28px;
      color: #000;
+     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+     border: none; 
 }
 
 .cTableCols{
-    text-align: center;
-    background-color: #F7B4AE;
+    text-align: left;
+    background-color: #e5e5e6;
     font-size: 28px;
     color: #000;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none; 
 }
 
-.acc-access-add {
-    position: absolute;
-    right: 2px;
-    top: 2px;
-    padding: 3px;;
-  }
+// .acc-access-add {
+//     position: absolute;
+//     right: 7%;
+//     top: 2px;
+//     padding: 3px;;
+// }
 
 .add-button {
     padding: 3px;

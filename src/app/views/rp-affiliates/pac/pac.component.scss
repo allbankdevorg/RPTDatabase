@@ -1,10 +1,12 @@
 .DRI-table {
-    width: 100%;
+    min-width: 5000px;
+    max-width:max-content;
+    background-color: #fff;
 }
 
 .cTableCol{
-     text-align: center;
-     background-color: #8ea9db;
+     text-align: left;
+     background-color: #e5e5e6;
      font-size: 28px;
      color: #000;
 }
@@ -16,7 +18,7 @@
     color: #000;
 }
 
-.add-button-spouse {
+.add-button {
     padding: 3px;
     font-size: 10px;
     right: 2px;
@@ -24,66 +26,27 @@
     position: absolute;
 }
 
-.add-button-children {
+.sub-button {
     padding: 3px;
     font-size: 10px;
-    right: 2px;
-    top: 2px;
+    // right: 2px;
+    // top: 2px;
     color: #fff;
     // position: absolute;
 }
 
-.sub-button-children {
-    padding: 3px;
-    font-size: 10px;
-    right: 2px;
-    top: 2px;
-    color: #fff;
-     position: absolute;
-}
-
-.add-button-fatherinlaw {
-    padding: 3px;
-    font-size: 10px;
-    right: 2px;
-    top: 2px;
-    position: absolute;
-}
-
-.add-button-motherinlaw {
-    padding: 1px 2px;
-    font-size: 12px;
-    right: 2px;
-    top: 2px;
-    position: absolute;
-}
-
-.mat-column-company {
+.mat-column-Company, .mat-column-FullName, .mat-column-Position,
+ .mat-column-MothersName, .mat-column-FathersName, .mat-column-Siblings,
+ .mat-column-Spouse, .mat-column-Children, .mat-column-MotherinLaw, 
+ .mat-column-FatherinLaw, .mat-column-stepChild, .mat-column-sonDaughterInLaw, 
+ .mat-column-grandParents, .mat-column-grandParentsInLaw, .mat-column-sistersInLaw,
+ .mat-column-brothersInLaw, .mat-column-grandChildren, .mat-column-grandChildrenInLaw  {
+    width: 2.08%;
+    position: relative;
+    // display: flex;
+    text-align: left;
     background-color: #fff;
-}
-
-// .mdc-data-table__row:last-child .mat-mdc-cell {
-//     background: #fff;
-// }
-.mat-column-spouse {
-    width: 10%;
-    position: relative;
-    // display: flex;
-    // text-align: center;
-}
-
-.mat-column-children {
-    position: relative;
-    // display: flex;
-    // text-align: center;
-}
-
-.mat-column-fatherinlaw {
-    position: relative;
-}
-
-.mat-column-motherinlaw {
-    position: relative;
+    border-left: 1px solid #d3d3d3;
 }
 // .mat-column-bn {
 //     width: 15%;
@@ -109,8 +72,6 @@
 
 
 
-
-
 .example-container {
     height: 400px;
     width: 100%;
@@ -118,24 +79,21 @@
     overflow: auto;
   }
   
-  table {
-    width: 100%;
-  }
   
-  td.mat-column-star {
-    width: 20px;
-    padding-right: 8px;
-  }
+//   td.mat-column-star {
+//     width: 20px;
+//     padding-right: 8px;
+//   }
   
-  th.mat-column-position, td.mat-column-position {
-    padding-left: 8px;
-  }
+//   th.mat-column-position, td.mat-column-position {
+//     padding-left: 8px;
+//   }
   
-  .mat-mdc-table-sticky-border-elem-right {
-    border-left: 1px solid #e0e0e0;
-  }
+//   .mat-mdc-table-sticky-border-elem-right {
+//     border-left: 1px solid #e0e0e0;
+//   }
   
-  .mat-mdc-table-sticky-border-elem-left {
-    border-right: 1px solid #e0e0e0;
-  }
+//   .mat-mdc-table-sticky-border-elem-left {
+//     border-right: 1px solid #e0e0e0;
+//   }
   
