@@ -1,1 +1,30 @@
-<p>rp-related-companies works!</p>
+<div id="org-chart-container" appResizable class="org-chart-container">
+</div>
+<!--PopOver-->
+<div #nodePopover id="nodePopover" class="pop" style="display: none;">
+    <h5>Node Details</h5>
+    <p id="nodeDetails" #nodeDetails></p>
+  </div>
+<!-- Modal Dialog for Actions -->
+<!-- <div actionModal class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="actionModalLabel" aria-hidden="true"> -->
+<!-- <div #actionModal class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="actionModalLabel" aria-hidden="true">  -->
+<div class="modal fade" #actionModal tabindex="-1" role="dialog" aria-labelledby="actionModalLabel" aria-hidden="true">
+  
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="actionModalLabel">Select an Action</h5>
+          <button (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <button class="btn btn-primary" id="addButton">Add Child</button>
+          <button class="btn btn-primary" id="updateButton">Update Node</button>
+          <button class="btn btn-primary" id="detailsButton">Show Details</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+ 
