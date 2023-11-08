@@ -142,7 +142,6 @@ export class DirectorsrelatedComponent implements AfterViewInit {
   }
 
  async  ngOnInit() {
-
      this.updateTableData();
   }
 
