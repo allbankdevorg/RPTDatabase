@@ -16,6 +16,10 @@ import {
 } from '@angular/animations';
 import { NgFor, NgIf } from '@angular/common';
 
+
+// Functions Import
+import {getManagingCompany} from '../../functions-files/getFunctions'
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -107,7 +111,7 @@ export class RpRelatedCompaniesComponent {
   private chart: any;
   private lastClickTime = 0;
   private isNodeDetailsVisible: boolean = false
-
+  private orgData:any;
   constructor(
     private router: Router,
     private renderer: Renderer2,
@@ -119,92 +123,21 @@ export class RpRelatedCompaniesComponent {
   @ViewChild('nodePopover') nodePopover!: ElementRef;
   @ViewChild('nodeDetails', { static: true }) nodeDetails!: ElementRef;
 
-  ngOnInit() {
+  async ngOnInit() {
     google.charts.load('current', { packages: ['orgchart'] });
     google.charts.setOnLoadCallback(() => this.drawChart());
+    this.orgData = this.fetchAssocCompany()
   }
   
   drawChart(): void {
-    const orgData = [
-      ['FINE PROPERTIES, INC.', ''],
-      ['ALLVALUE HOLDINGS CORP.', 'FINE PROPERTIES, INC.'],
-      ['GOLDEN MV  HOLDINGS INC. (PUBLICLY LISTED)', 'FINE PROPERTIES, INC.'],
-      ['GETS.PH HOLDINGS INC.', 'FINE PROPERTIES, INC.'],
-      [
-        'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)',
-        'FINE PROPERTIES, INC.',
-      ],
-
-      ['ALLDAY MARTS, INC. (PUBLICLY LISTED)', 'ALLVALUE HOLDINGS CORP.'],
-      [
-        'ALLHOME CORP. (PUBLICLY LISTED)',
-        'ALLDAY MARTS, INC. (PUBLICLY LISTED)',
-      ],
-      ['THE VILLAGE SERVER INC.', 'ALLHOME CORP. (PUBLICLY LISTED)'],
-      ['FAMILY SHOPPERS UNLIMITED, INC.', 'THE VILLAGE SERVER INC.'],
-
-      ['BRIA HOMES, INC.', 'GOLDEN MV  HOLDINGS INC. (PUBLICLY LISTED)'],
-      ['GOLDEN HAVEN', 'GOLDEN MV  HOLDINGS INC. (PUBLICLY LISTED)'],
-
-      ['GLOBALLAND PROPERTY MANAGEMENT, INC.', 'GETS.PH HOLDINGS INC.'],
-
-      [
-        'BRITTANY CORPORATION',
-        'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)',
-      ],
-      [
-        'CROWN ASIA PROPERTIES INC,',
-        'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)',
-      ],
-      [
-        'CAMELLA HOMES, INC.',
-        'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)',
-      ],
-      [
-        'VISTA RESIDENCES INC.',
-        'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)',
-      ],
-      [
-        'COMMUNITIES PHILIPPINES, INC.',
-        'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)',
-      ],
-      ['VISTAMALLS. INC.', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
-      ['Marketing5', 'VISTA LAND & LIFESCAPES, INC. (PUBLICLY LISTED)'],
-
-      ['PRIMA CASA LAND & HOUSES INC.', 'BRITTANY CORPORATION'],
-      ['PRIMA CASA LAND & HOUSES INC.', 'CROWN ASIA PROPERTIES INC,'],
-
-      ['PRIMA CASA LAND & HOUSES INC.', 'CAMELLA HOMES, INC.'],
-      ['HOUSEHOLD DEVELOPMENT CORPORATION', 'CAMELLA HOMES, INC.'],
-      ['MANDALAY RESOURCES CORP.', 'CAMELLA HOMES, INC.'],
-
-      ['PRIMA CASA LAND & HOUSES INC.', 'VISTA RESIDENCES INC.'],
-      ['VISTA LEISURE CLUB CORP.', 'VISTA RESIDENCES INC.'],
-      ['VISTA VENTURES TAFT, INC.', 'VISTA RESIDENCES INC.'],
-
-      ['COMMUNITIES BATANGAS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES BOHOL, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES BULACAN, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES CEBU, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES DAVAO, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES GENERAL SANTOS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES ILOCOS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES ILOILO, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES ISABELA, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES LEYTE, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES NAGA, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-      ['COMMUNITIES PAMPANGA INC.,', 'COMMUNITIES PHILIPPINES, INC.'],
-
-      ['MASTERPIECE ASIA PROPERTIES', 'VISTAMALLS. INC.'],
-      ['VISTAREIT, INC. (PUBLICLY LISTED)', 'VISTAMALLS. INC.'],
-    ];
+    // const orgData = [
     var chart;
     
     var data = new google.visualization.DataTable();
       data.addColumn('string', 'Name');
       data.addColumn('string', 'Manager');
 
-      data.addRows(orgData);
+      data.addRows(this.orgData);
 
       var options = {
         allowCollapse: true,
@@ -224,7 +157,7 @@ export class RpRelatedCompaniesComponent {
           this.showModal();
           // $('#actionModal').modal('show'); // Show the modal dialog on double-click
         } else {
-          const selectedItem = orgData[chart.getSelection()[0].row];
+          const selectedItem = this.orgData[chart.getSelection()[0].row];
           this.updateNodeDetails(selectedItem);
           this.isNodeDetailsVisible = true;
           this.showPopup(); // 
@@ -252,6 +185,26 @@ export class RpRelatedCompaniesComponent {
 
       
      
+  }
+
+  async fetchOrgData() {
+    this.orgData = await getManagingCompany();
+  }
+
+  fetchAssocCompany() {
+    const dataArr: any[] = [];
+    getManagingCompany((mngComp) => {
+      mngComp.forEach((item) => {
+      // Create a new object with the desired structure and add it to dataArr
+      dataArr.push([ item.aff_com_account_name,
+        item.manager,]
+        
+      );
+    });
+    
+    }) 
+    console.log(dataArr);
+    return dataArr;
   }
 
   
