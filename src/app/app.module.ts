@@ -16,6 +16,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
+import {NgFor} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
 
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
@@ -117,6 +119,7 @@ const APP_CONTAINERS = [
     MatButtonModule,
     FormsModule,
     HttpClientModule,
+    MatSelectModule
   ],
   providers: [
     {
