@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
 import { Injectable } from '@angular/core';
+import {animate, state, style, transition, trigger} from '@angular/animations'
 
 // Services
 import { DataTransferService } from '../../services/data-transfer.service';
@@ -14,7 +15,7 @@ import { DataTransferService } from '../../services/data-transfer.service';
 // Functions Import
 import {createBankOfficer} from '../../functions-files/addBankOfficer';
 import {createBankOfficerRelationship} from '../../functions-files/addBankOfficerRelationship';
-import {getOfficers, getCompany, getOfficersRI} from '../../functions-files/getFunctions'
+import {getAffiliatesCompanyOfficers} from '../../functions-files/getFunctions'
 
 export interface Child {
   name: string;
@@ -30,6 +31,16 @@ export interface Data {
   children: String;
   motherinlaw: String,
   fatherinlaw: String,
+}
+
+export interface OffData {
+  dir_cisnumber: number;
+  fname: string;
+  mname: string,
+  lname: string,
+  fullname: string,
+  // position: String,
+  view: string,
 }
 
 interface RelatedInterest {
@@ -56,11 +67,25 @@ interface Officers {
   // related_interest: RelatedInterest[];
 }
 
+export interface affiliatesData {
+  aff_com_cis_number: number;
+  aff_com_account_name: string;
+  aff_com_company_name: string,
+  date_inserted: String,
+  view: string,
+}
 
 @Component({
   selector: 'app-rp-other-officer',
   templateUrl: './rp-other-officer.component.html',
-  styleUrls: ['./rp-other-officer.component.scss']
+  styleUrls: ['./rp-other-officer.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class RpOtherOfficerComponent implements AfterViewInit {
 
@@ -77,7 +102,13 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   tableData: Record<string, any>[] = [];
 
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'aff_managing_company_name', 'officerCount', 'date_inserted', 'view'];
+  // columnsToDisplay: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay,];
+  expandedElement: affiliatesData | null = null;
+
+  DdisplayedColumns: string[] = ['aff_com_cis_number', 'fullname', 'aff_com_company_name'];
+  affilOffdataSource = new MatTableDataSource<OffData>([]);
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -119,43 +150,80 @@ export class RpOtherOfficerComponent implements AfterViewInit {
 
 
   // Functions Below
-  updateTableData(): void {
-    getCompany((compData) => {
-      console.log(compData);
-      // Process the data to count directors related to each company
-      getOfficers((Officers) => {
-        console.log(Officers);
+  updateTableData() {
+    getAffiliatesCompanyOfficers((affilCompOff) => {
+      if (affilCompOff) {
+        // Process the data to count directors related to each company
+        const companiesWithDirectors = affilCompOff.map(company => {
+          const officers = company.officers || []; // Ensure there is a directors array
+          const officerCount = officers.length;
+          // console.log(directorCount);
+          return { ...company, officerCount, officers };
+        });
+  
+        // Set the data source for your MatTable
+        this.dataSource.data = companiesWithDirectors;
+        console.log(companiesWithDirectors);
+      }
+    });
+  
+    getAffiliatesCompanyOfficers((affilCompOff) => {
+      if (affilCompOff) {
+        // Fetch director data
+        getAffiliatesCompanyOfficers((affilCompOff) => {
+
+          // Process the data to count directors related to each company
+          const affiliatesWithDirectors: OffData[] = affilCompOff.map(company => {
+            const affiliatesOfficers = affilCompOff.filter(officer => officer.com_related === company.aff_com_account_name);
+            return { ...company, officerCount: affiliatesOfficers.length, officers: affiliatesOfficers };
+          });
+          
+          // Set the data source for your MatTable
+          console.log(affiliatesWithDirectors)
+          this.affilOffdataSource.data = affiliatesWithDirectors;
+          // Trigger change detection
+          this.changeDetectorRef.detectChanges();
+        });
+      }
+    });
+  }
+  // updateTableData(): void {
+  //   getCompany((compData) => {
+  //     console.log(compData);
+  //     // Process the data to count directors related to each company
+  //     getOfficers((Officers) => {
+  //       console.log(Officers);
         
-        const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
-        const tableData: Record<string, any>[] = [];
+  //       const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  //       const tableData: Record<string, any>[] = [];
     
-        for (const officer of Officers) {
-          const officerData = officer.Officers || [];
+  //       for (const officer of Officers) {
+  //         const officerData = officer.Officers || [];
     
-          // Find the company that matches the officer's com_related
-          const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
-          const companyName = matchingCompany ? matchingCompany.com_company_name : '';
+  //         // Find the company that matches the officer's com_related
+  //         const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
+  //         const companyName = matchingCompany ? matchingCompany.com_company_name : '';
     
-          const row: Record<string, any> = {
-            'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
-            'Company': companyName,
-            'Position': officer.position,
-            'offc_CisNumber': officer.off_cisnumber,
-          };
-          tableData.push(row);
-        }
+  //         const row: Record<string, any> = {
+  //           'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
+  //           'Company': companyName,
+  //           'Position': officer.position,
+  //           'offc_CisNumber': officer.off_cisnumber,
+  //         };
+  //         tableData.push(row);
+  //       }
         
-        this.dataSource.data = tableData;
-        // Trigger change detection
-        this.changeDetectorRef.detectChanges();
-      });
+  //       this.dataSource.data = tableData;
+  //       // Trigger change detection
+  //       this.changeDetectorRef.detectChanges();
+  //     });
 
      
-    });
+  //   });
     
 
 
-  }
+  // }
 
   
 
