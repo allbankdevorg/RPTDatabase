@@ -4,7 +4,7 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
     console.log(selectedDirCisNumber)
     console.log(riData)
     var settings = {
-      "url": "http://10.0.0.208:8090/api/addData",
+      "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
       "timeout": 0,
       "headers": {

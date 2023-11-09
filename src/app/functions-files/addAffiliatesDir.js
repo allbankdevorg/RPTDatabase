@@ -2,7 +2,7 @@ function createAffilDir(dirData, compId) {
     console.log(dirData)
     console.log(compId)
    var settings = {
-     "url": "http://10.0.0.208:8090/api/addData",
+     "url": "http://10.232.236.15:8092/api/addData",
      "method": "POST",
      "timeout": 0,
      "headers": {
