@@ -46,14 +46,41 @@ interface RelatedInterest {
 
 // Interface for the director item
 interface Officers {
+  FullName: string;
+  Company: string;
+  Position: string;
+  MothersName: string;
+  FathersName: string;
+  Spouse: string;
+  Children: string;
+  MotherinLaw: string;
+  FatherinLaw: string;
+  offc_CisNumber: number;
   // id: number;
   // com_related: string;
-  cis_number: string;
-  fname: string;
-  mname: string;
-  lname: string;
-  com_cisnumber: string;
-  // related_interest: RelatedInterest[];
+  // cis_number: string;
+  // fname: string;
+  // mname: string;
+  // lname: string;
+  // position: string;
+  // company: string;
+  // com_cisnumber: string;
+  // // related_interest: RelatedInterest[];
+  // name: string;
+  // state: string;
+  // registered: string;
+  // country: string;
+  // usage: number;
+  // period: string;
+  // payment: string;
+  // activity: string;
+  // avatar: string;
+  // status: string;
+  // color: string;
+}
+
+interface IUser {
+  
 }
 
 @Component({
@@ -80,12 +107,14 @@ export class BankofficerComponent implements AfterViewInit {
   CompName: any;
   companies:  any = [];
   tableData: Record<string, any>[] = [];
+  public officers: Officers[] = [];
 
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
   directorData: Officers[] = [];
+  
 
   // @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -134,7 +163,6 @@ export class BankofficerComponent implements AfterViewInit {
       // Process the data to count directors related to each company
       getOfficers((Officers) => {
         console.log(Officers);
-        
         const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
         const tableData: Record<string, any>[] = [];
     
@@ -154,10 +182,9 @@ export class BankofficerComponent implements AfterViewInit {
         //   tableData.push(row);
         // }
 
-        for (const officer of Officers) {
+      for (const officer of Officers) {
           // const dir_relatedId = director.dir_cisnumber;
           const officerData = officer.Officers || [];
-    
           // Find the company that matches the officer's com_related
           const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
           const companyName = matchingCompany ? matchingCompany.com_company_name : '';
@@ -187,15 +214,35 @@ export class BankofficerComponent implements AfterViewInit {
           }
           tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
           tableData.push(row);
-          
+
+          const officers: Officers[] = tableData.map(item => {
+            return {
+              FullName: item['FullName'],
+              Company: item['Company'],
+              Position: item['Position'],
+              MothersName: item['MothersName'],
+              FathersName: item['FathersName'],
+              Spouse: item['Spouse'],
+              Children: item['Children'],
+              MotherinLaw: item['MotherinLaw'],
+              FatherinLaw: item['FatherinLaw'],
+              offc_CisNumber: item['offc_CisNumber'],
+
+              // Map other properties here
+            };
+          });
+
+          this.officers = officers;
+          console.log(tableData);
       }
         
         this.dataSource.data = tableData;
+        console.log(this.officers);
         // Trigger change detection
         this.changeDetectorRef.detectChanges();
       });
-
-     
+      
+     console.log(this.tableData);
     });
     
 

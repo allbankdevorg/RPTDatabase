@@ -1,4 +1,93 @@
 <!-- Main Container -->
+<!-- <c-container fluid class="mb-3 p-0">
+  <c-row>
+    <c-col xs>
+      <c-card class="mb-4">
+        <c-card-header>Users</c-card-header>
+        <c-card-body>
+          <table
+            [hover]="true"
+            [responsive]="true"
+            [striped]="true"
+            align="middle"
+            cTable
+            class="mb-0 border"
+          >
+            <thead cTableColor="light">
+              <tr>
+                <th>
+                  Full Name
+                </th>
+                <th>Company</th>
+                <th>Position</th>
+                <th>Mother's Name</th>
+                <th>Father's Name</th>
+                <th>Spouse</th>
+                <th>Children</th>
+                <th>Mother-In-Law</th>
+                <th>Father-In-Law</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let officer of officers; index as i">
+                <td>
+                  <div>{{ officer.FullName }}</div>
+                </td>
+                <td>
+                  <div>{{ officer.Company }}</div>
+                </td>
+                <td>
+                  <div>{{ officer.Position }}</div>
+                </td>
+                <td class="mothersName">
+                  <div *ngFor="let name of officer.MothersName">
+                    <button class="sub-button" cButton color="danger" (click)="delRelationship()" *ngIf="officer.MothersName">-</button>
+                    {{ name }}<br>
+                  </div>
+                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, officer.offc_CisNumber)" (click)="setoffcRelated()" class="add-button" cButton color="primary">+</button>
+                </td>
+                <td>
+                  <div *ngFor="let name of officer.FathersName">
+                    {{ name }}<br>
+                  </div>
+                </td>
+                <td>
+                  <div *ngFor="let name of officer.Spouse">
+                    {{ name }}<br>
+                  </div>
+                </td>
+                <td>
+                  <div *ngFor="let child of officer.Children">
+                    {{ child }}<br>
+                  </div>
+                </td>
+                <td>
+                  <div *ngFor="let name of officer.MotherinLaw">
+                    {{ name }}<br>
+                  </div>
+                </td>
+                <td>
+                  <div *ngFor="let name of officer.FatherinLaw">
+                    {{ name }}<br>
+                  </div>
+                </td>
+                
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      aria-label="Select page of data">
+  </mat-paginator>
+    
+</c-container> -->
+<!-- End of Main Container -->
+
 <c-container fluid class="mb-3 p-0">
     <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
         
@@ -8,7 +97,7 @@
                 
                 [attr.colspan]="3"> 
             Officers  
-            <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="onButtonClick()" cButton>+</button>    
+            <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="onButtonClick()" cButton>+ Add</button>    
 
             </th>
         </ng-container>
