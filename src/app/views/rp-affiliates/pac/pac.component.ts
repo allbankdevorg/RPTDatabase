@@ -17,8 +17,9 @@ import { SharedService } from '../../dri/dataintegration/shared.service';
 
 // Imports for Functions
 import {createAffilDir} from '../../../functions-files/addAffiliatesDir';
+import {createAffilOff} from '../../../functions-files/addAffiliatesOfficer'
 import {createRelatedInterest} from '../../../functions-files/addRelatedInterest';
-import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, } from '../../../functions-files/getFunctions';
+import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
 
 export interface Child {
@@ -39,7 +40,7 @@ export interface RI {
 
 export interface Data {
   fullname: string;
-  company: string,
+  company: string, 
   position: String,
   mothersname?: RI[],
   fathersname?: RI[],
@@ -84,6 +85,17 @@ interface affilDirector {
   related_interest: RelatedInterest[];
 }
 
+interface affilOfficer {
+  id: number;
+  com_related: string;
+  dir_cisnumber: string;
+  fname: string;
+  mname: string;
+  lname: string;
+  position: string;
+  related_interest: RelatedInterest[];
+}
+
 
 
 // export interface Data {
@@ -112,7 +124,8 @@ export class PACComponent implements AfterViewInit {
   selectedAffilCompCISNumber: number = 0;
 
   tableData: Record<string, any>[] = []; // Define tableData as a class property
-
+  OfftableData: Record<string, any>[] = [];
+  
   // displayedColumns: string[] = ['company', 'fullname', 'position', 'mothersname', 'fathersname', 'siblings', 'spouse',
   // 'children', 'motherinlaw', 'fatherinlaw', 'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
@@ -120,15 +133,22 @@ export class PACComponent implements AfterViewInit {
 
   // / Populating the dataSource
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = [ 'Company', 'FullName', 'Position', "MothersName", "FathersName", "Siblings", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw',
+  displayedColumns: string[] = ['FullName', 'Position', "MothersName", "FathersName", "Siblings", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw',
             'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
-
+  
+  OffdataSource = new MatTableDataSource();
+  OffdisplayedColumns: string[] = ['FullName', 'Position', "MothersName", "FathersName", "Siblings", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw',
+                      'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
+          
    directorData: affilDirector[] = [];
+   officerData: affilOfficer[] = [];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+  @ViewChild(MatPaginator) paginator1!: MatPaginator;
+  @ViewChild('paginator2') paginator2!: MatPaginator;
+  
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator1;
+    this.OffdataSource.paginator = this.paginator2;
     // console.log(this.dataSource.filteredData[0].company);
   }
 
@@ -189,6 +209,7 @@ async  ngOnInit() {
   // All Functions Below
 
   updateTableData(): void {
+    // Get Directors
     getAffiliatesDirectors((affilDirData) => {
       // const directorIdToDisplay = directorId;
       console.log(affilDirData);
@@ -246,6 +267,67 @@ async  ngOnInit() {
         console.error('No directors');
       }
     });
+
+
+    // Get Officers
+    getAffiliatesOfficers((affilOffData) => {
+      // const directorIdToDisplay = directorId;
+      console.log(affilOffData);
+      // console.log('directorIdToDisplay:', directorIdToDisplay)
+      // console.log(companytoDisplay);
+      if (affilOffData) {
+          const filteredOfficers = affilOffData.filter((director) => director.com_related === this.compId);
+          console.log(filteredOfficers);
+          const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
+          'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
+          const OfftableData: Record<string, any>[] = [];
+          
+          for (const officer of filteredOfficers) {
+              // const dir_relatedId = director.dir_cisnumber;
+              const row: Record<string, any> = {
+                  'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
+                  'Company': this.Company,
+                  'Position': officer.position,
+                  'dir_CisNumber': officer.dir_cisnumber,
+                  'comp_CIS': officer.com_related,
+              };
+              console.log(this.Company);
+              // Loop through each element in the 'relationColumn' array
+              for (let index = 0; index < relationColumn.length; index++) {
+                const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
+                if (officer.related_interest) {
+                    // Filter 'director.related_interest' array to get related names based on the relation index
+                    const relatedNames = officer.related_interest
+                        .filter(related => related.relation === index + 1)
+                        // Create a full name by concatenating 'fname', 'mname', and 'lname'
+                        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
+                        // Filter out empty names (names with only whitespace)
+                        .filter(name => name.trim() !== '');
+            
+                    // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
+                    row[relationName] = relatedNames;
+                } else {
+                    // Handle the case where director.related_interest is not defined or null
+                    row[relationName] = [];
+                }
+            }
+          
+            OfftableData.push(row);
+              console.log(OfftableData);
+          }
+          
+        this.OffdataSource.data = OfftableData;
+
+        
+
+          // Trigger change detection
+          this.changeDetectorRef.detectChanges();
+      }else {
+        // Handle the case where affilDirData is null or undefined
+        console.error('No directors');
+      }
+    });
+
     
   }
 
@@ -257,6 +339,11 @@ async  ngOnInit() {
   }
 
   setAffilComp() {
+    this.selectedAffilCompCISNumber = this.compId;
+    console.log(this.selectedAffilCompCISNumber)
+  }
+
+  setAffilCompOff() {
     this.selectedAffilCompCISNumber = this.compId;
     console.log(this.selectedAffilCompCISNumber)
   }
@@ -310,6 +397,31 @@ async  ngOnInit() {
 
     this.ngZone.run(() => {
       this.dataSource.data = this.tableData;
+    });
+
+      // Trigger change detection
+    this.changeDetectorRef.detectChanges();
+    console.log(this.changeDetectorRef.detectChanges);
+    console.log(this.dataSource);
+  }
+
+  // Adding Affiliated Company Officers
+  onAffilOffSubmit() {
+    if (this.affilDrctrForm.valid) {
+      const directData = this.affilDrctrForm.value;
+      const directorId = this.sharedService.getDirectorId();
+      const companyName = this.sharedService.getCompName();
+      
+      console.log(directData);
+      // Call the JavaScript function with form data
+      createAffilOff(directData, this.compId); // Pass the entire formData object
+      this.ngOnInit();
+
+      
+    }
+
+    this.ngZone.run(() => {
+      this.OffdataSource.data = this.OfftableData;
     });
 
       // Trigger change detection
