@@ -1,8 +1,5 @@
-
-
-
 <c-container fluid class="mb-3 p-0 position-relative mt-4">
-    <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add"(click)="onButtonClick()" cButton>+</button>    
+    <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add btn-primary rounded-pill"(click)="onButtonClick()" cButton>+ Add</button>    
   
       <c-container fluid>
         <table cTable [responsive]="true" mat-table
@@ -38,6 +35,12 @@
             <td mat-cell *matCellDef="let element"> {{ element.aff_com_company_name }} </td>
           </ng-container>
 
+          <!-- Name of  Company -->
+          <ng-container matColumnDef="managing_company">
+            <th mat-header-cell *matHeaderCellDef> Managing Company </th>
+            <td mat-cell *matCellDef="let element"> {{ element.managing_company }} </td>
+          </ng-container>
+
           
             <!-- Directors Count -->
             <ng-container matColumnDef="directorCount">
@@ -55,8 +58,11 @@
           <ng-container matColumnDef="view">
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let row"> 
-              <!-- Button to view details --> 
-              <button cButton class="my-1" color="dark" (click)="onRowClick(row)">View</button>
+              <!-- Button to view details -->
+                <i class="material-icons mx-1 align-items-center" (click)="onRowClick(row)">visibility</i>
+                <i class="material-icons mx-1 align-items-center">create</i>
+                  <!-- <button cButton class="my-1 mx-1" color="dark" (click)="onRowClick(row)">View</button>
+                  <button cButton class="my-1 mx-1" color="dark">Update</button> -->
            </td>
           </ng-container>
   
@@ -119,14 +125,15 @@
           </mat-paginator>
       </c-container>
   
-  </c-container>
-  
+</c-container>
+
+
   
   <!-- Modals -->
   
-  <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal">
+  <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
     <c-modal-header>
-      <h3 cModalTitle> </h3>
+      <h3 cModalTitle>Add Affiliates Company</h3>
       <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
     </c-modal-header>
   
@@ -134,35 +141,88 @@
       <c-modal-body>
         <c-row class="align-items-center">
           
-          <c-col [sm]="3">
+          <c-col [sm]="6">
               <label cLabel="col" for="affilCisNumberM">CIS Number</label>
-              <input
+              <mat-form-field appearance="outline" [style.width.%]=100>
+                <!-- <mat-label>CIS Number</mat-label> -->
+                <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
+                type="text" placeholder="CIS"
+                formControlName="affilCisNumberM">
+                <!-- <mat-hint>{{accDinput.value.length}}/50</mat-hint> -->
+              </mat-form-field>
+              <!-- <input
                 aria-describedby="passwordHelpInline-3"cFormControl
                 id="affilCisNumberM" name="affilCisNumberM"
                 placeholder="CIS"
                 type="text"
-                formControlName="affilCisNumberM">
+                formControlName="affilCisNumberM"> -->
           </c-col>
   
-          <c-col [sm]="5">
+          <c-col [sm]="6">
               <label cLabel="col" for="accountName">Account Name</label>
-              <input
-                cFormControl
-                id="accountName"  name="accountName"
-                placeholder="Account Name"
-                type="text"
+              <mat-form-field appearance="outline" [style.width.%]=100>
+                <!-- <mat-label>Account Name</mat-label> -->
+                <input matInput #accDinput id="accountName"  name="accountName"
+                type="text" placeholder="Account Name"
                 formControlName="accountName">
+                <!-- <mat-hint>{{accDinput.value.length}}/50</mat-hint> -->
+              </mat-form-field>
+              <!-- <input
+                cFormControl
+                > -->
           </c-col>
+
+          
   
-          <c-col [sm]="4">
+          <!-- <c-col [sm]="3">
+              <label cLabel="col" for="prodT">P2M/P2E</label>
+              <select aria-label="Default select example" cSelect>
+                <option>P2M/P2E</option>
+                <option value="1">P2M</option>
+                <option value="2">P2E</option>
+              </select>
+          </c-col> -->
+        </c-row>
+
+        <c-row class="align-items-center">
+  
+          <c-col [sm]="6">
             <label cLabel="col" for="companyName">Company Name</label>
-            <input
+            <mat-form-field appearance="outline" [style.width.%]=100>
+              <!-- <mat-label>Company Name</mat-label> -->
+              <input matInput #accDinput id="companyName" name="companyName"
+              type="text" placeholder="Company Name"
+              formControlName="companyName">
+              <!-- <mat-hint>{{accDinput.value.length}}/50</mat-hint> -->
+            </mat-form-field>
+            <!-- <input
               cFormControl
               id="companyName" name="companyName"
               placeholder="Business Name"
               type="text"
-              formControlName="companyName">
+              formControlName="companyName"> -->
           </c-col>
+  
+          <c-col [sm]="6">
+            <label cLabel="col" for="MngComp">Managing Company</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select formControlName="commandControl" placeholder="Managing Company">
+                <mat-option id="MngComp">-- None --</mat-option>
+                <mat-option *ngFor="let group of commandGroups" [value]="group.value">
+                  {{ group.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- <label cLabel="col" for="MngComp">Managing Company</label>
+            <input
+              cFormControl
+              id="companyName" name="companyName"
+              placeholder="Managing Company"
+              type="text"
+              formControlName="companyName"> -->
+          </c-col>
+
+          
   
           <!-- <c-col [sm]="3">
               <label cLabel="col" for="prodT">P2M/P2E</label>
