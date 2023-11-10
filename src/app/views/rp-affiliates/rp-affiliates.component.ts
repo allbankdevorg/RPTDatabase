@@ -31,6 +31,7 @@ export interface affiliatesData {
   aff_com_cis_number: number;
   aff_com_account_name: string;
   aff_com_company_name: string,
+  manager: string;
   date_inserted: String,
   view: string,
 }
@@ -78,7 +79,7 @@ export class RpAffiliatesComponent implements AfterViewInit {
   
   affDataSource = new MatTableDataSource<affiliatesData>([]);
   ToDisplay: string[] = [];
-  columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'managing_company', 'directorCount', 'date_inserted', 'view'];
+  columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'manager', 'directorCount', 'date_inserted', 'view'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: affiliatesData | null = null;
 
@@ -135,6 +136,7 @@ export class RpAffiliatesComponent implements AfterViewInit {
   
         // Set the data source for your MatTable
         this.affDataSource.data = companiesWithDirectors;
+        // console.log(this.affDataSource)
       }
     });
   
@@ -177,7 +179,7 @@ export class RpAffiliatesComponent implements AfterViewInit {
         });
       }
       // const data = this.compData.result[0].Data;
-      console.log(mngComp);
+      // console.log(mngComp);
     })
   }
   
@@ -213,6 +215,12 @@ export class RpAffiliatesComponent implements AfterViewInit {
     console.log('row has been clicked');
     console.log('Clicked row data:', row);
     this.router.navigate(['/rp-affiliates/pac', directorId]);
+  }
+
+  editaffiliates(row: any) {
+    console.log(row);
+    // this.affForm.affilCisNumberM.value
+    
   }
 
   /// This method initializes the commandGroups array
