@@ -11,6 +11,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations'
 
 // Services
 import { DataTransferService } from '../../services/data-transfer.service';
+import { SharedservicesService } from './Services/sharedservices.service';
 
 // Functions Import
 import {createBankOfficer} from '../../functions-files/addBankOfficer';
@@ -102,7 +103,7 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   tableData: Record<string, any>[] = [];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'aff_managing_company_name', 'officerCount', 'date_inserted', 'view'];
+  columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'manager', 'officerCount', 'date_inserted', 'view'];
   // columnsToDisplay: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: affiliatesData | null = null;
@@ -126,7 +127,8 @@ export class RpOtherOfficerComponent implements AfterViewInit {
           private http: HttpClient, 
           private dataTransferService: DataTransferService,
           private changeDetectorRef: ChangeDetectorRef,
-          private ngZone: NgZone)
+          private ngZone: NgZone,
+          private sharedService: SharedservicesService )
           {
             this.boForm = this.formBuilder.group({
               boCisNumber: [''],
@@ -187,46 +189,6 @@ export class RpOtherOfficerComponent implements AfterViewInit {
       }
     });
   }
-  // updateTableData(): void {
-  //   getCompany((compData) => {
-  //     console.log(compData);
-  //     // Process the data to count directors related to each company
-  //     getOfficers((Officers) => {
-  //       console.log(Officers);
-        
-  //       const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
-  //       const tableData: Record<string, any>[] = [];
-    
-  //       for (const officer of Officers) {
-  //         const officerData = officer.Officers || [];
-    
-  //         // Find the company that matches the officer's com_related
-  //         const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
-  //         const companyName = matchingCompany ? matchingCompany.com_company_name : '';
-    
-  //         const row: Record<string, any> = {
-  //           'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
-  //           'Company': companyName,
-  //           'Position': officer.position,
-  //           'offc_CisNumber': officer.off_cisnumber,
-  //         };
-  //         tableData.push(row);
-  //       }
-        
-  //       this.dataSource.data = tableData;
-  //       // Trigger change detection
-  //       this.changeDetectorRef.detectChanges();
-  //     });
-
-     
-  //   });
-    
-
-
-  // }
-
-  
-
 
   setButtonId(id: number, comCisNumber: number) {
     this.buttonId = id;
@@ -235,9 +197,7 @@ export class RpOtherOfficerComponent implements AfterViewInit {
     console.log(id);
     
   }
-  // setButtonId(id: number) {
-  //   this.buttonId = id;
-  // }
+
 
   onBOSubmit() {
  
@@ -275,6 +235,24 @@ export class RpOtherOfficerComponent implements AfterViewInit {
     
   }
 
+  onRowClick(row: any) {
+    console.log(row)
+    // Capture the selected data and navigate to another component with it
+      const directorId = row.aff_com_cis_number; // Extract the ID from the clicked row
+      const companyName = row.aff_com_company_name;
+
+      this.sharedService.setCompName(companyName);
+      this.sharedService.setDirectorId(directorId);
+      this.sharedService.setCompanyCis(companyName);
+      console.log(directorId);
+      console.log(companyName);
+      console.log('row has been clicked');
+    // 
+    console.log('row has been clicked');
+    console.log('Clicked row data:', row);
+    this.router.navigate(['/rp-other-officer/rp-officer-ri/', directorId]);
+  }
+
 
   delRelationship() {
     // deleteRelationship()
@@ -285,87 +263,10 @@ export class RpOtherOfficerComponent implements AfterViewInit {
     // director = director.dir_related;
     // console.log(director);
   }
-  // addBankOfficer() {
-  //   createBankOfficer()
-  // }
-
-  // addBankOfficerRS() {
-  //   createBankOfficerRelationship()
-  // }
   
   
 }
 
 
 
-// const Officers_DATA: offData[] = [
-//   {
-//     cis: 111111,
-//     fname: "Officer 1",
-//     mname: "M",
-//     lname: "Lastname",
-//     position: "Sample Position 1",
-//     com_cisnumber: 1111
-//   },
-//   {
-//     cis: 222222,
-//     fname: "Officer 2",
-//     mname: "M",
-//     lname: "Lastname",
-//     position: "Sample Position 2",
-//     com_cisnumber: 2222
-//   }
-// ]
-
-
-// const offRIData: OffRIData[] = [
-//   {
-//     com_cis: 123123,
-//     fname: "Interest 1",
-//     mname: "M",
-//     lname: "Lastname",
-//     off_related: 111111,
-//     relation: 1
-//   },
-//   {
-//     com_cis: 234234,
-//     fname: "Interest 2",
-//     mname: "M",
-//     lname: "Lastname",
-//     off_related: 111111,
-//     relation: 2
-//   },
-//   {
-//     com_cis: 345345,
-//     fname: "Interest 3",
-//     mname: "M",
-//     lname: "Lastname",
-//     off_related: 111111,
-//     relation: 3
-//   },
-//   {
-//     com_cis: 456456,
-//     fname: "Interest 1",
-//     mname: "M",
-//     lname: "Lastname",
-//     off_related: 222222,
-//     relation: 4
-//   },
-//   {
-//     com_cis: 567567,
-//     fname: "Interest 2",
-//     mname: "M",
-//     lname: "Lastname",
-//     off_related: 222222,
-//     relation: 5
-//   },
-//   {
-//     com_cis: 678678,
-//     fname: "Interest 3",
-//     mname: "M",
-//     lname: "Lastname",
-//     off_related: 222222,
-//     relation: 6
-//   }
-// ]
 
