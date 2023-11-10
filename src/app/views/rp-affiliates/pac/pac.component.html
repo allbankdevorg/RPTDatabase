@@ -1,5 +1,5 @@
 <c-container fluid class="mb-3 p-0 mat-elevation-z8" tabindex="0">
-    <table cTable [responsive]="true" mat-table [dataSource]="dataSource" class="DRI-table">
+    <table cTable [striped]="true" [responsive]="true" mat-table [dataSource]="dataSource" class="DRI-table">
         <!-- Header row first group -->
     <ng-container matColumnDef="header-row-first-group">
         <th  *matHeaderCellDef cTableColor class="cTableCol"
@@ -37,10 +37,10 @@
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let motherName of element['MothersName']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.MothersName">-</button>
-                {{motherName.name}}
+                {{motherName}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(1, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -51,10 +51,10 @@
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let fathersName of element.FathersName">
                 <button class="sub-button" cButton color="danger" *ngIf="element.FathersName">-</button>
-                {{fathersName.name}}
+                {{fathersName}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
     
@@ -63,10 +63,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let sibling of element.Siblings">
                 <button class="sub-button" cButton color="danger" *ngIf="element.Siblings">-</button>
-                {{ sibling.name}}
+                {{ sibling}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(3, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
       </ng-container>
 
@@ -76,10 +76,10 @@
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let spouse of element.Spouse">
                 <button class="sub-button" cButton color="danger" *ngIf="element.Spouse">-</button>
-                {{ spouse.name}}
+                {{ spouse}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -89,10 +89,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Child of element['Children']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.Children">-</button>
-                {{ Child.name}}
+                {{ Child}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -102,10 +102,10 @@
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let motherInLaw of element['MotherinLaw']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.MotherinLaw">-</button>
-                {{ motherInLaw.name}}
+                {{ motherInLaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>        
     </ng-container>
 
@@ -115,10 +115,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let fatherInLaw of element['FatherinLaw']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.FatherinLaw">-</button>
-                {{ fatherInLaw.name}}
+                {{ fatherInLaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(7, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(7, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -128,10 +128,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Stepchild of element.stepChild">
                 <button class="sub-button" cButton color="danger" *ngIf="element.stepChild">-</button>
-                {{ Stepchild.name}}
+                {{ Stepchild}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -141,10 +141,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let SonDaughterinlaw of element.sonDaughterInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.sonDaughterInLaw">-</button>
-                {{ SonDaughterinlaw.name}}
+                {{ SonDaughterinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -154,10 +154,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Grandparents of element.grandParents">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandParents">-</button>
-                {{ Grandparents.name}}
+                {{ Grandparents}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(10, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(10, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>        
     </ng-container>
 
@@ -167,10 +167,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Grandparentsinlaw of element.grandParentsInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandParentsInLaw">-</button>
-                {{ Grandparentsinlaw.name}}
+                {{ Grandparentsinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(11, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(11, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -180,10 +180,10 @@
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.sistersInLaw">-</button>
-                {{ Sistersinlaw.name}}
+                {{ Sistersinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(12, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(12, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -193,10 +193,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Brothersinlaw of element.brothersInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.brothersInLaw">-</button>
-                {{ Brothersinlaw.name}}
+                {{ Brothersinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(13, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(13, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>      
     </ng-container>
     
@@ -206,10 +206,10 @@
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Grandchildren of element.grandChildren">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandChildren">-</button>
-                {{ Grandchildren.name}}
+                {{ Grandchildren}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(14, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(14, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>  
       </ng-container>
 
@@ -219,10 +219,10 @@
         <td mat-cell *matCellDef="let element" class="rowdata">
             <ng-container *ngFor="let Grandchildreninlaw of element.grandChildrenInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandChildrenInLaw">-</button>
-                {{ Grandchildreninlaw.name}}
+                {{ Grandchildreninlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(15, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(15, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>      
     </ng-container>
 
@@ -248,7 +248,7 @@ aria-label="Select page of data" sticky>
 
 
 <c-container fluid class="mb-3 p-0 mat-elevation-z8" tabindex="0">
-    <table cTable [responsive]="true" mat-table [dataSource]="OffdataSource" class="DRI-table">
+    <table cTable [striped]="true" [responsive]="true" mat-table [dataSource]="OffdataSource" class="DRI-table">
         <!-- Header row first group -->
     <ng-container matColumnDef="header-row-first-group" sticky>
         <th  *matHeaderCellDef cTableColor class="cTableCol"
@@ -286,10 +286,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let motherName of element['MothersName']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.MothersName">-</button>
-                {{motherName.name}}
+                {{motherName}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(1, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -300,10 +300,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let fathersName of element.FathersName">
                 <button class="sub-button" cButton color="danger" *ngIf="element.FathersName">-</button>
-                {{fathersName.name}}
+                {{fathersName}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(2, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
     
@@ -312,10 +312,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let sibling of element.Siblings">
                 <button class="sub-button" cButton color="danger" *ngIf="element.Siblings">-</button>
-                {{ sibling.name}}
+                {{ sibling}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(3, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
       </ng-container>
 
@@ -325,10 +325,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let spouse of element.Spouse">
                 <button class="sub-button" cButton color="danger" *ngIf="element.Spouse">-</button>
-                {{ spouse.name}}
+                {{ spouse}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(4, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -338,10 +338,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Child of element['Children']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.Children">-</button>
-                {{ Child.name}}
+                {{ Child}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(5, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -351,10 +351,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let motherInLaw of element['MotherinLaw']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.MotherinLaw">-</button>
-                {{ motherInLaw.name}}
+                {{ motherInLaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(6, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>        
     </ng-container>
 
@@ -364,10 +364,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let fatherInLaw of element['FatherinLaw']">
                 <button class="sub-button" cButton color="danger" *ngIf="element.FatherinLaw">-</button>
-                {{ fatherInLaw.name}}
+                {{ fatherInLaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(7, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(7, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -377,10 +377,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Stepchild of element.stepChild">
                 <button class="sub-button" cButton color="danger" *ngIf="element.stepChild">-</button>
-                {{ Stepchild.name}}
+                {{ Stepchild}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(8, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -390,10 +390,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let SonDaughterinlaw of element.sonDaughterInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.sonDaughterInLaw">-</button>
-                {{ SonDaughterinlaw.name}}
+                {{ SonDaughterinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(9, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -403,10 +403,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Grandparents of element.grandParents">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandParents">-</button>
-                {{ Grandparents.name}}
+                {{ Grandparents}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(10, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(10, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>        
     </ng-container>
 
@@ -416,10 +416,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Grandparentsinlaw of element.grandParentsInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandParentsInLaw">-</button>
-                {{ Grandparentsinlaw.name}}
+                {{ Grandparentsinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(11, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(11, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>
     </ng-container>
 
@@ -429,10 +429,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element"> 
             <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.sistersInLaw">-</button>
-                {{ Sistersinlaw.name}}
+                {{ Sistersinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(12, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(12, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>    
     </ng-container>
 
@@ -442,10 +442,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Brothersinlaw of element.brothersInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.brothersInLaw">-</button>
-                {{ Brothersinlaw.name}}
+                {{ Brothersinlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(13, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(13, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>      
     </ng-container>
     
@@ -455,10 +455,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element">
             <ng-container *ngFor="let Grandchildren of element.grandChildren">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandChildren">-</button>
-                {{ Grandchildren.name}}
+                {{ Grandchildren}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(14, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(14, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>  
       </ng-container>
 
@@ -468,10 +468,10 @@ aria-label="Select page of data" sticky>
         <td mat-cell *matCellDef="let element" class="rowdata">
             <ng-container *ngFor="let Grandchildreninlaw of element.grandChildrenInLaw">
                 <button class="sub-button" cButton color="danger" *ngIf="element.grandChildrenInLaw">-</button>
-                {{ Grandchildreninlaw.name}}
+                {{ Grandchildreninlaw}}
                 <br>
             </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(15, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+            <button [cModalToggle]="OffrelationShipModal.id" (click)="setButtonIds(15, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
         </td>      
     </ng-container>
 
@@ -574,91 +574,14 @@ aria-label="Select page of data" sticky>
         
 </c-modal>
 
-<!-- Add Officers Modal -->
-<c-modal #officerModal backdrop="static" id="officerModal" size="lg">
-    <c-modal-header>
-      <h3 cModalTitle>Affiliates Officer</h3>
-      <button [cModalToggle]="officerModal.id" cButtonClose></button>
-    </c-modal-header>
-  
-    <form cForm class="mb-2" [formGroup]="affilDrctrForm" (ngSubmit)="onAffilOffSubmit()">
-      <c-modal-body>
-        <c-row class="align-items-center">
-
-
-            <c-col [sm]="4">
-              <label cLabel="col" for="affildcisNumber">CIS Number</label>
-              <!-- <input
-                aria-describedby="passwordHelpInline-3"cFormControl
-                id="comp_CIS" name="comp_CIS"
-                placeholder="comp_CIS"
-                type="text" [value]="selectedAffilCompCISNumber" hidden> -->
-              <input
-                aria-describedby="passwordHelpInline-3"cFormControl
-                id="affildcisNumber" name="affildcisNumber"
-                placeholder="CIS Number"
-                type="text" formControlName="affildcisNumber">
-            </c-col>  
-          
-            <c-col [sm]="4">
-                <label cLabel="col" for="affildFirstName">First Name</label>
-                <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
-                  id="affildFirstName" name="affildFirstName"
-                  placeholder="First Name"
-                  type="text" formControlName="affildFirstName">
-            </c-col>
-    
-            <c-col [sm]="4">
-                <label cLabel="col" for="affildMiddleName">Middle Name</label>
-                <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
-                  id="affildMiddleName" name="affildMiddleName"
-                  placeholder="Middle Name"
-                  type="text" formControlName="affildMiddleName">
-            </c-col>
-
-            
-    
-    
-        </c-row>
-
-        <c-row class="align-items-center">
-          
-          <c-col [sm]="6">
-            <label cLabel="col" for="affildLastName">Last Name</label>
-            <input
-              aria-describedby="passwordHelpInline-3"cFormControl
-              id="affildLastName" name="affildLastName"
-              placeholder="Last Name"
-              type="text" formControlName="affildLastName">
-        </c-col>
-          
-          <c-col [sm]="6">
-            <label cLabel="col" for="affildPosition">Position</label>
-            <input
-              cFormControl
-              id="affildPosition" name="affildPosition"
-              placeholder="Position"
-              type="text" formControlName="affildPosition">
-          </c-col>
-        </c-row>
-      </c-modal-body>
-      <c-modal-footer>
-        <button type="submit" cButton color="success">Proceed</button>
-      </c-modal-footer>
-    </form>
-        
-</c-modal>
-
-<!-- Start of Modal for Related Interest -->
-<c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
+<!-- Start of Modal for Dir Related Interest -->
+<c-modal #DirrelationShipModal backdrop="static" id="DirrelationShipModal" size="lg">
     <c-modal-header>
       <h3 cModalTitle> Relationship </h3>
-      <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
+      <button [cModalToggle]="DirrelationShipModal.id" cButtonClose></button>
     </c-modal-header>
   
-    <form cForm class="mb-2" [formGroup]="affilDirRiForm" (ngSubmit)="onRISubmit()">
+    <form cForm class="mb-2" [formGroup]="affilDirRiForm" (ngSubmit)="onDirRISubmit()">
       <c-modal-body>
         <c-row class="align-items-center">
           
@@ -670,7 +593,149 @@ aria-label="Select page of data" sticky>
                 aria-describedby="passwordHelpInline-3"cFormControl
                 id="dir_CIS" name="dir_CIS"
                 placeholder="dir_CIS"
-                type="text" [value]="selectedDirCisNumber || ''" hidden>
+                type="text" [value]="selectedOffCisNumber || ''" hidden>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="riCisNumber" name="riCisNumber"
+                  placeholder="CIS Number"
+                  type="text" formControlName="riCisNumber">
+              </c-col>
+          
+                <c-col [sm]="6">
+                    <label cLabel="col" for="riFirstName">First Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="riFirstName" name="riFirstName"
+                      placeholder="First Name"
+                      type="text" formControlName="riFirstName">
+                </c-col>
+            </c-row>
+            
+            <c-row class="align-items-center">
+                <c-col [sm]="6">
+                    <label cLabel="col" for="riMiddleName">Middle Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="riMiddleName" name="riMiddleName"
+                      placeholder="Middle Name"
+                      type="text" formControlName="riMiddleName">
+                </c-col>
+    
+                <c-col [sm]="6">
+                    <label cLabel="col" for="riLastName">Last Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="riLastName" name="riLastName"
+                      placeholder="Last Name"
+                      type="text" formControlName="riLastName">
+                </c-col>
+        
+        
+            </c-row>
+  
+  
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button type="submit" cButton color="success">Proceed</button>
+      </c-modal-footer>
+    </form>
+        
+</c-modal>
+
+<!-- Add Officers Modal -->
+<c-modal #officerModal backdrop="static" id="officerModal" size="lg">
+    <c-modal-header>
+      <h3 cModalTitle>Affiliates Officer</h3>
+      <button [cModalToggle]="officerModal.id" cButtonClose></button>
+    </c-modal-header>
+  
+    <form cForm class="mb-2" [formGroup]="affilOfficerForm" (ngSubmit)="onAffilOffSubmit()">
+      <c-modal-body>
+        <c-row class="align-items-center">
+
+
+            <c-col [sm]="4">
+              <label cLabel="col" for="affiloffcisNumber">CIS Number</label>
+              <!-- <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="comp_CIS" name="comp_CIS"
+                placeholder="comp_CIS"
+                type="text" [value]="selectedAffilCompCISNumber" hidden> -->
+              <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="affiloffcisNumber" name="affiloffcisNumber"
+                placeholder="CIS Number"
+                type="text" formControlName="affiloffcisNumber">
+            </c-col>  
+          
+            <c-col [sm]="4">
+                <label cLabel="col" for="affiloffFirstName">First Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="affiloffFirstName" name="affiloffFirstName"
+                  placeholder="First Name"
+                  type="text" formControlName="affiloffFirstName">
+            </c-col>
+    
+            <c-col [sm]="4">
+                <label cLabel="col" for="affiloffMiddleName">Middle Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="affiloffMiddleName" name="affiloffMiddleName"
+                  placeholder="Middle Name"
+                  type="text" formControlName="affiloffMiddleName">
+            </c-col>
+        </c-row>
+
+        <c-row class="align-items-center">
+          <c-col [sm]="6">
+            <label cLabel="col" for="affiloffLastName">Last Name</label>
+            <input
+              aria-describedby="passwordHelpInline-3"cFormControl
+              id="affiloffLastName" name="affiloffLastName"
+              placeholder="Last Name"
+              type="text" formControlName="affiloffLastName">
+          </c-col>
+          
+          <c-col [sm]="6">
+            <label cLabel="col" for="affiloffPosition">Position</label>
+            <input
+                cFormControl
+                id="affiloffPosition" name="affiloffPosition"
+                placeholder="Position"
+                type="text" formControlName="affiloffPosition">
+          </c-col>
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button type="submit" cButton color="success">Proceed</button>
+      </c-modal-footer>
+    </form>
+        
+</c-modal>
+
+
+<!-- Start of Modal for Officer Related Interest -->
+<c-modal #OffrelationShipModal backdrop="static" id="OffrelationShipModal" size="lg">
+    <c-modal-header>
+      <h3 cModalTitle> Relationship </h3>
+      <button [cModalToggle]="OffrelationShipModal.id" cButtonClose></button>
+    </c-modal-header>
+  
+    <form cForm class="mb-2" [formGroup]="affilOfficerRIForm" (ngSubmit)="onOffRISubmit()">
+      <c-modal-body>
+        <c-row class="align-items-center">
+          
+            <c-row class="align-items-center">
+
+              <c-col [sm]="6">
+                <label cLabel="col" for="riCisNumber">CIS Number</label>
+                <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="dir_CIS" name="dir_CIS"
+                placeholder="dir_CIS"
+                type="text" [value]="selectedOffCisNumber || ''" hidden>
                 <input
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="riCisNumber" name="riCisNumber"
