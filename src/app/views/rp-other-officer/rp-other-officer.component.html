@@ -1,9 +1,9 @@
 <!-- Main Container -->
 <c-container fluid class="mb-3 p-0 position-relative mt-4">
-  <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add btn-primary rounded-pill"(click)="onButtonClick()" cButton>+ Add</button>    
+  <!-- <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add btn-primary rounded-pill"(click)="onButtonClick()" cButton>+ Add</button>     -->
 
     <c-container fluid>
-      <table cTable [responsive]="true" mat-table
+      <table cTable [responsive]="true" [striped]="true" mat-table
             [dataSource]="dataSource" multiTemplateDataRows
             class="mat-elevation-z8 DRI-table">
 
@@ -37,9 +37,9 @@
         </ng-container>
 
         <!-- Name of  Company -->
-        <ng-container matColumnDef="aff_managing_company_name">
+        <ng-container matColumnDef="manager">
           <th mat-header-cell *matHeaderCellDef> Managing Company </th>
-          <td mat-cell *matCellDef="let element"> {{ element.aff_managing_company_name }} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.manager }} </td>
         </ng-container>
 
         
@@ -60,7 +60,7 @@
           <th mat-header-cell *matHeaderCellDef> Action </th>
           <td mat-cell *matCellDef="let row"> 
             <!-- Button to view details -->
-              <i class="material-icons mx-1 align-items-center">visibility</i>
+              <i class="material-icons mx-1 align-items-center" (click)="onRowClick(row)">visibility</i>
               <i class="material-icons mx-1 align-items-center">create</i>
                 <!-- <button cButton class="my-1 mx-1" color="dark" (click)="onRowClick(row)">View</button>
                 <button cButton class="my-1 mx-1" color="dark">Update</button> -->
