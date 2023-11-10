@@ -71,6 +71,11 @@ const routes: Routes = [
           import('./views/rp-other-officer/rp-other-officer.module').then((m) => m.RpOtherOfficerModule)
       },
       {
+        path: 'rp-other-officer/rp-officer-ri',
+        loadChildren: () =>
+          import('./views/rp-other-officer/rp-officer-ri/rp-officer-ri.module').then((m) => m.RpOfficerRIModule)
+      },
+      {
         path: 'dir2nd-deg-relatives',
         loadChildren: () =>
           import('./views/dir2nd-deg-relatives/dir2nd-deg-relatives.module').then((m) => m.DIR2ndDegRelativesModule)

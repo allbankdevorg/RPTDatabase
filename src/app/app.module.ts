@@ -65,6 +65,7 @@ import { PACComponent } from './views/rp-affiliates/pac/pac.component';
 import { RpAffiliatesComponent } from './views/rp-affiliates/rp-affiliates.component';
 import { RpRelatedCompaniesComponent } from './views/rp-related-companies/rp-related-companies.component';
 import { RpOtherOfficerComponent } from './views/rp-other-officer/rp-other-officer.component';
+import { RpOfficerRIComponent } from './views/rp-other-officer/rp-officer-ri/rp-officer-ri.component';
 import { DIR2ndDegRelativesComponent } from './views/dir2nd-deg-relatives/dir2nd-deg-relatives.component';
 import { Officer2ndDegRelativesComponent } from './views/officer2nd-deg-relatives/officer2nd-deg-relatives.component'
 import { ResizableDirective } from './views/rp-related-companies/rp-related-companies.component';
@@ -77,7 +78,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
+  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
     ResizableDirective],
   imports: [
     BrowserModule,
