@@ -12,7 +12,6 @@ import { IconModule } from '@coreui/icons-angular';
 
 @NgModule({
   declarations: [
-    LoginComponent,
     RegisterComponent,
     Page404Component,
     Page500Component
