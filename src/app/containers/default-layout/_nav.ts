@@ -55,16 +55,22 @@ export const navItems: INavData[] = [
             url: '/rp-other-officer',
             iconComponent: { name: '' },
           },
-          // {
-          //   name: 'DIR 2nd Degree Relatives',
-          //   url: '/dir2nd-deg-relatives',
-          //   iconComponent: { name: '' },
-          // },
-          // {
-          //   name: 'Officer 2nd Deg Relatives',
-          //   url: '/officer2nd-deg-relatives',
-          //   iconComponent: { name: '' },
-          // },
+        ]
+  },
+  {
+    name: 'Maintenance',
+    url: '/',
+    children: [
+          {
+          name: 'Users',
+          url: '/usersmanagement',
+          iconComponent: { name: '' },
+          },
+          {
+            name: 'Settings',
+            url: '/settingsmanagement',
+            iconComponent: { name: '' }
+          },
         ]
 },
  
