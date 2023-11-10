@@ -70,6 +70,11 @@ import { DIR2ndDegRelativesComponent } from './views/dir2nd-deg-relatives/dir2nd
 import { Officer2ndDegRelativesComponent } from './views/officer2nd-deg-relatives/officer2nd-deg-relatives.component'
 import { ResizableDirective } from './views/rp-related-companies/rp-related-companies.component';
 import { DraggableDirective } from './views/rp-related-companies/rp-related-companies.component';
+import { LoginComponent } from './views/pages/login/login.component';
+import { UsersComponent} from './views/maintenance/users/users.component';
+import { SettingsComponent} from './views/maintenance/settings/settings.component';
+import { UsersmanagementComponent } from './views/usersmanagement/usersmanagement.component';
+import { SettingsmanagementComponent } from './views/settingsmanagement/settingsmanagement.component';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -79,7 +84,7 @@ const APP_CONTAINERS = [
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective],
+    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, UsersmanagementComponent, SettingsmanagementComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

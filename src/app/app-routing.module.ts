@@ -86,6 +86,26 @@ const routes: Routes = [
           import('./views/officer2nd-deg-relatives/officer2nd-deg-relatives.module').then((m) => m.Officer2ndDegRelativesModule)
       },
       {
+        path: 'usersmanagement',
+        loadChildren: () =>
+          import('./views/usersmanagement/usersmanagement.module').then((m) => m.UsersmanagementModule)
+      },
+      {
+        path: 'settingsmanagement',
+        loadChildren: () =>
+          import('./views/settingsmanagement/settingsmanagement.module').then((m) => m.SettingsmanagementModule)
+      },
+      {
+        path: 'maintenance',
+        loadChildren: () =>
+          import('./views/maintenance/maintenance.module').then((m) => m.MaintenanceModule)
+      },
+      {
+        path: 'maintenance/users',
+        loadChildren: () =>
+          import('./views/maintenance/users/users.module').then((m) => m.UsersModule)
+      },
+      {
         path: 'icons',
         loadChildren: () =>
           import('./views/icons/icons.module').then((m) => m.IconsModule)
