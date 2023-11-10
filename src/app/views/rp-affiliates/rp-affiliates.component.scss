@@ -109,3 +109,8 @@ tr.example-detail-row {
       cursor: pointer;
     }
     
+    .mat-column-aff_com_cis_number, .mat-column-fullname, .mat-column-aff_com_company_name {
+      width: 33%;
+      text-align: center;
+      padding: 10px 24px;
+    }
