@@ -106,7 +106,7 @@ export class DraggableDirective {
   ],
 })
 
-export class RpRelatedCompaniesComponent {
+export class RpRelatedCompaniesComponent implements OnInit {
   sharedData: string | any;
   private chart: any;
   private lastClickTime = 0;
