@@ -6,7 +6,8 @@ import { rpOtherOfficerRoutingModule } from './rp-other-officer-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     rpOtherOfficerRoutingModule
