@@ -18,7 +18,8 @@ import { SharedService } from '../../dri/dataintegration/shared.service';
 // Imports for Functions
 import {createAffilDir} from '../../../functions-files/addAffiliatesDir';
 import {createAffilOff} from '../../../functions-files/addAffiliatesOfficer'
-import {createRelatedInterest} from '../../../functions-files/addRelatedInterest';
+import {createRPDIrectorsRelatedInterest} from '../../../functions-files/addRPDirectorsRI';
+import {createAffilOffRI} from '../../../functions-files/addAffiliatesOfficerRI'
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
 
@@ -115,8 +116,11 @@ export class PACComponent implements AfterViewInit {
   sharedData: string | any;
   affilDrctrForm: FormGroup;
   affilDirRiForm: FormGroup;
+  affilOfficerForm: FormGroup;
+  affilOfficerRIForm: FormGroup;
   buttonId: number = 0;
   selectedDirCisNumber: number = 0;
+  selectedOffCisNumber: number = 0;
   selectedCompCISNumber: number = 0;
   compId: any;
   compN: string = this.sharedService.getCompName();
@@ -175,6 +179,19 @@ export class PACComponent implements AfterViewInit {
             riMiddleName: [''],
             riLastName: [''],
           });
+          this.affilOfficerForm = this.formBuilder.group({
+            affiloffcisNumber: [''],
+            affiloffFirstName: [''],
+            affiloffMiddleName: [''],
+            affiloffLastName: [''],
+            affiloffPosition: [''],
+          });
+          this.affilOfficerRIForm = this.formBuilder.group({
+            riCisNumber: [''],
+            riFirstName: [''],
+            riMiddleName: [''],
+            riLastName: [''],
+          });
           this.route.params.subscribe(params => {
             this.compId = params['id'];
             const companyName = this.sharedService.getCompName();
@@ -182,7 +199,7 @@ export class PACComponent implements AfterViewInit {
             getAffiliatesCompany((affilComp) => {
                 // Process the data to count directors related to each company
                 const companytoDisplay = companyName;
-                console.log(affilComp);
+                // console.log(affilComp);
                 const filteredCompany = affilComp.filter((company) => company.aff_com_cis_number === this.compId);
                 for (const company of filteredCompany ) {
                   const Company = company.aff_com_company_name;
@@ -212,12 +229,12 @@ async  ngOnInit() {
     // Get Directors
     getAffiliatesDirectors((affilDirData) => {
       // const directorIdToDisplay = directorId;
-      console.log(affilDirData);
+      // console.log(affilDirData);
       // console.log('directorIdToDisplay:', directorIdToDisplay)
       // console.log(companytoDisplay);
       if (affilDirData) {
           const filteredDirectors = affilDirData.filter((director) => director.com_related === this.compId);
-          console.log(filteredDirectors);
+          // console.log(filteredDirectors);
           const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const tableData: Record<string, any>[] = [];
@@ -231,7 +248,7 @@ async  ngOnInit() {
                   'dir_CisNumber': director.dir_cisnumber,
                   'comp_CIS': director.com_related,
               };
-              console.log(this.Company);
+              // console.log(this.Company);
               // Loop through each element in the 'relationColumn' array
               for (let index = 0; index < relationColumn.length; index++) {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
@@ -253,7 +270,7 @@ async  ngOnInit() {
             }
           
               tableData.push(row);
-              console.log(tableData);
+              // console.log(tableData);
           }
           
         this.dataSource.data = tableData;
@@ -272,12 +289,12 @@ async  ngOnInit() {
     // Get Officers
     getAffiliatesOfficers((affilOffData) => {
       // const directorIdToDisplay = directorId;
-      console.log(affilOffData);
+      // console.log(affilOffData);
       // console.log('directorIdToDisplay:', directorIdToDisplay)
       // console.log(companytoDisplay);
       if (affilOffData) {
           const filteredOfficers = affilOffData.filter((director) => director.com_related === this.compId);
-          console.log(filteredOfficers);
+          // console.log(filteredOfficers);
           const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const OfftableData: Record<string, any>[] = [];
@@ -288,10 +305,10 @@ async  ngOnInit() {
                   'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
                   'Company': this.Company,
                   'Position': officer.position,
-                  'dir_CisNumber': officer.dir_cisnumber,
+                  'off_CisNumber': officer.off_cisnumber,
                   'comp_CIS': officer.com_related,
               };
-              console.log(this.Company);
+              // console.log(this.Company);
               // Loop through each element in the 'relationColumn' array
               for (let index = 0; index < relationColumn.length; index++) {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
@@ -313,7 +330,7 @@ async  ngOnInit() {
             }
           
             OfftableData.push(row);
-              console.log(OfftableData);
+              // console.log(OfftableData);
           }
           
         this.OffdataSource.data = OfftableData;
@@ -332,11 +349,18 @@ async  ngOnInit() {
   }
 
   setButtonId(id: number, dirCisNumber: number) {
-    // this.buttonId = id;
-    // this.selectedDirCisNumber = dirCisNumber;
+     this.buttonId = id;
+     this.selectedDirCisNumber = dirCisNumber;
     console.log(dirCisNumber);
-    
+    console.log(id);
   }
+
+  setButtonIds(id: number, OffCisNumber: number) {
+    this.buttonId = id;
+    this.selectedOffCisNumber = OffCisNumber;
+   console.log(OffCisNumber);
+   console.log(id);
+ }
 
   setAffilComp() {
     this.selectedAffilCompCISNumber = this.compId;
@@ -354,7 +378,7 @@ async  ngOnInit() {
   }
 
   //Adding Related Interest 
-  onRISubmit() {
+  onDirRISubmit() {
     const directorId = this.sharedService.getDirectorId();
     const companyName = this.sharedService.getCompName();
     
@@ -362,7 +386,32 @@ async  ngOnInit() {
       const riData = this.affilDirRiForm.value;
       
       // Call the JavaScript function with form data
-      createRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber); // Pass the entire formData object
+      createRPDIrectorsRelatedInterest(riData, this.buttonId, this.selectedOffCisNumber); // Pass the entire formData object
+      
+      this.ngOnInit();
+
+      
+    }
+
+    this.ngZone.run(() => {
+      // this.dataSource.data = this.tableData;
+    });
+    
+      // Trigger change detection
+    this.changeDetectorRef.detectChanges();
+    console.log(this.changeDetectorRef.detectChanges);
+    console.log(this.dataSource);
+  }
+
+  onOffRISubmit() {
+    const directorId = this.sharedService.getDirectorId();
+    const companyName = this.sharedService.getCompName();
+    
+    if (this.affilDirRiForm.valid) {
+      const OffriData = this.affilOfficerRIForm.value;
+      
+      // Call the JavaScript function with form data
+      createAffilOffRI(OffriData, this.buttonId, this.selectedOffCisNumber); // Pass the entire formData object
       
       this.ngOnInit();
 
@@ -407,17 +456,17 @@ async  ngOnInit() {
 
   // Adding Affiliated Company Officers
   onAffilOffSubmit() {
-    if (this.affilDrctrForm.valid) {
-      const directData = this.affilDrctrForm.value;
+    if (this.affilOfficerForm.valid) {
+      const offData = this.affilOfficerForm.value;
       const directorId = this.sharedService.getDirectorId();
       const companyName = this.sharedService.getCompName();
       
-      console.log(directData);
+      // console.log(directData);
       // Call the JavaScript function with form data
-      createAffilOff(directData, this.compId); // Pass the entire formData object
+      createAffilOff(offData, this.compId); // Pass the entire formData object
       this.ngOnInit();
 
-      
+      console.log(offData);
     }
 
     this.ngZone.run(() => {
@@ -426,54 +475,32 @@ async  ngOnInit() {
 
       // Trigger change detection
     this.changeDetectorRef.detectChanges();
-    console.log(this.changeDetectorRef.detectChanges);
-    console.log(this.dataSource);
+    // console.log(this.changeDetectorRef.detectChanges);
+    // console.log(this.OffdataSource);
   }
+  // onAffilOffSubmit() {
+  //   if (this.affilOfficerForm.valid) {
+  //     const directData = this.affilOfficerForm.value;
+  //     const directorId = this.sharedService.getDirectorId();
+  //     const companyName = this.sharedService.getCompName();
+      
+  //     console.log(directData);
+  //     // Call the JavaScript function with form data
+  //     createAffilOff(directData, this.compId); // Pass the entire formData object
+  //     this.ngOnInit();
+
+      
+  //   }
+
+  //   this.ngZone.run(() => {
+  //     this.OffdataSource.data = this.OfftableData;
+  //   });
+
+  //     // Trigger change detection
+  //   this.changeDetectorRef.detectChanges();
+  //   // console.log(this.changeDetectorRef.detectChanges);
+  //   // console.log(this.OffdataSource);
+  // }
 
 }
 
-
-
-// Data Sets
-// const ELEMENT_DATA: Data[] = [
-//   {
-//     company: 'Prescription Holdings Limited, Inc.',
-//     fullname: "Avelina Caparros Pascua",
-//     position: "UBO",
-//     mothersname: [
-//       { name: 'Rosario I. Caparros (+)'}
-//     ],
-//     fathersname: [
-//       { name: 'Gerardo O. Caparros (+)'}
-//     ],
-//     siblings: [
-//       {name: 'Eugenio I. Caparros (+)'},
-//       {name: 'Carmelo I. Caparros (+)'},
-//       {name: 'Carmelo I. Caparros (+)'}
-//     ],
-//     spouse: [
-//       {name: 'Deogracias C. Pascua, Jr.'}
-//     ],
-//     children: [
-//       { name: 'Zarah Angeline P. Dilig' },
-//     ],
-//     motherinlaw: [
-//       {name: 'Estelita Centeno Pascua (+)'}
-//     ],
-//     fatherinlaw: [
-//       {name: 'Deogracias D. Pascua, Sr. (+)'}
-//     ],
-//     stepChild: [],
-//     sonDaughterInLaw: [
-//       {name: 'Grego C. Dilig'}],
-//     grandParents: [],
-//     grandParentsInLaw: [],
-//     sistersInLaw: [],
-//     brothersInLaw: [],
-//     grandChildren: [
-//       {name: 'Jamie Sky P. Dilig'},
-//       {name: 'Lucas Zac P. Dilig'}
-//     ],
-//     grandChildrenInLaw: [],
-//   },
-// ];
