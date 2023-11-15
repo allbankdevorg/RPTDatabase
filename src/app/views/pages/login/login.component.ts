@@ -37,21 +37,22 @@ export class LoginComponent implements OnInit {
   // }
 
   ngOnInit() {
-    this.otpForm = this.formBuilder.group({
-      otp1: [''],
-      otp2: [''],
-      otp3: [''],
-      otp4: [''],
-      otp5: [''],
-      otp6: [''],
-      otp7: ['']
-      // Add more form controls as needed
-    });
+    // this.otpForm = this.formBuilder.group({
+    //   otp1: [''],
+    //   otp2: [''],
+    //   otp3: [''],
+    //   otp4: [''],
+    //   otp5: [''],
+    //   otp6: [''],
+    //   otp7: ['']
+    //   // Add more form controls as needed
+    // });
 
-    this.otpForm.valueChanges.subscribe(() => {
-      this.updateOtpValue();
-    });
+    // this.otpForm.valueChanges.subscribe(() => {
+    //   this.updateOtpValue();
+    // });
   }
+
   onNumInput(event: any, index: number) {
     const value = event.target.value;
     let currentIndex = this.getInputField(index + 1);
