@@ -1,248 +1,275 @@
+<c-container fluid class="mb-3 p-0 position-relative">
+    <!-- Button to open a modal -->
+    <c-row>
+         <c-col xs>
+            <c-card class="mb-4">
+            <c-card-header class="d-flex justify-content-between align-items-center"><h2>{{Company}} (Officers)</h2>
+                <!-- <button [cModalToggle]="officerModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="setAffilCompOff()" cButton>+ Add</button> -->
+                <button [cModalToggle]="officerModal.id" mat-fab extended color="primary"  (click)="setAffilCompOff()">
+                    <mat-icon>add</mat-icon>
+                    ADD
+                </button>
+            </c-card-header>
+            <c-card-body>
+                <c-container fluid>
+                    <table cTable [responsive]="true" [striped]="true" mat-table [dataSource]="OffdataSource" class="DRI-table">
+                        <!-- Header row first group -->
+                    <!-- <ng-container matColumnDef="header-row-first-group" sticky>
+                        <th  *matHeaderCellDef cTableColor class="cTableCol"
+                            
+                            [attr.colspan]="18"> 
+                        {{Company}} (Officers)
+                        </th>
+                    </ng-container> -->
+                
+                
+                
+                    <!-- Company Column -->
+                    <!-- <ng-container matColumnDef="Company" sticky>
+                        <th mat-header-cell *matHeaderCellDef class="mat-header-cell-company"> Company </th>
+                        <td mat-cell *matCellDef="let element" class="mat-cell-company"> {{element.Company}} </td>
+                    </ng-container> -->
+                
+                    <!-- Full Name Column -->
+                    <ng-container matColumnDef="FullName" sticky>
+                        <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            {{element.FullName}} 
+                            <button mat-icon-button color="warn" class="add-button" (click)="delAffilOfficer(element, element.comp_CIS, element.off_CisNumber)" aria-label="Delete Users">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="Position" sticky>
+                        <th mat-header-cell *matHeaderCellDef> Position </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
+                    </ng-container>
+                
+                
+                    <!-- Mother's Column -->
+                    <ng-container matColumnDef="MothersName">
+                        <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <ng-container *ngFor="let motherName of element['MothersName']">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, motherName.cisNumber, motherName.offRelated)" *ngIf="element.MothersName">-</button>
+                                {{motherName.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>
+                    </ng-container>
+                
+                     <!-- Father's Column -->
+                    <ng-container matColumnDef="FathersName">
+                        <th mat-header-cell *matHeaderCellDef> Father's Name </th>
+                        <!-- <td mat-cell *matCellDef="let element"> {{element.fathersname}} </td> -->
+                        <td mat-cell *matCellDef="let element"> 
+                            <ng-container *ngFor="let fathersName of element.FathersName">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, fathersName.cisNumber, fathersName.offRelated)" *ngIf="element.FathersName">-</button>
+                                {{fathersName.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="Siblings">
+                        <th mat-header-cell *matHeaderCellDef> Siblings </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let sibling of element.Siblings">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, sibling.cisNumber, sibling.offRelated)" *ngIf="element.Siblings">-</button>
+                                {{ sibling.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>
+                      </ng-container>
+                
+                     <!-- Spouse's Column -->
+                    <ng-container matColumnDef="Spouse">
+                        <th mat-header-cell *matHeaderCellDef> Spouse  </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <ng-container *ngFor="let spouse of element.Spouse">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, spouse.cisNumber, spouse.offRelated)" *ngIf="element.Spouse">-</button>
+                                {{ spouse.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>
+                    </ng-container>
+                
+                     <!-- Children's Column -->
+                    <ng-container matColumnDef="Children">
+                        <th mat-header-cell *matHeaderCellDef> Children </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let Child of element['Children']">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Child.cisNumber, Child.offRelated)" *ngIf="element.Children">-</button>
+                                {{ Child.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>
+                    </ng-container>
+                
+                     <!-- Mother-in-law's Column -->
+                    <ng-container matColumnDef="MotherinLaw">
+                        <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <ng-container *ngFor="let motherInLaw of element['MotherinLaw']">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, motherInLaw.cisNumber, motherInLaw.offRelated)" *ngIf="element.MotherinLaw">-</button>
+                                {{ motherInLaw.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>        
+                    </ng-container>
+                
+                     <!-- Father-in-Law's Column -->
+                    <ng-container matColumnDef="FatherinLaw">
+                        <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let fatherInLaw of element['FatherinLaw']">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, fatherInLaw.cisNumber, fatherInLaw.offRelated)" *ngIf="element.FatherinLaw">-</button>
+                                {{ fatherInLaw.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(7, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>    
+                    </ng-container>
+                
+                    <!-- Step CHilrdrens Column -->
+                    <ng-container matColumnDef="stepChild">
+                        <th mat-header-cell *matHeaderCellDef> Name of Stepchildren </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let Stepchild of element.stepChild">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Stepchild.cisNumber, Stepchild.offRelated)" *ngIf="element.stepChild">-</button>
+                                {{ Stepchild.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(8, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>    
+                    </ng-container>
+                
+                    <!-- Son/Daughter in Law Column -->
+                    <ng-container matColumnDef="sonDaughterInLaw">
+                        <th mat-header-cell *matHeaderCellDef> Name of Son/Daughter-In-Law </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let SonDaughterinlaw of element.sonDaughterInLaw">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, SonDaughterinlaw.cisNumber, SonDaughterinlaw.offRelated)" *ngIf="element.sonDaughterInLaw">-</button>
+                                {{ SonDaughterinlaw.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(9, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>    
+                    </ng-container>
+                
+                    <!-- GrandParents Column -->
+                    <ng-container matColumnDef="grandParents">
+                        <th mat-header-cell *matHeaderCellDef> Grandparents </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let Grandparents of element.grandParents">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Grandparents.cisNumber, Grandparents.offRelated)" *ngIf="element.grandParents">-</button>
+                                {{ Grandparents.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(10, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>        
+                    </ng-container>
+                
+                    <!-- Grand Parents-in-Law Column -->
+                    <ng-container matColumnDef="grandParentsInLaw">
+                        <th mat-header-cell *matHeaderCellDef>Grandparents-In-Law </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let Grandparentsinlaw of element.grandParentsInLaw">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Grandparentsinlaw.cisNumber, Grandparentsinlaw.offRelated)" *ngIf="element.grandParentsInLaw">-</button>
+                                {{ Grandparentsinlaw.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(11, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>
+                    </ng-container>
+                
+                    <!-- Sisters-in-Law Column -->
+                    <ng-container matColumnDef="sistersInLaw">
+                        <th mat-header-cell *matHeaderCellDef> Sisters-In-Law </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Sistersinlaw.cisNumber, Sistersinlaw.offRelated)" *ngIf="element.sistersInLaw">-</button>
+                                {{ Sistersinlaw.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(12, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>    
+                    </ng-container>
+                
+                    <!-- Brothers-in-Law Column -->
+                    <ng-container matColumnDef="brothersInLaw">
+                        <th mat-header-cell *matHeaderCellDef> Brothers-In-Law </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let Brothersinlaw of element.brothersInLaw">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Brothersinlaw.cisNumber, Brothersinlaw.offRelated)" *ngIf="element.brothersInLaw">-</button>
+                                {{ Brothersinlaw.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(13, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>      
+                    </ng-container>
+                    
+                    <!-- GrandChildren Column -->
+                    <ng-container matColumnDef="grandChildren">
+                        <th mat-header-cell *matHeaderCellDef> GrandChildren </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let Grandchildren of element.grandChildren">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Grandchildren.cisNumber, Grandchildren.offRelated)" *ngIf="element.grandChildren">-</button>
+                                {{ Grandchildren.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(14, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>  
+                      </ng-container>
+                
+                    <!-- GrandChildren-in-Law Column -->
+                    <ng-container matColumnDef="grandChildrenInLaw">
+                        <th mat-header-cell *matHeaderCellDef> Grandchildren-in-Law </th>
+                        <td mat-cell *matCellDef="let element" class="rowdata">
+                            <ng-container *ngFor="let Grandchildreninlaw of element.grandChildrenInLaw">
+                                <button class="sub-button" cButton color="danger" (click)="delAffilOffRI(element, Grandchildreninlaw.cisNumber, Grandchildreninlaw.offRelated)" *ngIf="element.grandChildrenInLaw">-</button>
+                                {{ Grandchildreninlaw.fullName}}
+                                <br>
+                            </ng-container> 
+                            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(15, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                        </td>      
+                    </ng-container>
+                
+                    
+                    
+                    <!-- Header row second group -->
+                    <!-- <ng-container matColumnDef="header-row-second-group">
+                        <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
+                    </ng-container> -->
+                
+                    <!-- <tr mat-header-row *matHeaderRowDef="['header-row-first-group']"></tr> -->
+                    <tr mat-header-row *matHeaderRowDef="OffdisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: OffdisplayedColumns;"></tr>
+                    </table>
+                
+                
+                    <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    aria-label="Select page of data" sticky> 
+                    </mat-paginator>
+                </c-container>
+            </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-container>
+
+
 <c-container fluid class="mb-3 p-0 mat-elevation-z8" tabindex="0">
-    <table cTable [responsive]="true" [striped]="true" mat-table [dataSource]="OffdataSource" class="DRI-table">
-        <!-- Header row first group -->
-    <ng-container matColumnDef="header-row-first-group" sticky>
-        <th  *matHeaderCellDef cTableColor class="cTableCol"
-            
-            [attr.colspan]="18"> 
-        {{Company}} (Officers)
-        <button [cModalToggle]="officerModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="setAffilCompOff()" cButton>+ Add</button>
-        </th>
-    </ng-container>
-
-
-
-    <!-- Company Column -->
-    <!-- <ng-container matColumnDef="Company" sticky>
-        <th mat-header-cell *matHeaderCellDef class="mat-header-cell-company"> Company </th>
-        <td mat-cell *matCellDef="let element" class="mat-cell-company"> {{element.Company}} </td>
-    </ng-container> -->
-
-    <!-- Full Name Column -->
-    <ng-container matColumnDef="FullName" sticky>
-        <th mat-header-cell *matHeaderCellDef> Full Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.FullName}} </td>
-    </ng-container>
-
-    <!-- Position Column -->
-    <ng-container matColumnDef="Position" sticky>
-        <th mat-header-cell *matHeaderCellDef> Position </th>
-        <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
-    </ng-container>
-
-
-    <!-- Mother's Column -->
-    <ng-container matColumnDef="MothersName">
-        <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
-        <td mat-cell *matCellDef="let element"> 
-            <ng-container *ngFor="let motherName of element['MothersName']">
-                <button class="sub-button" cButton color="danger" *ngIf="element.MothersName">-</button>
-                {{motherName}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>
-    </ng-container>
-
-     <!-- Father's Column -->
-    <ng-container matColumnDef="FathersName">
-        <th mat-header-cell *matHeaderCellDef> Father's Name </th>
-        <!-- <td mat-cell *matCellDef="let element"> {{element.fathersname}} </td> -->
-        <td mat-cell *matCellDef="let element"> 
-            <ng-container *ngFor="let fathersName of element.FathersName">
-                <button class="sub-button" cButton color="danger" *ngIf="element.FathersName">-</button>
-                {{fathersName}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>
-    </ng-container>
     
-    <ng-container matColumnDef="Siblings">
-        <th mat-header-cell *matHeaderCellDef> Siblings </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let sibling of element.Siblings">
-                <button class="sub-button" cButton color="danger" *ngIf="element.Siblings">-</button>
-                {{ sibling}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>
-      </ng-container>
-
-     <!-- Spouse's Column -->
-    <ng-container matColumnDef="Spouse">
-        <th mat-header-cell *matHeaderCellDef> Spouse  </th>
-        <td mat-cell *matCellDef="let element"> 
-            <ng-container *ngFor="let spouse of element.Spouse">
-                <button class="sub-button" cButton color="danger" *ngIf="element.Spouse">-</button>
-                {{ spouse}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>
-    </ng-container>
-
-     <!-- Children's Column -->
-    <ng-container matColumnDef="Children">
-        <th mat-header-cell *matHeaderCellDef> Children </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let Child of element['Children']">
-                <button class="sub-button" cButton color="danger" *ngIf="element.Children">-</button>
-                {{ Child}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>
-    </ng-container>
-
-     <!-- Mother-in-law's Column -->
-    <ng-container matColumnDef="MotherinLaw">
-        <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
-        <td mat-cell *matCellDef="let element"> 
-            <ng-container *ngFor="let motherInLaw of element['MotherinLaw']">
-                <button class="sub-button" cButton color="danger" *ngIf="element.MotherinLaw">-</button>
-                {{ motherInLaw}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>        
-    </ng-container>
-
-     <!-- Father-in-Law's Column -->
-    <ng-container matColumnDef="FatherinLaw">
-        <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let fatherInLaw of element['FatherinLaw']">
-                <button class="sub-button" cButton color="danger" *ngIf="element.FatherinLaw">-</button>
-                {{ fatherInLaw}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(7, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>    
-    </ng-container>
-
-    <!-- Step CHilrdrens Column -->
-    <ng-container matColumnDef="stepChild">
-        <th mat-header-cell *matHeaderCellDef> Name of Stepchildren </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let Stepchild of element.stepChild">
-                <button class="sub-button" cButton color="danger" *ngIf="element.stepChild">-</button>
-                {{ Stepchild}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(8, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>    
-    </ng-container>
-
-    <!-- Son/Daughter in Law Column -->
-    <ng-container matColumnDef="sonDaughterInLaw">
-        <th mat-header-cell *matHeaderCellDef> Name of Son/Daughter-In-Law </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let SonDaughterinlaw of element.sonDaughterInLaw">
-                <button class="sub-button" cButton color="danger" *ngIf="element.sonDaughterInLaw">-</button>
-                {{ SonDaughterinlaw}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(9, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>    
-    </ng-container>
-
-    <!-- GrandParents Column -->
-    <ng-container matColumnDef="grandParents">
-        <th mat-header-cell *matHeaderCellDef> Grandparents </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let Grandparents of element.grandParents">
-                <button class="sub-button" cButton color="danger" *ngIf="element.grandParents">-</button>
-                {{ Grandparents}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(10, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>        
-    </ng-container>
-
-    <!-- Grand Parents-in-Law Column -->
-    <ng-container matColumnDef="grandParentsInLaw">
-        <th mat-header-cell *matHeaderCellDef>Grandparents-In-Law </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let Grandparentsinlaw of element.grandParentsInLaw">
-                <button class="sub-button" cButton color="danger" *ngIf="element.grandParentsInLaw">-</button>
-                {{ Grandparentsinlaw}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(11, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>
-    </ng-container>
-
-    <!-- Sisters-in-Law Column -->
-    <ng-container matColumnDef="sistersInLaw">
-        <th mat-header-cell *matHeaderCellDef> Sisters-In-Law </th>
-        <td mat-cell *matCellDef="let element"> 
-            <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
-                <button class="sub-button" cButton color="danger" *ngIf="element.sistersInLaw">-</button>
-                {{ Sistersinlaw}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(12, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>    
-    </ng-container>
-
-    <!-- Brothers-in-Law Column -->
-    <ng-container matColumnDef="brothersInLaw">
-        <th mat-header-cell *matHeaderCellDef> Brothers-In-Law </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let Brothersinlaw of element.brothersInLaw">
-                <button class="sub-button" cButton color="danger" *ngIf="element.brothersInLaw">-</button>
-                {{ Brothersinlaw}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(13, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>      
-    </ng-container>
-    
-    <!-- GrandChildren Column -->
-    <ng-container matColumnDef="grandChildren">
-        <th mat-header-cell *matHeaderCellDef> GrandChildren </th>
-        <td mat-cell *matCellDef="let element">
-            <ng-container *ngFor="let Grandchildren of element.grandChildren">
-                <button class="sub-button" cButton color="danger" *ngIf="element.grandChildren">-</button>
-                {{ Grandchildren}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(14, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>  
-      </ng-container>
-
-    <!-- GrandChildren-in-Law Column -->
-    <ng-container matColumnDef="grandChildrenInLaw">
-        <th mat-header-cell *matHeaderCellDef> Grandchildren-in-Law </th>
-        <td mat-cell *matCellDef="let element" class="rowdata">
-            <ng-container *ngFor="let Grandchildreninlaw of element.grandChildrenInLaw">
-                <button class="sub-button" cButton color="danger" *ngIf="element.grandChildrenInLaw">-</button>
-                {{ Grandchildreninlaw}}
-                <br>
-            </ng-container> 
-            <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(15, element.off_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
-        </td>      
-    </ng-container>
-
-    
-    
-    <!-- Header row second group -->
-    <!-- <ng-container matColumnDef="header-row-second-group">
-        <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
-    </ng-container> -->
-
-    <tr mat-header-row *matHeaderRowDef="['header-row-first-group']"></tr>
-    <tr mat-header-row *matHeaderRowDef="OffdisplayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: OffdisplayedColumns;"></tr>
-</table>
-
-
-<mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 20]"
-showFirstLastButtons
-aria-label="Select page of data" sticky> 
-</mat-paginator>
       
 </c-container>
 
