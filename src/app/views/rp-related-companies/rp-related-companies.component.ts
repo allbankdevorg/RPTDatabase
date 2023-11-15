@@ -117,7 +117,9 @@ export class RpRelatedCompaniesComponent implements OnInit {
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef
-  ) {}
+  ) {
+    this.fetchAssocCompany();
+  }
 
 
   @ViewChild('actionModal') actionModal!: ElementRef;
