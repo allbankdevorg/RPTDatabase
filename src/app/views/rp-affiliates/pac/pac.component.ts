@@ -21,7 +21,7 @@ import {createAffilOff} from '../../../functions-files/addAffiliatesOfficer'
 import {createRPDIrectorsRelatedInterest} from '../../../functions-files/addRPDirectorsRI';
 import {createAffilOffRI} from '../../../functions-files/addAffiliatesOfficerRI'
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
-import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
+import {deleteAffilDir, deleteAffilOff, deleteAffilDirRI, deleteAffilOffRI} from '../../../functions-files/delFunctions'
 
 export interface Child {
   name: string;
@@ -254,15 +254,20 @@ async  ngOnInit() {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
                 if (director.related_interest) {
                     // Filter 'director.related_interest' array to get related names based on the relation index
-                    const relatedNames = director.related_interest
-                        .filter(related => related.relation === index + 1)
-                        // Create a full name by concatenating 'fname', 'mname', and 'lname'
-                        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-                        // Filter out empty names (names with only whitespace)
-                        .filter(name => name.trim() !== '');
+                    const relatedData = director.related_interest
+                    .filter(related => related.relation === index + 1)
+                    // Create an object with the required properties
+                    .map(related => ({
+                        fullName: `${related.fname} ${related.mname} ${related.lname}`,
+                        cisNumber: related.cis_number,
+                        dirRelated: related.dir_related
+                    }))
+                    // Filter out objects with empty names (names with only whitespace)
+                    .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+
             
                     // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
-                    row[relationName] = relatedNames;
+                    row[relationName] = relatedData;
                 } else {
                     // Handle the case where director.related_interest is not defined or null
                     row[relationName] = [];
@@ -274,6 +279,7 @@ async  ngOnInit() {
           }
           
         this.dataSource.data = tableData;
+        console.log(this.dataSource.data);
 
         
 
@@ -314,15 +320,20 @@ async  ngOnInit() {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
                 if (officer.related_interest) {
                     // Filter 'director.related_interest' array to get related names based on the relation index
-                    const relatedNames = officer.related_interest
-                        .filter(related => related.relation === index + 1)
-                        // Create a full name by concatenating 'fname', 'mname', and 'lname'
-                        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-                        // Filter out empty names (names with only whitespace)
-                        .filter(name => name.trim() !== '');
+                    const relatedData = officer.related_interest
+                    .filter(related => related.relation === index + 1)
+                    // Create an object with the required properties
+                    .map(related => ({
+                        fullName: `${related.fname} ${related.mname} ${related.lname}`,
+                        cisNumber: related.cis_number,
+                        offRelated: related.officer_related
+                    }))
+                    // Filter out objects with empty names (names with only whitespace)
+                    .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+
             
                     // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
-                    row[relationName] = relatedNames;
+                    row[relationName] = relatedData;
                 } else {
                     // Handle the case where director.related_interest is not defined or null
                     row[relationName] = [];
@@ -334,6 +345,7 @@ async  ngOnInit() {
           }
           
         this.OffdataSource.data = OfftableData;
+        console.log(this.OffdataSource.data);
 
         
 
@@ -478,29 +490,51 @@ async  ngOnInit() {
     // console.log(this.changeDetectorRef.detectChanges);
     // console.log(this.OffdataSource);
   }
-  // onAffilOffSubmit() {
-  //   if (this.affilOfficerForm.valid) {
-  //     const directData = this.affilOfficerForm.value;
-  //     const directorId = this.sharedService.getDirectorId();
-  //     const companyName = this.sharedService.getCompName();
-      
-  //     console.log(directData);
-  //     // Call the JavaScript function with form data
-  //     createAffilOff(directData, this.compId); // Pass the entire formData object
-  //     this.ngOnInit();
+  
 
-      
-  //   }
+//Delete Functions
+delAffilDirector(element: any, dirAffilCIS: any, dirRelatComCIS: any): void {
+  console.log(element);
+  console.log(dirAffilCIS);
+  console.log(dirRelatComCIS);
+  deleteAffilDir((dosriId) => {
 
-  //   this.ngZone.run(() => {
-  //     this.OffdataSource.data = this.OfftableData;
-  //   });
+  })
+}
 
-  //     // Trigger change detection
-  //   this.changeDetectorRef.detectChanges();
-  //   // console.log(this.changeDetectorRef.detectChanges);
-  //   // console.log(this.OffdataSource);
-  // }
+delAffilDirRI(element: any, cisNum: any, dirRelated: any): void {
+  // deleteRelationship()
+  console.log(element);
+  console.log(cisNum);
+  console.log(dirRelated);
+  console.log("Are you sure you want to delete?")
+  deleteAffilDirRI((dosriId) => {
+
+  })
+} 
+
+
+delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
+  console.log(element);
+  console.log(dirAffilCIS);
+  console.log(offRelatComCIS);
+  deleteAffilOff((dosriId) => {
+
+  })
+}
+
+
+
+delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
+  console.log(element);
+  console.log(cisNum);
+  console.log(offRelated);
+  // deleteRelationship()
+  console.log("Are you sure you want to delete?")
+  deleteAffilOffRI((dosriId) => {
+
+  })
+} 
 
 }
 
