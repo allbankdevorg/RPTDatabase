@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Input, Component, ViewChild, NgZone, ChangeDetectionStrategy, ElementRef, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import {animate, state, style, transition, trigger} from '@angular/animations'
@@ -15,14 +15,18 @@ import { SharedService } from './dataintegration/shared.service';
 import {callJSFun} from '../../functions-files/javascriptfun.js';
 import {getCompany, getDirectors} from '../../functions-files/getFunctions'
 import {createDosri} from '../../functions-files/addDosri.js'
+import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
+
 
 
 // Interfaces
 export interface compData {
   com_cis_number: string;
   com_company_name: string,
+  directorCount: string;
   date_inserted: String,
   view: string,
+  directors: DData[];
 }
 
 export interface DData {
@@ -31,6 +35,7 @@ export interface DData {
   mname: String,
   lname: string,
   fullname: string,
+  position: string,
   view: string,
 }
 
@@ -54,11 +59,20 @@ export interface DData {
 })
 
 export class DRIComponent implements AfterViewInit {
+  
+  
+  editData: any = [];
   sharedData: string | any;
   postForm: FormGroup;
   dosriForm: FormGroup;
   data: any = [];
-  
+  public visible = false;
+  selectedItem: any;
+
+  toggleDirectors(element: compData): void {
+    this.expandedElement = this.expandedElement === element ? null : element;
+  }
+
   compDataSource = new MatTableDataSource<compData>([]);
   ToDisplay: string[] = [];
   columnsToDisplay: string[] = ['expand', 'com_cis_number', 'com_company_name', 'directorCount', 'date_inserted', 'view'];
@@ -68,13 +82,16 @@ export class DRIComponent implements AfterViewInit {
   DdisplayedColumns: string[] = ['dir_cisnumber', 'directorName', 'position'];
   dDataSource = new MatTableDataSource<DData>([]);
 
-
+  
+  @ViewChild('editModal') editModal!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // @ViewChild('editDosri') editDosri!: ElementRef;
   
 
   ngAfterViewInit() {
     this.compDataSource.paginator = this.paginator;
   }
+
 
   
   constructor(private router: Router,
@@ -82,7 +99,9 @@ export class DRIComponent implements AfterViewInit {
               private http: HttpClient, 
               private sharedService: SharedService,
               private changeDetectorRef: ChangeDetectorRef,
-          private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private renderer: Renderer2,
+              private el: ElementRef) {
         this.postForm = this.formBuilder.group({
         title: ['', Validators.required],
         body: ['', Validators.required]
@@ -92,11 +111,13 @@ export class DRIComponent implements AfterViewInit {
         accountName: [''],
         companyName: ['']
       });
+      
     }
 
 
   ngOnInit(): void {
     this.updateTableData();
+    
   }
 
 
@@ -172,4 +193,56 @@ export class DRIComponent implements AfterViewInit {
       this.router.navigate(['/dri/directorsrelated', directorId]);
     }
     
+
+    editDosri(element: any): void {
+      this.visible = !this.visible;
+      console.log(element);
+      this.selectedItem = element;
+
+      this.editData = {
+        com_cis_number: element.com_cis_number,
+        com_account_name: element.com_account_name,
+        com_company_name: element.com_company_name,
+        // Add other properties as needed
+      };
+    }
+
+    closeEditDosri() {
+      this.visible = !this.visible;
+    }
+  
+    handleChange(event: any) {
+      this.visible = event;
+    }
+
+    edit(){
+      console.log('Show Modal');
+      console.log("success: Login Successfully");
+      const modal = this.editModal.nativeElement;
+
+      if (modal) {
+        this.renderer.addClass(modal, 'show');
+        this.renderer.setStyle(modal, 'display', 'block');
+      }
+    }
+
+    onModalClose() {
+      console.log('Show Modal');
+      console.log("success: Login Successfully");
+      const modal = this.editModal.nativeElement;
+  
+      if (modal) {
+        this.renderer.addClass(modal, 'hide');
+        this.renderer.setStyle(modal, 'display', 'none');
+      }
+    }
+
+    delDosri(row: any, comCIS: any): void {
+      // deleteRelationship()
+      // console.log(row);
+      // console.log(comCIS);
+      deleteDosri((dosriId) => {
+    
+      })
+    }
 }
