@@ -21,7 +21,7 @@ import {createAffilDir} from '../../../functions-files/addAffiliatesDir';
 import {createAffilOff} from '../../../functions-files/addAffiliatesOfficer'
 import {createAffilOffRI} from '../../../functions-files/addAffiliatesOfficerRI';
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
-import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
+import {deleteAffilOff, deleteAffilOffRI} from '../../../functions-files/delFunctions'
 
 @Component({
   selector: 'app-rp-officer-ri',
@@ -40,6 +40,8 @@ export class RpOfficerRIComponent implements AfterViewInit {
   selectedCompCISNumber: number = 0;
   selectedAffilCompCISNumber: number = 0;
   compN: string = this.sharedService.getCompName();
+  
+  
 
   // OffdataSource = new MatTableDataSource();
 OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
@@ -51,6 +53,7 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 
   ngAfterViewInit() {
     this.OffdataSource.paginator = this.paginator;
+    
     // console.log(this.dataSource.filteredData[0].company);
   }
 
@@ -88,6 +91,7 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
               for (const company of filteredCompany ) {
                 const Company = company.aff_com_company_name;
                 this.Company = Company;
+                
               }
                 // Set the data source for your MatTable
             });
@@ -95,14 +99,15 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   }
   
     async  ngOnInit() {
-      this.updateTableData();
+     await this.updateTableData();
+     
     }
 
     
 
 
   // Functions Below
-  updateTableData(): void {
+  async updateTableData(): Promise<void> {
     // Get Officers
     getAffiliatesOfficers((affilOffData) => {
       // const directorIdToDisplay = directorId;
@@ -131,15 +136,20 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
                 if (officer.related_interest) {
                     // Filter 'director.related_interest' array to get related names based on the relation index
-                    const relatedNames = officer.related_interest
-                        .filter(related => related.relation === index + 1)
-                        // Create a full name by concatenating 'fname', 'mname', and 'lname'
-                        .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-                        // Filter out empty names (names with only whitespace)
-                        .filter(name => name.trim() !== '');
+                    const relatedData = officer.related_interest
+                    .filter(related => related.relation === index + 1)
+                    // Create an object with the required properties
+                    .map(related => ({
+                        fullName: `${related.fname} ${related.mname} ${related.lname}`,
+                        cisNumber: related.cis_number,
+                        offRelated: related.officer_related
+                    }))
+                    // Filter out objects with empty names (names with only whitespace)
+                    .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+
             
                     // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
-                    row[relationName] = relatedNames;
+                    row[relationName] = relatedData;
                 } else {
                     // Handle the case where director.related_interest is not defined or null
                     row[relationName] = [];
@@ -153,6 +163,8 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
         this.OffdataSource.data = OfftableData;
 
         
+        
+        console.log(this.Company);
 
           // Trigger change detection
           this.changeDetectorRef.detectChanges();
@@ -162,6 +174,9 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
       }
     });
   }
+
+
+  
 
   // Adding Officers
   
@@ -234,6 +249,27 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   }
 
 
-
+  // Delete Functions
+  delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
+    console.log(element);
+    console.log(dirAffilCIS);
+    console.log(offRelatComCIS);
+    deleteAffilOff((dosriId) => {
+  
+    })
+  }
+  
+  
+  
+  delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
+    console.log(element);
+    console.log(cisNum);
+    console.log(offRelated);
+    // deleteRelationship()
+    console.log("Are you sure you want to delete?")
+    deleteAffilOffRI((dosriId) => {
+  
+    })
+  }
 
 }
