@@ -15,6 +15,7 @@ import { DataTransferService } from '../../services/data-transfer.service';
 import {createBankOfficer} from '../../functions-files/addBankOfficer';
 import {createBankOfficerRelationship} from '../../functions-files/addBankOfficerRelationship';
 import {getOfficers, getCompany, getOfficersRI} from '../../functions-files/getFunctions'
+import {deleteDOSRIOfficer, deleteDOSRIOfficerRI} from '../../functions-files/delFunctions'
 
 export interface Child {
   name: string;
@@ -202,15 +203,19 @@ export class BankofficerComponent implements AfterViewInit {
           for (let index = 0; index < relationColumn.length; index++) {
               const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
               // Filter 'director.related_interest' array to get related names based on the relation index
-              const relatedNames = officer.related_interest 
+              const relatedData = officer.related_interest 
                   .filter(related => related.relation === index + 1)
                   // Create a full name by concatenating 'fname', 'mname', and 'lname'
-                  .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-                  // Filter out empty names (names with only whitespace)
-                  .filter(name => name.trim() !== '');
-
+                  .map(related => ({
+                    fullName: `${related.fname} ${related.mname} ${related.lname}`,
+                    cisNumber: related.cis_number,
+                    offRelated: related.officer_related
+                }))
+                // Filter out objects with empty names (names with only whitespace)
+                .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+  
               // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
-              row[relationName] = relatedNames;
+              row[relationName] = relatedData;
           }
           tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
           tableData.push(row);
@@ -299,9 +304,27 @@ export class BankofficerComponent implements AfterViewInit {
     
   }
 
+  delOfficer(element: any, cisNumber: any, offc_CisNumber: any) {
+    console.log(element);
+    console.log('CIS Number:', cisNumber);
+    console.log('Off_related:', offc_CisNumber);
+    // delete Officer
+    deleteDOSRIOfficer((dosriId) => {
 
-  delRelationship() {
-    // deleteRelationship()
+    })
+  }
+
+  delRelationship(element: any, cisNumber: any, officer_related: any): void {
+    // deleteRelationship
+    console.log(element);
+    console.log('CIS Number:', cisNumber);
+    console.log('Off_related:', officer_related);
+    // console.log('CIS Number:', cis_number);
+    // console.log('dir_related:', dir_related);
+    console.log("Are you sure you want to delete?")
+    deleteDOSRIOfficerRI((dosriId) => {
+
+    })
   }
 
 
