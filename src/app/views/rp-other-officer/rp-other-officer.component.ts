@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,7 +16,10 @@ import { SharedservicesService } from './Services/sharedservices.service';
 // Functions Import
 import {createBankOfficer} from '../../functions-files/addBankOfficer';
 import {createBankOfficerRelationship} from '../../functions-files/addBankOfficerRelationship';
-import {getAffiliatesCompanyOfficers} from '../../functions-files/getFunctions'
+import {getAffiliatesCompanyOfficers, getManagingCompany} from '../../functions-files/getFunctions';
+import {createAffil} from '../../functions-files/addAffiliates.js';
+import {deleteAffiliates} from '../../functions-files/delFunctions'
+
 
 export interface Child {
   name: string;
@@ -76,6 +79,17 @@ export interface affiliatesData {
   view: string,
 }
 
+interface Command {
+  value: string;
+  viewValue: string;
+}
+
+interface commandGroup {
+  disabled?: boolean;
+  name: string;
+  command: Command[];
+}
+
 @Component({
   selector: 'app-rp-other-officer',
   templateUrl: './rp-other-officer.component.html',
@@ -92,6 +106,9 @@ export class RpOtherOfficerComponent implements AfterViewInit {
 
   sharedData: string | any;
   
+  affForm: FormGroup;
+  editAffilForm!: FormGroup;
+  compData: any = [];
   boForm: FormGroup;
   boRIForm: FormGroup;
   buttonId: number = 0;
@@ -101,6 +118,10 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   CompName: any;
   companies:  any = [];
   tableData: Record<string, any>[] = [];
+  commandGroups: any[] = [];
+  // Modals
+  public editAffilvisible = false;
+  editAffilData: any = [];
 
   dataSource = new MatTableDataSource();
   columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'manager', 'officerCount', 'date_inserted', 'view'];
@@ -112,6 +133,7 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   affilOffdataSource = new MatTableDataSource<OffData>([]);
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
+  @ViewChild('editAffilModal') editAffilModal!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
@@ -126,7 +148,7 @@ export class RpOtherOfficerComponent implements AfterViewInit {
           private formBuilder: FormBuilder, 
           private http: HttpClient, 
           private dataTransferService: DataTransferService,
-          private changeDetectorRef: ChangeDetectorRef,
+          private cdr: ChangeDetectorRef,
           private ngZone: NgZone,
           private sharedService: SharedservicesService )
           {
@@ -142,6 +164,12 @@ export class RpOtherOfficerComponent implements AfterViewInit {
             boRIFirstName: [''],
             boRIMiddleName: [''],
             boRILastName: [''],
+        });
+        this.affForm = this.formBuilder.group({
+          affilCisNumberM: [''],
+          accountName: [''],
+          companyName: [''],
+          commandControl: ['']
         });
     }
 
@@ -184,10 +212,33 @@ export class RpOtherOfficerComponent implements AfterViewInit {
           console.log(affiliatesWithDirectors)
           this.affilOffdataSource.data = affiliatesWithDirectors;
           // Trigger change detection
-          this.changeDetectorRef.detectChanges();
+          this.cdr.detectChanges();
         });
       }
     });
+
+    getManagingCompany((mngComp) => {
+      this.compData = mngComp;
+    this.commandGroups = []; // Clear the existing commandGroups
+    console.log(this.compData);
+
+      if (mngComp) {
+        const data = mngComp;
+        console.log(data);
+        data.forEach(item => {
+          // Create a commandGroup item with value and viewValue
+          const commandGroup = {
+            value: item.aff_com_cis_number,
+            viewValue: item.aff_com_company_name,
+          };
+
+          // Add the command group to the array
+          this.commandGroups.push(commandGroup);
+        });
+      }
+      // const data = this.compData.result[0].Data;
+      // console.log(mngComp);
+    })
   }
 
   setButtonId(id: number, comCisNumber: number) {
@@ -214,8 +265,8 @@ export class RpOtherOfficerComponent implements AfterViewInit {
     });
 
       // Trigger change detection
-    this.changeDetectorRef.detectChanges();
-    console.log(this.changeDetectorRef.detectChanges);
+    this.cdr.detectChanges();
+    console.log(this.cdr.detectChanges);
     console.log(this.dataSource);
   }
 
@@ -226,6 +277,15 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   
       // Call the JavaScript function with form data
       createBankOfficerRelationship(boRIData, this.buttonId, this.selectedcomCisNumber); // Pass the entire formData object
+    }
+  }
+
+  onSubmit() {
+    if (this.affForm.valid) {
+      const formData = this.affForm.value;
+      console.log(formData);
+      // Call the JavaScript function with form data
+      createAffil(formData); // Pass the entire formData object
     }
   }
 
@@ -254,14 +314,63 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   }
 
 
-  delRelationship() {
+  delAffiliates(row: any, aff_com_cis_number: any): void {
     // deleteRelationship()
+    console.log(row);
+    console.log(aff_com_cis_number);
+    // console.log(comCIS);
+    deleteAffiliates((dosriId) => {
+  
+    })
   }
 
 
   setoffcRelated() {
     // director = director.dir_related;
     // console.log(director);
+  }
+
+
+  editAffil(row: any): void {
+    this.editAffilvisible = !this.editAffilvisible;
+    console.log(row);
+    console.log(this.commandGroups);
+    const selectedManager = row.managing_company;
+    console.log('Selected Manager:', selectedManager);
+     // Check if the selectedManager exists in the commandGroups
+     const isValidManager = this.commandGroups.some(group => {
+      console.log('Group Value:', group.value);
+      return group.value === selectedManager;
+    });
+  
+    console.log('IsValidManager:', isValidManager);
+  
+
+
+  // Set the value only if it's a valid manager
+  if (isValidManager) {
+    this.affForm.get('commandControl')?.setValue(selectedManager);
+    console.log(this.affForm);
+  } else {
+    // Optionally, handle the case where the manager is not valid
+    console.error('Invalid manager:', selectedManager);
+  }
+
+    this.editAffilData = {
+      com_cis_number: row.aff_com_cis_number,
+      com_account_name: row.aff_com_account_name,
+      com_company_name: row.aff_com_company_name,
+      // Add other properties as needed
+    };
+    
+  }
+
+  closeEditAffil() {
+    this.editAffilvisible = !this.editAffilvisible;
+  }
+
+  handleChange(event: any) {
+    this.editAffilvisible = event;
   }
   
   
