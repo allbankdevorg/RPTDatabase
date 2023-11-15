@@ -1,1 +1,274 @@
-<p>users works!</p>
+<!-- Main Container -->
+<c-container fluid class="mb-3 p-0">
+    <c-row>
+      <c-col xs>
+        <c-card class="mb-4">
+          <c-card-header class="d-flex justify-content-between align-items-center">Users
+            <button mat-fab extended color="primary"  (click)="addUsers()">
+                <mat-icon>add</mat-icon>
+                Add
+            </button>
+          </c-card-header>
+          <c-card-body>
+            <table
+              [hover]="true"
+              [responsive]="true"
+              [striped]="true"
+              align="middle"
+              cTable
+              class="mb-0 border"
+            >
+              <thead cTableColor="light">
+                <tr>
+                  <th>
+                    First Name
+                  </th>
+                  <th>Middle Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Mobile #</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users; index as i">
+                  <td>
+                    <div>{{ user.fName }}</div>
+                  </td>
+                  <td>
+                      <div>{{ user.mName }}</div>
+                  </td>
+                  <td>
+                    <div>{{ user.lName }}</div>
+                  </td>
+                  <td>
+                    <div>{{ user.userName }}</div>
+                  </td>
+                  <td>
+                    <div>{{ user.email }}</div>
+                  </td>
+                  <td>
+                      <div>{{ user.mobile }}</div>
+                  </td>
+                  <td class="text-center" fxLayout fxLayoutGap="8px">
+                      <!-- <i class="material-icons mx-1 align-items-center">visibility</i>
+                      <i class="material-icons mx-1 align-items-center">create</i> -->
+                      <div class="d-flex justify-content-center">
+                        <button mat-icon-button color="primary"  aria-label="View Users Info">
+                          <mat-icon>visibility</mat-icon>
+                        </button>
+                        <button mat-icon-button color="success" (click)="editUsers(user)" aria-label="Edit Users Info">
+                          <mat-icon>create</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="delRelationship()" aria-label="Delete Users">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                      
+                     
+                      
+                      
+                  </td>
+                  
+                </tr>
+              </tbody>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                showFirstLastButtons
+                aria-label="Select page of data">
+            </mat-paginator>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+</c-container>
+  <!-- End of Main Container -->
+
+
+
+<!-- Modals -->
+
+<!-- Add Modals -->
+<c-modal id="addUsers" [visible]="addvisible" backdrop="static" (visibleChange)="addUsersChange($event)" size="lg">
+    <c-modal-header>
+      <h5 cModalTitle>Add Users</h5>
+      <button (click)="addUsers()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <!-- Modal Form -->
+        <form cForm class="mb-2">
+            <c-modal-body>
+              <c-row class="align-items-center">
+                
+                <c-col [sm]="4">
+                    <label cLabel="col" for="fName">First Name</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>First Name</mat-label> -->
+                      <input matInput #accDinput id="fName" name="fName"
+                      type="text" placeholder="First Name">
+                    </mat-form-field>
+                </c-col>
+        
+                <c-col [sm]="4">
+                    <label cLabel="col" for="mName">Middle Name</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>Middle Name</mat-label> -->
+                      <input matInput #accDinput id="mName"  name="mName"
+                      type="text" placeholder="Middle Name">
+                    </mat-form-field>
+                </c-col>
+
+                <c-col [sm]="4">
+                    <label cLabel="col" for="lName">Last Name</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>Last Name</mat-label> -->
+                      <input matInput #accDinput id="lName"  name="lName"
+                      type="text" placeholder="Last Name">
+                    </mat-form-field>
+                </c-col>
+      
+              </c-row>
+      
+              <c-row class="align-items-center">
+                <c-col [sm]="6">
+                  <label cLabel="col" for="uEmail">Email</label>
+                  <mat-form-field appearance="outline" [style.width.%]=100>
+                    <!-- <mat-label>Company Name</mat-label> -->
+                    <input matInput #accDinput id="uEmail" name="uEmail"
+                    type="text" placeholder="Email Address">
+                  </mat-form-field>
+                </c-col>
+
+                <c-col [sm]="6">
+                    <label cLabel="col" for="uMobile">Mobile Number</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>Company Name</mat-label> -->
+                      <input matInput #accDinput id="uMobile" name="uMobile"
+                      type="text" placeholder="Mobile Number">
+                    </mat-form-field>
+                </c-col>
+              </c-row>
+
+              
+              <c-row class="align-items-center">
+                <c-col [sm]="6">
+                  <label cLabel="col" for="userName">User Name</label>
+                  <mat-form-field appearance="outline" [style.width.%]=100>
+                    <!-- <mat-label>Company Name</mat-label> -->
+                    <input matInput #accDinput id="userName" name="userName"
+                    type="text" placeholder="User Name">
+                  </mat-form-field>
+                </c-col>
+
+                <c-col [sm]="6">
+                    <label cLabel="col" for="uPass">Password</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                        <!-- <mat-label>Company Name</mat-label> -->
+                        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" id="uPass">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                      </mat-form-field>
+                  </c-col>
+              </c-row>
+
+            </c-modal-body>
+            <c-modal-footer>
+              <button type="submit" cButton color="success">Proceed</button>
+            </c-modal-footer>
+        </form>
+    </c-modal-body>
+</c-modal>
+
+
+<!-- Edit Users -->
+<c-modal id="editUsers" [visible]="editvisible" backdrop="static" (visibleChange)="editUsersChange($event)" size="lg">
+    <c-modal-header>
+      <h5 cModalTitle>Edit Users</h5>
+      <button (click)="closeUsersModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <!-- Modal Form -->
+        <form cForm class="mb-2">
+            <c-modal-body>
+              <c-row class="align-items-center">
+                
+                <c-col [sm]="4">
+                    <label cLabel="col" for="fName">First Name</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>First Name</mat-label> -->
+                      <input matInput #accDinput id="fName" name="fName"
+                      type="text" placeholder="First Name" [value]="editData.fname">
+                    </mat-form-field>
+                </c-col>
+        
+                <c-col [sm]="4">
+                    <label cLabel="col" for="mName">Middle Name</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>Middle Name</mat-label> -->
+                      <input matInput #accDinput id="mName"  name="mName"
+                      type="text" placeholder="Middle Name" [value]="editData.mname">
+                    </mat-form-field>
+                </c-col>
+
+                <c-col [sm]="4">
+                    <label cLabel="col" for="lName">Last Name</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>Last Name</mat-label> -->
+                      <input matInput #accDinput id="lName"  name="lName"
+                      type="text" placeholder="Last Name" [value]="editData.lname">
+                    </mat-form-field>
+                </c-col>
+      
+              </c-row>
+      
+              <c-row class="align-items-center">
+                <c-col [sm]="12">
+                  <label cLabel="col" for="uEmail">Email</label>
+                  <mat-form-field appearance="outline" [style.width.%]=100>
+                    <!-- <mat-label>Company Name</mat-label> -->
+                    <input matInput #accDinput id="uEmail" name="uEmail"
+                    type="text" placeholder="Email Address" [value]="editData.email">
+                  </mat-form-field>
+                </c-col>
+              </c-row>
+
+              
+              <c-row class="align-items-center">
+                <c-col [sm]="6">
+                    <label cLabel="col" for="uMobile">Mobile Number</label>
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                      <!-- <mat-label>Company Name</mat-label> -->
+                      <input matInput #accDinput id="uMobile" name="uMobile"
+                      type="text" placeholder="Mobile Number" [value]="editData.mobile">
+                    </mat-form-field>
+                </c-col>
+
+                <c-col [sm]="6">
+                  <label cLabel="col" for="userName">User Name</label>
+                  <mat-form-field appearance="outline" [style.width.%]=100>
+                    <!-- <mat-label>Company Name</mat-label> -->
+                    <input matInput #accDinput id="userName" name="userName"
+                    type="text" placeholder="User Name" [value]="editData.username">
+                  </mat-form-field>
+                </c-col>
+              </c-row>
+
+              <c-row class="text-center">
+                <c-col [sm]="12">
+                    <button mat-fab extended color="primary">
+                        <mat-icon>refresh</mat-icon>
+                        Reset Password
+                      </button>
+                </c-col>
+              </c-row>
+
+            </c-modal-body>
+            <c-modal-footer>
+              <button type="submit" cButton color="success">Proceed</button>
+            </c-modal-footer>
+        </form>
+    </c-modal-body>
+</c-modal>
