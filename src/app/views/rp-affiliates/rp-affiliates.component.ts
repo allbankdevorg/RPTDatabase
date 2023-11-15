@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -9,6 +9,7 @@ import { MatOption } from '@angular/material/core';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import {FormArray, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -19,8 +20,9 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { SharedservicesService } from './dataintegration/sharedservices.service';
 
 // Functions Import
-import {getAffiliatesCompany, getAffiliatesDirectors, getManagingCompany} from '../../functions-files/getFunctions'
-import {createAffil} from '../../functions-files/addAffiliates.js'
+import {getAffiliatesCompany, getAffiliatesDirectors, getManagingCompany} from '../../functions-files/getFunctions';
+import {createAffil} from '../../functions-files/addAffiliates.js';
+import {deleteAffiliates} from '../../functions-files/delFunctions'
 
 export interface Child {
   name: string;
@@ -31,6 +33,7 @@ export interface affiliatesData {
   aff_com_cis_number: number;
   aff_com_account_name: string;
   aff_com_company_name: string,
+  directorCount
   manager: string;
   date_inserted: String,
   view: string,
@@ -72,11 +75,19 @@ interface commandGroup {
 export class RpAffiliatesComponent implements AfterViewInit {
   sharedData: string | any;
   affForm: FormGroup;
+  editAffilForm!: FormGroup;
   compData: any = [];
   // commandGroups: commandGroup[] = []; // Moved initialization here
   commandGroups: any[] = [];
   //  displayedColumns: string[] = ['bn', 'Nodirectors', 'LDUpdated', 'view'];
-  
+  // Modals
+  public editAffilvisible = false;
+  editAffilData: any = [];
+  pageSize = 5;  // Set the default page size
+  currentPage = 0;  // Initialize the current page
+  selectedItem: any;
+
+  displayedData: affiliatesData[] = [];
   affDataSource = new MatTableDataSource<affiliatesData>([]);
   ToDisplay: string[] = [];
   columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'manager', 'directorCount', 'date_inserted', 'view'];
@@ -87,25 +98,43 @@ export class RpAffiliatesComponent implements AfterViewInit {
   affilDdataSource = new MatTableDataSource<DData>([]);
 
 
-
+  @ViewChild('editAffilModal') editAffilModal!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   
 
   ngAfterViewInit() {
     this.affDataSource.paginator = this.paginator;
+    this.affDataSource.sort = this.sort;
+  }
+
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.affDataSource.filter = filterValue;
   }
 
   
-  
+  updateDisplayedData() {
+    // Implement logic to update displayed data based on current page
+    // For example, slice your data array to display only the relevant items for the current page
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.displayedData = this.affDataSource.data.slice(startIndex, endIndex);
+  }
+
 
   constructor(private router: Router,
               private formBuilder: FormBuilder, 
               private http: HttpClient,
               private changeDetectorRef: ChangeDetectorRef,
               private ngZone: NgZone,
-              private sharedService: SharedservicesService) {
+              private sharedService: SharedservicesService,
+              private renderer: Renderer2,
+              private el: ElementRef) {
     this.affForm = this.formBuilder.group({
       affilCisNumberM: [''],
       accountName: [''],
@@ -119,6 +148,7 @@ export class RpAffiliatesComponent implements AfterViewInit {
 
   ngOnInit() {
     this.updateTableData();
+    console.log(this.displayedData)
   }
   
 
@@ -217,16 +247,90 @@ export class RpAffiliatesComponent implements AfterViewInit {
     this.router.navigate(['/rp-affiliates/pac', directorId]);
   }
 
-  editaffiliates(row: any) {
-    console.log(row);
-    // this.affForm.affilCisNumberM.value
-    
-  }
 
   /// This method initializes the commandGroups array
   initializeCommandGroups() {
     
   }
+
+  editaffiliates(row: any) {
+    console.log(row);
+    console.log('Show Modal');
+    console.log("success: Login Successfully");
+    const modal = this.editAffilModal.nativeElement;
+
+    if (modal) {
+      this.renderer.addClass(modal, 'show');
+      this.renderer.setStyle(modal, 'display', 'block');
+    }
+  }
+
+  onModalClose() {
+    console.log('Show Modal');
+    console.log("success: Login Successfully");
+    const modal = this.editAffilModal.nativeElement;
+
+    if (modal) {
+      this.renderer.addClass(modal, 'hide');
+      this.renderer.setStyle(modal, 'display', 'none');
+    }
+  }
+
+  delAffiliates(row: any, aff_com_cis_number: any): void {
+    // deleteRelationship()
+    console.log(row);
+    console.log(aff_com_cis_number);
+    // console.log(comCIS);
+    deleteAffiliates((dosriId) => {
+  
+    })
+  }
+
+  
+
+  editAffil(row: any): void {
+    this.editAffilvisible = !this.editAffilvisible;
+    console.log(row);
+    console.log(this.commandGroups);
+    const selectedManager = row.managing_company;
+    console.log('Selected Manager:', selectedManager);
+     // Check if the selectedManager exists in the commandGroups
+     const isValidManager = this.commandGroups.some(group => {
+      console.log('Group Value:', group.value);
+      return group.value === selectedManager;
+    });
+  
+    console.log('IsValidManager:', isValidManager);
+  
+
+
+  // Set the value only if it's a valid manager
+  if (isValidManager) {
+    this.affForm.get('commandControl')?.setValue(selectedManager);
+    console.log(this.affForm);
+  } else {
+    // Optionally, handle the case where the manager is not valid
+    console.error('Invalid manager:', selectedManager);
+  }
+
+    this.editAffilData = {
+      com_cis_number: row.aff_com_cis_number,
+      com_account_name: row.aff_com_account_name,
+      com_company_name: row.aff_com_company_name,
+      // Add other properties as needed
+    };
+    
+  }
+
+  closeEditAffil() {
+    this.editAffilvisible = !this.editAffilvisible;
+  }
+
+  handleChange(event: any) {
+    this.editAffilvisible = event;
+  }
+
+
 }
 
 
