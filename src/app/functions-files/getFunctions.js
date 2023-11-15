@@ -156,6 +156,7 @@ function getOfficers(callback) {
             //console.log(affilComp);
             if (callback) {
                 callback(affilComp);
+                // console.log(affilComp)
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
