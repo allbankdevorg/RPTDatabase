@@ -19,7 +19,7 @@ import { SharedService } from '../dataintegration/shared.service';
 import {createDirectors} from '../../../functions-files/addDirectors';
 import {createRelatedInterest} from '../../../functions-files/addRelatedInterest';
 import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
-import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
+import {deleteDosri, deleteDOSRIDirector, deleteDOSRIDirRelationship} from '../../../functions-files/delFunctions'
 
 export interface Child {
   name: string;
@@ -150,7 +150,7 @@ export class DirectorsrelatedComponent implements AfterViewInit {
   updateTableData(): void {
     getDirectors((Director) => {
       // const directorIdToDisplay = directorId;
-      
+      console.log(Director);
       // console.log('directorIdToDisplay:', directorIdToDisplay)
       // console.log(companytoDisplay);
       const filteredDirectors = Director.filter((director) => director.com_related === this.compId);
@@ -171,22 +171,28 @@ export class DirectorsrelatedComponent implements AfterViewInit {
           for (let index = 0; index < relationColumn.length; index++) {
               const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
               // Filter 'director.related_interest' array to get related names based on the relation index
-              const relatedNames = director.related_interest 
-                  .filter(related => related.relation === index + 1)
-                  // Create a full name by concatenating 'fname', 'mname', and 'lname'
-                  .map(related => `${related.fname} ${related.mname} ${related.lname}`)
-                  // Filter out empty names (names with only whitespace)
-                  .filter(name => name.trim() !== '');
+              const relatedData = director.related_interest
+              .filter(related => related.relation === index + 1)
+              // Create an object with the required properties
+              .map(related => ({
+                  fullName: `${related.fname} ${related.mname} ${related.lname}`,
+                  cisNumber: related.cis_number,
+                  dirRelated: related.dir_related
+              }))
+              // Filter out objects with empty names (names with only whitespace)
+              .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
 
-              // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
-              row[relationName] = relatedNames;
+                    // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
+                    row[relationName] = relatedData;
+
           }
       
           tableData.push(row);
+
       }
       
      this.dataSource.data = tableData;
-
+      console.log(this.dataSource.data);
       // Trigger change detection
       this.changeDetectorRef.detectChanges();
     });
@@ -282,16 +288,32 @@ export class DirectorsrelatedComponent implements AfterViewInit {
   }
 
 
-  delDosri() {
-    // deleteDosri()
+  // DelDosri(row: any) {
+  //   console.log(row);
+  //   deleteDosri((dosriId) => {
+
+  //   })
+  // }
+
+  delDirector(element: any, cisNumber: any, dirCisNumber: any) {
+    // console.log(element);
+    // console.log('CIS Number:', cisNumber);
+    // console.log('dir_related:', dirCisNumber);
+    // deleteDirector
+    deleteDOSRIDirector((dosriId) => {
+
+    })
   }
 
-  delDirector() {
-    // deleteDirector()
-  }
-
-  delRelationship() {
+  delRelationship(element: any, cis_number: string, dir_related: any): void {
     // deleteRelationship()
+    // console.log(element);
+    // console.log('CIS Number:', cis_number);
+    // console.log('dir_related:', dir_related);
+    // console.log("Are you sure you want to delete?")
+    deleteDOSRIDirRelationship((dosriId) => {
+
+    })
   }
 
 }
