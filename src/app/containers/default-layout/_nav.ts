@@ -63,12 +63,17 @@ export const navItems: INavData[] = [
     children: [
           {
           name: 'Users',
-          url: '/usersmanagement',
+          url: '/maintenance/users',
           iconComponent: { name: '' },
           },
           {
             name: 'Settings',
-            url: '/settingsmanagement',
+            url: '/maintenance/settings',
+            iconComponent: { name: '' }
+          },
+          {
+            name: 'Manuals',
+            url: '/maintenance/manuals',
             iconComponent: { name: '' }
           },
         ]
