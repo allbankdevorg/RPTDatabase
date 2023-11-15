@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
@@ -75,6 +76,7 @@ import { UsersComponent} from './views/maintenance/users/users.component';
 import { SettingsComponent} from './views/maintenance/settings/settings.component';
 import { UsersmanagementComponent } from './views/usersmanagement/usersmanagement.component';
 import { SettingsmanagementComponent } from './views/settingsmanagement/settingsmanagement.component';
+import { ManualsComponent } from './views/manuals/manuals.component';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -84,7 +86,7 @@ const APP_CONTAINERS = [
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, UsersmanagementComponent, SettingsmanagementComponent],
+    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, UsersmanagementComponent, SettingsmanagementComponent, ManualsComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -125,7 +127,8 @@ const APP_CONTAINERS = [
     MatButtonModule,
     FormsModule,
     HttpClientModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule
   ],
   providers: [
     {
