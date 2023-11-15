@@ -35,13 +35,21 @@
     // position: absolute;
 }
 
-.mat-column-Company, .mat-column-FullName,
- .mat-column-MothersName, .mat-column-FathersName, .mat-column-Siblings,
+.mat-column-Company, .mat-column-MothersName, .mat-column-FathersName, .mat-column-Siblings,
  .mat-column-Spouse, .mat-column-Children, .mat-column-MotherinLaw, 
  .mat-column-FatherinLaw, .mat-column-stepChild, .mat-column-sonDaughterInLaw, 
  .mat-column-grandParents, .mat-column-grandParentsInLaw, .mat-column-sistersInLaw,
  .mat-column-brothersInLaw, .mat-column-grandChildren, .mat-column-grandChildrenInLaw  {
-    width: 2.08%;
+    width: 2.06%;
+    position: relative;
+    // display: flex;
+    text-align: left;
+    background-color: #fff;
+    border-left: 1px solid #d3d3d3;
+}
+
+.mat-column-FullName {
+    width: 3%;
     position: relative;
     // display: flex;
     text-align: left;
