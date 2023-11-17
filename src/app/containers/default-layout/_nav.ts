@@ -36,7 +36,7 @@ export const navItems: INavData[] = [
           ]
   },
   {
-    name: 'Affiliates of RP',
+    name: 'Affiliates and RP',
     url: '/',
     iconComponent: { name: '' },
     children: [
@@ -50,6 +50,11 @@ export const navItems: INavData[] = [
             url: '/rp-related-companies',
             iconComponent: { name: '' },
           },
+        {
+          name: 'Other RC Under JMN',
+          url: '/other-related-companies',
+          iconComponent: { name: '' },
+        },
           {
             name: 'Other RP Officers',
             url: '/rp-other-officer',
