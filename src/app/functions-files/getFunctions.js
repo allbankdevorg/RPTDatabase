@@ -1,13 +1,21 @@
 /**
- * - Start of getCompany
- * - Start of getDirectors
- * - Start of getOfficers
+ * - 100 Start of getCompany                      => Fetch DOSRI Company
+ * - 101 Start of getDirectors                    => Fetch DIrectors Related Interes
+ * - 103 Start of getOfficers                     => Fetch Bank Officers
+ * - 104 Start of getOfficersRI                   => Fetch 
+ * - 105 Start of getAffiliatesCompany            => Fetch Affiliates and the number of its Directors
+ * - 106 Start of getAffiliatesDirectors          => Fetch
+ * - 107 Start of getAffiliatesOfficer            => Fetch
+ * - 108 Start of getAffiliatesCompanyOfficers    => Fetch
+ * - 109 Start of getManagingCompany              => Fetch Feth Companies with Module = ORP
+ * - 110 Start of getOtherCompany                 => Fetch
  */
 
 
 
 // Function to make a GET request using jQuery's $.ajax
 function getCompany(callback) {
+    console.log("100");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -40,6 +48,7 @@ function getCompany(callback) {
 
 
 function getDirectors(callback) {
+  console.log("101");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -74,6 +83,7 @@ function getDirectors(callback) {
 
 
 function getOfficers(callback) {
+  console.log("103");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -106,6 +116,7 @@ function getOfficers(callback) {
 
 
   function getOfficersRI(callback) {
+    console.log("104");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -138,6 +149,7 @@ function getOfficers(callback) {
 
 
   function getAffiliatesCompany(callback) {
+    console.log("105");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -171,6 +183,7 @@ function getOfficers(callback) {
 
 
   function getAffiliatesDirectors(callback) {
+    console.log("106");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -203,6 +216,7 @@ function getOfficers(callback) {
 
     
   function getAffiliatesOfficers(callback) {
+    console.log("107");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -235,6 +249,7 @@ function getOfficers(callback) {
 
 
   function getAffiliatesCompanyOfficers(callback) {
+    console.log("108");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -267,6 +282,7 @@ function getOfficers(callback) {
 
 
   function getManagingCompany(callback) {
+    console.log("109");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -297,6 +313,39 @@ function getOfficers(callback) {
       });
   }
 
+
+  function getOtherCompany(callback) {
+    console.log("110");
+    var settings = {
+        "url": "http://10.232.236.15:8092/api/dataTables",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cmd": 110
+        }),
+      };
+      
+      $.ajax(settings).done(function (response) {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+            var OtherComp = response.result[0].Data;
+            //console.log(affilComp);
+            if (callback) {
+                callback(OtherComp);
+            }
+        } else {
+            // Handle the case where there is no data or it doesn't have the expected structure
+            console.log("No Affiliates Company Officers Data");
+            if (callback) {
+                // You can choose to call the callback with some default value or handle it as needed
+                callback(null);
+            }
+        }
+      });
+  }
+
     
     
   
@@ -309,5 +358,6 @@ function getOfficers(callback) {
         getAffiliatesDirectors,
         getAffiliatesOfficers,
         getAffiliatesCompanyOfficers,
-        getManagingCompany };
+        getManagingCompany,
+        getOtherCompany };
   
