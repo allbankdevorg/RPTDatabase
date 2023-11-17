@@ -2,7 +2,7 @@ import { Component, AfterViewInit,NgZone,ChangeDetectionStrategy, ViewChild } fr
 import { MatTableDataSource } from '@angular/material/table';
 
 import { MatPaginator } from '@angular/material/paginator';
-
+import { TooltipPosition } from '@angular/material/tooltip';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -22,6 +22,10 @@ import {createRPDIrectorsRelatedInterest} from '../../../functions-files/addRPDi
 import {createAffilOffRI} from '../../../functions-files/addAffiliatesOfficerRI'
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilDir, deleteAffilOff, deleteAffilDirRI, deleteAffilOffRI} from '../../../functions-files/delFunctions'
+
+//For export
+import { CsvExportService } from '../../exportservices/csv-export.service';
+import * as Papa from 'papaparse';
 
 export interface Child {
   name: string;
@@ -106,13 +110,35 @@ interface affilOfficer {
 //   children?: Child[];
 // }
 
+interface Person {
+  id: number;
+  com_related: string;
+  dir_cisnumber?: string;
+  fname: string;
+  mname: string;
+  lname: string;
+  position: string;
+  status?: number;
+  related_interest: {
+    id: number;
+    cis_number: string;
+    fname: string;
+    mname: string;
+    lname: string;
+    dir_related: string;
+    relation: number;
+    date_inserted: string;
+    status: number;
+  }[];
+}
+
 @Component({
   selector: 'app-pac',
   templateUrl: './pac.component.html',
   styleUrls: ['./pac.component.scss']
 })
 export class PACComponent implements AfterViewInit {
-  
+  positionOptions: TooltipPosition = 'right';
   sharedData: string | any;
   affilDrctrForm: FormGroup;
   affilDirRiForm: FormGroup;
@@ -164,7 +190,8 @@ export class PACComponent implements AfterViewInit {
       private dataTransferService: DataTransferService,
       private route: ActivatedRoute,
       private changeDetectorRef: ChangeDetectorRef,
-      private ngZone: NgZone)
+      private ngZone: NgZone,
+      private csvExportService: CsvExportService)
       {
           this.affilDrctrForm = this.formBuilder.group({
             affildcisNumber: [''],
@@ -219,6 +246,8 @@ async getAffilCompanyName(companyId: string): Promise<string> {
   
 async  ngOnInit() {
   this.updateTableData();
+  const transformedData = this.transformData(this.dataSource.data);
+  // this.getmappedData
 }
 
 
@@ -235,7 +264,7 @@ async  ngOnInit() {
       if (affilDirData) {
           const filteredDirectors = affilDirData.filter((director) => director.com_related === this.compId);
           // console.log(filteredDirectors);
-          const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
+          const relationColumn = ['MothersName', 'FathersName', 'Siblings', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const tableData: Record<string, any>[] = [];
           
@@ -280,6 +309,7 @@ async  ngOnInit() {
           
         this.dataSource.data = tableData;
         console.log(this.dataSource.data);
+        console.log(JSON.stringify(this.dataSource.data));
 
         
 
@@ -301,7 +331,7 @@ async  ngOnInit() {
       if (affilOffData) {
           const filteredOfficers = affilOffData.filter((director) => director.com_related === this.compId);
           // console.log(filteredOfficers);
-          const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
+          const relationColumn = ['MothersName', 'FathersName', "Siblings", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const OfftableData: Record<string, any>[] = [];
           
@@ -360,6 +390,18 @@ async  ngOnInit() {
     
   }
 
+  // Sample Code
+  
+
+  
+
+
+
+
+
+
+
+
   setButtonId(id: number, dirCisNumber: number) {
      this.buttonId = id;
      this.selectedDirCisNumber = dirCisNumber;
@@ -398,7 +440,7 @@ async  ngOnInit() {
       const riData = this.affilDirRiForm.value;
       
       // Call the JavaScript function with form data
-      createRPDIrectorsRelatedInterest(riData, this.buttonId, this.selectedOffCisNumber); // Pass the entire formData object
+      createRPDIrectorsRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber); // Pass the entire formData object
       
       this.ngOnInit();
 
@@ -535,6 +577,65 @@ delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
 
   })
 } 
+
+
+// For export
+// exportDataToCsv() {
+//   const data = this.dataSource.data;
+//   const fileName = 'exported_data.csv';
+//   this.csvExportService.exportToCsv(data, fileName);
+// }
+
+transformData(originalData: any[]): any[] {
+  return originalData.map(item => ({
+    FullName: item.FullName,
+    Company: item.Company,
+    Position: item.Position,
+    MothersName: this.joinNames(item.MothersName),
+    FathersName: this.joinNames(item.FathersName),
+    Siblings: this.joinNames(item.Siblings),
+    Spouse: this.joinNames(item.Spouse),
+    Children: this.joinNames(item.Children),
+    MotherinLaw: this.joinNames(item.MotherinLaw),
+    FatherinLaw: this.joinNames(item.FatherinLaw),
+    stepChild: this.joinNames(item.stepChild),
+    sonDaughterInLaw: this.joinNames(item.sonDaughterInLaw),
+    grandParents: this.joinNames(item.grandParents),
+    grandParentsInLaw: this.joinNames(item.grandParentsInLaw),
+    sistersInLaw: this.joinNames(item.sistersInLaw),
+    brothersInLaw: this.joinNames(item.brothersInLaw),
+    grandChildren: this.joinNames(item.grandChildren),
+    grandChildrenInLaw: this.joinNames(item.grandChildrenInLaw),
+    // Add similar transformations for other array fields
+  }));
+}
+
+joinNames(namesArray: any[]): string {
+  return namesArray.map(nameObj => nameObj.fullName).join(' ');
+}
+
+exportDataToCsv(data: any[]) {
+  const csv = Papa.unparse(data, {
+    header: true,
+    quotes: true
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+  // Create a download link
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'export.csv';
+
+  // Append the link to the body and trigger the click event
+  document.body.appendChild(link);
+  link.click();
+
+  // Clean up
+  document.body.removeChild(link);
+}
+
+
 
 }
 
