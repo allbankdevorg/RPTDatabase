@@ -7,6 +7,10 @@ export class SharedservicesService {
   private directorIdToDisplay: number = 0;
   private companytoDisplay: string = '';
   private comCisNumber: number = 0;
+  
+  
+  // For Orgs Data
+  
 
   setDirectorId(id: number) {
     this.directorIdToDisplay = id;
@@ -31,5 +35,7 @@ export class SharedservicesService {
   getCompCIS(): number {
     return this.comCisNumber;
   }
+
+
   constructor() { }
 }
