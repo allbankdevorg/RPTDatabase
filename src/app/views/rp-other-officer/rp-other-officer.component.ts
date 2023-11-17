@@ -129,7 +129,7 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: affiliatesData | null = null;
 
-  DdisplayedColumns: string[] = ['aff_com_cis_number', 'fullname', 'aff_com_company_name'];
+  DdisplayedColumns: string[] = ['aff_com_cis_number', 'fullname', 'position'];
   affilOffdataSource = new MatTableDataSource<OffData>([]);
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
@@ -295,7 +295,8 @@ export class RpOtherOfficerComponent implements AfterViewInit {
     
   }
 
-  onRowClick(row: any) {
+  onRowClick(row: any, event: Event) {
+    event.stopPropagation();
     console.log(row)
     // Capture the selected data and navigate to another component with it
       const directorId = row.aff_com_cis_number; // Extract the ID from the clicked row
@@ -314,7 +315,8 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   }
 
 
-  delAffiliates(row: any, aff_com_cis_number: any): void {
+  delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
+    event.stopPropagation();
     // deleteRelationship()
     console.log(row);
     console.log(aff_com_cis_number);
@@ -331,7 +333,8 @@ export class RpOtherOfficerComponent implements AfterViewInit {
   }
 
 
-  editAffil(row: any): void {
+  editAffil(row: any, event: Event) {
+    event.stopPropagation();
     this.editAffilvisible = !this.editAffilvisible;
     console.log(row);
     console.log(this.commandGroups);

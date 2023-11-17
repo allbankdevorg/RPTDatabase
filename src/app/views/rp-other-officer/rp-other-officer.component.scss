@@ -43,6 +43,41 @@ tr.example-detail-row {
     opacity: 0.5;
   }
   
+  
+.cTableCol{
+  text-align: left;
+  // background-color: rgb(100, 246, 178);
+  background-color: rgb(0, 100, 0, .4);
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.cTableRow{
+  text-align: left;
+  // background-color: rgb(148, 195, 243);
+  background-color: rgb(144, 238, 144, .7);
+  font-size: 16px;
+  color: #000;
+}
+
+.cTableCol2{
+  text-align: left;
+  // background-color: rgb(100, 246, 178);
+  background-color: rgb(0, 0, 100.4);
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.cTableRow2{
+  text-align: left;
+  // background-color: rgb(148, 195, 243);
+  background-color: rgb(173, 216, 230, .7);
+  font-size: 16px;
+  color: #000;
+  border-bottom: 2px solid #ffffff;
+}
+
+
   .acc-access-add {
     position: absolute;
     right: 9px;
@@ -58,20 +93,14 @@ tr.example-detail-row {
     border-left: 1px solid #d3d3d3;
   }
   
-  .mat-column-action {
-    width: 1%;
-  }
-  
-  .mat-column-bn {
-      width: 15%;
-      padding: 10px 24px;
-      text-align: center;
-    }
+  // .mat-column-action {
+  //   width: 1%;
+  // }
     
     .mat-column-Nodirectors {
-      width: 30%px;
+      // width: 30%px;
       padding: 10px 4px;
-      text-align: center;
+      text-align: left;
     }
     
     .mat-column-LDUpdated {
@@ -96,7 +125,7 @@ tr.example-detail-row {
     .mat-column-position {
       width: 29%;
       padding: 10px 24px;
-      text-align: center;
+      text-align: left;
     }
 
     .mat-column-view {
@@ -111,7 +140,7 @@ tr.example-detail-row {
     
 
     .mat-column-aff_com_cis_number, .mat-column-fullname, .mat-column-aff_com_company_name {
-      width: 33%;
-      text-align: center;
+      // width: 33%;
+      text-align: left;
       padding: 10px 24px;
     }
