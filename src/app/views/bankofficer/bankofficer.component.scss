@@ -21,6 +21,25 @@
     border: none; 
 }
 
+
+.cTableCol1{
+    text-align: left;
+    // background-color: rgb(100, 246, 178);
+    background-color: rgb(84, 152, 84);
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  .cTableRow{
+    text-align: left;
+    // background-color: rgb(148, 195, 243);
+    // background-color: rgb(144, 238, 144, .7);
+    background-color: rgb(187, 242, 187);
+    font-size: 16px;
+    color: #000;
+    border-bottom: 2px solid #efefef;
+  }
+
 // .acc-access-add {
 //     position: absolute;
 //     right: 7%;
@@ -46,6 +65,24 @@
 }
 
 
+.add-icon {
+    padding: 3px;
+    font-size: 23px;
+    right: 2px;
+    top: -2px;
+    position: absolute;
+}
+
+.d-sub-icon{
+    height: 0px;
+    margin: 0;
+}
+
+
+.sub-icon {
+    font-size: 21px;
+}
+
 .mat-column-FullName, .mat-column-Company, .mat-column-Position,
 .mat-column-MothersName, .mat-column-FathersName,
 .mat-column-Spouse, .mat-column-Children, .mat-column-MotherinLaw, .mat-column-FatherinLaw {
@@ -59,6 +96,10 @@
 .mothersName {
     position: relative;
 }
+
+.mat-mdc-row .mat-mdc-cell {
+    cursor: pointer;
+  }
 
 // .mat-column-bn {
 //     width: 15%;
