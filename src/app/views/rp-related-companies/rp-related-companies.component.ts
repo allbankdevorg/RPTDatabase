@@ -1,24 +1,15 @@
-import {
-  AfterViewInit,
-  Component,
-  ViewChild,
-  ElementRef,
-  OnInit,
-  Renderer2,Directive,HostListener
-} from '@angular/core';
+import {AfterViewInit,Component,ViewChild,ElementRef,OnInit,Renderer2,Directive,HostListener} from '@angular/core';
 
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+
+import {animate,state,style,transition,trigger} from '@angular/animations';
 import { NgFor, NgIf } from '@angular/common';
 
 
 // Functions Import
-import {getManagingCompany} from '../../functions-files/getFunctions'
+import {getManagingCompany} from '../../functions-files/getFunctions';
+import {createAffil} from '../../functions-files/addAffiliates.js';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -30,6 +21,9 @@ declare var google: any;
 export interface Child {
   name: string;
 }
+
+// Service
+import { OrgsDataServicesService } from '../../services/orgs-data-services.service'
 
 export interface Data {
   cis: number;
@@ -109,16 +103,31 @@ export class DraggableDirective {
 export class RpRelatedCompaniesComponent implements OnInit {
   sharedData: string | any;
   private chart: any;
-  private lastClickTime = 0;
-  orgsData: any = [];
+  // private lastClickTime = 0;
+  // orgsData: any = [];
+  affForm: FormGroup;
+  compData: any = [];
+  moduleV: any;
   private isNodeDetailsVisible: boolean = false
+  commandGroups: any[] = [];
+
+
   // private orgData:any;
   constructor(
     private router: Router,
+    private formBuilder: FormBuilder,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    private orgsDataService: OrgsDataServicesService
   ) {
-    this.fetchAssocCompany();
+    this.affForm = this.formBuilder.group({
+      affilCisNumberM: [''],
+      accountName: [''],
+      companyName: [''],
+      commandControl: ['']
+      });
+    
+      this.fetchAssocCompany();
   }
 
 
@@ -127,72 +136,24 @@ export class RpRelatedCompaniesComponent implements OnInit {
   @ViewChild('nodeDetails', { static: true }) nodeDetails!: ElementRef;
 
   ngOnInit() {
-    google.charts.load('current', { packages: ['orgchart'] });
-    google.charts.setOnLoadCallback(() => this.drawChart());
-    this.fetchAssocCompany()
-    // console.log(this.orgData);
+    this.fetchAssocCompany().then(() => {//load google tree
+      // Now you can safely use this.orgsData
+    });
+    
+    this.getParentCompany();//load dropdown Company list
+    //this.drawChart();
+    
   }
   
-  drawChart(): void {
-      // let orgData = this.orgsData;
-    // const orgData = [
-    //   ['FINE PROPERTIES, INC.', undefined],
-    //   ['ALLVALUE HOLDINGS CORP.', 'FINE PROPERTIES, INC.'],
-    //   ['GOLDEN MV  HOLDINGS INC.', 'FINE PROPERTIES, INC.'],
-    //   ['GETS.PH HOLDINGS INC.', 'FINE PROPERTIES, INC.'],
-    //   ['VISTA LAND & LIFESCAPES, INC.', 'FINE PROPERTIES, INC.'],
-    //   ['ALLDAY MARTS, INC.', 'ALLVALUE HOLDINGS CORP.'],
-    //   ['ALLHOME CORP.', 'ALLVALUE HOLDINGS CORP.'],
-    //   ['THE VILLAGE SERVER INC.', 'ALLVALUE HOLDINGS CORP.'],
-    //   ['FAMILY SHOPPERS UNLIMITED, INC.', 'ALLVALUE HOLDINGS CORP.'],
-    //   ['BRIA HOMES, INC.', 'GOLDEN MV  HOLDINGS INC.'],
-    //   ['GOLDEN HAVEN', 'GOLDEN MV  HOLDINGS INC.'],
-    //   ['GLOBALLAND PROPERTY MANAGEMENT, INC.', 'GETS.PH HOLDINGS INC.'],
-    //   ['BRITTANY CORPORATION', 'VISTA LAND & LIFESCAPES, INC.'],
-    //   ['CROWN ASIA PROPERTIES INC,', 'VISTA LAND & LIFESCAPES, INC.'],
-    //   ['CAMELLA HOMES, INC.', 'VISTA LAND & LIFESCAPES, INC.'],
-    //   ['VISTA RESIDENCES INC.', 'VISTA LAND & LIFESCAPES, INC.'],
-    //   ['COMMUNITIES PHILIPPINES, INC.', 'VISTA LAND & LIFESCAPES, INC.'],
-    //   ['VISTAMALLS. INC.\t \t \t \t \t', 'VISTA LAND & LIFESCAPES, INC.'],
-    //   ['PRIMA CASA LAND & HOUSES INC.', 'BRITTANY CORPORATION'],
-    //   ['PRIMA CASA LAND & HOUSES INC.', 'CROWN ASIA PROPERTIES INC,'],
-    //   ['PRIMA CASA LAND & HOUSES INC.', 'CAMELLA HOMES, INC.'],
-    //   ['HOUSEHOLD DEVELOPMENT CORPORATION', 'CAMELLA HOMES, INC.'],
-    //   ['MANDALAY RESOURCES CORP.', 'CAMELLA HOMES, INC.'],
-    //   ['PRIMA CASA LAND & HOUSES INC.', 'VISTA RESIDENCES INC.'],
-    //   ['VISTA LEISURE CLUB CORP.', 'VISTA RESIDENCES INC.'],
-    //   ['VISTA VENTURES TAFT, INC.', 'VISTA RESIDENCES INC.'],
-    //   ['PRIMA CASA LAND & HOUSES INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES BATANGAS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES BOHOL, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES BULACAN, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES CEBU, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES DAVAO, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES GENERAL SANTOS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES ILOCOS, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES ILOILO, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES ISABELA, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES LEYTE, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES NAGA, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES PAMPANGA INC.,', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES PANAY, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES PANGASINAN, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES TARLAC INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['COMMUNITIES ZAMBOANGA, INC.', 'COMMUNITIES PHILIPPINES, INC.'],
-    //   ['MASTERPIECE ASIA PROPERTIES ', 'VISTAMALLS. INC.\t \t \t \t \t'],
-    //   ['MANUELA CORPORATION', 'VISTAMALLS. INC.\t \t \t \t \t'],
-    //   ['VISTAREIT, INC.', 'MASTERPIECE ASIA PROPERTIES '],
+drawChart(dataArr) {
       
-    // ]
-    
-    console.log(this.orgsData);
     var chart;
     
     var data = new google.visualization.DataTable();
       data.addColumn('string', 'Name');
       data.addColumn('string', 'Manager');
 
-      data.addRows(this.orgsData);
+      data.addRows(dataArr);
       var options = {
         allowCollapse: true,
         nodeStyle: {
@@ -212,7 +173,7 @@ export class RpRelatedCompaniesComponent implements OnInit {
           this.showModal();
           // $('#actionModal').modal('show'); // Show the modal dialog on double-click
         } else {
-          const selectedItem = this.orgsData[chart.getSelection()[0].row];
+          const selectedItem = this.orgsDataService.orgsData[chart.getSelection()[0].row];
           this.updateNodeDetails(selectedItem);
           this.isNodeDetailsVisible = true;
           this.showPopup(); // 
@@ -247,19 +208,49 @@ export class RpRelatedCompaniesComponent implements OnInit {
 
 
   fetchAssocCompany() {
-    getManagingCompany((mngComp) => {
-        const dataArr: any[] = [];
-        mngComp.forEach((item) => {
-        // Create a new object with the desired structure and add it to dataArr
-        dataArr.push([ item.aff_com_account_name,
-          item.manager,]
-        );
-      this.orgsData = dataArr;
-      return dataArr;
+    return new Promise<void>((resolve, reject) => {
+      getManagingCompany((mngComp) => {
+        try {
+          // Assuming getManagingCompany returns an array
+          this.orgsDataService.orgsData = mngComp.map(item => [item.aff_com_account_name, item.manager]);
+  
+          // Update the orgsData in the orgsDataService
+          google.charts.load('current', { packages: ['orgchart'] });
+          google.charts.setOnLoadCallback(() => this.drawChart( this.orgsDataService.orgsData));
+          console.log(this.orgsDataService.orgsData);
+          
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
       });
-    }) 
-    console.log(this.orgsData);
-    // console.log(orgsData);
+    });
+  }
+
+
+  getParentCompany() {
+    getManagingCompany((mngComp) => {
+      this.compData = mngComp;
+    this.commandGroups = []; // Clear the existing commandGroups
+    console.log(this.compData);
+
+      if (mngComp) {
+        const data = mngComp;
+        console.log(data);
+        data.forEach(item => {
+          // Create a commandGroup item with value and viewValue
+          const commandGroup = {
+            value: item.aff_com_cis_number,
+            viewValue: item.aff_com_company_name,
+          };
+
+          // Add the command group to the array
+          this.commandGroups.push(commandGroup);
+        });
+      }
+      // const data = this.compData.result[0].Data;
+      // console.log(mngComp);
+    })
   }
 
   
@@ -274,9 +265,49 @@ export class RpRelatedCompaniesComponent implements OnInit {
       // Position the #nodePopover element at the mouse pointer's position
       const nodePopover = this.nodePopover.nativeElement;
       this.renderer.setStyle(nodePopover, 'display', 'block');
-      this.renderer.setStyle(nodePopover, 'left', `${event.clientX}px`);
+
+      // Get the width of the popover element
+      const popoverWidth = nodePopover.offsetWidth;
+
+      // Calculate the left position based on the mouse pointer or clicked element
+      let leftPosition = event.clientX;
+      if (window.innerWidth - event.clientX < popoverWidth) {
+        // If the mouse pointer is on the right side of the screen, position the popover on the left
+        leftPosition -= popoverWidth;
+      }
+
+      this.renderer.setStyle(nodePopover, 'left', `${leftPosition}px`);
       this.renderer.setStyle(nodePopover, 'top', `${event.clientY}px`);
     }
+  }
+
+
+
+  onSubmit() {
+    if (this.affForm.valid) {
+      const formData = this.affForm.value;
+      console.log(formData);
+      // Call the JavaScript function with form data
+      createAffil(formData, this.moduleV) // Pass the entire formData object
+      .then((response) => {
+        // Log the response when the promise is resolved
+          this.ngOnInit();
+      })
+      .catch((error) => {
+        // Handle errors when the promise is rejected
+        console.error(error.result[0].status);
+        // Swal.fire('Error occurred', '', 'error');
+      });
+      
+      // console.log(createAffil());
+    }
+  }
+
+
+  onButtonClick(module: any) {
+    console.log('Add Data');
+    console.log(module);
+    this.moduleV = module;
   }
 
   showModal(): void {
