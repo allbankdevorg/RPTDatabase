@@ -4,19 +4,75 @@
     background-color: #fff;
 }
 
-.cTableCol{
-     text-align: left;
-     background-color: #e5e5e6;
-     font-size: 28px;
-     color: #000;
-}
+tr.example-detail-row {
+    height: 0;
+    overflow: hidden;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    // background: rgb(98, 252, 178);
+    background: whitesmoke;
+    // background: rgb(0, 100, 0, .3);
+    // color: #ffffff !important;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    // background: rgb(98, 252, 178);
+    background: rgb(0, 100, 0, .3);
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    // display: flex;
+    width: 100%;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  // .example-element-description {
+  //   padding: 16px;
+  // }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
 
-.cTableCols{
-    text-align: center;
-    background-color: #FFC599;
-    font-size: 28px;
+
+.cTableCol{
+    text-align: left;
+    // background-color: rgb(100, 246, 178);
+    background-color: rgb(84, 152, 84);
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  .cTableRow{
+    text-align: left;
+    // background-color: rgb(148, 195, 243);
+    // background-color: rgb(144, 238, 144, .7);
+    background-color: rgb(187, 242, 187);
+    font-size: 16px;
     color: #000;
-}
+    border-bottom: 2px solid #efefef;
+  }
+  
+
 
 .add-button {
     padding: 3px;
@@ -35,6 +91,24 @@
     // position: absolute;
 }
 
+.add-icon {
+    padding: 3px;
+    font-size: 23px;
+    right: 2px;
+    top: -2px;
+    position: absolute;
+}
+
+.d-sub-icon{
+    height: 0px;
+    margin: 0;
+}
+
+
+.sub-icon {
+    font-size: 21px;
+}
+
 .mat-column-Company, .mat-column-MothersName, .mat-column-FathersName, .mat-column-Siblings,
  .mat-column-Spouse, .mat-column-Children, .mat-column-MotherinLaw, 
  .mat-column-FatherinLaw, .mat-column-stepChild, .mat-column-sonDaughterInLaw, 
@@ -44,16 +118,15 @@
     position: relative;
     // display: flex;
     text-align: left;
-    background-color: #fff;
+    // background-color: #fff;
     border-left: 1px solid #d3d3d3;
 }
 
 .mat-column-FullName {
     width: 3%;
     position: relative;
-    // display: flex;
     text-align: left;
-    background-color: #fff;
+    background-color: rgb(187, 242, 187);
     border-left: 1px solid #d3d3d3;
 }
 
@@ -62,32 +135,9 @@
     position: relative;
     // display: flex;
     text-align: left;
-    background-color: #fff;
+    background-color: rgb(187, 242, 187);
     border-left: 1px solid #d3d3d3;
 }
-// .mat-column-bn {
-//     width: 15%;
-//     padding: 10px 24px;
-//     text-align: center;
-//   }
-  
-//   .mat-column-Nodirectors {
-//     width: 30%px;
-//     padding: 10px 4px;
-//     text-align: center;
-//   }
-  
-//   .mat-column-LDUpdated {
-//     width: 40%;
-//     padding: 10px 4px;
-//     text-align: center;
-//   }
-  
-//   .mat-mdc-row .mat-mdc-cell {
-//     cursor: pointer;
-//   }
-
-
 
 .example-container {
     height: 400px;
@@ -96,21 +146,9 @@
     overflow: auto;
   }
   
+
+  .mat-mdc-row .mat-mdc-cell {
+    cursor: pointer;
+  }
   
-//   td.mat-column-star {
-//     width: 20px;
-//     padding-right: 8px;
-//   }
-  
-//   th.mat-column-position, td.mat-column-position {
-//     padding-left: 8px;
-//   }
-  
-//   .mat-mdc-table-sticky-border-elem-right {
-//     border-left: 1px solid #e0e0e0;
-//   }
-  
-//   .mat-mdc-table-sticky-border-elem-left {
-//     border-right: 1px solid #e0e0e0;
-//   }
   
