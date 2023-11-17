@@ -59,7 +59,6 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { PRIComponent } from './views/pri/pri.component';
 import { BankofficerComponent } from './views/bankofficer/bankofficer.component';
 import { BankstockholderComponent } from './views/bankstockholder/bankstockholder.component';
-import { AffiliatesComponent } from './views/affiliates/affiliates.component';
 import { DRIComponent } from './views/dri/dri.component';
 import { DirectorsrelatedComponent } from './views/dri/directorsrelated/directorsrelated.component';
 import { PACComponent } from './views/rp-affiliates/pac/pac.component';
@@ -74,9 +73,11 @@ import { DraggableDirective } from './views/rp-related-companies/rp-related-comp
 import { LoginComponent } from './views/pages/login/login.component';
 import { UsersComponent} from './views/maintenance/users/users.component';
 import { SettingsComponent} from './views/maintenance/settings/settings.component';
-import { UsersmanagementComponent } from './views/usersmanagement/usersmanagement.component';
-import { SettingsmanagementComponent } from './views/settingsmanagement/settingsmanagement.component';
-import { ManualsComponent } from './views/manuals/manuals.component';
+import { OtherRelatedCompaniesComponent } from './views/other-related-companies/other-related-companies.component';
+import { TitleCaseDirective } from './directives/titleCase.directive';
+import { NumericOnlyDirective } from './directives/numeric.directive';
+import { CapsLockFormatDirective } from './directives/upperCase.directive';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -85,8 +86,8 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, AffiliatesComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, UsersmanagementComponent, SettingsmanagementComponent, ManualsComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
+    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, OtherRelatedCompaniesComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -128,7 +129,9 @@ const APP_CONTAINERS = [
     FormsModule,
     HttpClientModule,
     MatSelectModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule,
+    MatButtonModule,
   ],
   providers: [
     {
