@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
+import {TooltipPosition} from '@angular/material/tooltip';
+
 import { MatPaginator } from '@angular/material/paginator';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -62,6 +64,7 @@ interface Director {
   providedIn: 'root',
 })
 export class DirectorsrelatedComponent implements AfterViewInit {
+  positionOptions: TooltipPosition = 'right';
   companyDetails: any; //a variable to hold the fetched company details:\
   sharedData: string | any;
   // relationShipModal: any;
