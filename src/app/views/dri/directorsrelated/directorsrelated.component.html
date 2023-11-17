@@ -8,14 +8,14 @@
         <c-card-body>
           <c-container fluid>
             <!-- Data Table -->
-            <table cTable [responsive]="true" [striped]="true" class="mat-elevation-z8 DRI-table table table-bordered" mat-table [dataSource]="dataSource" >
+            <table cTable [responsive]="true" [hover]="true" class="mat-elevation-z8 DRI-table table table-bordered" mat-table [dataSource]="dataSource" >
         
               <!-- FullName Column -->
               <ng-container matColumnDef="FullName">
                   <th mat-header-cell *matHeaderCellDef> Full Name </th>
                   <td mat-cell *matCellDef="let element"> {{element.FullName}} 
-                    <button mat-icon-button color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
-                      <mat-icon>delete</mat-icon>
+                    <button mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
+                      <mat-icon>link_off</mat-icon>
                     </button>
                   </td>
               </ng-container>
@@ -37,11 +37,13 @@
                   <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
                   <td mat-cell *matCellDef="let element">
                     <ng-container *ngFor="let motherName of element['MothersName']">
-                      <button class="sub-button" cButton color="danger" (click)="delRelationship(element, motherName.cisNumber, motherName.dirRelated)" *ngIf="element.MothersName">-</button>
-                      {{motherName.fullName}}
+                      <div class="d-flex d-sub-icon">
+                        <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherName.cisNumber, motherName.dirRelated)" *ngIf="element.MothersName">remove_circle</mat-icon>
+                        {{motherName.fullName}}
+                      </div>
                       <br>
                     </ng-container> 
-                      <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.dir_CisNumber)" (click)="setdirRelated()" class="add-button" cButton color="primary">+</button>
+                      <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                     </td>
               </ng-container>
       
@@ -50,11 +52,13 @@
                   <th mat-header-cell *matHeaderCellDef> Father's Name </th>
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let fatherName of element['FathersName']">
-                        <button class="sub-button" cButton color="danger" (click)="delRelationship(element, fatherName.cisNumber, fatherName.dirRelated)" *ngIf="element.FathersName">-</button>
-                        {{fatherName.fullName}}
+                        <div class="d-flex d-sub-icon">
+                            <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherName.cisNumber, fatherName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
+                            {{fatherName.fullName}}
+                        </div>
                         <br>
                       </ng-container>
-                      <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button>
+                      <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                   </td>
               </ng-container>
               
@@ -63,11 +67,13 @@
                   <th mat-header-cell *matHeaderCellDef> Spouse  </th>
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let spouse of element['Spouse']">
-                          <button class="sub-button" cButton color="danger" (click)="delRelationship(element, spouse.cisNumber, spouse.dirRelated)" *ngIf="element.Spouse">-</button>
+                        <div class="d-flex d-sub-icon">
+                          <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, spouse.cisNumber, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
                           {{spouse.fullName}}
+                        </div>
                           <br>
                       </ng-container>
-                      <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button>
+                      <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                   </td>
               </ng-container>
       
@@ -76,11 +82,13 @@
                   <th mat-header-cell *matHeaderCellDef> Children </th>
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let child of element['Children']">
-                          <button class="sub-button" cButton color="danger" (click)="delRelationship(element, child.cisNumber, child.dirRelated)" *ngIf="element.Children">-</button>
+                        <div class="d-flex d-sub-icon">
+                          <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, child.cisNumber, child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
                           {{ child.fullName }} 
+                        </div>
                           <br>
                       </ng-container>
-                      <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button> 
+                      <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
                   </td>
               </ng-container>
       
@@ -89,11 +97,13 @@
                   <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
                   <td mat-cell *matCellDef="let element"> 
                       <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
-                            <button class="sub-button" cButton color="danger" (click)="delRelationship(element, motherinlaw.cisNumber, motherinlaw.dirRelated)" *ngIf="element.MotherinLaw">-</button>
+                        <div class="d-flex d-sub-icon">
+                            <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherinlaw.cisNumber, motherinlaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
                             {{motherinlaw.fullName}}
+                        </div>
                             <br>
                       </ng-container>
-                        <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button></td>
+                        <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
               </ng-container>
       
               <!-- Father in Law -->
@@ -101,11 +111,13 @@
                   <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
-                        <button class="sub-button" cButton color="danger" (click)="delRelationship(element, fatherinlaw.cisNumber, fatherinlaw.dirRelated)" *ngIf="element.FatherinLaw">-</button> 
-                        {{fatherinlaw.fullName}}
+                        <div class="d-flex d-sub-icon">
+                          <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherinlaw.cisNumber, fatherinlaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon> 
+                          {{fatherinlaw.fullName}}
+                        </div>
                         <br>
                       </ng-container>  
-                        <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" class="add-button" cButton color="primary">+</button></td>
+                        <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
               </ng-container>
       
               <!-- Header row first group -->
@@ -125,8 +137,8 @@
               </ng-container>
       
               <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cTableCol1"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cTableRow"></tr>
           </table>
             <!-- Paginator for Data Table -->
             <mat-paginator [pageSizeOptions]="[5, 10, 20]"
@@ -171,7 +183,7 @@
                 aria-describedby="passwordHelpInline-3"cFormControl
                 id="cisNumber" name="cisNumber"
                 placeholder="CIS Number"
-                type="text" formControlName="cisNumber">
+                type="text" formControlName="cisNumber" appNum>
             </c-col>  
           
             <c-col [sm]="4">
@@ -180,7 +192,7 @@
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="dFirstName" name="dFirstName"
                   placeholder="First Name"
-                  type="text" formControlName="dFirstName">
+                  type="text" formControlName="dFirstName" appTitleCase>
             </c-col>
     
             <c-col [sm]="4">
@@ -189,7 +201,7 @@
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="dMiddleName" name="dMiddleName"
                   placeholder="Middle Name"
-                  type="text" formControlName="dMiddleName">
+                  type="text" formControlName="dMiddleName" appTitleCase>
             </c-col>
 
             
@@ -205,7 +217,7 @@
               aria-describedby="passwordHelpInline-3"cFormControl
               id="dLastName" name="dLastName"
               placeholder="Last Name"
-              type="text" formControlName="dLastName">
+              type="text" formControlName="dLastName" appTitleCase>
         </c-col>
           
           <c-col [sm]="6">
@@ -214,17 +226,9 @@
               cFormControl
               id="dPosition" name="dPosition"
               placeholder="Position"
-              type="text" formControlName="dPosition">
+              type="text" formControlName="dPosition" appTitleCase>
           </c-col>
   
-          <!-- <c-col [sm]="3">
-              <label cLabel="col" for="prodT">P2M/P2E</label>
-              <select aria-label="Default select example" cSelect>
-                <option>P2M/P2E</option>
-                <option value="1">P2M</option>
-                <option value="2">P2E</option>
-              </select>
-          </c-col> -->
         </c-row>
       </c-modal-body>
       <c-modal-footer>
@@ -261,7 +265,7 @@
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="riCisNumber" name="riCisNumber"
                   placeholder="CIS Number"
-                  type="text" formControlName="riCisNumber">
+                  type="text" formControlName="riCisNumber" appNum>
               </c-col>
           
                 <c-col [sm]="6">
@@ -270,7 +274,7 @@
                       aria-describedby="passwordHelpInline-3"cFormControl
                       id="riFirstName" name="riFirstName"
                       placeholder="First Name"
-                      type="text" formControlName="riFirstName">
+                      type="text" formControlName="riFirstName" appTitleCase>
                 </c-col>
             </c-row>
             
@@ -281,7 +285,7 @@
                       aria-describedby="passwordHelpInline-3"cFormControl
                       id="riMiddleName" name="riMiddleName"
                       placeholder="Middle Name"
-                      type="text" formControlName="riMiddleName">
+                      type="text" formControlName="riMiddleName" appTitleCase>
                 </c-col>
     
                 <c-col [sm]="6">
@@ -290,7 +294,7 @@
                       aria-describedby="passwordHelpInline-3"cFormControl
                       id="riLastName" name="riLastName"
                       placeholder="Last Name"
-                      type="text" formControlName="riLastName">
+                      type="text" formControlName="riLastName" appTitleCase>
                 </c-col>
         
         
