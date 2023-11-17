@@ -22,7 +22,10 @@ import { SharedservicesService } from './dataintegration/sharedservices.service'
 // Functions Import
 import {getAffiliatesCompany, getAffiliatesDirectors, getManagingCompany} from '../../functions-files/getFunctions';
 import {createAffil} from '../../functions-files/addAffiliates.js';
-import {deleteAffiliates} from '../../functions-files/delFunctions'
+import {deleteAffiliates} from '../../functions-files/delFunctions';
+
+// File Saver
+import { saveAs } from 'file-saver';
 
 export interface Child {
   name: string;
@@ -77,6 +80,7 @@ export class RpAffiliatesComponent implements AfterViewInit {
   affForm: FormGroup;
   editAffilForm!: FormGroup;
   compData: any = [];
+  moduleV: any;
   // commandGroups: commandGroup[] = []; // Moved initialization here
   commandGroups: any[] = [];
   //  displayedColumns: string[] = ['bn', 'Nodirectors', 'LDUpdated', 'view'];
@@ -87,10 +91,14 @@ export class RpAffiliatesComponent implements AfterViewInit {
   currentPage = 0;  // Initialize the current page
   selectedItem: any;
 
+  headers: any[] = ['Full Name', 'Company', 'Position', "Mother's Name", "Father's Name", "Name of Siblings", 'Name of Spouse', 'Name of Children', 
+  'Name of Mother-In-Law', 'Name of Father-In-Law', 'Name of Stepchildren', 'Name of Son/Daughter-In-Law', 'Grandparents', 'Grandparents-in-law',
+  'Sisters-in-law', 'Brothers-in-law', 'Grandchildren', 'Grandchildren-in-law']
+
   displayedData: affiliatesData[] = [];
   affDataSource = new MatTableDataSource<affiliatesData>([]);
   ToDisplay: string[] = [];
-  columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'manager', 'directorCount', 'date_inserted', 'view'];
+  columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'directorCount', 'date_inserted', 'view'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: affiliatesData | null = null;
 
@@ -211,6 +219,10 @@ export class RpAffiliatesComponent implements AfterViewInit {
       // const data = this.compData.result[0].Data;
       // console.log(mngComp);
     })
+
+
+    // Fetching of Directors and Related Interest
+    
   }
   
   
@@ -220,17 +232,18 @@ export class RpAffiliatesComponent implements AfterViewInit {
       const formData = this.affForm.value;
       console.log(formData);
       // Call the JavaScript function with form data
-      createAffil(formData); // Pass the entire formData object
+      createAffil(formData, this.moduleV); // Pass the entire formData object
     }
   }
 
-  onButtonClick() {
+  onButtonClick(module: any) {
     console.log('Add Data');
-    
+    console.log(module);
+    this.moduleV = module;
   }
 
-  onRowClick(row: any) {
-    console.log(row)
+  onRowClick(row: any, event: Event) {
+    event.stopPropagation();
     // Capture the selected data and navigate to another component with it
       const directorId = row.aff_com_cis_number; // Extract the ID from the clicked row
       const companyName = row.aff_com_company_name;
@@ -276,7 +289,8 @@ export class RpAffiliatesComponent implements AfterViewInit {
     }
   }
 
-  delAffiliates(row: any, aff_com_cis_number: any): void {
+  delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
+    event.stopPropagation();
     // deleteRelationship()
     console.log(row);
     console.log(aff_com_cis_number);
@@ -288,7 +302,8 @@ export class RpAffiliatesComponent implements AfterViewInit {
 
   
 
-  editAffil(row: any): void {
+  editAffil(row: any, event: Event) {
+    event.stopPropagation();
     this.editAffilvisible = !this.editAffilvisible;
     console.log(row);
     console.log(this.commandGroups);
@@ -330,6 +345,33 @@ export class RpAffiliatesComponent implements AfterViewInit {
     this.editAffilvisible = event;
   }
 
+
+
+  // Functions for exporting to CSV
+  exportToCSV(data: any[], filename: string): void {
+    const csvData = this.convertToCSV(data);
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+    saveAs(blob, filename);
+}
+
+private convertToCSV(data: any[]): string {
+    // Implement logic to convert your data to CSV format
+    // For simplicity, let's assume data is an array of objects
+
+    const headers = Object.keys(data[0]);
+    const csvContent = [
+        headers.join(','),
+        ...data.map(item => headers.map(header => item[header]).join(','))
+    ];
+
+    return csvContent.join('\n');
+}
+
+downloadCSV(): void {
+  const myData: any = this.affDataSource.data;
+
+  this.exportToCSV(myData, 'Affilates.csv');
+}
 
 }
 

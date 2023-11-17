@@ -1,5 +1,6 @@
 tr.example-detail-row {
     height: 0;
+    overflow: hidden;
   }
   
   tr.example-element-row:not(.example-expanded-row):hover {
@@ -7,7 +8,8 @@ tr.example-detail-row {
   }
   
   tr.example-element-row:not(.example-expanded-row):active {
-    background: #efefef;
+    // background: #efefef;
+  background: rgb(0, 100, 0, .3);
   }
   
   .example-element-row td {
@@ -25,7 +27,7 @@ tr.example-detail-row {
     border: 2px solid black;
     padding: 8px;
     font-weight: lighter;
-    margin: 8px 0;
+    // margin: 8px 0;
     height: 104px;
   }
   
@@ -35,12 +37,47 @@ tr.example-detail-row {
     line-height: normal;
   }
   
-  .example-element-description {
-    padding: 16px;
-  }
+  // .example-element-description {
+  //   padding: 16px;
+  // }
   
   .example-element-description-attribution {
     opacity: 0.5;
+  }
+
+
+  .cTableCol{
+    text-align: left;
+    // background-color: rgb(100, 246, 178);
+    background-color: rgb(0, 100, 0, .4);
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 600;
+  }
+  
+  .cTableRow{
+    text-align: left;
+    // background-color: rgb(148, 195, 243);
+    background: rgb(144, 238, 144, .7);
+    font-size: 16px;
+    color: #000;
+  }
+  
+  .cTableCol2{
+    text-align: left;
+    // background-color: rgb(100, 246, 178);
+    background-color: rgb(0, 0, 100.4);
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  .cTableRow2{
+    text-align: left;
+    // background-color: rgb(148, 195, 243);
+    background-color: rgb(173, 216, 230, .7);
+    font-size: 16px;
+    color: #000;
+    border-bottom: 2px solid #ffffff;
   }
   
   .acc-access-add {
@@ -58,45 +95,12 @@ tr.example-detail-row {
     border-left: 1px solid #d3d3d3;
   }
   
-  .mat-column-action {
-    width: 1%;
-  }
-  
-  .mat-column-bn {
-      width: 15%;
-      padding: 10px 24px;
-      text-align: center;
-    }
-    
-    .mat-column-Nodirectors {
-      width: 30%px;
-      padding: 10px 4px;
-      text-align: center;
-    }
-    
-    .mat-column-LDUpdated {
-      width: 40%;
-      padding: 10px 4px;
-      text-align: center;
-    }
-  
-  
-    .mat-column-comN {
-      width: 33%;
-      padding: 10px 24px;
-      text-align: center;
-    }
-  
-    .mat-column-ofcrName {
-      width: 31%;
-      padding: 10px 24px;
-      text-align: center;
-    }
   
     .mat-column-position {
-      width: 29%;
+      // width: 30%;
       padding: 10px 24px;
-      text-align: center;
+      text-align: left;
+      color:aqua;
     }
 
     .mat-column-view {
@@ -109,8 +113,19 @@ tr.example-detail-row {
       cursor: pointer;
     }
     
-    .mat-column-aff_com_cis_number, .mat-column-fullname, .mat-column-aff_com_company_name {
-      width: 33%;
-      text-align: center;
+    .mat-column-fullname {
+      // width: 60%;
+      text-align: left;
       padding: 10px 24px;
     }
+
+    .mat-column-aff_com_cis_number {
+      text-align: left;
+      padding: 10px 24px;
+    }
+
+    .aff_com_company_name, .aff_com_account_name, .manager {
+      text-align: left;
+      padding: 10px 24px;
+    }
+
