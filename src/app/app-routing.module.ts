@@ -46,11 +46,6 @@ const routes: Routes = [
           import('./views/bankstockholder/bankstockholder.module').then((m) => m.BankstockholderModule)
       },
       {
-        path: 'affiliates',
-        loadChildren: () =>
-          import('./views/affiliates/affiliates.module').then((m) => m.AffiliatesModule)
-      },
-      {
         path: 'rp-affiliates',
         loadChildren: () =>
           import('./views/rp-affiliates/rp-affiliates.module').then((m) => m.RpAffiliatesModule)
@@ -64,6 +59,11 @@ const routes: Routes = [
         path: 'rp-related-companies',
         loadChildren: () =>
           import('./views/rp-related-companies/rp-related-companies.module').then((m) => m.RpRelatedCompaniesModule)
+      },
+      {
+        path: 'other-related-companies',
+        loadChildren: () =>
+          import('./views/other-related-companies/other-related-companies.module').then((m) => m.OtherRelatedCompaniesModule)
       },
       {
         path: 'rp-other-officer',
