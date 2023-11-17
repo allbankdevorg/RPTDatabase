@@ -1,7 +1,8 @@
 function deleteDosri(dosriId) {
+  // Code to delete a DOSRI from the database
     Swal.fire({
         title: 'Are you sure?',
-        text: "Do you want to Delete this DOSRI?",
+        text: "Do you want to Delete this DOSRI Company?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -11,7 +12,7 @@ function deleteDosri(dosriId) {
         if (result.isConfirmed) {
           Swal.fire(
             'Deleted!',
-            'Related Interest has been deleted.',
+            'DOSRI Company has been deleted.',
             'success'
           )
         }
@@ -47,10 +48,10 @@ function deleteDosri(dosriId) {
 }
 
 function deleteDOSRIDirector(directorId) {
-    // Implement code to delete a director from the database
+    // Code to delete a director from the database
     Swal.fire({
       title: 'Are you sure?',
-      text: "Do you want to Delete this Director?",
+      text: "Do you want to Unassign this Director?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -60,7 +61,7 @@ function deleteDOSRIDirector(directorId) {
       if (result.isConfirmed) {
         Swal.fire(
           'Deleted!',
-          'Related Interest has been deleted.',
+          'Director has been Unassigned.',
           'success'
         )
       }
@@ -68,6 +69,7 @@ function deleteDOSRIDirector(directorId) {
 }
 
 function deleteDOSRIDirRelationship(relationshipId) {
+  // Code to delete a director relationship from the database
       Swal.fire({
         title: 'Are you sure?',
         text: "Do you want to Delete this Related Interest?",
@@ -88,10 +90,10 @@ function deleteDOSRIDirRelationship(relationshipId) {
 }
 
 function deleteDOSRIOfficer(directorId) {
-    // Implement code to delete a DOSRI officer from the database
+    // Code to delete a DOSRI officer from the database
     Swal.fire({
       title: 'Are you sure?',
-      text: "Do you want to Delete this Bank Officer?",
+      text: "Do you want to Unassign this Bank Officer?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -101,7 +103,7 @@ function deleteDOSRIOfficer(directorId) {
       if (result.isConfirmed) {
         Swal.fire(
           'Deleted!',
-          'Related Interest has been deleted.',
+          'Bank Officer has been Unassigned.',
           'success'
         )
       }
@@ -110,7 +112,7 @@ function deleteDOSRIOfficer(directorId) {
 }
 
 function deleteDOSRIOfficerRI(directorId) {
-    // Implement code to delete a director from the database
+    // Code to delete a bank officer from the database
     Swal.fire({
       title: 'Are you sure?',
       text: "Do you want to Delete this Relationship?",
@@ -131,7 +133,7 @@ function deleteDOSRIOfficerRI(directorId) {
 }
 
 function deleteAffiliates(directorId) {
-  // Implement code to delete a director from the database
+  // Code to delete a Affiliates from the database
   Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Delete this Affiliates?",
@@ -144,7 +146,7 @@ function deleteAffiliates(directorId) {
     if (result.isConfirmed) {
       Swal.fire(
         'Deleted!',
-        'Relationship has been deleted.',
+        'Affiliates has been deleted.',
         'success'
       )
     }
@@ -152,10 +154,10 @@ function deleteAffiliates(directorId) {
 }
 
 function deleteAffilDir(directorId) {
-  // Implement code to delete a director from the database
+  // ICode to delete a Affiliate director from the database
   Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Delete this Affiliate's Director?",
+    text: "Do you want to Unassign this Affiliate's Director?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -165,7 +167,7 @@ function deleteAffilDir(directorId) {
     if (result.isConfirmed) {
       Swal.fire(
         'Deleted!',
-        'Relationship has been deleted.',
+        "Affiliate's Director has been Unassigned.",
         'success'
       )
     }
@@ -173,7 +175,7 @@ function deleteAffilDir(directorId) {
 }
 
 function deleteAffilDirRI(directorId) {
-  // Implement code to delete a director from the database
+  // Code to delete a Affiliate director relationshi from the database
   Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Delete this Director's Relationship?",
@@ -198,7 +200,7 @@ function deleteAffilOff(directorId) {
   // Implement code to delete a director from the database
   Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Delete this Affiliate's Officer?",
+    text: "Do you want to Unassign this Affiliate's Officer?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -217,7 +219,7 @@ function deleteAffilOff(directorId) {
 
 
 function deleteAffilOffRI(directorId) {
-  // Implement code to delete a director from the database
+  // Code to delete a Affiliate Officer from the database
   Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Delete this Affiliate's Officer Relationship?",
