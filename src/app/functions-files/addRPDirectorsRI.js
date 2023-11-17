@@ -1,7 +1,7 @@
-function createRPDIrectorsRelatedInterest(riData, buttonId, selectedOffCisNumber) {
+function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber) {
 
     console.log(buttonId)
-    console.log(selectedOffCisNumber)
+    console.log(selectedDirCisNumber)
     console.log(riData)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -17,7 +17,7 @@ function createRPDIrectorsRelatedInterest(riData, buttonId, selectedOffCisNumber
           "fname": riData.riFirstName,
           "mname": riData.riMiddleName,
           "lname": riData.riLastName,
-          "dir_related": selectedOffCisNumber,
+          "dir_related": selectedDirCisNumber,
           "relation": buttonId
         }
       }),
