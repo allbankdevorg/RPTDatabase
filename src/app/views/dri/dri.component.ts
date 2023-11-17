@@ -69,6 +69,8 @@ export class DRIComponent implements AfterViewInit {
   public visible = false;
   selectedItem: any;
 
+
+
   toggleDirectors(element: compData): void {
     this.expandedElement = this.expandedElement === element ? null : element;
   }
@@ -177,11 +179,13 @@ export class DRIComponent implements AfterViewInit {
       
     }
 
-    onRowClick(row: any) {
+    onRowClick(element: any, event: Event) {
+      event.stopPropagation();
+      console.log(element);
       // Capture the selected data and navigate to another component with it
       // this.router.navigate(['/details', row.id]);
-      const directorId = row.com_cis_number; // Extract the ID from the clicked row
-      const companyName = row.com_company_name;
+      const directorId = element.com_cis_number; // Extract the ID from the clicked row
+      const companyName = element.com_company_name;
 
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
@@ -189,12 +193,30 @@ export class DRIComponent implements AfterViewInit {
       console.log(directorId);
       console.log(companyName);
       console.log('row has been clicked');
-      console.log('Clicked row data:', row);
+      console.log('Clicked row data:', element);
+      this.router.navigate(['/dri/directorsrelated', directorId]);
+    }
+
+    onAccRowClick(element: any) {
+      console.log(element);
+      // Capture the selected data and navigate to another component with it
+      // this.router.navigate(['/details', row.id]);
+      const directorId = element.com_cis_number; // Extract the ID from the clicked row
+      const companyName = element.com_company_name;
+
+      this.sharedService.setCompName(companyName);
+      this.sharedService.setDirectorId(directorId);
+      this.sharedService.setCompanyCis(companyName);
+      console.log(directorId);
+      console.log(companyName);
+      console.log('row has been clicked');
+      console.log('Clicked row data:', element);
       this.router.navigate(['/dri/directorsrelated', directorId]);
     }
     
 
-    editDosri(element: any): void {
+    editDosri(element: any, event: Event): void {
+      event.stopPropagation();
       this.visible = !this.visible;
       console.log(element);
       this.selectedItem = element;
@@ -237,7 +259,8 @@ export class DRIComponent implements AfterViewInit {
       }
     }
 
-    delDosri(row: any, comCIS: any): void {
+    delDosri(row: any, comCIS: any, event: Event): void {
+      event.stopPropagation();
       // deleteRelationship()
       // console.log(row);
       // console.log(comCIS);
@@ -245,4 +268,7 @@ export class DRIComponent implements AfterViewInit {
     
       })
     }
+
+    
+   
 }
