@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
+import {TooltipPosition} from '@angular/material/tooltip';
 import { Injectable } from '@angular/core';
 
 // Services
@@ -98,7 +99,7 @@ interface IUser {
 export class BankofficerComponent implements AfterViewInit {
   
   sharedData: string | any;
-  
+  positionOptions: TooltipPosition = 'right';
   boForm: FormGroup;
   boRIForm: FormGroup;
   buttonId: number = 0;
