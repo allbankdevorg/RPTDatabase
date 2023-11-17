@@ -88,167 +88,166 @@
 </c-container> -->
 <!-- End of Main Container -->
 
-<c-row>
-  <c-col xs>
-    <c-card class="mb-4">
-      <c-card-header class="d-flex justify-content-between align-items-center"><h2>Bank Officers</h2>
-      </c-card-header>
-      <c-card-body>
-        <c-container fluid>
-          <table cTable [responsive]="true" [striped]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
-        
-            <!-- Header row first group -->
-            <ng-container matColumnDef="header-row-first-group">
-                <th  *matHeaderCellDef cTableColor class="cTableCol position-relative"
-                    
-                    [attr.colspan]="3"> 
-                Officers  
-                <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="onButtonClick()" cButton>+ Add</button>    
-                <!-- <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary"  (click)="onButtonClick()" (click)="onButtonClick()">
-                  <mat-icon>add</mat-icon>
-                  ADD
-              </button> -->
-                </th>
-            </ng-container>
-            
-            <!-- Header row second group -->
-            <ng-container matColumnDef="header-row-second-group">
-                <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
-            </ng-container>
-    
-            <!-- FullName Column -->
-            <ng-container matColumnDef="FullName">
-              <th mat-header-cell *matHeaderCellDef> Full Name </th>
-              <td mat-cell *matCellDef="let element"> 
-                <div class="d-flex justify-content-left">
-                  {{element.FullName}} 
-                  <button mat-icon-button color="warn" class="add-button" (click)="delOfficer(element, element.comp_CIS, element.offc_CisNumber)" aria-label="Delete Users">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>  
-               
-              </td>
-          </ng-container>
-    
-          <!-- Company Name Column -->
-          <ng-container matColumnDef="Company">
-              <th mat-header-cell *matHeaderCellDef> Company </th>
-              <td mat-cell *matCellDef="let element"> {{element.Company}} </td>
-          </ng-container>
-    
-          <!-- Position Column -->
-          <ng-container matColumnDef="Position">
-              <th mat-header-cell *matHeaderCellDef> Position </th>
-              <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
-          </ng-container>
-    
-            <!-- Mother's Name Column -->
-            <ng-container matColumnDef="MothersName" class="position-reative">
-              <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
-              <td mat-cell *matCellDef="let element">
-                <ng-container *ngFor="let motherName of element['MothersName']">
-                  <button class="sub-button" cButton color="danger" (click)="delRelationship(element, motherName.cisNumber, motherName.offRelated)" *ngIf="element.MothersName">-</button>
-                  {{motherName.fullName}}
-                  <br>
-                </ng-container> 
-                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.offc_CisNumber)" (click)="setoffcRelated()" class="add-button" cButton color="primary">+</button>
-                </td>
-          </ng-container>
-    
-          <!-- Father's Name -->
-          <ng-container matColumnDef="FathersName">
-              <th mat-header-cell *matHeaderCellDef> Father's Name </th>
-              <td mat-cell *matCellDef="let element">
-                  <ng-container *ngFor="let fatherName of element['FathersName']">
-                    <button class="sub-button" cButton color="danger" (click)="delRelationship(element, fatherName.cisNumber, fatherName.offRelated)" *ngIf="element.FathersName">-</button>
-                    {{fatherName.fullName}}
-                    <br>
-                  </ng-container>
-                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button>
-              </td>
-          </ng-container>
-          
-          <!-- Spouse -->
-          <ng-container matColumnDef="Spouse">
-              <th mat-header-cell *matHeaderCellDef> Spouse  </th>
-              <td mat-cell *matCellDef="let element">
-                  <ng-container *ngFor="let spouse of element['Spouse']">
-                      <button class="sub-button" cButton color="danger" (click)="delRelationship(element, spouse.cisNumber, spouse.offRelated)" *ngIf="element.Spouse">-</button>
-                      {{spouse.fullName}}
-                      <br>
-                  </ng-container>
-                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button>
-              </td>
-          </ng-container>
-    
-          <!-- Children -->
-          <ng-container matColumnDef="Children">
-              <th mat-header-cell *matHeaderCellDef> Children </th>
-              <td mat-cell *matCellDef="let element">
-                  <ng-container *ngFor="let child of element['Children']">
-                      <button class="sub-button" cButton color="danger" (click)="delRelationship(element, child.cisNumber, child.offRelated)" *ngIf="element.Children">-</button>
-                      {{ child.fullName }} 
-                      <br>
-                  </ng-container>
-                  <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button> 
-              </td>
-          </ng-container>
-    
-          <!-- Mother in Law -->
-          <ng-container matColumnDef="MotherinLaw">
-              <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
-              <td mat-cell *matCellDef="let element"> 
-                  <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
-                        <button class="sub-button" cButton color="danger" (click)="delRelationship(element, motherinlaw.cisNumber, motherinlaw.offRelated)" *ngIf="element.MotherinLaw">-</button>
-                        {{motherinlaw.fullName}}
-                        <br>
-                  </ng-container>
-                    <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button></td>
-          </ng-container>
-    
-          <!-- Father in Law -->
-          <ng-container matColumnDef="FatherinLaw">
-              <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
-              <td mat-cell *matCellDef="let element">
-                  <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
-                    <button class="sub-button" cButton color="danger" (click)="delRelationship(element, fatherinlaw.cisNumber, fatherinlaw.offRelated)" *ngIf="element.FatherinLaw">-</button> 
-                    {{fatherinlaw.fullName}}
-                    <br>
-                  </ng-container>  
-                    <button [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.offc_CisNumber)" class="add-button" cButton color="primary">+</button></td>
-          </ng-container>
-            
-    
-            <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-            showFirstLastButtons
-            aria-label="Select page of data">
-        </mat-paginator>
-        </c-container>
-      </c-card-body>
-    </c-card>
-  </c-col>
-</c-row>
-
-
 <c-container fluid class="mb-3 p-0">
-    
-    
+  <c-row>
+    <c-col xs>
+      <c-card class="mb-4">
+        <c-card-header class="d-flex justify-content-between align-items-center"><h2>Bank Officers</h2>
+        </c-card-header>
+        <c-card-body>
+          <c-container fluid>
+            <table cTable [responsive]="true" [hover]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+          
+              <!-- Header row first group -->
+              <ng-container matColumnDef="header-row-first-group">
+                  <th  *matHeaderCellDef cTableColor class="cTableCol position-relative"
+                      
+                      [attr.colspan]="3"> 
+                  Officers  
+                  <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="onButtonClick()" cButton>+ Add</button>    
+                  <!-- <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary"  (click)="onButtonClick()" (click)="onButtonClick()">
+                    <mat-icon>add</mat-icon>
+                    ADD
+                </button> -->
+                  </th>
+              </ng-container>
+              
+              <!-- Header row second group -->
+              <ng-container matColumnDef="header-row-second-group">
+                  <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
+              </ng-container>
       
-      <!-- <div *ngIf="!clickedRows.size">
-        Clicked rows will be logged here
-      </div>
+              <!-- FullName Column -->
+              <ng-container matColumnDef="FullName">
+                <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                <td mat-cell *matCellDef="let element"> 
+                  <div class="d-flex justify-content-left">
+                    {{element.FullName}} 
+                    <button mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Officer." color="warn" class="add-button" (click)="delOfficer(element, element.comp_CIS, element.offc_CisNumber)" aria-label="Delete Users">
+                      <mat-icon>link_off</mat-icon>
+                    </button>
+                  </div>  
+                
+                </td>
+            </ng-container>
       
-      <ul>
-        <li *ngFor="let clickedRow of clickedRows">
-          Clicked on {{clickedRow.name}}
-        </li>
-      </ul> -->
+            <!-- Company Name Column -->
+            <ng-container matColumnDef="Company">
+                <th mat-header-cell *matHeaderCellDef> Company </th>
+                <td mat-cell *matCellDef="let element"> {{element.Company}} </td>
+            </ng-container>
       
+            <!-- Position Column -->
+            <ng-container matColumnDef="Position">
+                <th mat-header-cell *matHeaderCellDef> Position </th>
+                <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
+            </ng-container>
+      
+              <!-- Mother's Name Column -->
+              <ng-container matColumnDef="MothersName" class="position-reative">
+                <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
+                <td mat-cell *matCellDef="let element">
+                  <ng-container *ngFor="let motherName of element['MothersName']">
+                    <div class="d-flex d-sub-icon">
+                        <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherName.cisNumber, motherName.offRelated)" *ngIf="element.MothersName">remove_circle</mat-icon>
+                        {{motherName.fullName}}
+                    </div>
+                    <br>
+                  </ng-container> 
+                    <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.offc_CisNumber)" (click)="setoffcRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                  </td>
+            </ng-container>
+      
+            <!-- Father's Name -->
+            <ng-container matColumnDef="FathersName">
+                <th mat-header-cell *matHeaderCellDef> Father's Name </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let fatherName of element['FathersName']">
+                      <div class="d-flex d-sub-icon">
+                          <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherName.cisNumber, fatherName.offRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
+                          {{fatherName.fullName}}
+                      </div>
+                      <br>
+                    </ng-container>
+                    <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                </td>
+            </ng-container>
+            
+            <!-- Spouse -->
+            <ng-container matColumnDef="Spouse">
+                <th mat-header-cell *matHeaderCellDef> Spouse  </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let spouse of element['Spouse']">
+                      <div class="d-flex d-sub-icon">
+                            <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, spouse.cisNumber, spouse.offRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
+                            {{spouse.fullName}}
+                      </div>
+                      <br>
+                    </ng-container>
+                    <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                </td>
+            </ng-container>
+      
+            <!-- Children -->
+            <ng-container matColumnDef="Children">
+                <th mat-header-cell *matHeaderCellDef> Children </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let child of element['Children']">
+                      <div class="d-flex d-sub-icon">
+                          <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, child.cisNumber, child.offRelated)" *ngIf="element.Children">remove_circle</mat-icon>
+                          {{ child.fullName }} 
+                      </div>
+                        <br>
+                    </ng-container>
+                    <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
+                </td>
+            </ng-container>
+      
+            <!-- Mother in Law -->
+            <ng-container matColumnDef="MotherinLaw">
+                <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
+                          <div class="d-flex d-sub-icon">
+                              <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherinlaw.cisNumber, motherinlaw.offRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
+                              {{motherinlaw.fullName}}
+                          </div>
+                          <br>
+                    </ng-container>
+                      <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                    </td>
+            </ng-container>
+      
+            <!-- Father in Law -->
+            <ng-container matColumnDef="FatherinLaw">
+                <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
+                      <div class="d-flex d-sub-icon">
+                          <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherinlaw.cisNumber, fatherinlaw.offRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon> 
+                          {{fatherinlaw.fullName}}
+                      </div>
+                      <br>
+                    </ng-container>  
+                      <mat-icon [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                    </td>
+            </ng-container>
+              
+      
+              <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cTableCol1"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cTableRow"></tr>
+          </table>
+      
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+              showFirstLastButtons
+              aria-label="Select page of data">
+          </mat-paginator>
+          </c-container>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
 </c-container>
 <!-- End of Main Container -->
 
@@ -273,7 +272,7 @@
               aria-describedby="passwordHelpInline-3"cFormControl
               id="boCisNumber" name="boCisNumber"
               placeholder="CIS Number" 
-              type="text" formControlName="boCisNumber">
+              type="text" formControlName="boCisNumber" appNum>
           </c-col>
           
             <c-col [sm]="4">
@@ -282,7 +281,7 @@
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="boFirstName" name="boFirstName"
                   placeholder="First Name"
-                  type="text" formControlName="boFirstName">
+                  type="text" formControlName="boFirstName" appTitleCase>
             </c-col>
     
             <c-col [sm]="4">
@@ -291,20 +290,11 @@
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="boMiddleName" name="boMiddleName"
                   placeholder="Middle Name"
-                  type="text" formControlName="boMiddleName">
+                  type="text" formControlName="boMiddleName" appTitleCase>
             </c-col>
         </c-row>
 
         <c-row class="align-items-center">
-  
-          <!-- <c-col [sm]="6">
-              <label cLabel="col" for="company">Company</label>
-              <input
-                cFormControl
-                id="company"
-                placeholder="Company"
-                type="text">
-          </c-col> -->
 
           <c-col [sm]="6">
             <label cLabel="col" for="boLastName">Last Name</label>
@@ -312,7 +302,7 @@
               aria-describedby="passwordHelpInline-3"cFormControl
               id="boLastName" name="boLastName"
               placeholder="Last Name"
-              type="text" formControlName="boLastName">
+              type="text" formControlName="boLastName" appTitleCase>
         </c-col>
   
           <c-col [sm]="6">
@@ -321,17 +311,9 @@
               cFormControl
               id="boPosition" name="boPosition"
               placeholder="Position"
-              type="text" formControlName="boPosition">
+              type="text" formControlName="boPosition" appTitleCase>
           </c-col>
   
-          <!-- <c-col [sm]="3">
-              <label cLabel="col" for="prodT">P2M/P2E</label>
-              <select aria-label="Default select example" cSelect>
-                <option>P2M/P2E</option>
-                <option value="1">P2M</option>
-                <option value="2">P2E</option>
-              </select>
-          </c-col> -->
         </c-row>
       </c-modal-body>
       <c-modal-footer>
@@ -362,7 +344,7 @@
                 aria-describedby="passwordHelpInline-3"cFormControl
                 id="boRICisNumber" name="boRICisNumber"
                 placeholder="CIS Number"
-                type="text" formControlName="boRICisNumber">
+                type="text" formControlName="boRICisNumber" appNum>
             </c-col>
         
               <c-col [sm]="6">
@@ -371,7 +353,7 @@
                     aria-describedby="passwordHelpInline-3"cFormControl
                     id="boRIFirstName" name="boRIFirstName"
                     placeholder="First Name"
-                    type="text" formControlName="boRIFirstName">
+                    type="text" formControlName="boRIFirstName" appTitleCase>
               </c-col>
           </c-row>
           
@@ -382,7 +364,7 @@
                     aria-describedby="passwordHelpInline-3"cFormControl
                     id="boRIMiddleName" name="boRIMiddleName"
                     placeholder="Middle Name"
-                    type="text" formControlName="boRIMiddleName">
+                    type="text" formControlName="boRIMiddleName" appTitleCase>
               </c-col>
   
               <c-col [sm]="6">
@@ -391,12 +373,9 @@
                     aria-describedby="passwordHelpInline-3"cFormControl
                     id="boRILastName" name="boRILastName"
                     placeholder="Last Name"
-                    type="text" formControlName="boRILastName">
+                    type="text" formControlName="boRILastName" appTitleCase>
               </c-col>
-      
-      
           </c-row>
-
 
       </c-row>
     </c-modal-body>
