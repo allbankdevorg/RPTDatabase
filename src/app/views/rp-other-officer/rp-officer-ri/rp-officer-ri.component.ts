@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 import { MatPaginator } from '@angular/material/paginator';
+import { TooltipPosition } from '@angular/material/tooltip';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -20,7 +21,7 @@ import { SharedService } from '../../dri/dataintegration/shared.service';
 import {createAffilDir} from '../../../functions-files/addAffiliatesDir';
 import {createAffilOff} from '../../../functions-files/addAffiliatesOfficer'
 import {createAffilOffRI} from '../../../functions-files/addAffiliatesOfficerRI';
-import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
+import {getCompany, getManagingCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilOff, deleteAffilOffRI} from '../../../functions-files/delFunctions'
 
 @Component({
@@ -29,7 +30,7 @@ import {deleteAffilOff, deleteAffilOffRI} from '../../../functions-files/delFunc
   styleUrls: ['./rp-officer-ri.component.scss']
 })
 export class RpOfficerRIComponent implements AfterViewInit {
-
+  positionOptions: TooltipPosition = 'right';
   OfftableData: Record<string, any>[] = [];
   affilOfficerForm: FormGroup;
   affilOfficerRIForm: FormGroup;
@@ -83,16 +84,19 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
           this.compId = params['id'];
           const companyName = this.sharedService.getCompName();
 
-          getAffiliatesCompany((affilComp) => {
+          getManagingCompany((mngComp) => {
               // Process the data to count directors related to each company
               const companytoDisplay = companyName;
               // console.log(affilComp);
-              const filteredCompany = affilComp.filter((company) => company.aff_com_cis_number === this.compId);
+              const filteredCompany = mngComp.filter((company) => company.aff_com_cis_number === this.compId);
               for (const company of filteredCompany ) {
                 const Company = company.aff_com_company_name;
                 this.Company = Company;
                 
               }
+              console.log(mngComp);
+              console.log(filteredCompany);
+              console.log(this.Company);
                 // Set the data source for your MatTable
             });
         });
@@ -117,7 +121,7 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
       if (affilOffData) {
           const filteredOfficers = affilOffData.filter((director) => director.com_related === this.compId);
           // console.log(filteredOfficers);
-          const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
+          const relationColumn = ['MothersName', 'FathersName', "Siblings", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const OfftableData: Record<string, any>[] = [];
           
@@ -163,7 +167,7 @@ OffdataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
         this.OffdataSource.data = OfftableData;
 
         
-        
+        console.log(OfftableData);
         console.log(this.Company);
 
           // Trigger change detection

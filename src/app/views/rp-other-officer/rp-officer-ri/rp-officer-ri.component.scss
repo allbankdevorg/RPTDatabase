@@ -5,18 +5,22 @@
 }
 
 .cTableCol{
-     text-align: left;
-     background-color: #e5e5e6;
-     font-size: 28px;
-     color: #000;
-}
-
-.cTableCols{
-    text-align: center;
-    background-color: #FFC599;
-    font-size: 28px;
+    text-align: left;
+    // background-color: rgb(100, 246, 178);
+    background-color: rgb(84, 152, 84);
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  .cTableRow{
+    text-align: left;
+    // background-color: rgb(148, 195, 243);
+    // background-color: rgb(144, 238, 144, .7);
+    background-color: rgb(187, 242, 187);
+    font-size: 16px;
     color: #000;
-}
+  }
+
 
 .add-button {
     padding: 3px;
@@ -35,6 +39,24 @@
     // position: absolute;
 }
 
+.add-icon {
+    padding: 3px;
+    font-size: 23px;
+    right: 2px;
+    top: -2px;
+    position: absolute;
+}
+
+.d-sub-icon{
+    height: 0px;
+    margin: 0;
+}
+
+
+.sub-icon {
+    font-size: 21px;
+}
+
 .mat-column-Company, .mat-column-MothersName, .mat-column-FathersName, .mat-column-Siblings,
  .mat-column-Spouse, .mat-column-Children, .mat-column-MotherinLaw, 
  .mat-column-FatherinLaw, .mat-column-stepChild, .mat-column-sonDaughterInLaw, 
@@ -42,51 +64,27 @@
  .mat-column-brothersInLaw, .mat-column-grandChildren, .mat-column-grandChildrenInLaw  {
     width: 2.08%;
     position: relative;
-    // display: flex;
     text-align: left;
-    background-color: #fff;
+    // background-color: #fff;
     border-left: 1px solid #d3d3d3;
 }
 
 .mat-column-FullName {
     width: 3%;
     position: relative;
-    // display: flex;
     text-align: left;
-    background-color: #fff;
     border-left: 1px solid #d3d3d3;
+    background-color: rgb(187, 242, 187);
 }
 
 .mat-column-Position {
     width: 1.04%;
     position: relative;
-    // display: flex;
+    overflow: hidden;
     text-align: left;
-    background-color: #fff;
     border-left: 1px solid #d3d3d3;
+    background-color: rgb(187, 242, 187);
 }
-// .mat-column-bn {
-//     width: 15%;
-//     padding: 10px 24px;
-//     text-align: center;
-//   }
-  
-//   .mat-column-Nodirectors {
-//     width: 30%px;
-//     padding: 10px 4px;
-//     text-align: center;
-//   }
-  
-//   .mat-column-LDUpdated {
-//     width: 40%;
-//     padding: 10px 4px;
-//     text-align: center;
-//   }
-  
-//   .mat-mdc-row .mat-mdc-cell {
-//     cursor: pointer;
-//   }
-
 
 
 .example-container {
@@ -95,22 +93,4 @@
     max-width: 100%;
     overflow: auto;
   }
-  
-  
-//   td.mat-column-star {
-//     width: 20px;
-//     padding-right: 8px;
-//   }
-  
-//   th.mat-column-position, td.mat-column-position {
-//     padding-left: 8px;
-//   }
-  
-//   .mat-mdc-table-sticky-border-elem-right {
-//     border-left: 1px solid #e0e0e0;
-//   }
-  
-//   .mat-mdc-table-sticky-border-elem-left {
-//     border-right: 1px solid #e0e0e0;
-//   }
   
