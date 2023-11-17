@@ -5,19 +5,19 @@ import { RpAffiliatesComponent } from './rp-affiliates.component';
 import { PACComponent } from './pac/pac.component';
 const routes: Routes = [
     {
-      path: '',
-      data: {
-        title: 'Affiliates of Related Party',
-      },
-      children: [
-        {
+      // path: '',
+      // data: {
+      //   title: 'Affiliates of Related Party',
+      // },
+      // children: [
+        // {
           path: '',
           component: RpAffiliatesComponent,
           data: {
             title: 'Affiliates ',
           },
-        },
-      ]
+        // },
+      // ]
     },
     {
       path: 'pac/:id',
