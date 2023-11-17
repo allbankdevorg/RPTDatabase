@@ -3,6 +3,56 @@
     max-width:max-content;
 }
 
+tr.example-detail-row {
+    height: 0;
+    overflow: hidden;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    // background: rgb(98, 252, 178);
+    background: whitesmoke;
+    // background: rgb(0, 100, 0, .3);
+    // color: #ffffff !important;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    // background: rgb(98, 252, 178);
+    background: rgb(0, 100, 0, .3);
+  }
+  
+
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    // display: flex;
+    width: 100%;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  // .example-element-description {
+  //   padding: 16px;
+  // }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+
 .cTableCol{
      text-align: left;
      background-color: #e5e5e6;
@@ -20,6 +70,25 @@
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border: none;  
 }
+
+
+.cTableCol1{
+    text-align: left;
+    // background-color: rgb(100, 246, 178);
+    background-color: rgb(84, 152, 84);
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  .cTableRow{
+    text-align: left;
+    // background-color: rgb(148, 195, 243);
+    // background-color: rgb(144, 238, 144, .7);
+    background-color: rgb(187, 242, 187);
+    font-size: 16px;
+    color: #000;
+    border-bottom: 2px solid #efefef;
+  }
 
 // .acc-access-add {
 //   position: absolute;
@@ -46,6 +115,24 @@
 }
 
 
+.add-icon {
+    padding: 3px;
+    font-size: 23px;
+    right: 2px;
+    top: -2px;
+    position: absolute;
+}
+
+.d-sub-icon{
+    height: 0px;
+    margin: 0;
+}
+
+
+.sub-icon {
+    font-size: 21px;
+}
+
  .mat-column-FullName, .mat-column-Company, .mat-column-Position,
  .mat-column-MothersName, .mat-column-FathersName,
  .mat-column-Spouse, .mat-column-Children, .mat-column-MotherinLaw, .mat-column-FatherinLaw {
@@ -55,6 +142,10 @@
     text-align: left;
     border-left: 1px solid #d3d3d3;
 }
+
+.mat-mdc-row .mat-mdc-cell {
+    cursor: pointer;
+  }
 
 // .mat-column-bn {
 //     width: 15%;
