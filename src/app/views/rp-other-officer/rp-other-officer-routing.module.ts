@@ -6,19 +6,19 @@ import { RpOfficerRIComponent } from './rp-officer-ri/rp-officer-ri.component';
 
 const routes: Routes = [
     {
-      path: '',
-      data: {
-        title: 'Affiliates of Related Party',
-      },
-      children: [
-        {
+      // path: '',
+      // data: {
+      //   title: 'Affiliates of Related Party',
+      // },
+      // children: [
+      //   {
           path: '',
           component: RpOtherOfficerComponent,
           data: {
-            title: 'Other Related Companies ',
+            title: 'Other Related Companies Officer ',
           },
-        },
-      ]
+      //   },
+      // ]
     },
     {
       path: 'rp-officer-ri/:id',
