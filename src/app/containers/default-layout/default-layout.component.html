@@ -20,11 +20,13 @@
 </c-sidebar>
 
 <!--main-->
-<div class="wrapper d-flex flex-column min-vh-100 bg-light dark:bg-transparent">
+<!-- <div class="wrapper d-flex flex-column min-vh-100 bg-light dark:bg-transparent"> -->
+  
+<div class="wrapper d-flex flex-column min-vh-100 wrap-bg"> <!-- Change of background-->
   <!--app-header-->
   <app-default-header class="mb-4 d-print-none header header-sticky" position="fixed" sidebarId="sidebar" />
   <!--app-body-->
-  <div class="body flex-grow-1 px-3">
+  <div class="body flex-grow-1 px-3 ">
     <c-container fluid>
       <router-outlet />
     </c-container>
