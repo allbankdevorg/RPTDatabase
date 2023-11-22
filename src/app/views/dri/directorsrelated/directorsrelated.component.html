@@ -1,4 +1,4 @@
-<c-container fluid class="mb-3 p-0 position-relative">
+<c-container fluid class="p-0 position-relative">
   <!-- Button to open a modal -->
   <c-row>
     <c-col xs>
@@ -6,7 +6,8 @@
         <c-card-header class="d-flex justify-content-between align-items-center"><h2>Directors Related Interest</h2>
         </c-card-header>
         <c-card-body>
-          <c-container fluid>
+          <c-container fluid class="my-3">
+            
             <!-- Data Table -->
             <table cTable [responsive]="true" [hover]="true" class="mat-elevation-z8 DRI-table table table-bordered" mat-table [dataSource]="dataSource" >
         
@@ -126,8 +127,10 @@
                       
                       [attr.colspan]="3"> 
                   Directors  
-                  <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add" (click)="setComp()" cButton>+</button>    
-      
+                  <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" class="add-btn-icon" (click)="setComp()">
+                    <mat-icon>add</mat-icon>
+                    ADD
+                  </button>   
                   </th>
               </ng-container>
               
