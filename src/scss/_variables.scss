@@ -119,6 +119,7 @@ $enable-deprecation-messages: false;
 
 // Text colors
 // $high-emphasis-dark:    rgba(shift-color($gray-base, +26), .87);
+$medium-emphasis-dark:  #fffffe;
 // $medium-emphasis-dark:  rgba(shift-color($gray-base, +26), .6);
 // $disabled-dark:         rgba(shift-color($gray-base, +26), .38);
 
@@ -321,6 +322,7 @@ $enable-deprecation-messages: false;
 // Style anchor elements.
 
 // $link-color:                              $primary;
+$link-color:                              #fff3ec;
 // $link-decoration:                         underline;
 // $link-shade-percentage:                   20%;
 // $link-hover-color:                        shift-color($link-color, $link-shade-percentage);
@@ -566,7 +568,7 @@ $enable-deprecation-messages: false;
 // $table-cell-vertical-align:   top;
 
 // $table-color:                 $body-color;
-// $table-bg:                    transparent;
+// $table-bg:                    solid;
 
 // $table-th-font-weight:        600;
 
@@ -576,15 +578,15 @@ $enable-deprecation-messages: false;
 
 // $table-active-color:          $table-color;
 // $table-active-bg-factor:      .1;
-// $table-active-bg:             rgba($black, $table-active-bg-factor);
+// $table-active-bg:             #ff9c81;
 
 // $table-hover-color:           $table-color;
 // $table-hover-bg-factor:       .075;
-// $table-hover-bg:              rgba($black, $table-hover-bg-factor);
+$table-hover-bg:              #ff9c81;
 
 // $table-border-factor:         .1;
 // $table-border-width:          $border-width;
-// $table-border-color:          $border-color;
+$table-border-color:          #fffffe;
 
 // $table-striped-order:         odd;
 
@@ -943,7 +945,7 @@ $enable-deprecation-messages: false;
 // $nav-link-padding-x:                1rem;
 // $nav-link-font-size:                null;
 // $nav-link-font-weight:              null;
-// $nav-link-color:                    $link-color;
+$nav-link-color:                       #fffffe;
 // $nav-link-hover-color:              $link-hover-color;
 // $nav-link-transition:               color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 // $nav-link-disabled-color:           $gray-600;
@@ -1089,17 +1091,17 @@ $enable-deprecation-messages: false;
 
 // Cards
 // scss-docs-start card-variables
-// $card-spacer-y:                     $spacer;
-// $card-spacer-x:                     $spacer;
+$card-spacer-y:                     0;
+$card-spacer-x:                    0;
 // $card-title-spacer-y:               $spacer / 2;
 // $card-border-width:                 $border-width;
 // $card-border-radius:                $border-radius;
-// $card-border-color:                 rgba($black, .125);
+$card-border-color:                 #fffffe;
 // $card-inner-border-radius:          subtract($card-border-radius, $card-border-width);
-// $card-cap-padding-y:                $card-spacer-y / 2;
-// $card-cap-padding-x:                $card-spacer-x;
-// $card-cap-bg:                       rgba($black, .03);
-// $card-cap-color:                    unset;
+$card-cap-padding-y:               0.5rem;
+$card-cap-padding-x:                1rem;
+$card-cap-bg:                       #55423d;
+$card-cap-color:                    #fffffe;
 // $card-height:                       null;
 // $card-color:                        unset;
 // $card-bg:                           $white;
@@ -1246,8 +1248,8 @@ $enable-deprecation-messages: false;
 
 // $modal-title-line-height:           $line-height-base;
 
-// $modal-content-color:               unset;
-// $modal-content-bg:                  $white;
+$modal-content-color:               #fffffe;
+$modal-content-bg:                  #bea8a1;
 // $modal-content-border-color:        rgba($black, .2);
 // $modal-content-border-width:        $border-width;
 // $modal-content-border-radius:       $border-radius-lg;
@@ -1403,12 +1405,12 @@ $enable-deprecation-messages: false;
 // $header-padding-y:              $spacer / 2;
 // $header-padding-x:              $spacer / 2;
 // $header-brand-font-size:        $font-size-lg;
-// $header-color:                  $medium-emphasis-dark;
-// $header-bg:                     $white;
+$header-color:                  #fffffe;
+$header-bg:                      #55423d;
 // $header-border-color:           $border-color;
 // $header-border-width:           1px;
-// $header-hover-color:            $high-emphasis-dark;
-// $header-active-color:           $high-emphasis-dark;
+$header-hover-color:            #e78fb3;
+$header-active-color:           #ffc0ad;
 // $header-disabled-color:         $disabled-dark;
 
 // Compute the header-brand padding-y so the header-brand will have the same height as header-text and nav-link
@@ -1451,7 +1453,7 @@ $enable-deprecation-messages: false;
 // Default theme
 // scss-docs-start subheader-default-themes
 // $subheader-bg:                     $white;
-// $subheader-color:                  $medium-emphasis-dark;
+$subheader-color:                  #fffffe;
 // $subheader-hover-color:            $high-emphasis-dark;
 // $subheader-active-color:           $high-emphasis-dark;
 // $subheader-disabled-color:         $disabled-dark;
@@ -1483,7 +1485,7 @@ $enable-deprecation-messages: false;
 // $breadcrumb-margin-bottom:          1rem;
 // $breadcrumb-bg:                     unset;
 // $breadcrumb-divider-color:          $gray-600;
-// $breadcrumb-active-color:           $gray-600;
+$breadcrumb-active-color:           #fff3ec;
 // $breadcrumb-divider:                quote("/");
 // $breadcrumb-divider-flipped:        $breadcrumb-divider;
 // $breadcrumb-border-radius:          null;
@@ -1533,15 +1535,16 @@ $enable-deprecation-messages: false;
 // );
 // $sidebar-padding-y:                        0;
 // $sidebar-padding-x:                        0;
-// $sidebar-color:                            $high-emphasis-light;
+$sidebar-color:                            #fffffe;
 // $sidebar-bg:                               $gray-base;
+$sidebar-bg:                               #271c19;
 // $sidebar-border-width:                     0;
 // $sidebar-border-color:                     transparent;
 // $sidebar-transition:                       margin-left .15s, margin-right .15s, box-shadow .075s, transform .15s, width .15s, z-index 0s ease .15s;
 // $sidebar-reliant-transition:               width .15s;
 
 // $sidebar-brand-height:                     4rem;
-// $sidebar-brand-color:                      $high-emphasis-light;
+$sidebar-brand-color:                      #fffffe;
 // $sidebar-brand-bg:                         rgba($black, .2);
 
 // $sidebar-header-height:                    4rem;
@@ -1564,17 +1567,17 @@ $enable-deprecation-messages: false;
 
 // $sidebar-nav-link-padding-y:               .8445rem;
 // $sidebar-nav-link-padding-x:               1rem;
-// $sidebar-nav-link-color:                   $medium-emphasis-light;
+$sidebar-nav-link-color:                   #fffffe;
 // $sidebar-nav-link-bg:                      transparent;
 // $sidebar-nav-link-transition:              background .15s ease, color .15s ease;
 // $sidebar-nav-link-icon-color:              $medium-emphasis-light;
 
 // $sidebar-nav-link-hover-color:             $high-emphasis-light;
-// $sidebar-nav-link-hover-bg:                rgba($white, .05);
+$sidebar-nav-link-hover-bg:                #f582ae;
 // $sidebar-nav-link-hover-icon-color:        $high-emphasis-light;
 
 // $sidebar-nav-link-active-color:            $high-emphasis-light;
-// $sidebar-nav-link-active-bg:               rgba($white, .05);
+$sidebar-nav-link-active-bg:               #bea8a1;
 // $sidebar-nav-link-active-icon-color:       $high-emphasis-light;
 
 // $sidebar-nav-link-disabled-color:          $disabled-light;
