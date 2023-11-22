@@ -1,26 +1,27 @@
+
+
+
 .DRI-table {
     min-width: 5000px;
     max-width:max-content;
-    background-color: #fff;
 }
 
 .cTableCol{
     text-align: left;
-    // background-color: rgb(100, 246, 178);
-    background-color: rgb(84, 152, 84);
+    background-color: #ffc0ad !important;
     font-size: 18px;
-    color: #ffffff;
+    color:#271c19;
   }
   
   .cTableRow{
     text-align: left;
-    // background-color: rgb(148, 195, 243);
-    // background-color: rgb(144, 238, 144, .7);
-    background-color: rgb(187, 242, 187);
+    background-color: #f3d2c1;
     font-size: 16px;
-    color: #000;
+    color: #271c19;
+    border-bottom: 2px solid #efefef;
   }
 
+  
 
 .add-button {
     padding: 3px;
@@ -62,7 +63,7 @@
  .mat-column-FatherinLaw, .mat-column-stepChild, .mat-column-sonDaughterInLaw, 
  .mat-column-grandParents, .mat-column-grandParentsInLaw, .mat-column-sistersInLaw,
  .mat-column-brothersInLaw, .mat-column-grandChildren, .mat-column-grandChildrenInLaw  {
-    width: 2.08%;
+    // width: 2.08%;
     position: relative;
     text-align: left;
     // background-color: #fff;
@@ -70,20 +71,20 @@
 }
 
 .mat-column-FullName {
-    width: 3%;
+    // width: 3%;
     position: relative;
     text-align: left;
     border-left: 1px solid #d3d3d3;
-    background-color: rgb(187, 242, 187);
+    // background-color: #f3d2c1;
 }
 
 .mat-column-Position {
-    width: 1.04%;
+    // width: 1.04%;
     position: relative;
     overflow: hidden;
     text-align: left;
     border-left: 1px solid #d3d3d3;
-    background-color: rgb(187, 242, 187);
+    // background-color: #f3d2c1;
 }
 
 
