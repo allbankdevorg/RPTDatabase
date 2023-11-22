@@ -212,6 +212,10 @@
                   </tr>
 
                   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+                  <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center" colspan="7">No Data Available</td>
+                  </tr>
               </tbody>
         </table>
         <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
