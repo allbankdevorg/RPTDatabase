@@ -1,8 +1,12 @@
 .DRI-table {
     min-width: 5000px;
     max-width:max-content;
-    background-color: #fff;
 }
+
+// .tables {
+//     max-width: 100%;
+//     overflow: hidden;
+//   }
 
 tr.example-detail-row {
     height: 0;
@@ -10,16 +14,9 @@ tr.example-detail-row {
   }
   
   tr.example-element-row:not(.example-expanded-row):hover {
-    // background: rgb(98, 252, 178);
-    background: whitesmoke;
-    // background: rgb(0, 100, 0, .3);
-    // color: #ffffff !important;
+    background: #ff9c81;
   }
   
-  tr.example-element-row:not(.example-expanded-row):active {
-    // background: rgb(98, 252, 178);
-    background: rgb(0, 100, 0, .3);
-  }
   
   .example-element-row td {
     border-bottom-width: 0;
@@ -27,13 +24,12 @@ tr.example-detail-row {
   
   .example-element-detail {
     overflow: hidden;
-    // display: flex;
     width: 100%;
   }
   
   .example-element-diagram {
     min-width: 80px;
-    border: 2px solid black;
+    border: 2px solid #f3d2c1;
     padding: 8px;
     font-weight: lighter;
     height: 104px;
@@ -45,10 +41,6 @@ tr.example-detail-row {
     line-height: normal;
   }
   
-  // .example-element-description {
-  //   padding: 16px;
-  // }
-  
   .example-element-description-attribution {
     opacity: 0.5;
   }
@@ -56,26 +48,20 @@ tr.example-detail-row {
 
 .cTableCol{
     text-align: left;
-    // background-color: rgb(100, 246, 178);
-    // background-color: rgb(84, 152, 84);
-    background-color: #fef6e4;
+    background-color: #ffc0ad;
     font-size: 18px;
-    // color: #ffffff;
-    color:#172c66;
+    color:#271c19;
   }
   
   .cTableRow{
     text-align: left;
-    // background-color: rgb(148, 195, 243);
-    // background-color: rgb(144, 238, 144, .7);
-    background-color: rgb(187, 242, 187);
+    background-color: #f3d2c1;
     font-size: 16px;
-    color: #000;
+    color: #271c19;
     border-bottom: 2px solid #efefef;
   }
+
   
-
-
 .add-button {
     padding: 3px;
     font-size: 10px;
@@ -87,10 +73,7 @@ tr.example-detail-row {
 .sub-button {
     padding: 3px;
     font-size: 10px;
-    // right: 2px;
-    // top: 2px;
     color: #fff;
-    // position: absolute;
 }
 
 .add-icon {
@@ -116,29 +99,27 @@ tr.example-detail-row {
  .mat-column-FatherinLaw, .mat-column-stepChild, .mat-column-sonDaughterInLaw, 
  .mat-column-grandParents, .mat-column-grandParentsInLaw, .mat-column-sistersInLaw,
  .mat-column-brothersInLaw, .mat-column-grandChildren, .mat-column-grandChildrenInLaw  {
-    width: 2.06%;
+    // width: 2.06%;
     position: relative;
-    // display: flex;
     text-align: left;
-    // background-color: #fff;
-    border-left: 1px solid #d3d3d3;
+    border-left: 1px solid #fffffe;
 }
 
 .mat-column-FullName {
-    width: 3%;
+    // width: 3%;
     position: relative;
     text-align: left;
-    background-color: rgb(187, 242, 187);
-    border-left: 1px solid #d3d3d3;
+    background-color: #f3d2c1;
+    border-left: 1px solid #fffffe;
+    ;
 }
 
 .mat-column-Position {
-    width: 1.04%;
+    // width: 1.04%;
     position: relative;
-    // display: flex;
     text-align: left;
-    background-color: rgb(187, 242, 187);
-    border-left: 1px solid #d3d3d3;
+    background-color: #f3d2c1;
+    border-left: 1px solid #fffffe;
 }
 
 .example-container {
@@ -153,4 +134,6 @@ tr.example-detail-row {
     cursor: pointer;
   }
   
+  
+
   
