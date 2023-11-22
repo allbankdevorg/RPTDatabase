@@ -4,16 +4,10 @@ tr.example-detail-row {
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
-  // background: rgb(98, 252, 178);
-  background: whitesmoke;
-  // background: rgb(0, 100, 0, .3);
-  // color: #ffffff !important;
+  background: #ff9c81;
 }
 
-tr.example-element-row:not(.example-expanded-row):active {
-  // background: rgb(98, 252, 178);
-  background: rgb(0, 100, 0, .3);
-}
+
 
 .example-element-row td {
   border-bottom-width: 0;
@@ -51,35 +45,53 @@ tr.example-element-row:not(.example-expanded-row):active {
 .cTableCol{
   text-align: left;
   // background-color: rgb(100, 246, 178);
-  background-color: rgb(0, 100, 0, .4);
+  // background-color: rgb(0, 100, 0, .4);
+  background-color: #ffc0ad;
   font-size: 18px;
-  color: #ffffff;
+  color: #271c19;
 }
 
 .cTableRow{
   text-align: left;
   // background-color: rgb(148, 195, 243);
-  background-color: rgb(144, 238, 144, .7);
+  // background-color: rgb(144, 238, 144, .7);
+  background-color: #f3d2c1;
   font-size: 16px;
-  color: #000;
+  color: #271c19;
 }
+
+
 
 .cTableCol2{
   text-align: left;
   // background-color: rgb(100, 246, 178);
-  background-color: rgb(0, 0, 100.4);
+  // background-color: rgb(0, 0, 100.4);
+  background-color: #947972;
   font-size: 18px;
-  color: #ffffff;
+  color: #fffffe;
 }
 
 .cTableRow2{
-  text-align: left;
+  text-align: left; 
   // background-color: rgb(148, 195, 243);
-  background-color: rgb(173, 216, 230, .7);
+  background-color: #bea8a1;
   font-size: 16px;
-  color: #000;
-  border-bottom: 2px solid #ffffff;
+  color: #fffffe;
+  border-bottom: 2px solid #fffffe;
 }
+
+.cTableRow2:hover {
+  // background: rgb(98, 252, 178);
+  background: #ff9c81;
+  // background: rgb(0, 100, 0, .3);
+  // color: #ffffff !important;
+}
+
+// .cTableRow2:active {
+//   // background: rgb(98, 252, 178);
+//   background: #ff9c81;
+// }
+
 
 .acc-access-add {
   position: absolute;
@@ -96,6 +108,10 @@ tr.example-element-row:not(.example-expanded-row):active {
 .mat-column-expand, .mat-column-com_cis_number, .mat-column-com_company_name, .mat-column-directorCount, 
 .mat-column-date_inserted, .mat-column-view {
   border-left: 1px solid #d3d3d3;
+}
+
+.mat-column-expandedDetail {
+  padding: 0;
 }
 
 .mat-column-action {
