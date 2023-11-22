@@ -367,11 +367,13 @@ private convertToCSV(data: any[]): string {
     return csvContent.join('\n');
 }
 
-downloadCSV(): void {
-  const myData: any = this.affDataSource.data;
+// downloadCSV(): void {
+//   const myData: any = this.affDataSource.data;
 
-  this.exportToCSV(myData, 'Affilates.csv');
-}
+//   this.exportToCSV(myData, 'Affilates.csv');
+// }
+
+downloadCSV(): void {}
 
 }
 
