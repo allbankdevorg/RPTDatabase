@@ -217,7 +217,7 @@ drawChart(dataArr) {
           // Update the orgsData in the orgsDataService
           google.charts.load('current', { packages: ['orgchart'] });
           google.charts.setOnLoadCallback(() => this.drawChart( this.orgsDataService.orgsData));
-          console.log(this.orgsDataService.orgsData);
+          // console.log(this.orgsDataService.orgsData);
           
           resolve();
         } catch (error) {
@@ -232,11 +232,11 @@ drawChart(dataArr) {
     getManagingCompany((mngComp) => {
       this.compData = mngComp;
     this.commandGroups = []; // Clear the existing commandGroups
-    console.log(this.compData);
+    // console.log(this.compData);
 
       if (mngComp) {
         const data = mngComp;
-        console.log(data);
+        // console.log(data);
         data.forEach(item => {
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
