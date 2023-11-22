@@ -55,18 +55,19 @@ tr.example-detail-row {
 
 .cTableCol{
      text-align: left;
-     background-color: #e5e5e6;
-     font-size: 28px;
-     color: #000;
+    //  background-color: #e5e5e6;
+     background-color: #ffc0ad;
+     font-size: 22px;
+     color: #271c19;
      box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
      border: none;    
 }
 
 .cTableCols{
     text-align: left;
-    background-color: #e5e5e6;
-    font-size: 28px;
-    color: #000;
+    background-color: #ffc0ad;
+    font-size: 22px;
+    color: #271c19;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border: none;  
 }
@@ -75,18 +76,19 @@ tr.example-detail-row {
 .cTableCol1{
     text-align: left;
     // background-color: rgb(100, 246, 178);
-    background-color: rgb(84, 152, 84);
+    // background-color: rgb(84, 152, 84);
+    background-color: #947972;
     font-size: 18px;
-    color: #ffffff;
+    color: #fffffe;
   }
   
   .cTableRow{
     text-align: left;
     // background-color: rgb(148, 195, 243);
     // background-color: rgb(144, 238, 144, .7);
-    background-color: rgb(187, 242, 187);
+    background-color: #bea8a1;
     font-size: 16px;
-    color: #000;
+    color: #fffffe;
     border-bottom: 2px solid #efefef;
   }
 
@@ -131,6 +133,12 @@ tr.example-detail-row {
 
 .sub-icon {
     font-size: 21px;
+}
+
+.add-btn-icon {
+  font-size: 16px;
+  font-weight: 300;
+  height: 38px;
 }
 
  .mat-column-FullName, .mat-column-Company, .mat-column-Position,
