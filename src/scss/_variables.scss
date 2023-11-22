@@ -1565,8 +1565,8 @@ $sidebar-brand-color:                      #fffffe;
 // $sidebar-nav-title-color:                  $medium-emphasis-light;
 // $sidebar-nav-title-transition:             height .15s, margin .15s;
 
-// $sidebar-nav-link-padding-y:               .8445rem;
-// $sidebar-nav-link-padding-x:               1rem;
+$sidebar-nav-link-padding-y:               .75rem;
+$sidebar-nav-link-padding-x:               1rem;
 $sidebar-nav-link-color:                   #fffffe;
 // $sidebar-nav-link-bg:                      transparent;
 // $sidebar-nav-link-transition:              background .15s ease, color .15s ease;
@@ -1574,10 +1574,10 @@ $sidebar-nav-link-color:                   #fffffe;
 
 // $sidebar-nav-link-hover-color:             $high-emphasis-light;
 $sidebar-nav-link-hover-bg:                #f582ae;
-// $sidebar-nav-link-hover-icon-color:        $high-emphasis-light;
+$sidebar-nav-link-hover-icon-color:        #fffffe;
 
 // $sidebar-nav-link-active-color:            $high-emphasis-light;
-$sidebar-nav-link-active-bg:               #bea8a1;
+$sidebar-nav-link-active-bg:               rgba(255, 255, 255, .25);
 // $sidebar-nav-link-active-icon-color:       $high-emphasis-light;
 
 // $sidebar-nav-link-disabled-color:          $disabled-light;
@@ -1587,12 +1587,12 @@ $sidebar-nav-link-active-bg:               #bea8a1;
 // $sidebar-nav-icon-height:                  1.25rem;
 // $sidebar-nav-icon-font-size:               $sidebar-nav-icon-height;
 
-// $sidebar-nav-group-bg:                     rgba(0, 0, 0, .2);
+$sidebar-nav-group-bg:                     rgba(190, 168, 161, .3);
 // $sidebar-nav-group-transition:             background .15s ease-in-out;
 // $sidebar-nav-group-items-transition:       height .15s ease;
 // $sidebar-nav-group-toggle-show-color:      $sidebar-nav-link-color;
 
-// $sidebar-nav-group-indicator-color:        $medium-emphasis-light;
+$sidebar-nav-group-indicator-color:       #fffffe;
 // $sidebar-nav-group-indicator:              str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='#{$sidebar-nav-group-indicator-color}' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E"), "#", "%23");
 // $sidebar-nav-group-indicator-hover-color:  $sidebar-nav-link-hover-color;
 // $sidebar-nav-group-indicator-hover:        str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='#{$sidebar-nav-group-indicator-hover-color}' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E"), "#", "%23");
