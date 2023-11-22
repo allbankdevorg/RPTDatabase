@@ -278,7 +278,6 @@ export class BankofficerComponent implements AfterViewInit {
       createBankOfficer(boData); // Pass the entire formData object
     }
 
-
     this.ngZone.run(() => {
       this.dataSource.data = this.tableData;
     });
