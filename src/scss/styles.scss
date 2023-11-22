@@ -64,3 +64,31 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 .cdk-global-overlay-wrapper, .cdk-overlay-container { z-index: 9999!important; } 
+
+.sidebar-nav .nav-group.show .nav-group-toggle {
+  background-color: #947972;
+}
+
+
+/* Using !important (use sparingly) */
+.google-visualization-orgchart-node {
+  background: #e78fb3 !important;
+  border: 2px solid #140d0b !important;
+  color: #fff3ec !important;
+}
+
+.google-visualization-orgchart-linebottom {
+  border-bottom: 1px solid #fffffe !important;
+}
+
+.google-visualization-orgchart-lineleft {
+  border-left: 1px solid #fffffe !important;
+}
+
+.google-visualization-orgchart-lineright {
+  border-right: 1px solid #fffffe !important;
+}
+
+.google-visualization-orgchart-table * {
+   padding: 0; 
+}
