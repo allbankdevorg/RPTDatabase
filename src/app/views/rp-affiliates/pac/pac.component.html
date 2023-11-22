@@ -9,19 +9,19 @@
                         CSV
                     </button> -->
                 </c-card-header>
-                <c-card-body>
-                    <c-row>
-                        <c-container class="mb-1 d-flex justify-content-between align-items-center">
+                <c-card-body class="card-body">
+                    <!-- <c-row> -->
+                        <c-container fluid class=" my-1 d-flex justify-content-between align-items-center">
                             <div></div>
                             <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" (click)="setAffilComp()">
                                 <mat-icon>add</mat-icon>
                                 ADD
                             </button>
                         </c-container>
-                      </c-row>
+                      <!-- </c-row> -->
 
                     <c-container fluid>
-                        <table cTable [responsive]="true" mat-table [dataSource]="dataSource" class="DRI-table">
+                        <table cTable [responsive]="true" bordered mat-table [dataSource]="dataSource" class="DRI-table">
                         
                         <!-- Full Name Column -->
                         <ng-container matColumnDef="FullName" sticky>
@@ -174,7 +174,7 @@
                                     <div class="d-flex d-sub-icon">    
                                         <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, SonDaughterinlaw.cisNumber, SonDaughterinlaw.dirRelated)" *ngIf="element.sonDaughterInLaw">remove_circle</mat-icon>
                                         {{ SonDaughterinlaw.fullName}}
-                                    </div>mat-icon
+                                    </div>
                                     <br>
                                 </ng-container> 
                                 <mat-icon [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
@@ -217,7 +217,7 @@
                             <td mat-cell *matCellDef="let element"> 
                                 <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
                                     <div class="d-flex d-sub-icon">
-                                        <mat-icon class="sub-icon" cButton color="warn" (click)="delAffilDirRI(element, Sistersinlaw.cisNumber, Sistersinlaw.dirRelated)" *ngIf="element.sistersInLaw">remove_circle</mat-icon>
+                                        <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Sistersinlaw.cisNumber, Sistersinlaw.dirRelated)" *ngIf="element.sistersInLaw">remove_circle</mat-icon>
                                         {{ Sistersinlaw.fullName}}
                                     </div>
                                     <br>
@@ -276,7 +276,7 @@
                         </table>
                     
                     
-                        <mat-paginator paginator2 [pageSizeOptions]="[5, 10, 20]"
+                        <mat-paginator class="paginator" paginator2 [pageSizeOptions]="[5, 10, 20]"
                         showFirstLastButtons
                         aria-label="Select page of data" sticky> 
                         </mat-paginator>
