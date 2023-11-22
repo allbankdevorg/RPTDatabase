@@ -308,8 +308,6 @@ async  ngOnInit() {
           }
           
         this.dataSource.data = tableData;
-        console.log(this.dataSource.data);
-        console.log(JSON.stringify(this.dataSource.data));
 
         
 
@@ -375,7 +373,6 @@ async  ngOnInit() {
           }
           
         this.OffdataSource.data = OfftableData;
-        console.log(this.OffdataSource.data);
 
         
 
@@ -448,7 +445,7 @@ async  ngOnInit() {
     }
 
     this.ngZone.run(() => {
-      // this.dataSource.data = this.tableData;
+      this.dataSource.data = this.tableData;
     });
     
       // Trigger change detection
