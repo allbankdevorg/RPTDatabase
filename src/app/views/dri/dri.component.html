@@ -9,17 +9,18 @@
         </c-card-header>
         <c-card-body>
 
-          <c-row>
-            <c-container class="mb-1 d-flex justify-content-between align-items-center">
-                <div></div>
-                <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary"  (click)="onButtonClick()" (click)="onButtonClick()">
-                  <mat-icon>add</mat-icon>
-                  ADD
-                </button>
+          
+            <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
+              <!-- <c-row> -->
+                  <div></div>
+                  <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary"  (click)="onButtonClick()" (click)="onButtonClick()">
+                    <mat-icon>add</mat-icon>
+                    ADD
+                  </button>
+              <!-- </c-row> -->
             </c-container>
-          </c-row>
           <c-container fluid>
-              <table [hover]="true"
+              <table
               cTable [responsive]="true" mat-table
               [dataSource]="compDataSource" multiTemplateDataRows
               class="mat-elevation-z8 DRI-table mb-0 border">
