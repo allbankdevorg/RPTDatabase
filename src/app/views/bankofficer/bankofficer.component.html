@@ -95,7 +95,7 @@
         <c-card-header class="d-flex justify-content-between align-items-center"><h2>Bank Officers</h2>
         </c-card-header>
         <c-card-body>
-          <c-container fluid>
+          <c-container fluid class="my-3">
             <table cTable [responsive]="true" [hover]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
           
               <!-- Header row first group -->
@@ -103,8 +103,12 @@
                   <th  *matHeaderCellDef cTableColor class="cTableCol position-relative"
                       
                       [attr.colspan]="3"> 
-                  Officers  
-                  <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="onButtonClick()" cButton>+ Add</button>    
+                  Officers
+                  <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" class="add-btn-icon" (click)="onButtonClick()">
+                    <mat-icon>add</mat-icon>
+                    ADD
+                  </button>  
+                  <!-- <button [cModalToggle]="staticBackdropModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="onButtonClick()" cButton>+ Add</button>     -->
                   <!-- <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary"  (click)="onButtonClick()" (click)="onButtonClick()">
                     <mat-icon>add</mat-icon>
                     ADD
