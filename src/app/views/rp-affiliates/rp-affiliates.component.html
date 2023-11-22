@@ -80,14 +80,13 @@
         </c-card-header>
         <c-card-body>
           
-          <c-row>
-            <c-container class="mb-1 d-flex justify-content-between align-items-center">
+            <c-container fluid class="mb-1 d-flex justify-content-between align-items-center">
               <button (click)="downloadCSV()" mat-fab extended color="primary">
                 <mat-icon>download</mat-icon>
                 CSV
               </button>
               <div class="d-flex justify-content-between align-items-center">  
-                <mat-form-field  class="mx-2">
+                <mat-form-field  class="mx-2 mt-3">
                   <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Search">
                                 <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
@@ -97,7 +96,7 @@
                 </button>
               </div>
             </c-container>
-          </c-row>
+
           <c-container fluid>
             <!-- Data Table -->
             <table cTable [responsive]="true" mat-table
