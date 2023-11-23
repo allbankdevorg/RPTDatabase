@@ -1,11 +1,12 @@
 import { AfterViewInit, Input, Component, ViewChild, NgZone, ChangeDetectionStrategy, ElementRef, Renderer2, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import {animate, state, style, transition, trigger} from '@angular/animations'
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+
 
 // Services
 import { DataTransferService } from '../../services/data-transfer.service';
@@ -109,12 +110,13 @@ export class DRIComponent implements AfterViewInit {
         body: ['', Validators.required]
       });
       this.dosriForm = this.formBuilder.group({
-        cisNumber: [''],
-        accountName: [''],
-        companyName: ['']
+        cisNumber: ['', [Validators.required]],
+        accountName: ['', [Validators.required]],
+        companyName: ['', [Validators.required]]
       });
       
     }
+
 
 
   ngOnInit(): void {

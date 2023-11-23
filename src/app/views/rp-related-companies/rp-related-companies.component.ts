@@ -121,9 +121,9 @@ export class RpRelatedCompaniesComponent implements OnInit {
     private orgsDataService: OrgsDataServicesService
   ) {
     this.affForm = this.formBuilder.group({
-      affilCisNumberM: [''],
-      accountName: [''],
-      companyName: [''],
+      affilCisNumberM: ['', [Validators.required]],
+      accountName: ['', [Validators.required]],
+      companyName: ['', [Validators.required]],
       commandControl: ['']
       });
     

@@ -92,9 +92,9 @@ export class OtherRelatedCompaniesComponent {
     private renderer: Renderer2,
     private el: ElementRef) {
 this.affForm = this.formBuilder.group({
-affilCisNumberM: [''],
-accountName: [''],
-companyName: [''],
+affilCisNumberM: ['', [Validators.required]],
+accountName: ['', [Validators.required]],
+companyName: ['', [Validators.required]],
 commandControl: ['']
 });
 // Initialize the commandGroups array based on your data

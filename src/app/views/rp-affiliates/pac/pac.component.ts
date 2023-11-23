@@ -194,17 +194,17 @@ export class PACComponent implements AfterViewInit {
       private csvExportService: CsvExportService)
       {
           this.affilDrctrForm = this.formBuilder.group({
-            affildcisNumber: [''],
-            affildFirstName: [''],
+            affildcisNumber: ['',  [Validators.required]],
+            affildFirstName: ['', [Validators.required]],
             affildMiddleName: [''],
-            affildLastName: [''],
-            affildPosition: [''],
+            affildLastName: ['', [Validators.required]],
+            affildPosition: ['', [Validators.required]],
           });
           this.affilDirRiForm = this.formBuilder.group({
             riCisNumber: [''],
-            riFirstName: [''],
+            riFirstName: ['', [Validators.required]],
             riMiddleName: [''],
-            riLastName: [''],
+            riLastName: ['', [Validators.required]],
           });
           this.affilOfficerForm = this.formBuilder.group({
             affiloffcisNumber: [''],
