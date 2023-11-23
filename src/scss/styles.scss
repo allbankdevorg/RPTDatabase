@@ -69,7 +69,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #947972;
 }
 
-
+// google chart
 /* Using !important (use sparingly) */
 .google-visualization-orgchart-node {
   background: #e78fb3 !important;
@@ -91,4 +91,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .google-visualization-orgchart-table * {
    padding: 0; 
+}
+
+
+// Proceed Button
+.proceed {
+  background-color: #ffc0ad;
+  color: #271c19;
+  border-color: #fff3e9;
+  font-size: 18px;
+}
+
+.error-msg {
+  font-size: 13px;
 }
