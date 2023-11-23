@@ -5,7 +5,8 @@ import {TooltipPosition} from '@angular/material/tooltip';
 
 import { MatPaginator } from '@angular/material/paginator';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -105,17 +106,17 @@ export class DirectorsrelatedComponent implements AfterViewInit {
               private ngZone: NgZone)
   {
     this.drctrForm = this.formBuilder.group({
-      cisNumber: [''],
-      dFirstName: [''],
+      cisNumber: ['', [Validators.required]],
+      dFirstName: ['', [Validators.required]],
       dMiddleName: [''],
-      dLastName: [''],
-      dPosition: [''],
+      dLastName: ['', [Validators.required]],
+      dPosition: ['', [Validators.required]],
     });
     this.riForm = this.formBuilder.group({
       riCisNumber: [''],
-      riFirstName: [''],
+      riFirstName: ['', [Validators.required]],
       riMiddleName: [''],
-      riLastName: [''],
+      riLastName: ['', [Validators.required]],
     });
     
     
