@@ -245,21 +245,23 @@
           
           <c-col [sm]="6">
               <label cLabel="col" for="affilCisNumberM">CIS Number</label>
-              <mat-form-field appearance="outline" [style.width.%]=100>
+              <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
                 type="text" placeholder="CIS"
                 formControlName="affilCisNumberM" appNum>
+                <mat-error *ngIf="affForm.get('affilCisNumberM')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               </mat-form-field>
           </c-col>
   
           <c-col [sm]="6">
               <label cLabel="col" for="accountName">Account Name</label>
-              <mat-form-field appearance="outline" [style.width.%]=100>
+              <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Account Name</mat-label> -->
                 <input matInput #accDinput id="accountName"  name="accountName"
                 type="text" placeholder="Account Name"
                 formControlName="accountName" appCaps>
+                <mat-error *ngIf="affForm.get('accountName')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
               </mat-form-field>
               <!-- <input
                 cFormControl
@@ -270,13 +272,14 @@
 
         <c-row class="align-items-center">
   
-          <c-col [sm]="6">
+          <c-col [sm]="12">
             <label cLabel="col" for="companyName">Company Name</label>
-            <mat-form-field appearance="outline" [style.width.%]=100>
+            <mat-form-field appearance="fill" [style.width.%]=100>
               <!-- <mat-label>Company Name</mat-label> -->
               <input matInput #accDinput id="companyName" name="companyName"
               type="text" placeholder="Company Name"
               formControlName="companyName" appCaps>
+              <mat-error *ngIf="affForm.get('companyName')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
             </mat-form-field>
           </c-col>
   
@@ -284,7 +287,7 @@
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button type="submit" cButton color="success">Proceed</button>
+        <button type="submit" cButton color="success" class="proceed" [disabled]="!affForm.valid">Proceed</button>
       </c-modal-footer>
     </form>
         
@@ -307,7 +310,7 @@
               
               <c-col [sm]="6">
                   <label cLabel="col" for="affilCisNumberM">CIS Number</label>
-                  <mat-form-field appearance="outline" [style.width.%]=100>
+                  <mat-form-field appearance="fill" [style.width.%]=100>
                     <!-- <mat-label>CIS Number</mat-label> -->
                     <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
                     type="text" placeholder="CIS"
@@ -317,7 +320,7 @@
       
               <c-col [sm]="6">
                   <label cLabel="col" for="accountName">Account Name</label>
-                  <mat-form-field appearance="outline" [style.width.%]=100>
+                  <mat-form-field appearance="fill" [style.width.%]=100>
                     <!-- <mat-label>Account Name</mat-label> -->
                     <input matInput #accDinput id="accountName"  name="accountName"
                     type="text" placeholder="Account Name"
@@ -332,9 +335,9 @@
     
             <c-row class="align-items-center">
       
-              <c-col [sm]="6">
+              <c-col [sm]="12">
                 <label cLabel="col" for="companyName">Company Name</label>
-                <mat-form-field appearance="outline" [style.width.%]=100>
+                <mat-form-field appearance="fill" [style.width.%]=100>
                   <!-- <mat-label>Company Name</mat-label> -->
                   <input matInput #accDinput id="companyName" name="companyName"
                   type="text" placeholder="Company Name"

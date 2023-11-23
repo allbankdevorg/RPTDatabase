@@ -303,29 +303,37 @@
 
             <c-col [sm]="4">
               <label cLabel="col" for="affildcisNumber">CIS Number</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
               <input
-                aria-describedby="passwordHelpInline-3"cFormControl
+                aria-describedby="passwordHelpInline-3" matInput
                 id="affildcisNumber" name="affildcisNumber"
                 placeholder="CIS Number"
                 type="text" formControlName="affildcisNumber" appNum>
+                <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+              </mat-form-field>
             </c-col>  
           
             <c-col [sm]="4">
                 <label cLabel="col" for="affildFirstName">First Name</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
                 <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
+                  aria-describedby="passwordHelpInline-3" matInput
                   id="affildFirstName" name="affildFirstName"
                   placeholder="First Name"
                   type="text" formControlName="affildFirstName" appTitleCase>
+                  <mat-error *ngIf="affilDrctrForm.get('affildFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+                </mat-form-field>
             </c-col>
     
             <c-col [sm]="4">
                 <label cLabel="col" for="affildMiddleName">Middle Name</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
                 <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
+                  aria-describedby="passwordHelpInline-3" matInput
                   id="affildMiddleName" name="affildMiddleName"
                   placeholder="Middle Name"
                   type="text" formControlName="affildMiddleName" appTitleCase>
+                </mat-form-field>
             </c-col>
 
             
@@ -337,29 +345,38 @@
           
           <c-col [sm]="6">
             <label cLabel="col" for="affildLastName">Last Name</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
             <input
-              aria-describedby="passwordHelpInline-3"cFormControl
+              aria-describedby="passwordHelpInline-3" matInput
               id="affildLastName" name="affildLastName"
               placeholder="Last Name"
               type="text" formControlName="affildLastName" appTitleCase>
+              <mat-error *ngIf="affilDrctrForm.get('affildLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+            </mat-form-field>
         </c-col>
           
           <c-col [sm]="6">
             <label cLabel="col" for="affildPosition">Position</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
             <input
-              cFormControl
+              matInput
               id="affildPosition" name="affildPosition"
               placeholder="Position"
               type="text" formControlName="affildPosition" appTitleCase>
+              <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
+            </mat-form-field>
           </c-col>
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button type="submit" cButton color="success">Proceed</button>
+        <button type="submit" cButton color="success" class="proceed" [disabled]="!affilDrctrForm.valid">Proceed</button>
       </c-modal-footer>
     </form>
         
 </c-modal>
+
+
+
 
 <!-- Start of Modal for Dir Related Interest -->
 <c-modal #DirrelationShipModal backdrop="static" id="DirrelationShipModal" size="lg">
@@ -377,51 +394,61 @@
 
               <c-col [sm]="6">
                 <label cLabel="col" for="riCisNumber">CIS Number</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
                 <input
                 aria-describedby="passwordHelpInline-3"cFormControl
                 id="dir_CIS" name="dir_CIS"
                 placeholder="dir_CIS"
                 type="text" [value]="selectedOffCisNumber || ''" hidden>
                 <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
+                  aria-describedby="passwordHelpInline-3" matInput
                   id="riCisNumber" name="riCisNumber"
                   placeholder="CIS Number"
                   type="text" formControlName="riCisNumber" appNum>
+                </mat-form-field>
               </c-col>
           
                 <c-col [sm]="6">
                     <label cLabel="col" for="riFirstName">First Name</label>
+                    <mat-form-field appearance="fill" [style.width.%]=100>
                     <input
-                      aria-describedby="passwordHelpInline-3"cFormControl
+                      aria-describedby="passwordHelpInline-3" matInput
                       id="riFirstName" name="riFirstName"
                       placeholder="First Name"
                       type="text" formControlName="riFirstName" appTitleCase>
+                      <mat-error *ngIf="affilDirRiForm.get('riFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+                    </mat-form-field>
                 </c-col>
             </c-row>
             
             <c-row class="align-items-center">
                 <c-col [sm]="6">
                     <label cLabel="col" for="riMiddleName">Middle Name</label>
+                    <mat-form-field appearance="fill" [style.width.%]=100>
                     <input
-                      aria-describedby="passwordHelpInline-3"cFormControl
+                      aria-describedby="passwordHelpInline-3" matInput
                       id="riMiddleName" name="riMiddleName"
                       placeholder="Middle Name"
                       type="text" formControlName="riMiddleName" appTitleCase>
+                    </mat-form-field>
                 </c-col>
     
                 <c-col [sm]="6">
                     <label cLabel="col" for="riLastName">Last Name</label>
+                    <mat-form-field appearance="fill" [style.width.%]=100>
                     <input
-                      aria-describedby="passwordHelpInline-3"cFormControl
+                      aria-describedby="passwordHelpInline-3" matInput
                       id="riLastName" name="riLastName"
                       placeholder="Last Name"
                       type="text" formControlName="riLastName" appTitleCase>
+                      <mat-error *ngIf="affilDirRiForm.get('riLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+                    </mat-form-field>
                 </c-col>
             </c-row>
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button type="submit" cButton color="success">Proceed</button>
+        <button type="submit" cButton color="success" class="proceed" [disabled]="!affilDirRiForm.valid">Proceed</button>
       </c-modal-footer>
     </form>
         
