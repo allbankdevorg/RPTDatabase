@@ -262,7 +262,7 @@
 <!-- Start of Bank Officer Modal -->
 <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
     <c-modal-header>
-      <h3 cModalTitle>Officer</h3>
+      <h3 cModalTitle>Bank Officer</h3>
       <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
     </c-modal-header>
   
@@ -272,29 +272,37 @@
 
           <c-col [sm]="4">
             <label cLabel="col" for="boCisNumber">CIS Number</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
             <input
-              aria-describedby="passwordHelpInline-3"cFormControl
+              aria-describedby="passwordHelpInline-3" matInput
               id="boCisNumber" name="boCisNumber"
               placeholder="CIS Number" 
               type="text" formControlName="boCisNumber" appNum>
+              <mat-error *ngIf="boForm.get('boCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+            </mat-form-field>
           </c-col>
           
             <c-col [sm]="4">
                 <label cLabel="col" for="boFirstName">First Name</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
                 <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
+                  aria-describedby="passwordHelpInline-3" matInput
                   id="boFirstName" name="boFirstName"
                   placeholder="First Name"
                   type="text" formControlName="boFirstName" appTitleCase>
+                  <mat-error *ngIf="boForm.get('boFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+                </mat-form-field>
             </c-col>
     
             <c-col [sm]="4">
                 <label cLabel="col" for="boMiddleName">Middle Name</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
                 <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
+                  aria-describedby="passwordHelpInline-3" matInput
                   id="boMiddleName" name="boMiddleName"
                   placeholder="Middle Name"
                   type="text" formControlName="boMiddleName" appTitleCase>
+                </mat-form-field>
             </c-col>
         </c-row>
 
@@ -302,26 +310,32 @@
 
           <c-col [sm]="6">
             <label cLabel="col" for="boLastName">Last Name</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
             <input
-              aria-describedby="passwordHelpInline-3"cFormControl
+              aria-describedby="passwordHelpInline-3" matInput
               id="boLastName" name="boLastName"
               placeholder="Last Name"
               type="text" formControlName="boLastName" appTitleCase>
+              <mat-error *ngIf="boForm.get('boLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+            </mat-form-field>
         </c-col>
   
           <c-col [sm]="6">
             <label cLabel="col" for="boPosition">Position</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
             <input
-              cFormControl
+              matInput
               id="boPosition" name="boPosition"
               placeholder="Position"
               type="text" formControlName="boPosition" appTitleCase>
+              <mat-error *ngIf="boForm.get('boPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
+            </mat-form-field>
           </c-col>
   
         </c-row>
       </c-modal-body>
       <c-modal-footer>
-        <button type="submit" cButton color="success">Proceed</button>
+        <button type="submit" cButton color="success" class="proceed" [disabled]="!boForm.valid">Proceed</button>
       </c-modal-footer>
     </form>
         
@@ -344,47 +358,57 @@
 
             <c-col [sm]="6">
               <label cLabel="col" for="boRICisNumber">CIS Number</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
               <input
-                aria-describedby="passwordHelpInline-3"cFormControl
+                aria-describedby="passwordHelpInline-3" matInput
                 id="boRICisNumber" name="boRICisNumber"
                 placeholder="CIS Number"
                 type="text" formControlName="boRICisNumber" appNum>
+              </mat-form-field>
             </c-col>
         
               <c-col [sm]="6">
                   <label cLabel="col" for="boRIFirstName">First Name</label>
+                  <mat-form-field appearance="fill" [style.width.%]=100>
                   <input
-                    aria-describedby="passwordHelpInline-3"cFormControl
+                    aria-describedby="passwordHelpInline-3" matInput
                     id="boRIFirstName" name="boRIFirstName"
                     placeholder="First Name"
                     type="text" formControlName="boRIFirstName" appTitleCase>
+                    <mat-error *ngIf="boRIForm.get('boRIFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+                  </mat-form-field>
               </c-col>
           </c-row>
           
           <c-row class="align-items-center">
               <c-col [sm]="6">
                   <label cLabel="col" for="boRIMiddleName">Middle Name</label>
+                  <mat-form-field appearance="fill" [style.width.%]=100>
                   <input
-                    aria-describedby="passwordHelpInline-3"cFormControl
+                    aria-describedby="passwordHelpInline-3" matInput
                     id="boRIMiddleName" name="boRIMiddleName"
                     placeholder="Middle Name"
                     type="text" formControlName="boRIMiddleName" appTitleCase>
+                  </mat-form-field>
               </c-col>
   
               <c-col [sm]="6">
                   <label cLabel="col" for="boRILastName">Last Name</label>
+                  <mat-form-field appearance="fill" [style.width.%]=100>
                   <input
-                    aria-describedby="passwordHelpInline-3"cFormControl
+                    aria-describedby="passwordHelpInline-3" matInput
                     id="boRILastName" name="boRILastName"
                     placeholder="Last Name"
                     type="text" formControlName="boRILastName" appTitleCase>
+                    <mat-error *ngIf="boRIForm.get('boRILastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+                  </mat-form-field>
               </c-col>
           </c-row>
 
       </c-row>
     </c-modal-body>
     <c-modal-footer>
-      <button type="submit" cButton color="success">Proceed</button>
+      <button type="submit" cButton color="success" class="proceed" [disabled]="!boRIForm.valid">Proceed</button>
     </c-modal-footer>
   </form>
       
