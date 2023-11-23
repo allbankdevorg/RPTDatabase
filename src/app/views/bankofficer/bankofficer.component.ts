@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -138,17 +138,17 @@ export class BankofficerComponent implements AfterViewInit {
           private ngZone: NgZone)
           {
             this.boForm = this.formBuilder.group({
-              boCisNumber: [''],
-              boFirstName: [''],
+              boCisNumber: ['',[Validators.required]],
+              boFirstName: ['', [Validators.required]],
               boMiddleName: [''],
-              boLastName: [''],
-              boPosition: [''],
+              boLastName: ['', [Validators.required]],
+              boPosition: ['', [Validators.required]],
           });
           this.boRIForm = this.formBuilder.group({
             boRICisNumber: [''],
-            boRIFirstName: [''],
+            boRIFirstName: ['', [Validators.required]],
             boRIMiddleName: [''],
-            boRILastName: [''],
+            boRILastName: ['', [Validators.required]],
         });
     }
 
