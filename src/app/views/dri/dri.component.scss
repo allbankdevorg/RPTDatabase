@@ -4,7 +4,8 @@ tr.example-detail-row {
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
-  background: #ff9c81;
+  background: #c79c90;
+  color: #ffffec;
 }
 
 
@@ -82,7 +83,8 @@ tr.example-element-row:not(.example-expanded-row):hover {
 
 .cTableRow2:hover {
   // background: rgb(98, 252, 178);
-  background: #ff9c81;
+  background: #f3d2c1;
+  color: #271c19;
   // background: rgb(0, 100, 0, .3);
   // color: #ffffff !important;
 }
