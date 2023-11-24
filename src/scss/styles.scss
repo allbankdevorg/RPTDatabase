@@ -69,12 +69,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #947972;
 }
 
+.bg-light {
+  --cui-bg-opacity: 1;
+  // background-color: rgba(var(--cui-light-rgb), var(--cui-bg-opacity)) !important;
+  background-color: #947972;
+}
+
 // google chart
 /* Using !important (use sparingly) */
 .google-visualization-orgchart-node {
-  background: #e78fb3 !important;
-  border: 2px solid #140d0b !important;
-  color: #fff3ec !important;
+  // background: #e78fb3 !important;
+  background: #f3d2c1 !important;
+  border: 2px solid #bea8a1 !important;
+  color: #271c19 !important;
+  min-width: 150px;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .google-visualization-orgchart-linebottom {
@@ -104,4 +114,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .error-msg {
   font-size: 13px;
+}
+
+
+// *************\
+cTableCol{
+  text-align: left;
+  background-color: #ffc0ad;
+  font-size: 18px;
+  color:#271c19;
 }

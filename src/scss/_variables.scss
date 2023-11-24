@@ -322,7 +322,7 @@ $medium-emphasis-dark:  #fffffe;
 // Style anchor elements.
 
 // $link-color:                              $primary;
-$link-color:                              #fff3ec;
+$link-color:                              #ffc0ad;
 // $link-decoration:                         underline;
 // $link-shade-percentage:                   20%;
 // $link-hover-color:                        shift-color($link-color, $link-shade-percentage);
@@ -582,7 +582,7 @@ $link-color:                              #fff3ec;
 
 // $table-hover-color:           $table-color;
 // $table-hover-bg-factor:       .075;
-$table-hover-bg:              #ff9c81;
+$table-hover-bg:              #c79c90;
 
 // $table-border-factor:         .1;
 // $table-border-width:          $border-width;
@@ -1405,12 +1405,12 @@ $modal-content-bg:                  #bea8a1;
 // $header-padding-y:              $spacer / 2;
 // $header-padding-x:              $spacer / 2;
 // $header-brand-font-size:        $font-size-lg;
-$header-color:                  #fffffe;
+$header-color:                  #ffc0ad;
 $header-bg:                      #55423d;
 // $header-border-color:           $border-color;
 // $header-border-width:           1px;
 $header-hover-color:            #e78fb3;
-$header-active-color:           #ffc0ad;
+$header-active-color:           #fffffe;
 // $header-disabled-color:         $disabled-dark;
 
 // Compute the header-brand padding-y so the header-brand will have the same height as header-text and nav-link
@@ -1453,7 +1453,7 @@ $header-active-color:           #ffc0ad;
 // Default theme
 // scss-docs-start subheader-default-themes
 // $subheader-bg:                     $white;
-$subheader-color:                  #fffffe;
+$subheader-color:                  #ffc0ad;
 // $subheader-hover-color:            $high-emphasis-dark;
 // $subheader-active-color:           $high-emphasis-dark;
 // $subheader-disabled-color:         $disabled-dark;
@@ -1485,7 +1485,7 @@ $subheader-color:                  #fffffe;
 // $breadcrumb-margin-bottom:          1rem;
 // $breadcrumb-bg:                     unset;
 // $breadcrumb-divider-color:          $gray-600;
-$breadcrumb-active-color:           #fff3ec;
+$breadcrumb-active-color:           #fffffe;
 // $breadcrumb-divider:                quote("/");
 // $breadcrumb-divider-flipped:        $breadcrumb-divider;
 // $breadcrumb-border-radius:          null;
