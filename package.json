@@ -36,6 +36,8 @@
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-angular": "~4.5.16",
     "@coreui/utils": "^2.0.2",
+    "@ng-idle/core": "^14.0.0",
+    "@ng-idle/keepalive": "^14.0.0",
     "@types/google.visualization": "^0.0.71",
     "axios": "^1.5.1",
     "chart.js": "^3.9.1",
