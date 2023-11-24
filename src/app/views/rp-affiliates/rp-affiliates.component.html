@@ -141,7 +141,7 @@
           
                   <!-- Date Updated Column -->
                   <ng-container matColumnDef="date_inserted">
-                    <th mat-header-cell *matHeaderCellDef> Date Updated </th>
+                    <th mat-header-cell *matHeaderCellDef> Date Added </th>
                     <td mat-cell *matCellDef="let element"> {{ element.date_inserted | date: 'yyyy-MM-dd HH:mm:ss'  }} </td>
                   </ng-container>
 
@@ -192,6 +192,9 @@
                                 <td mat-cell *matCellDef="let element"> {{ element.position }} </td>
                               </ng-container>
 
+                              <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell text-center" colspan="7">No Data Available</td>
+                              </tr>
           
                               <tr mat-header-row  *matHeaderRowDef="DdisplayedColumns" class="cTableCol2"></tr>
                               <tr mat-row *matRowDef="let row; columns: DdisplayedColumns;" (click)="onRowClick(element, $event)" class="cTableRow2"></tr>
