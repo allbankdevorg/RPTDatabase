@@ -54,6 +54,10 @@ import {
   AccordionModule,
 } from '@coreui/angular';
 
+// Session Time-out
+
+import { NgIdleModule } from '@ng-idle/core';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { PRIComponent } from './views/pri/pri.component';
@@ -132,6 +136,8 @@ const APP_CONTAINERS = [
     MatExpansionModule,
     MatTooltipModule,
     MatButtonModule,
+    NgIdleModule,
+    NgIdleKeepaliveModule
   ],
   providers: [
     {
