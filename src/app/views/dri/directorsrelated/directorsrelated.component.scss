@@ -8,17 +8,7 @@ tr.example-detail-row {
     overflow: hidden;
   }
   
-  tr.example-element-row:not(.example-expanded-row):hover {
-    // background: rgb(98, 252, 178);
-    background: whitesmoke;
-    // background: rgb(0, 100, 0, .3);
-    // color: #ffffff !important;
-  }
   
-  tr.example-element-row:not(.example-expanded-row):active {
-    // background: rgb(98, 252, 178);
-    background: rgb(0, 100, 0, .3);
-  }
   
 
   .example-element-row td {
@@ -92,6 +82,11 @@ tr.example-detail-row {
     border-bottom: 2px solid #efefef;
   }
 
+  .cTableRow:hover { 
+    background: #c79c90;
+    color: #ffffff;
+  }
+
 // .acc-access-add {
 //   position: absolute;
 //   right: 2px;
@@ -154,26 +149,3 @@ tr.example-detail-row {
 .mat-mdc-row .mat-mdc-cell {
     cursor: pointer;
   }
-
-// .mat-column-bn {
-//     width: 15%;
-//     padding: 10px 24px;
-//     text-align: center;
-//   }
-  
-//   .mat-column-Nodirectors {
-//     width: 30%px;
-//     padding: 10px 4px;
-//     text-align: center;
-//   }
-  
-//   .mat-column-LDUpdated {
-//     width: 40%;
-//     padding: 10px 4px;
-//     text-align: center;
-//   }
-  
-//   .mat-mdc-row .mat-mdc-cell {
-//     cursor: pointer;
-//   }
-  
