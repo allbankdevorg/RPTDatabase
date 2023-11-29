@@ -209,11 +209,13 @@ updateTableData(): void {
   // Update permissions data
   // Set the data source for your MatTable for permissions
   this.permissionDataSource.data = ACCESS_DATA;
-  console.log('Permissions Data:', this.permissionDataSource.data);
+  // console.log('Permissions Data:', this.permissionDataSource.data);
 
 
   
 }
+
+
 
 
 
@@ -381,9 +383,9 @@ let SAMPLE_DATA: Users[] = [
     email: 'test@email.com',
     mobile: 1231244,
     department: 'ITG',
-    role: 'maker',
+    role: 'Maker',
     authority: [
-      { access: 'Affiliates',  view: 1, add: 0, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+      { access: 'Affiliates',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
     ]
 
     
@@ -397,7 +399,7 @@ let SAMPLE_DATA: Users[] = [
     email: 'test@email.com',
     mobile: 123124124,
     department: 'ITG',
-    role: 'maker',
+    role: 'Maker',
     authority: [
       { access: 'Affiliates', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 1, reviewer: 0 },
     ]
