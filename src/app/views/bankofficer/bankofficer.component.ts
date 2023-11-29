@@ -86,7 +86,7 @@ interface IUser {
 }
 
 @Component({
-  selector: 'app-bankofficer',
+  selector: 'app-bankofficers',
   templateUrl: './bankofficer.component.html',
   styleUrls: ['./bankofficer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -96,7 +96,7 @@ interface IUser {
   providedIn: 'root',
 })
 
-export class BankofficerComponent implements AfterViewInit {
+export class BankofficerComponents implements AfterViewInit {
   
   sharedData: string | any;
   positionOptions: TooltipPosition = 'right';
