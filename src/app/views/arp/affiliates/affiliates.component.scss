@@ -1,0 +1,128 @@
+tr.example-detail-row {
+    height: 0;
+    overflow: hidden;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: #c79c90;
+  color: #ffffff;
+  }
+  
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .mat-column-expandedDetail {
+    padding: 0;
+}
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    // padding: 8px;
+    font-weight: lighter;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+
+
+  .cTableCol{
+    text-align: left;
+    background-color: #ffc0ad;
+    font-size: 18px;
+    color: #271c19;
+    font-weight: 500;
+  }
+  
+  .cTableRow{
+    text-align: left;
+    background-color: #f3d2c1;
+    font-size: 16px;
+    color: #271c19;
+  }
+  
+  .cTableCol2{
+    text-align: left;
+    background-color: #947972;
+    font-size: 18px;
+    color: #fffffe;
+  }
+  
+  .cTableRow2{
+    text-align: left;
+    background-color: #bea8a1;
+    font-size: 16px;
+    color: #fffffe;
+    border-bottom: 2px solid #fffffe;
+  }
+
+  .cTableRow2:hover {
+    background: #f3d2c1;
+    color: #271c19;
+  }
+  
+  .acc-access-add {
+    position: absolute;
+    right: 9px;
+    top: -42px;
+  }
+  
+  
+  .DRI-table {
+      width: 100%;
+  }
+
+  .mat-column-expand, .mat-column-cis {
+    border-left: 1px solid #d3d3d3;
+  }
+  
+  
+    .mat-column-position {
+      // width: 30%;
+      padding: 10px 24px;
+      text-align: left;
+      color:aqua;
+    }
+
+    .mat-column-view {
+      width: 15%;
+      padding: 10px 24px;
+      text-align: center;
+    }
+    
+    .mat-mdc-row .mat-mdc-cell {
+      cursor: pointer;
+    }
+    
+    .mat-column-fullname {
+      // width: 60%;
+      text-align: left;
+      padding: 10px 24px;
+    }
+
+    .mat-column-aff_com_cis_number {
+      text-align: left;
+      padding: 10px 24px;
+    }
+
+    .aff_com_company_name, .aff_com_account_name, .manager {
+      text-align: left;
+      padding: 10px 24px;
+    }
+
