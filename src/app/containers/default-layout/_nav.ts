@@ -20,12 +20,12 @@ export const navItems: INavData[] = [
       children: [
             {
             name: 'Directors Related Interest',
-            url: '/dri',
+            url: '/dosri/dri',
             iconComponent: { name: '' },
             },
             {
               name: 'Bank Officer',
-              url: '/bankofficer',
+              url: '/dosri/bankofficer',
               iconComponent: { name: '' }
             },
             {
@@ -42,19 +42,19 @@ export const navItems: INavData[] = [
     children: [
           {
             name: 'Affiliates',
-            url: '/rp-affiliates',
+            url: '/arp/affiliates',
             iconComponent: { name: '' },
           },
           {
             name: 'Other Related Companies',
-            url: '/rp-related-companies',
+            url: '/arp/affiliates-related-companies',
             iconComponent: { name: '' },
           },
-        {
-          name: 'Other RC Under JMN',
-          url: '/other-related-companies',
-          iconComponent: { name: '' },
-        },
+          {
+            name: 'Other RC Under JMN',
+            url: '/arp/other-related-parties',
+            iconComponent: { name: '' },
+          },
           {
             name: 'Other RP Officers',
             url: '/rp-other-officer',
