@@ -31,6 +31,16 @@ const routes: Routes = [
           import('./views/dri/dri.module').then((m) => m.DRIModule)
       },
       {
+        path: 'dosri',
+        loadChildren: () =>
+          import('./views/dosri/dosri.module').then((m) => m.DOSRIModule)
+      },
+      {
+        path: 'arp',
+        loadChildren: () =>
+          import('./views/arp/arp.module').then((m) => m.ARPModule)
+      },
+      {
         path: 'dri/directorsrelated/bn',
         loadChildren: () =>
           import('./views/dri/directorsrelated/directorsrelated.module').then((m) => m.DirectorsrelatedModule)

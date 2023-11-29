@@ -62,10 +62,10 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { PRIComponent } from './views/pri/pri.component';
-import { BankofficerComponent } from './views/bankofficer/bankofficer.component';
+import { BankofficerComponents } from './views/bankofficer/bankofficer.component';
 import { BankstockholderComponent } from './views/bankstockholder/bankstockholder.component';
 import { DRIComponent } from './views/dri/dri.component';
-import { DirectorsrelatedComponent } from './views/dri/directorsrelated/directorsrelated.component';
+import { DirectorsrelatedComponents } from './views/dri/directorsrelated/directorsrelated.component';
 import { PACComponent } from './views/rp-affiliates/pac/pac.component';
 import { RpAffiliatesComponent } from './views/rp-affiliates/rp-affiliates.component';
 import { RpRelatedCompaniesComponent } from './views/rp-related-companies/rp-related-companies.component';
@@ -81,12 +81,23 @@ import { SettingsComponent} from './views/maintenance/settings/settings.componen
 import { OtherRelatedCompaniesComponent } from './views/other-related-companies/other-related-companies.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
+// DOSRI
+import {DriComponent} from './views/dosri/dri/dri.component';
+import {DirectorsrelatedComponent} from './views/dosri/directorsrelated/directorsrelated.component';
+import {BankofficerComponent} from './views/dosri/bankofficer/bankofficer.component';
+
+// Affiliates and Related Party
+import { AffiliatesComponent } from './views/arp/affiliates/affiliates.component';
+import { AffiliatesRelatedCompaniesComponent } from './views/arp/affiliates-related-companies/affiliates-related-companies.component';
+import { OtherRelatedPartiesComponent } from './views/arp/other-related-parties/other-related-parties.component';
+
+
 // Import for directives
 import { TitleCaseDirective } from './directives/titleCase.directive';
 import { NumericOnlyDirective } from './directives/numeric.directive';
 import { CapsLockFormatDirective } from './directives/upperCase.directive';
 import { ShowIfPermissionDirective } from './directives/authority.directive';
-import { HasPermissionDirective} from './directives/permission.directive'
+import { HasPermissionDirective} from './directives/permission.directive';
 
     
  
@@ -98,8 +109,9 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, OtherRelatedCompaniesComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
+  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankofficerComponents, BankstockholderComponent, DRIComponent, DirectorsrelatedComponent, DirectorsrelatedComponents, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
+    RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
+    ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, OtherRelatedCompaniesComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective],
   imports: [
     BrowserModule,
