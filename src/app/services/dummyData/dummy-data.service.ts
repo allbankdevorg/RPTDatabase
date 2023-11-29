@@ -18,37 +18,37 @@ export class DummyDataService {
       department: 'ITG',
       role: 'maker',
       authority: [
-        { access: 'Affiliates',  view: 1, add: 0, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+        { access: 'users',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
       ]
     },
-    {
-      id: 2,
-      fName: 'Avraamu',
-      mName: 'New',
-      lName: 'Yiorgos',
-      userName: 'User2',
-      email: 'test@email.com',
-      mobile: 123124124,
-      department: 'ITG',
-      role: 'maker',
-      authority: [
-        { access: 'Affiliates', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 1, reviewer: 0 },
-      ]
-    },
-    {
-      id: 3,
-      fName: 'Junel',
-      mName: 'O',
-      lName: 'Salarda',
-      userName: 'Admin',
-      email: 'admin@test.com',
-      mobile: 123124124,
-      department: 'ITG',
-      role: 'maker',
-      authority: [
-        { access: 'Affiliates', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 1, reviewer: 0 },
-      ]
-    },
+    // {
+    //   id: 2,
+    //   fName: 'Avraamu',
+    //   mName: 'New',
+    //   lName: 'Yiorgos',
+    //   userName: 'User2',
+    //   email: 'test@email.com',
+    //   mobile: 123124124,
+    //   department: 'ITG',
+    //   role: 'maker',
+    //   authority: [
+    //     { access: 'users', view: 1, add: 1, edit: 0, delete: 0, maker: 0, approver: 1, reviewer: 0 },
+    //   ]
+    // },
+    // {
+    //   id: 3,
+    //   fName: 'Junel',
+    //   mName: 'O',
+    //   lName: 'Salarda',
+    //   userName: 'Admin',
+    //   email: 'admin@test.com',
+    //   mobile: 123124124,
+    //   department: 'ITG',
+    //   role: 'maker',
+    //   authority: [
+    //     { access: 'Affiliates', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 1, reviewer: 0 },
+    //   ]
+    // },
     // Add more simulated user data as needed
   ];
 
