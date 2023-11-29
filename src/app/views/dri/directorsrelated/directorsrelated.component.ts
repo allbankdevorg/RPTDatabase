@@ -55,7 +55,7 @@ interface Director {
 
 
 @Component({
-  selector: 'app-directorsrelated',
+  selector: 'app-directorsrelateds',
   templateUrl: './directorsrelated.component.html',
   styleUrls: ['./directorsrelated.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -64,7 +64,7 @@ interface Director {
 @Injectable({
   providedIn: 'root',
 })
-export class DirectorsrelatedComponent implements AfterViewInit {
+export class DirectorsrelatedComponents implements AfterViewInit {
   positionOptions: TooltipPosition = 'right';
   companyDetails: any; //a variable to hold the fetched company details:\
   sharedData: string | any;

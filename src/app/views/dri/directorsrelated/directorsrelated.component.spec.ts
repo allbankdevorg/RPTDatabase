@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DirectorsrelatedComponent } from './directorsrelated.component';
+import { DirectorsrelatedComponents } from './directorsrelated.component';
 
 describe('DirectorsrelatedComponent', () => {
-  let component: DirectorsrelatedComponent;
-  let fixture: ComponentFixture<DirectorsrelatedComponent>;
+  let component: DirectorsrelatedComponents;
+  let fixture: ComponentFixture<DirectorsrelatedComponents>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DirectorsrelatedComponent]
+      declarations: [DirectorsrelatedComponents]
     });
-    fixture = TestBed.createComponent(DirectorsrelatedComponent);
+    fixture = TestBed.createComponent(DirectorsrelatedComponents);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
