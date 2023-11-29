@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DRIComponent } from './dri.component';
-import { DirectorsrelatedComponent } from './directorsrelated/directorsrelated.component';
+import { DirectorsrelatedComponents } from './directorsrelated/directorsrelated.component';
 
 const routes: Routes = [
     {
@@ -12,11 +12,6 @@ const routes: Routes = [
         title: 'DOSRI',
       },
       children: [
-        {
-          path: '',
-          pathMatch: 'full',
-          redirectTo: 'dri',
-        },
         {
           path: 'dri',
           component: DRIComponent,
@@ -28,7 +23,7 @@ const routes: Routes = [
     },
     {
         path: 'directorsrelated/:id',
-      component: DirectorsrelatedComponent,
+      component: DirectorsrelatedComponents,
       data: {
         title: 'Directors Related Interest',
       },
