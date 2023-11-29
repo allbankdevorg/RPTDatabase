@@ -72,9 +72,9 @@ export class DRIComponent implements AfterViewInit {
 
 
 
-  toggleDirectors(element: compData): void {
-    this.expandedElement = this.expandedElement === element ? null : element;
-  }
+  // toggleDirectors(element: compData): void {
+  //   this.expandedElement = this.expandedElement === element ? null : element;
+  // }
 
   compDataSource = new MatTableDataSource<compData>([]);
   ToDisplay: string[] = [];
@@ -121,7 +121,6 @@ export class DRIComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.updateTableData();
-    
   }
 
 
@@ -137,6 +136,7 @@ export class DRIComponent implements AfterViewInit {
 
         // Set the data source for your MatTable
         this.compDataSource.data = companiesWithDirectors;
+        console.log(this.compDataSource.data);
     });
 
       getCompany((compData) => {
@@ -151,12 +151,15 @@ export class DRIComponent implements AfterViewInit {
           // Set the data source for your MatTable
           console.log(companiesWithDirectors)
           this.dDataSource.data = companiesWithDirectors;
+          console.log(companiesWithDirectors);
+          console.log(this.dDataSource.data);
         // Trigger change detection
         this.changeDetectorRef.detectChanges();
         });
         
       });
 
+      
 
 
    }
