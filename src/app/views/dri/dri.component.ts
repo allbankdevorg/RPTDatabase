@@ -10,7 +10,9 @@ import { Injectable } from '@angular/core';
 
 // Services
 import { DataTransferService } from '../../services/data-transfer.service';
+import { SessionTimeoutService } from '../../services/useridle/session-timeout.service';
 import { SharedService } from './dataintegration/shared.service';
+import {AuthSessionService} from '../../services/authentication/auth-session.service'
 
 // Functions Imports
 import {callJSFun} from '../../functions-files/javascriptfun.js';
@@ -43,7 +45,7 @@ export interface DData {
 
 
 @Component({
-  selector: 'app-dri',
+  selector: 'app-dris',
   templateUrl: './dri.component.html',
   styleUrls: ['./dri.component.scss'],
   animations: [
@@ -98,6 +100,8 @@ export class DRIComponent implements AfterViewInit {
 
   
   constructor(private router: Router,
+              private authService: AuthSessionService,
+              private idleService: SessionTimeoutService,
               private formBuilder: FormBuilder, 
               private http: HttpClient, 
               private sharedService: SharedService,
@@ -158,10 +162,6 @@ export class DRIComponent implements AfterViewInit {
         });
         
       });
-
-      
-
-
    }
 
     onSubmit() {
