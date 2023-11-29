@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 export class AuthSessionService {
 
   private tokenKey = 'authToken';
+  private username: string | null = null; //Added for simulating Session
+  private role: string | null = null; //Added for simulating Session
 
   constructor() {}
 
@@ -42,4 +44,28 @@ export class AuthSessionService {
     // Check if the user is authenticated based on the presence of a token
     return !!this.getAuthToken();
   }
+
+
+
+  //Added for simulating Session
+
+  setSessionData(username: string, role: string): void {
+    this.username = username;
+    this.role = role;
+  }
+
+  clearSession(): void {
+    this.username = null;
+    this.role = null;
+  }
+
+  getUsername(): string | null {
+    return this.username;
+  }
+
+  getRole(): string | null {
+    return this.role;
+  }
+
+
 }
