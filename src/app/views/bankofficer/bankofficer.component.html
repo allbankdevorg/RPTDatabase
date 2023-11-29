@@ -104,7 +104,7 @@
                       
                       [attr.colspan]="3"> 
                   Officers
-                  <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" class="add-btn-icon" (click)="onButtonClick()">
+                  <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" class="add-btn-icon" (click)="onButtonClick()" *appHasPermission="'add'">
                     <mat-icon>add</mat-icon>
                     ADD
                   </button>  
