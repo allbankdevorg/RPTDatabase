@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { BankofficerComponent } from './bankofficer.component';
+import { BankofficerComponents } from './bankofficer.component';
 
 const routes: Routes = [
     {
@@ -11,7 +11,7 @@ const routes: Routes = [
         },
         children: [{
           path: '',
-          component: BankofficerComponent,
+          component: BankofficerComponents,
           data: {
             title: 'Bank Officer',
           },
