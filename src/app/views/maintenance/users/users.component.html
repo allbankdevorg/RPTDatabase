@@ -105,9 +105,9 @@
             <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
               <!-- <c-row> -->
                   <div></div>
-                  <button mat-fab extended color="primary"  (click)="addUsers()" *appHasPermission="'add'">
+                  <button mat-fab extended color="primary"  (click)="addUsers()" *appHasPermission="'add'" >
                     <mat-icon>add</mat-icon>
-                    Add
+                    ADD
                 </button>
               <!-- </c-row> -->
             </c-container>
@@ -173,10 +173,10 @@
                       <button mat-icon-button aria-label="View Users Info" *appHasPermission="'view'">
                         <mat-icon>visibility</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="editUsers(row)" aria-label="Edit Users Info">
+                      <button mat-icon-button (click)="editUsers(row)" aria-label="Edit Users Info" *appHasPermission="'edit'">
                         <mat-icon>create</mat-icon>
                       </button>
-                      <button mat-icon-button color="warn" (click)="delRelationship()" aria-label="Delete Users">
+                      <button mat-icon-button color="warn" (click)="delRelationship()" aria-label="Delete Users" *appHasPermission="'delete'">
                         <mat-icon>delete</mat-icon>
                       </button>
                     </div>
