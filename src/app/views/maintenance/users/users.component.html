@@ -105,83 +105,72 @@
             <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
               <!-- <c-row> -->
                   <div></div>
-                  <button mat-fab extended color="primary"  (click)="addUsers()">
+                  <button mat-fab extended color="primary"  (click)="addUsers()" *appHasPermission="'add'">
                     <mat-icon>add</mat-icon>
                     Add
                 </button>
               <!-- </c-row> -->
             </c-container>
-          <c-container fluid>
-              <table
-              cTable [responsive]="true" mat-table
-              [dataSource]="userDataSource" multiTemplateDataRows
-              class="mat-elevation-z8 DRI-table mb-0 border">
+            <c-container fluid>
+              <table cTable [responsive]="true" mat-table [dataSource]="userDataSource" multiTemplateDataRows class="mat-elevation-z8 DRI-table mb-0 border">
               <tbody>
-                <!-- Expand Button Column -->
+
                 <ng-container matColumnDef="expand">
-                  <th *matHeaderCellDef aria-label="row actions"></th>
+                  <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
                   <td mat-cell *matCellDef="let element">
-                    <!-- Button to expand/collapse row -->
                     <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
                       <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
                       <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
                     </button>
                   </td>
-                </ng-container>    
-
-                <!-- First Name-->
-                <ng-container matColumnDef="Fname">
-                  <thead>
-                    <th mat-header-cell *matHeaderCellDef> First Name </th></thead>
-                  <td mat-cell *matCellDef="let element"> {{ element.Fname }} </td>
                 </ng-container>
-
-                <!-- Middle Name -->
-                <ng-container matColumnDef="Mname">
+            
+                <ng-container matColumnDef="fName">
+                  <th mat-header-cell *matHeaderCellDef> First Name </th>
+                  <td mat-cell *matCellDef="let element">{{ element.fName }}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="mName">
                   <th mat-header-cell *matHeaderCellDef> Middle Name </th>
-                  <td mat-cell *matCellDef="let element"> {{ element.Mname }} </td>
+                  <td mat-cell *matCellDef="let element">{{ element.mName }}</td>
                 </ng-container>
-
-                <!-- Last Name -->
-                <ng-container matColumnDef="Lname">
+            
+                <ng-container matColumnDef="lName">
                   <th mat-header-cell *matHeaderCellDef> Last Name </th>
-                  <td mat-cell *matCellDef="let element">{{ element.Lname }}</td>
+                  <td mat-cell *matCellDef="let element">{{ element.lName }}</td>
                 </ng-container>
-
-
-                <!-- UserName -->
-                <ng-container matColumnDef="Uname">
+            
+                <ng-container matColumnDef="userName">
                   <th mat-header-cell *matHeaderCellDef> Username </th>
-                  <td mat-cell *matCellDef="let element">{{ element.Uname }}</td>
+                  <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
                 </ng-container>
-
-
-                <!-- Email -->
-                <ng-container matColumnDef="Email">
+            
+                <ng-container matColumnDef="email">
                   <th mat-header-cell *matHeaderCellDef> Email</th>
-                  <td mat-cell *matCellDef="let element">{{ element.Email }}</td>
+                  <td mat-cell *matCellDef="let element">{{ element.email }}</td>
                 </ng-container>
-
-                <!-- Mobile -->
-                <ng-container matColumnDef="Mobile">
+            
+                <ng-container matColumnDef="mobile">
                   <th mat-header-cell *matHeaderCellDef> Mobile #</th>
-                  <td mat-cell *matCellDef="let element">{{ element.Mobile }}</td>
+                  <td mat-cell *matCellDef="let element">{{ element.mobile }}</td>
                 </ng-container>
-
-                 <!-- Department -->
-                <ng-container matColumnDef="Dept">
+            
+                <ng-container matColumnDef="department">
                   <th mat-header-cell *matHeaderCellDef> Department</th>
-                  <td mat-cell *matCellDef="let element">{{ element.Dept }}</td>
+                  <td mat-cell *matCellDef="let element">{{ element.department }}</td>
                 </ng-container>
 
-
-                <!-- View/Action Column -->
+                
+                <ng-container matColumnDef="role">
+                  <th mat-header-cell *matHeaderCellDef> Role</th>
+                  <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+                </ng-container>
+            
                 <ng-container matColumnDef="view">
                   <th mat-header-cell *matHeaderCellDef> Action </th>
-                  <td mat-cell *matCellDef="let element"> 
-                    <!-- Button to view details -->
+                  <td mat-cell *matCellDef="let row">
                     <div class="d-flex justify-content-center">
-                      <!-- <button mat-icon-button aria-label="View Users Info">
+                      <button mat-icon-button aria-label="View Users Info" *appHasPermission="'view'">
                         <mat-icon>visibility</mat-icon>
                       </button>
                       <button mat-icon-button (click)="editUsers(row)" aria-label="Edit Users Info">
@@ -189,64 +178,100 @@
                       </button>
                       <button mat-icon-button color="warn" (click)="delRelationship()" aria-label="Delete Users">
                         <mat-icon>delete</mat-icon>
-                      </button> -->
-
-                      <button *ngFor="let buttonId of initializeButtons(element.id, element.role)" [id]="buttonId">
-                        {{ buttonId }}
                       </button>
                     </div>
-                        <!-- <button class="mx-1 my-1" ></button> -->
-                        <!-- <button class="mx-1 my-1" (click)="onRowClick(row)"></button> -->
                   </td>
                 </ng-container>
-
-                <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                <!-- <ng-container matColumnDef="expandedDetail">
+            
+                <ng-container matColumnDef="expandedDetail">
                   <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-                    <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"> -->
-                        <!-- Details of the selected element -->
-                        <!-- <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="element.authority" > -->
-                            <!-- Permissions -->
+                    <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                      <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="element.authority">
+                        
+                        <ng-container matColumnDef="access">
+                          <th mat-header-cell *matHeaderCellDef></th>
+                          <td mat-cell *matCellDef="let element"> {{ element.access }} </td>
+                        </ng-container>
 
-                            <!-- <ng-container matColumnDef="permissions">
-                              <th mat-header-cell *matHeaderCellDef> Permission </th>
-                              <td mat-cell *matCellDef="let element"> {{ element.permissions }} </td>
-                            </ng-container>
+                        <ng-container matColumnDef="view">
+                          <th mat-header-cell *matHeaderCellDef> View </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.view" (change)="updateDatabase(permission, 'view')"></mat-checkbox>
+                          </td>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="add">
+                          <th mat-header-cell *matHeaderCellDef> Add </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.add" (change)="updateDatabase(permission, 'add')"></mat-checkbox>
+                          </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="edit">
+                          <th mat-header-cell *matHeaderCellDef> Edit </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.edit" (change)="updateDatabase(permission, 'edit')"></mat-checkbox>
+                          </td>
+                        </ng-container>
 
-                            <ng-container matColumnDef="access">
-                              <th mat-header-cell *matHeaderCellDef> Access </th>
-                              <td mat-cell *matCellDef="let element"> {{ element.access }} </td>
-                            </ng-container> -->
+                        <ng-container matColumnDef="delete">
+                          <th mat-header-cell *matHeaderCellDef> Delete </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.delete" (change)="updateDatabase(permission, 'delete')"></mat-checkbox>
+                          </td>
+                        </ng-container>
+                        
+                        
+                        <ng-container matColumnDef="maker">
+                          <th mat-header-cell *matHeaderCellDef> Maker </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.maker" (change)="updateDatabase(permission, 'maker')"></mat-checkbox>
+                          </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="approver">
+                          <th mat-header-cell *matHeaderCellDef> Approver </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.approver" (change)="updateDatabase(permission, 'approver')"></mat-checkbox>
+                          </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="reviewer">
+                          <th mat-header-cell *matHeaderCellDef> Reviewer </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.reviewer" (change)="updateDatabase(permission, 'reviewer')"></mat-checkbox>
+                          </td>
+                        </ng-container>
+                        
+                        
 
-                            <!-- Header Row -->
-                            <!-- <tr mat-header-row  *matHeaderRowDef="permiColumnsToDisplay" class="cTableCol2"></tr> -->
-                            <!-- Data Rows -->
-                            <!-- <tr mat-row *matRowDef="let row; columns: permiColumnsToDisplay;" class="cTableRow2"></tr> -->
-                        <!-- </table>
-                      </div>
-                    </td> -->
-                <!-- </ng-container> -->
-                  
-                  <!-- Header Row with Expand Button -->
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cTableCol"></tr>
-                  
-                  <!-- Data Rows with Expandable Detail -->
-                  <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-                      class="example-element-row cTableRow"
-                      [class.example-expanded-row]="expandedElement === element"
-                      (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-                  </tr> -->
+                        <tr class="mat-row" *matNoDataRow>
+                          <td class="mat-cell text-center" colspan="7">No Data Available</td>
+                        </tr>
 
-                  <!-- Detail Row -->
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns" class="example-detail-row cTableRow" ></tr>
-              
-                </tbody>
+
+                        <tr mat-header-row *matHeaderRowDef="DdisplayedColumns" class="cTableCol2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: DdisplayedColumns" class="cTableRow2"></tr>
+                      </table>
+                    </div>
+                  </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" class="cTableCol"></tr>
+               
+                <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                    class="example-element-row cTableRow"
+                    [class.example-expanded-row]="expandedElement === element">
+                    <!-- (click)="toggleRowExpansion(element); $event.stopPropagation()"> -->
+                </tr>
+            
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+              </tbody>
               </table>
-              <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                  showFirstLastButtons
-                  aria-label="Select page of data">
-              </mat-paginator>
-          </c-container>
+            
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of data"></mat-paginator>
+            </c-container>
+            
         </c-card-body>
       </c-card>
     </c-col>
@@ -259,7 +284,7 @@
 
 <!-- Modals -->
 
-<!-- Add Modals -->
+<!-- Add Users Modals -->
 <c-modal id="addUsers" [visible]="addvisible" backdrop="static" (visibleChange)="addUsersChange($event)" size="lg">
     <c-modal-header>
       <h5 cModalTitle>Add Users</h5>
@@ -267,7 +292,7 @@
     </c-modal-header>
     <c-modal-body>
         <!-- Modal Form -->
-        <form cForm class="mb-2">
+        <form cForm [formGroup]="userForm"  class="mb-2">
             <c-modal-body>
               <c-row class="align-items-center">
                 
@@ -276,7 +301,8 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>First Name</mat-label> -->
                       <input matInput #accDinput id="fName" name="fName"
-                      type="text" placeholder="First Name" appTitleCase>
+                      type="text" placeholder="First Name" formControlName="fName" appTitleCase>
+                      <mat-error *ngIf="userForm.get('fName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
                     </mat-form-field>
                 </c-col>
         
@@ -285,7 +311,8 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Middle Name</mat-label> -->
                       <input matInput #accDinput id="mName"  name="mName"
-                      type="text" placeholder="Middle Name" appTitleCase>
+                      type="text" placeholder="Middle Name" formControlName="mName" appTitleCase>
+                      <mat-error *ngIf="userForm.get('mName')?.hasError('required')" class="error-msg">Niddle Name is Required</mat-error>
                     </mat-form-field>
                 </c-col>
 
@@ -294,7 +321,8 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Last Name</mat-label> -->
                       <input matInput #accDinput id="lName"  name="lName"
-                      type="text" placeholder="Last Name" appTitleCase>
+                      type="text" placeholder="Last Name" formControlName="lName" appTitleCase>
+                      <mat-error *ngIf="userForm.get('lName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
                     </mat-form-field>
                 </c-col>
       
@@ -306,7 +334,8 @@
                   <mat-form-field appearance="fill" [style.width.%]=100>
                     <!-- <mat-label>Company Name</mat-label> -->
                     <input matInput #accDinput id="uEmail" name="uEmail"
-                    type="text" placeholder="Email Address" appTitleCase>
+                    type="text" placeholder="Email Address" formControlName="uEmail" appTitleCase>
+                    <mat-error *ngIf="userForm.get('uEmail')?.hasError('required')" class="error-msg">Email is Required</mat-error>
                   </mat-form-field>
                 </c-col>
 
@@ -315,7 +344,8 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Company Name</mat-label> -->
                       <input matInput #accDinput id="uMobile" name="uMobile"
-                      type="text" placeholder="Mobile Number" appNum>
+                      type="text" placeholder="Mobile Number" formControlName="uMobile" appNum>
+                      <mat-error *ngIf="userForm.get('uMobile')?.hasError('required')" class="error-msg">Mobile # is Required</mat-error>
                     </mat-form-field>
                 </c-col>
               </c-row>
@@ -324,12 +354,13 @@
                 <c-col [sm]="12">
                   <label cLabel="col" for="uDept">Department</label>
                   <mat-form-field appearance="fill" [style.width.%]="100">
-                    <mat-select formControlName="commandControl" placeholder="Department">
+                    <mat-select formControlName="commandControl" placeholder="Department" >
                       <mat-option id="uDept">-- None --</mat-option>
                       <mat-option *ngFor="let group of commandGroups" [value]="group.value">
                         {{ group.viewValue }}
                       </mat-option>
                     </mat-select>
+                    <mat-error *ngIf="userForm.get('commandControl')?.hasError('required')" class="error-msg">Department is Required</mat-error>
                   </mat-form-field>
                 </c-col>
               </c-row>
@@ -341,7 +372,9 @@
                   <mat-form-field appearance="fill" [style.width.%]=100>
                     <!-- <mat-label>Company Name</mat-label> -->
                     <input matInput #accDinput id="userName" name="userName"
-                    type="text" placeholder="User Name">
+                    type="text" placeholder="User Name" formControlName="userName">
+                    
+                    <mat-error *ngIf="userForm.get('userName')?.hasError('required')" class="error-msg">User Name is Required</mat-error>
                   </mat-form-field>
                 </c-col>
 
@@ -349,10 +382,12 @@
                     <label cLabel="col" for="uPass">Password</label>
                     <mat-form-field appearance="fill" [style.width.%]=100>
                         <!-- <mat-label>Company Name</mat-label> -->
-                        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" id="uPass">
+                        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" id="uPass" formControlName="uPass">
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
+                        
+                      <mat-error *ngIf="userForm.get('uPass')?.hasError('required')" class="error-msg">Password is Required</mat-error>
                       </mat-form-field>
                   </c-col>
               </c-row>
@@ -374,7 +409,7 @@
     </c-modal-header>
     <c-modal-body>
         <!-- Modal Form -->
-        <form cForm class="mb-2">
+        <form cForm class="mb-2" [formGroup]="eUserForm" >
             <c-modal-body>
               <c-row class="align-items-center">
                 
@@ -382,8 +417,8 @@
                     <label cLabel="col" for="efName">First Name</label>
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>First Name</mat-label> -->
-                      <input matInput #accDinput id="efName" name="efName"
-                      type="text" placeholder="First Name" [value]="editData.fname">
+                      <input matInput #accDinput id="efName" name="efName" 
+                      type="text" placeholder="First Name" formControlName="fName" [value]="editUserData.fName">
                     </mat-form-field>
                 </c-col>
         
@@ -392,7 +427,7 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Middle Name</mat-label> -->
                       <input matInput #accDinput id="emName"  name="emName"
-                      type="text" placeholder="Middle Name" [value]="editData.mname">
+                      type="text" placeholder="Middle Name" formControlName="mName" [value]="editUserData.mName">
                     </mat-form-field>
                 </c-col>
 
@@ -401,7 +436,7 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Last Name</mat-label> -->
                       <input matInput #accDinput id="elName"  name="elName"
-                      type="text" placeholder="Last Name" [value]="editData.lname">
+                      type="text" placeholder="Last Name" formControlName="lName" [value]="editUserData.lName">
                     </mat-form-field>
                 </c-col>
       
@@ -413,7 +448,7 @@
                   <mat-form-field appearance="fill" [style.width.%]=100>
                     <!-- <mat-label>Company Name</mat-label> -->
                     <input matInput #accDinput id="euEmail" name="euEmail"
-                    type="text" placeholder="Email Address" [value]="editData.email">
+                    type="text" placeholder="Email Address" formControlName="uEmail" [value]="editUserData.email">
                   </mat-form-field>
                 </c-col>
 
@@ -437,7 +472,7 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Company Name</mat-label> -->
                       <input matInput #accDinput id="euMobile" name="euMobile"
-                      type="text" placeholder="Mobile Number" [value]="editData.mobile">
+                      type="text" placeholder="Mobile Number" formControlName="uMobile" [value]="editUserData.mobile">
                     </mat-form-field>
                 </c-col>
 
@@ -446,7 +481,7 @@
                   <mat-form-field appearance="fill" [style.width.%]=100>
                     <!-- <mat-label>Company Name</mat-label> -->
                     <input matInput #accDinput id="euserName" name="euserName"
-                    type="text" placeholder="User Name" [value]="editData.username">
+                    type="text" placeholder="User Name" formControlName="userName" [value]="editUserData.userName">
                   </mat-form-field>
                 </c-col>
               </c-row>
