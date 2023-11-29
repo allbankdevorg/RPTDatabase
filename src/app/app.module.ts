@@ -19,6 +19,7 @@ import {MatTableModule} from '@angular/material/table';
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
@@ -78,10 +79,17 @@ import { LoginComponent } from './views/pages/login/login.component';
 import { UsersComponent} from './views/maintenance/users/users.component';
 import { SettingsComponent} from './views/maintenance/settings/settings.component';
 import { OtherRelatedCompaniesComponent } from './views/other-related-companies/other-related-companies.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
+// Import for directives
 import { TitleCaseDirective } from './directives/titleCase.directive';
 import { NumericOnlyDirective } from './directives/numeric.directive';
 import { CapsLockFormatDirective } from './directives/upperCase.directive';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { ShowIfPermissionDirective } from './directives/authority.directive';
+import { HasPermissionDirective} from './directives/permission.directive'
+
+    
+ 
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -91,7 +99,8 @@ const APP_CONTAINERS = [
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankstockholderComponent, DRIComponent, DirectorsrelatedComponent, RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, OtherRelatedCompaniesComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective],
+    ResizableDirective, LoginComponent, UsersComponent, SettingsComponent, OtherRelatedCompaniesComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
+    HasPermissionDirective],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -137,7 +146,8 @@ const APP_CONTAINERS = [
     MatTooltipModule,
     MatButtonModule,
     NgIdleModule,
-    NgIdleKeepaliveModule
+    NgIdleKeepaliveModule,
+    MatCheckboxModule
   ],
   providers: [
     {
