@@ -7,15 +7,18 @@ import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 
+import { AuthGuard } from './guard/auth-guard.guard'
+
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
     path: '',
     component: DefaultLayoutComponent,
+    canActivate: [AuthGuard],
     data: {
       title: 'Home'
     },
@@ -26,11 +29,6 @@ const routes: Routes = [
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
       {
-        path: 'dri',
-        loadChildren: () =>
-          import('./views/dri/dri.module').then((m) => m.DRIModule)
-      },
-      {
         path: 'dosri',
         loadChildren: () =>
           import('./views/dosri/dosri.module').then((m) => m.DOSRIModule)
@@ -39,51 +37,6 @@ const routes: Routes = [
         path: 'arp',
         loadChildren: () =>
           import('./views/arp/arp.module').then((m) => m.ARPModule)
-      },
-      {
-        path: 'dri/directorsrelated/bn',
-        loadChildren: () =>
-          import('./views/dri/directorsrelated/directorsrelated.module').then((m) => m.DirectorsrelatedModule)
-      },
-      {
-        path: 'bankofficer',
-        loadChildren: () =>
-          import('./views/bankofficer/bankofficer.module').then((m) => m.BankofficerModule)
-      },
-      {
-        path: 'bankstockholder',
-        loadChildren: () =>
-          import('./views/bankstockholder/bankstockholder.module').then((m) => m.BankstockholderModule)
-      },
-      {
-        path: 'rp-affiliates',
-        loadChildren: () =>
-          import('./views/rp-affiliates/rp-affiliates.module').then((m) => m.RpAffiliatesModule)
-      },
-      {
-        path: 'rp-affiliates/pac/cis',
-        loadChildren: () =>
-          import('./views/rp-affiliates/pac/pac.module').then((m) => m.PACModule)
-      },
-      {
-        path: 'rp-related-companies',
-        loadChildren: () =>
-          import('./views/rp-related-companies/rp-related-companies.module').then((m) => m.RpRelatedCompaniesModule)
-      },
-      {
-        path: 'other-related-companies',
-        loadChildren: () =>
-          import('./views/other-related-companies/other-related-companies.module').then((m) => m.OtherRelatedCompaniesModule)
-      },
-      {
-        path: 'rp-other-officer',
-        loadChildren: () =>
-          import('./views/rp-other-officer/rp-other-officer.module').then((m) => m.RpOtherOfficerModule)
-      },
-      {
-        path: 'rp-other-officer/rp-officer-ri',
-        loadChildren: () =>
-          import('./views/rp-other-officer/rp-officer-ri/rp-officer-ri.module').then((m) => m.RpOfficerRIModule)
       },
       {
         path: 'dir2nd-deg-relatives',
