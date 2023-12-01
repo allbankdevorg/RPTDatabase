@@ -30,7 +30,7 @@ export const navItems: INavData[] = [
             },
             {
               name: 'Banks Stockholder',
-              url: '/bankstockholder',
+              url: '/dosri/bankstockholders',
               iconComponent: { name: '' }
             },
           ]
@@ -57,7 +57,7 @@ export const navItems: INavData[] = [
           },
           {
             name: 'Other RP Officers',
-            url: '/rp-other-officer',
+            url: '/arp/rp-officer',
             iconComponent: { name: '' },
           },
         ]
