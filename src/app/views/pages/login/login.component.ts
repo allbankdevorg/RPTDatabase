@@ -1,5 +1,8 @@
+
 import { Component, ViewChild, ViewChildren, QueryList, ElementRef, Renderer2, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthSessionService } from 'src/app/services/authentication/auth-session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,44 +10,54 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  loginForm!: FormGroup;
   otpForm!: FormGroup;
-  // Otp
-  nums: string[] = new Array(6); // Assuming a 6-digit OTP
- // Assuming a 6-digit OTP
-  otpValue = '';
+  otp: any = '';
+  showOtpComponent = true;
   timer: any;
   canResend = false;
+
+  username = '';
+  password = '';
+
+  // otp = '';
+
 
   @ViewChild('otpModal') otpModal!: ElementRef;
   @ViewChild('otpInput') otpInput: ElementRef | undefined;
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
-  
+  @ViewChild('ngOtpInput', { static: false}) ngOtpInput: any;
+  config = {
+    allowNumbersOnly: true,
+    length: 6,
+    isPasswordInput: false,
+    disableAutoFocus: false,
+    inputStyles: {
+      'width': '13%',
+      'height': '50px'
+
+    }
+  };
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(public router: Router, 
+    public fb: FormBuilder,
     private renderer: Renderer2,
-    private el: ElementRef) {
+    private el: ElementRef,
+    public authService: AuthSessionService) {
   }
 
-  // ngAfterViewInit() {
-  //   this.otpForm = this.formBuilder.group({
-  //     otp1: [''], // Replace 'otp1' with your actual form control names
-  //     otp2: [''],
-  //     otp3: [''],
-  //     // Add more form controls as needed
-  //   });
-  // }
+  ngAfterViewInit() {
+  }
 
-  ngOnInit() {
-    // this.otpForm = this.formBuilder.group({
-    //   otp1: [''],
-    //   otp2: [''],
-    //   otp3: [''],
-    //   otp4: [''],
-    //   otp5: [''],
-    //   otp6: [''],
-    //   otp7: ['']
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+
+    // this.otpForm = this.fb.group({
+    //   otp: [''],
     //   // Add more form controls as needed
     // });
 
@@ -53,60 +66,25 @@ export class LoginComponent implements OnInit {
     // });
   }
 
-  onNumInput(event: any, index: number) {
-    const value = event.target.value;
-    let currentIndex = this.getInputField(index + 1);
   
-    if (value.length === 1) {
-      this.focusNextInput(index);
-    } 
-    
-    if (event.inputType === 'deleteContentBackward') {
-      const prevInputIndex = index - 1;
-      this.focusInput(prevInputIndex);
-    }
-  
-    this.updateOtpValue();
+  onOtpChange(otp) {
+    this.otp = otp;
+    console.log(this.otp)
   }
 
-  
-  
-  focusNextInput(index: number) {
-    const nextInputIndex = index + 1;
-    this.focusInput(nextInputIndex);
+  setVal(val) {
+    this.ngOtpInput.setValue(val);
+  }
+
+  onConfigChange() {
+    this.showOtpComponent = false;
+    this.otp = null;
+    setTimeout(() => {
+      this.showOtpComponent = true;
+    }, 0);
   }
   
-  clearAndFocus(index: number) {
-    const input = this.getInputField(index);
-    if (input) {
-      input.value = '';
-      this.focusInput(index);
-    }
-  }
-  
-  focusInput(index: number) {
-    const input = this.getInputField(index);
-  
-    if (input) {
-      input.focus();
-    }
-  }
-  
-  updateOtpValue() {
-    this.otpValue = '';
-    for (let i = 1; i <= 7; i++) {
-      const controlValue = this.otpForm.get(`otp${i}`)?.value;
-      this.otpValue += controlValue;
-    }
-  
-    console.log('Final OTP Value:', this.otpValue);
-  }
-  
-  private getInputField(index: number): HTMLInputElement | null {
-    const inputField = document.getElementById(`otp-input-${index}`) as HTMLInputElement;
-    return inputField;
-  }
-  
+ 
 
   startResendTimer() {
     const resendLink = document.getElementById('resend-link') as HTMLElement;
@@ -127,35 +105,67 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  checkOTP() {
-    // Implement OTP verification logic here
-    alert(`Your OTP is: ${this.otpValue}`);
-    // Additional logic as needed
+
+  login(): void {
+   
+    // Simulate login with username and password
+
+    if (this.loginForm.valid) {
+    
+      
+      const modal = this.otpModal.nativeElement;
+    const username = this.loginForm.get('username')?.value;
+    const password = this.loginForm.get('password')?.value;
+   
+      // Perform login logic
+      this.authService.simulateLogin(username, password).subscribe((success) => {
+        if (success) {
+
+          // Simulate OTP generation and saving
+          const generatedOtp = this.authService.generateAndSaveOtp();
+          // Show OTP input in your UI or navigate to OTP verification page
+          console.log(`Simulated OTP: ${generatedOtp}`);
+  
+          // this.showOtpComponent = true;
+          if (modal) {
+              this.renderer.addClass(modal, 'show');
+              this.renderer.setStyle(modal, 'display', 'block');
+            }
+        } else {
+          window.alert('Invalid Credentials')// Handle unsuccessful login, show an error message, etc.
+          console.log(success);
+        }
+      });
+      
+      console.log(username, password)
+    }
+    
   }
 
-  verifyOTP() {
-    // Implement OTP verification logic here
-    alert('OTP Verified');
-    // Additional logic as needed
+
+  verifyOtp(): void {
+    // Simulate OTP verification
+    if (this.authService.verifyOtp(this.otp)) {
+      // Navigate to the dashboard or another secured page upon successful OTP verification
+      console.log('OTP successfully verified');
+      this.authService.clearOtp(); // Clear the OTP after successful verification
+      this.router.navigate(['/dashboard']);
+    } else {
+      console.log('OTP verification failed');
+      // Handle unsuccessful OTP verification, show an error message, etc.
+    }
   }
 
   resendOTP() {
-    if (this.canResend) {
+    this.authService.generateAndSaveOtp 
       // Implement OTP resend logic here
       alert('OTP Resent');
+      // Simulate OTP generation and saving
+      const generatedOtp = this.authService.generateAndSaveOtp();
+      console.log(generatedOtp);
+  
       this.startResendTimer();
-    }
-  }
-
-
-  login() {
-    console.log("success: Login Successfully");
-    const modal = this.otpModal.nativeElement;
-
-    if (modal) {
-      this.renderer.addClass(modal, 'show');
-      this.renderer.setStyle(modal, 'display', 'block');
-    }
+    
   }
 
   onSubmit(){
