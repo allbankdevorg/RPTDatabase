@@ -5,7 +5,7 @@ import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilde
 import {animate, state, style, transition, trigger} from '@angular/animations'
 
 // service
-import { SessionTimeoutService } from '../../../services/useridle/session-timeout.service';
+// import { SessionTimeoutService } from '../../../services/useridle/session-timeout.service';
 import {AuthSessionService} from '../../../services/authentication/auth-session.service'
 
 // Imports for Functions
@@ -95,7 +95,7 @@ export class UsersComponent {
   expandedElement: Users | null = null;
 
   DdisplayedColumns: string[] = ['access', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
-  permissionDataSource = new MatTableDataSource<Permissions>(ACCESS_DATA);
+  // permissionDataSource = new MatTableDataSource<Permissions>(ACCESS_DATA);
 
 
   // userDataSource = new MatTableDataSource();
@@ -118,7 +118,7 @@ export class UsersComponent {
     private authService: AuthSessionService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private idleService: SessionTimeoutService,
+    // private idleService: SessionTimeoutService,
     private zone: NgZone,
     private cdr: ChangeDetectorRef) {
       this.userForm = this.formBuilder.group({
@@ -152,7 +152,7 @@ export class UsersComponent {
 
   // Call this method whenever there is user activity
   onUserActivity(): void {
-    this.idleService.resetIdleTimer();
+    // this.idleService.resetIdleTimer();
   }
 
 
@@ -208,7 +208,7 @@ updateTableData(): void {
 
   // Update permissions data
   // Set the data source for your MatTable for permissions
-  this.permissionDataSource.data = ACCESS_DATA;
+  // this.permissionDataSource.data = ACCESS_DATA;
   // console.log('Permissions Data:', this.permissionDataSource.data);
 
 
@@ -386,6 +386,10 @@ let SAMPLE_DATA: Users[] = [
     role: 'Maker',
     authority: [
       { access: 'Affiliates',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+      { access: 'users',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+      { access: 'dri',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+      { access: 'bankofficer',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+      { access: 'directorsrelated/:id',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
     ]
 
     
@@ -411,12 +415,12 @@ let SAMPLE_DATA: Users[] = [
 ];
 
 
-const ACCESS_DATA: Permissions[] = [
-  {
+// const ACCESS_DATA: Permissions[] = [
+//   {
     
-    access: 'Affiliates',  view: 1, add: 0, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 
-  },
-  {
-    access: 'Affiliates',  view: 1, add: 0, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 0 
-  },
-]
+//     access: 'Affiliates',  view: 1, add: 0, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 
+//   },
+//   {
+//     access: 'Affiliates',  view: 1, add: 0, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 0 
+//   },
+// ]
