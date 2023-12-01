@@ -1,0 +1,489 @@
+
+<c-container fluid class="mb-3 p-0 position-relative">
+    <!-- Button to open a modal -->
+    <c-row>
+         <c-col xs>
+            <c-card class="mb-4">
+            <c-card-header class="d-flex justify-content-between align-items-center"><h2>{{Company}} (Officers)</h2>
+                <!-- <button [cModalToggle]="officerModal.id" class="acc-access-add  btn-primary rounded-pill" (click)="setAffilCompOff()" cButton>+ Add</button> -->
+               
+            </c-card-header>
+            <c-card-body class="card-body">
+
+                <c-container fluid class=" my-1 d-flex justify-content-between align-items-center">
+                    <div></div>
+                    <button [cModalToggle]="officerModal.id" mat-fab extended color="primary"  (click)="setAffilCompOff()" *appHasPermission="'add'">
+                        <mat-icon>add</mat-icon>
+                        ADD
+                    </button>
+                </c-container>
+
+                <c-container fluid class="my-3">
+                    <section class="example-container mat-elevation-z8" tabindex="0">
+                        <table mat-table [dataSource]="OffdataSource" class="DRI-table">
+                    
+                        <!-- Full Name Column -->
+                        <ng-container matColumnDef="FullName" sticky>
+                            <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                            <td mat-cell *matCellDef="let element">{{element.FullName}} 
+                                <button *appHasPermission="'delete'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Officer." color="warn" class="add-button" (click)="delAffilOfficer(element, element.comp_CIS, element.off_CisNumber)" aria-label="Delete Users">
+                                    <mat-icon>link_off</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                    
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="Position" sticky>
+                            <th mat-header-cell *matHeaderCellDef> Position </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
+                        </ng-container>
+                    
+                    
+                        <!-- Mother's Column -->
+                        <ng-container matColumnDef="MothersName">
+                            <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <ng-container *ngFor="let motherName of element['MothersName']">
+                                    <div class="d-flex d-sub-icon">
+                                        <!-- <button mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Officer." color="warn" (click)="delAffilOfficer(element, element.comp_CIS, element.off_CisNumber)" aria-label="Delete Users"> -->
+                                        <ng-container *appHasPermission="'delete'">   
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, motherName.cisNumber, motherName.offRelated)" *ngIf="element.MothersName">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{motherName.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container>
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(1, element.off_CisNumber)" 
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>
+                        </ng-container>
+                    
+                        <!-- Father's Column -->
+                        <ng-container matColumnDef="FathersName">
+                            <th mat-header-cell *matHeaderCellDef> Father's Name </th>
+                            <!-- <td mat-cell *matCellDef="let element"> {{element.fathersname}} </td> -->
+                            <td mat-cell *matCellDef="let element"> 
+                                <ng-container *ngFor="let fathersName of element.FathersName">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, fathersName.cisNumber, fathersName.offRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{fathersName.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(2, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="Siblings">
+                            <th mat-header-cell *matHeaderCellDef> Siblings </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let sibling of element.Siblings">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, sibling.cisNumber, sibling.offRelated)" *ngIf="element.Siblings">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ sibling.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container>
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(3, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon> 
+                            </td>
+                        </ng-container>
+                    
+                        <!-- Spouse's Column -->
+                        <ng-container matColumnDef="Spouse">
+                            <th mat-header-cell *matHeaderCellDef> Spouse  </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <ng-container *ngFor="let spouse of element.Spouse">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, spouse.cisNumber, spouse.offRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ spouse.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(4, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>
+                        </ng-container>
+                    
+                        <!-- Children's Column -->
+                        <ng-container matColumnDef="Children">
+                            <th mat-header-cell *matHeaderCellDef> Children </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let Child of element['Children']">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Child.cisNumber, Child.offRelated)" *ngIf="element.Children">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Child.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(5, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>
+                        </ng-container>
+                    
+                        <!-- Mother-in-law's Column -->
+                        <ng-container matColumnDef="MotherinLaw">
+                            <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <ng-container *ngFor="let motherInLaw of element['MotherinLaw']">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, motherInLaw.cisNumber, motherInLaw.offRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ motherInLaw.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container>
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(6, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon> 
+                            </td>        
+                        </ng-container>
+                    
+                        <!-- Father-in-Law's Column -->
+                        <ng-container matColumnDef="FatherinLaw">
+                            <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let fatherInLaw of element['FatherinLaw']">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, fatherInLaw.cisNumber, fatherInLaw.offRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ fatherInLaw.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(7, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>    
+                        </ng-container>
+                    
+                        <!-- Step CHilrdrens Column -->
+                        <ng-container matColumnDef="stepChild">
+                            <th mat-header-cell *matHeaderCellDef> Name of Stepchildren </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let Stepchild of element.stepChild">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Stepchild.cisNumber, Stepchild.offRelated)" *ngIf="element.stepChild">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Stepchild.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(8, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>    
+                        </ng-container>
+                    
+                        <!-- Son/Daughter in Law Column -->
+                        <ng-container matColumnDef="sonDaughterInLaw">
+                            <th mat-header-cell *matHeaderCellDef> Name of Son/Daughter-In-Law </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let SonDaughterinlaw of element.sonDaughterInLaw">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, SonDaughterinlaw.cisNumber, SonDaughterinlaw.offRelated)" *ngIf="element.sonDaughterInLaw">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ SonDaughterinlaw.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(9, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>    
+                        </ng-container>
+                    
+                        <!-- GrandParents Column -->
+                        <ng-container matColumnDef="grandParents">
+                            <th mat-header-cell *matHeaderCellDef> Grandparents </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let Grandparents of element.grandParents">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Grandparents.cisNumber, Grandparents.offRelated)" *ngIf="element.grandParents">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Grandparents.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(10, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>        
+                        </ng-container>
+                    
+                        <!-- Grand Parents-in-Law Column -->
+                        <ng-container matColumnDef="grandParentsInLaw">
+                            <th mat-header-cell *matHeaderCellDef>Grandparents-In-Law </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let Grandparentsinlaw of element.grandParentsInLaw">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Grandparentsinlaw.cisNumber, Grandparentsinlaw.offRelated)" *ngIf="element.grandParentsInLaw">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Grandparentsinlaw.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(11, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>
+                        </ng-container>
+                    
+                        <!-- Sisters-in-Law Column -->
+                        <ng-container matColumnDef="sistersInLaw">
+                            <th mat-header-cell *matHeaderCellDef> Sisters-In-Law </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Sistersinlaw.cisNumber, Sistersinlaw.offRelated)" *ngIf="element.sistersInLaw">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Sistersinlaw.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container>
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(12, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>    
+                        </ng-container>
+                    
+                        <!-- Brothers-in-Law Column -->
+                        <ng-container matColumnDef="brothersInLaw">
+                            <th mat-header-cell *matHeaderCellDef> Brothers-In-Law </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let Brothersinlaw of element.brothersInLaw">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Brothersinlaw.cisNumber, Brothersinlaw.offRelated)" *ngIf="element.brothersInLaw">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Brothersinlaw.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(13, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>      
+                        </ng-container>
+                        
+                        <!-- GrandChildren Column -->
+                        <ng-container matColumnDef="grandChildren">
+                            <th mat-header-cell *matHeaderCellDef> GrandChildren </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngFor="let Grandchildren of element.grandChildren">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Grandchildren.cisNumber, Grandchildren.offRelated)" *ngIf="element.grandChildren">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Grandchildren.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container> 
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(14, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon>
+                            </td>  
+                        </ng-container>
+                    
+                        <!-- GrandChildren-in-Law Column -->
+                        <ng-container matColumnDef="grandChildrenInLaw">
+                            <th mat-header-cell *matHeaderCellDef> Grandchildren-in-Law </th>
+                            <td mat-cell *matCellDef="let element" class="rowdata">
+                                <ng-container *ngFor="let Grandchildreninlaw of element.grandChildrenInLaw">
+                                    <div class="d-flex d-sub-icon">
+                                        <ng-container *appHasPermission="'delete'">
+                                            <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, Grandchildreninlaw.cisNumber, Grandchildreninlaw.offRelated)" *ngIf="element.grandChildrenInLaw">remove_circle</mat-icon>
+                                        </ng-container>
+                                            {{ Grandchildreninlaw.fullName}}
+                                    </div>
+                                    <br>
+                                </ng-container>
+                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                (click)="setButtonId(15, element.off_CisNumber)"
+                                (click)="setdirRelated()">add_circle</mat-icon> 
+                            </td>      
+                        </ng-container>
+                    
+                        
+                        
+                        <!-- Header row second group -->
+                        <!-- <ng-container matColumnDef="header-row-second-group">
+                            <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
+                        </ng-container> -->
+                    
+                        <!-- <tr mat-header-row *matHeaderRowDef="['header-row-first-group']"></tr> -->
+                        <tr mat-header-row *matHeaderRowDef="OffdisplayedColumns" class="cTableCol"></tr>
+                        <tr mat-row *matRowDef="let row; columns: OffdisplayedColumns;" class="cTableRow"></tr>
+                        </table>
+                    </section>
+                
+                    <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    aria-label="Select page of data" sticky> 
+                    </mat-paginator>
+                </c-container>
+            </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-container>
+
+
+<!-- Add Officers Modal -->
+<c-modal #officerModal backdrop="static" id="officerModal" size="lg">
+    <c-modal-header>
+      <h3 cModalTitle>Affiliates Officer</h3>
+      <button [cModalToggle]="officerModal.id" cButtonClose></button>
+    </c-modal-header>
+  
+    <form cForm class="mb-2" [formGroup]="affilOfficerForm" (ngSubmit)="onAffilOffSubmit()">
+      <c-modal-body>
+        <c-row class="align-items-center">
+
+
+            <c-col [sm]="4">
+              <label cLabel="col" for="affildcisNumber">CIS Number</label>
+              <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="affildcisNumber" name="affildcisNumber"
+                placeholder="CIS Number"
+                type="text" formControlName="affildcisNumber" appNum>
+            </c-col>  
+          
+            <c-col [sm]="4">
+                <label cLabel="col" for="affildFirstName">First Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="affildFirstName" name="affildFirstName"
+                  placeholder="First Name"
+                  type="text" formControlName="affildFirstName" appTitleCase>
+            </c-col>
+    
+            <c-col [sm]="4">
+                <label cLabel="col" for="affildMiddleName">Middle Name</label>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="affildMiddleName" name="affildMiddleName"
+                  placeholder="Middle Name"
+                  type="text" formControlName="affildMiddleName" appTitleCase>
+            </c-col>
+        </c-row>
+
+        <c-row class="align-items-center">
+          
+          <c-col [sm]="6">
+            <label cLabel="col" for="affildLastName">Last Name</label>
+            <input
+              aria-describedby="passwordHelpInline-3"cFormControl
+              id="affildLastName" name="affildLastName"
+              placeholder="Last Name"
+              type="text" formControlName="affildLastName" appTitleCase>
+        </c-col>
+          
+          <c-col [sm]="6">
+            <label cLabel="col" for="affildPosition">Position</label>
+            <input
+              cFormControl
+              id="affildPosition" name="affildPosition"
+              placeholder="Position"
+              type="text" formControlName="affildPosition" appTitleCase>
+          </c-col>
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button type="submit" cButton color="success">Proceed</button>
+      </c-modal-footer>
+    </form>
+        
+</c-modal>
+
+
+<!-- Start of Modal for Related Interest -->
+<c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
+    <c-modal-header>
+      <h3 cModalTitle>Affiliates Relationship </h3>
+      <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
+    </c-modal-header>
+  
+    <form cForm class="mb-2" [formGroup]="affilOfficerRIForm" (ngSubmit)="onRISubmit()">
+      <c-modal-body>
+        <c-row class="align-items-center">
+          
+            <c-row class="align-items-center">
+
+              <c-col [sm]="6">
+                <label cLabel="col" for="riCisNumber">CIS Number</label>
+                <input
+                aria-describedby="passwordHelpInline-3"cFormControl
+                id="dir_CIS" name="dir_CIS"
+                placeholder="dir_CIS"
+                type="text" [value]="selectedOffCisNumber || ''" hidden>
+                <input
+                  aria-describedby="passwordHelpInline-3"cFormControl
+                  id="riCisNumber" name="riCisNumber"
+                  placeholder="CIS Number"
+                  type="text" formControlName="riCisNumber" appNum>
+              </c-col>
+          
+                <c-col [sm]="6">
+                    <label cLabel="col" for="riFirstName">First Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="riFirstName" name="riFirstName"
+                      placeholder="First Name"
+                      type="text" formControlName="riFirstName" appTitleCase>
+                </c-col>
+            </c-row>
+            
+            <c-row class="align-items-center">
+                <c-col [sm]="6">
+                    <label cLabel="col" for="riMiddleName">Middle Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="riMiddleName" name="riMiddleName"
+                      placeholder="Middle Name"
+                      type="text" formControlName="riMiddleName" appTitleCase>
+                </c-col>
+    
+                <c-col [sm]="6">
+                    <label cLabel="col" for="riLastName">Last Name</label>
+                    <input
+                      aria-describedby="passwordHelpInline-3"cFormControl
+                      id="riLastName" name="riLastName"
+                      placeholder="Last Name"
+                      type="text" formControlName="riLastName" appTitleCase>
+                </c-col>
+        
+        
+            </c-row>
+  
+  
+        </c-row>
+      </c-modal-body>
+      <c-modal-footer>
+        <button type="submit" cButton color="success">Proceed</button>
+      </c-modal-footer>
+    </form>
+        
+</c-modal>
