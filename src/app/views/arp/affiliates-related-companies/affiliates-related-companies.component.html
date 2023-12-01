@@ -10,7 +10,7 @@
                 <c-row>
                   <c-container class="my-1 d-flex justify-content-between align-items-center">
                     <div></div>
-                    <button class="mx-1" [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" (click)="onButtonClick('ORP')">
+                    <button class="mx-1" [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" (click)="onButtonClick('ORP')" *appHasPermission="'add'">
                       <mat-icon>add</mat-icon>
                       ADD
                     </button>
