@@ -1,0 +1,103 @@
+<c-container fluid class="mb-3 p-0">
+    <h1>Stockholders</h1>
+    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+        
+
+        <!-- Company -->
+        <ng-container matColumnDef="company">
+            <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Company </th>
+            <td class="cTableColsC" mat-cell *matCellDef="let element"> {{element.company}} </td>
+        </ng-container>
+        
+        
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+    </table>
+    
+    <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+        <!-- Position Column -->
+        <ng-container matColumnDef="fullname">
+            <th mat-header-cell *matHeaderCellDef> Individual </th>
+            <td mat-cell *matCellDef="let element"> {{element.fullname}} </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> Position </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        
+        <!-- Shares Column -->
+        <ng-container matColumnDef="shares">
+            <th mat-header-cell *matHeaderCellDef> Shares </th>
+            <td mat-cell *matCellDef="let element"> {{element.shares}} </td>
+        </ng-container>
+
+
+        <!-- View Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let row"> 
+              <!-- <button cButton class="mx-1 my-1" color="primary" routerLink="/listing/accountdetails" (click)="viewData(element)">View</button> -->
+              <button cButton class="my-1" color="dark" [cModalToggle]="sharesModal.id" (click)="onRowClick(row)" *appHasPermission="'edit'">Update</button>
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of data">
+    </mat-paginator>
+      
+      <!-- <div *ngIf="!clickedRows.size">
+        Clicked rows will be logged here
+      </div>
+      
+      <ul>
+        <li *ngFor="let clickedRow of clickedRows">
+          Clicked on {{clickedRow.name}}
+        </li>
+      </ul> -->
+      
+</c-container>
+
+
+<!-- Modals -->
+<c-modal #sharesModal backdrop="static" id="sharesModal" size="sm">
+  <c-modal-header>
+    <h3 cModalTitle> Shares </h3>
+    <button [cModalToggle]="sharesModal.id" cButtonClose></button>
+  </c-modal-header>
+
+  <form cForm class="mb-2">
+    <c-modal-body>
+      <c-row class="align-items-center">
+        
+          <c-row class="align-items-center">
+        
+              <c-col [sm]="4">
+                  <label cLabel="col" for="dFirstName">Shares</label>
+                  <input
+                    aria-describedby="passwordHelpInline-3"cFormControl
+                    id="Shares"
+                    placeholder="Shares"
+                    type="text">
+              </c-col>
+      
+          </c-row>
+
+
+      </c-row>
+    </c-modal-body>
+    <c-modal-footer>
+      <button cButton color="success" (click)="updateShares()" [cModalToggle]="sharesModal.id">Proceed</button>
+    </c-modal-footer>
+  </form>
+      
+</c-modal>
