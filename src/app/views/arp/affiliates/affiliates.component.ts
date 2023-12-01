@@ -257,7 +257,7 @@ console.log('row has been clicked');
 // 
 console.log('row has been clicked');
 console.log('Clicked row data:', row);
-this.router.navigate(['/rp-affiliates/pac', directorId]);
+this.router.navigate(['/arp/pac', directorId]);
 }
 
 
