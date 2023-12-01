@@ -5,29 +5,42 @@
         <c-card-group>
           <c-card class="p-4">
             <c-card-body>
-              <form cForm (ngSubmit)="login()">
+              <!-- <form cForm (ngSubmit)="login()"> -->
                 <h1>Login</h1>
                 <p class="text-medium-emphasis">Sign In to your account</p>
-                <c-input-group class="mb-3">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilUser"></svg>
-                  </span>
-                  <input autoComplete="username" cFormControl placeholder="Username" />
-                </c-input-group>
-                <c-input-group class="mb-4">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilLockLocked"></svg>
-                  </span>
-                  <input
-                    autoComplete="current-password"
-                    cFormControl
-                    placeholder="Password"
-                    type="password"
-                  />
-                </c-input-group>
-                <c-row>
+                
+                <form [formGroup]="loginForm">
+
+                  <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilUser"></svg>
+                    </span>
+                    <input autoComplete="username" cFormControl placeholder="Username" formControlName="username"/>
+                  </c-input-group>
+
+                  <c-input-group class="mb-4">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilLockLocked"></svg>
+                    </span>
+                    <input
+                      autoComplete="current-password"
+                      cFormControl
+                      placeholder="Password"
+                      type="password" formControlName="password"
+                    />
+                  </c-input-group> 
+
+                  <c-row>
+                    <c-col xs="6">
+                      <button cButton class="px-4" color="primary" (click)="login()">Login</button>
+                    </c-col>
+                  </c-row>
+                </form>
+
+                
+                <!-- <c-row>
                   <c-col xs="6">
-                    <button type="submit" cButton class="px-4" color="primary">
+                    <button cButton class="px-4" color="primary" (click)="login()">
                       Login
                     </button>
                   </c-col>
@@ -36,8 +49,8 @@
                       Forgot password?
                     </button>
                   </c-col>
-                </c-row>
-              </form>
+                </c-row> -->
+              <!-- </form> -->
             </c-card-body>
           </c-card>
           <c-card [ngStyle]="{'width.%': 100}" class="text-white bg-primary py-5" >
@@ -68,38 +81,24 @@
     <div class="modal-content">
     <div class="modal-inner-content">
       <div class="modal-body text-center">
-                      <span class="login100-form-title p-b-26">
-                          Enter Your OTP
+                      <span class="login100-form-title mb-3">
+                        Enter verification code
                       </span>
-                      <!-- <form cForm class="mb-2" [formGroup]="otpForm" (ngSubmit)="onSubmit()">
-                          <div class="wrap-otp validate-input">
-                            <input type="text" inputmode="numeric" class="otp-input" id="otp-input-0" maxlength="1" formControlName="otp1" (input)="onNumInput($event, 0)" />
-                            <input type="text" inputmode="numeric" class="otp-input" id="otp-input-1"  maxlength="1" formControlName="otp2"  (input)="onNumInput($event, 1)" />
-                            <input type="text" inputmode="numeric" class="otp-input" id="otp-input-2" maxlength="1" formControlName="otp3"  (input)="onNumInput($event, 2)" />
-                            <input type="text" inputmode="numeric" class="otp-input" id="otp-input-3" maxlength="1" formControlName="otp4"  (input)="onNumInput($event, 3)" />
-                            <input type="text" inputmode="numeric" class="otp-input" id="otp-input-4" maxlength="1" formControlName="otp5"  (input)="onNumInput($event, 4)" />
-                            <input type="text" inputmode="numeric" class="otp-input" id="otp-input-5" maxlength="1" formControlName="otp6"  (input)="onNumInput($event, 5)" />
-                            <input type="text" inputmode="numeric" class="otp-input" id="otp-input-6" maxlength="1" formControlName="otp7"  (input)="onNumInput($event, 6)" />
-                             -->
-                            
-                              <!-- <input (keydown)="handleKeyDown($event, inputElement)" #inputElement class="otp-input" type="text" inputmode="numeric" maxlength="1" id="otp-input-1">
-                              <input (keydown)="handleKeyDown($event, inputElement)" #inputElement class="otp-input" type="text" inputmode="numeric" maxlength="1" id="otp-input-2">
-                              <input (keydown)="handleKeyDown($event, inputElement)" #inputElement class="otp-input" type="text" inputmode="numeric" maxlength="1" id="otp-input-3">
-                              <input (keydown)="handleKeyDown($event, inputElement)" #inputElement class="otp-input" type="text" inputmode="numeric" maxlength="1" id="otp-input-4">
-                              <input (keydown)="handleKeyDown($event, inputElement)" #inputElement class="otp-input" type="text" inputmode="numeric" maxlength="1" id="otp-input-5">
-                              <input (keydown)="handleKeyDown($event, inputElement)" #inputElement class="otp-input" type="text" inputmode="numeric" maxlength="1" id="otp-input-6"> -->
-                          <!-- </div>
-                          <div class="container-login100-form-btn">
-                              <div id="otp-message"></div>
-                              <button cButton class="px-0" color="link" href="#" id="resend-link" onclick="resendOTP()">Resend OTP</button>
-                          </div>
 
-                          
-                      </form> -->
+                      <!-- <form cForm class="mb-2" (ngSubmit)="onSubmit()"> -->
+                           <div class="wrap-otp validate-input">
+                                     <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" *ngIf="showOtpComponent" [config]="config"></ng-otp-input>
+                          </div> 
+                          <div class="container-login100-form-btn">
+                            <div id="otp-message"></div>
+                            <button cButton class="px-0 resend-link" color="link" href="#" id="resend-link" (click)="resendOTP()">Resend OTP</button>
+                           </div>
+                      <!-- </form> -->
+
           <div class="container-login100-form-btn">
                               <div class="wrap-login100-form-btn">
                                   <div class="login100-form-bgbtn"></div>
-                                  <button id="confirm-otp" cButton class="px-4" color="primary" onclick="checkOTP()">
+                                  <button id="confirm-otp" cButton class="px-4" color="primary" (click)="verifyOtp()">
                                       Confirm
                                   </button>
                               </div>
