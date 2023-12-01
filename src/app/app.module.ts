@@ -30,6 +30,10 @@ import { AppComponent } from './app.component';
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
 
+
+// For OTP
+import { NgOtpInputModule } from 'ng-otp-input';
+
 import {MatButtonModule} from '@angular/material/button';
 import {
   AvatarModule,
@@ -61,35 +65,28 @@ import { NgIdleModule } from '@ng-idle/core';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
-import { PRIComponent } from './views/pri/pri.component';
-import { BankofficerComponents } from './views/bankofficer/bankofficer.component';
-import { BankstockholderComponent } from './views/bankstockholder/bankstockholder.component';
-import { DRIComponent } from './views/dri/dri.component';
-import { DirectorsrelatedComponents } from './views/dri/directorsrelated/directorsrelated.component';
-import { PACComponent } from './views/rp-affiliates/pac/pac.component';
-import { RpAffiliatesComponent } from './views/rp-affiliates/rp-affiliates.component';
-import { RpRelatedCompaniesComponent } from './views/rp-related-companies/rp-related-companies.component';
-import { RpOtherOfficerComponent } from './views/rp-other-officer/rp-other-officer.component';
-import { RpOfficerRIComponent } from './views/rp-other-officer/rp-officer-ri/rp-officer-ri.component';
 import { DIR2ndDegRelativesComponent } from './views/dir2nd-deg-relatives/dir2nd-deg-relatives.component';
 import { Officer2ndDegRelativesComponent } from './views/officer2nd-deg-relatives/officer2nd-deg-relatives.component'
-import { ResizableDirective } from './views/rp-related-companies/rp-related-companies.component';
-import { DraggableDirective } from './views/rp-related-companies/rp-related-companies.component';
+import { ResizableDirective } from './views/arp/other-related-parties/other-related-parties.component';
+import { DraggableDirective } from './views/arp/other-related-parties/other-related-parties.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { UsersComponent} from './views/maintenance/users/users.component';
 import { SettingsComponent} from './views/maintenance/settings/settings.component';
-import { OtherRelatedCompaniesComponent } from './views/other-related-companies/other-related-companies.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
 // DOSRI
 import {DriComponent} from './views/dosri/dri/dri.component';
 import {DirectorsrelatedComponent} from './views/dosri/directorsrelated/directorsrelated.component';
 import {BankofficerComponent} from './views/dosri/bankofficer/bankofficer.component';
+import { BankstockholdersComponent } from './views/dosri/bankstockholders/bankstockholders.component';
 
 // Affiliates and Related Party
 import { AffiliatesComponent } from './views/arp/affiliates/affiliates.component';
+import { PacComponent } from './views/arp/pac/pac.component';
 import { AffiliatesRelatedCompaniesComponent } from './views/arp/affiliates-related-companies/affiliates-related-companies.component';
 import { OtherRelatedPartiesComponent } from './views/arp/other-related-parties/other-related-parties.component';
+import { RpOfficerComponent } from './views/arp/rp-officer/rp-officer.component';
+import { RPOfficerRIComponent } from './views/arp/rpofficer-ri/rpofficer-ri.component';
 
 
 // Import for directives
@@ -109,9 +106,9 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, PRIComponent, BankofficerComponent, BankofficerComponents, BankstockholderComponent, DRIComponent, DirectorsrelatedComponent, DirectorsrelatedComponents, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
-    RpAffiliatesComponent, PACComponent, RpRelatedCompaniesComponent, RpOtherOfficerComponent, RpOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, OtherRelatedCompaniesComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
+  declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
+    BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
+    ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective],
   imports: [
     BrowserModule,
@@ -159,7 +156,8 @@ const APP_CONTAINERS = [
     MatButtonModule,
     NgIdleModule,
     NgIdleKeepaliveModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    NgOtpInputModule
   ],
   providers: [
     {
