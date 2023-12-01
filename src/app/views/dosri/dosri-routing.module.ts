@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
  import { DriComponent } from './dri/dri.component';
  import { BankofficerComponent } from './bankofficer/bankofficer.component';
  import { DirectorsrelatedComponent } from './directorsrelated/directorsrelated.component';
+ import { BankstockholdersComponent } from './bankstockholders/bankstockholders.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,13 @@ const routes: Routes = [
               component: DirectorsrelatedComponent,
               data: {
                 title: 'Directors Related Interest',
+              },
+            },
+            {
+                path: 'bankstockholders',
+              component: BankstockholdersComponent,
+              data: {
+                title: 'Bank Stock Holders',
               },
             },
           ]
