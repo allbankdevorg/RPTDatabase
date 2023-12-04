@@ -25,7 +25,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
   }
 
   ngOnInt() {
-    // this.idle.timedOut()
+    this.idle.timedOut()
   }
 
   // Simulate logout
