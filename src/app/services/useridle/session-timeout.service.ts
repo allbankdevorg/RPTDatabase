@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Idle, DEFAULT_INTERRUPTSOURCES, } from '@ng-idle/core';
+
+import { Keepalive } from '@ng-idle/keepalive'; 
 // Services
 import { AuthSessionService } from '../authentication/auth-session.service';
 @Injectable({
@@ -10,15 +12,16 @@ export class SessionTimeoutService {
 
   constructor(private idle: Idle, 
     private router: Router,
-    private authService : AuthSessionService) {
+    private authService : AuthSessionService,
+    private keepalive: Keepalive) {
     this.setIdleConfig();
   }
 
   private setIdleConfig(): void {
-    // this.idle.setIdle(5); // 5 minutes
+    this.idle.setIdle(300); // 5 minutes
     this.idle.setTimeout(3); // 3 sec
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-    // this.keepalive.interval(15); // 15 seconds
+    this.keepalive.interval(5); // 15 seconds
     
     this.idle.watch();
     this.idle.onIdleEnd.subscribe(() => {
@@ -29,14 +32,14 @@ export class SessionTimeoutService {
     this.idle.onTimeout.subscribe(() => {
       console.log('Session expired!');
       // Implement your logout logic here
-      // this.timedOut();
+      this.timedOut();
     });
 
   }
 
   resetIdleTimer(): void {
     this.idle.watch();
-    // this.keepalive.ping();
+    this.keepalive.ping();
   }
 
   public timedOut(): void {
@@ -47,6 +50,6 @@ export class SessionTimeoutService {
     this.authService.simulateLogout();
     // Redirect to the login page
     // Note: You need to implement the Router or navigate as per your application's structure
-    this.router.navigate(['/login']);
+    // this.router.navigate(['/login']);
   }
 }
