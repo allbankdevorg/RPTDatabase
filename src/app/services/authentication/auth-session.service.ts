@@ -8,6 +8,7 @@ import {DummyDataService, Users} from '../dummyData/dummy-data.service';
   providedIn: 'root'
 })
 export class AuthSessionService {
+  lastAction = Date.now();
   private tokenKey = 'authToken';
   private username: string | null = null;
   private role: string | null = null;
@@ -75,6 +76,7 @@ export class AuthSessionService {
   clearSession(): void {
     this.username = null;
     this.role = null;
+    sessionStorage.removeItem('userData');
     sessionStorage.removeItem('user');
   }
 
@@ -134,7 +136,7 @@ export class AuthSessionService {
       if (matchingUser) {
         // Set session data and authentication token
         sessionStorage.setItem('user', JSON.stringify(matchingUser));
-        this.setSessionData(username, matchingUser.role);
+        
         this.setAuthToken('yourAuthToken'); // Replace with an actual token
   
         console.log('Login successful!'); // Log success
@@ -193,6 +195,11 @@ export class AuthSessionService {
     this.router.navigate(['/login']);
   }
 
+  resetTimer() {
+    this.lastAction = Date.now();  
+    console.log('Timer Reset')
+    // Reset lastAction date
+  }
 
 
 
@@ -203,6 +210,7 @@ export class AuthSessionService {
   verifyOtp(otp: string): boolean {
     const storedOtp = localStorage.getItem(this.otpKey);
     this.isOtpVerified = otp === storedOtp;
+    
     return this.isOtpVerified;
   }
 
