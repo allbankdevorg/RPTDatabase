@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
 
+
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator'
 import {MatInputModule} from '@angular/material/input';
@@ -20,6 +21,7 @@ import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
@@ -63,6 +65,7 @@ import {
 
 import { NgIdleModule } from '@ng-idle/core';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { Keepalive } from '@ng-idle/keepalive';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { DIR2ndDegRelativesComponent } from './views/dir2nd-deg-relatives/dir2nd-deg-relatives.component';
@@ -163,7 +166,9 @@ const APP_CONTAINERS = [
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
+
     },
+    Keepalive,
     IconSetService,
     Title
   ],
