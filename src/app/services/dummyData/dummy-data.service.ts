@@ -121,3 +121,63 @@ export class DummyDataService {
   //   return of(this.users);
   // }
 }
+
+
+ // private dummyData: Users[] = [
+  //         {
+  //           id: 1,
+  //           fName: 'Yiorgos Avraamu',
+  //           mName: 'New',
+  //           lName: 'Avraamu',
+  //           userName: 'User1',
+  //           email: 'test@email.com',
+  //           password: 'user1234',
+  //           mobile: 1231244,
+  //           department: 'ITG',
+  //           role: 'Reviewer',
+  //           authority: [
+  //             { access: 'dri', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'directorsrelated/:id', view: 1, add: 1, edit: 1, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'bankofficer', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'bankstockholders', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'affiliates', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'affiliates-related-companies', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'other-related-parties', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'rp-officer', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'pac/:id', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'rpofficer-ri/:id', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //             { access: 'users', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+  //           ] ,
+  //         },
+  //         {
+  //           id: 1,
+  //           fName: 'Yiorgos Avraamu',
+  //           mName: 'New',
+  //           lName: 'Avraamu',
+  //           userName: 'Admin',
+  //           email: 'test@email.com',
+  //           password: 'admin1234',
+  //           mobile: 1231244,
+  //           department: 'ITG',
+  //           role: 'Maker',
+  //           authority: [
+  //             { access: 'dri', view: 0, add: 1, edit: 1, delete: 1, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'directorsrelated/:id', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'bankofficer', view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'bankstockholders', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'affiliates', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'affiliates-related-companies', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'other-related-parties', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'rp-officer', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'pac/:id', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'rpofficer-ri/:id', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //             { access: 'users', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+  //           ] ,
+  //         },
+  // ]
+
+
+
+  // getUsers(): Observable<Users[]> {
+  //   return of(this.dummyData);
+  // }
