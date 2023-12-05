@@ -34,7 +34,7 @@ export class DummyDataService {
   getUsers(user): Users[] {
     return [
       {
-        id: 1,
+        id: 2025,
         fName: 'Yiorgos Avraamu',
         mName: 'New',
         lName: 'Avraamu',
@@ -56,7 +56,7 @@ export class DummyDataService {
           { access: 'other-related-parties', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
           { access: 'rp-officer', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
           { access: 'rpofficer-ri/:id', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
-          { access: 'users', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
+          { access: 'users', view: 1, add: 1, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
           { access: 'settings', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
           { access: 'manuals', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 0, reviewer: 1 },
         ] ,
