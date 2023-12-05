@@ -1,8 +1,12 @@
-
-import { Component, ViewChild, ViewChildren, QueryList, ElementRef, Renderer2, OnInit, AfterViewInit } from '@angular/core';
+import { Component, NgZone, ViewChild, ViewChildren, QueryList, ElementRef, Renderer2, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthSessionService } from 'src/app/services/authentication/auth-session.service';
 import { Router } from '@angular/router';
+
+// Functions imports
+import {Loginuser} from '../../../functions-files/login';
+
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-login',
@@ -44,7 +48,8 @@ export class LoginComponent implements OnInit {
     public fb: FormBuilder,
     private renderer: Renderer2,
     private el: ElementRef,
-    public authService: AuthSessionService) {
+    public authService: AuthSessionService,
+    public zone: NgZone) {
   }
 
   ngAfterViewInit() {
@@ -105,7 +110,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
   login(): void {
    
     // Simulate login with username and password
@@ -113,34 +117,59 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
     
       
-      const modal = this.otpModal.nativeElement;
-    const username = this.loginForm.get('username')?.value;
-    const password = this.loginForm.get('password')?.value;
-   
-      // Perform login logic
-      this.authService.simulateLogin(username, password).subscribe((success) => {
-        if (success) {
-
-          // Simulate OTP generation and saving
-          const generatedOtp = this.authService.generateAndSaveOtp();
-          // Show OTP input in your UI or navigate to OTP verification page
-          console.log(`Simulated OTP: ${generatedOtp}`);
-  
-          // this.showOtpComponent = true;
-          if (modal) {
-              this.renderer.addClass(modal, 'show');
-              this.renderer.setStyle(modal, 'display', 'block');
-            }
-        } else {
-          window.alert('Invalid Credentials')// Handle unsuccessful login, show an error message, etc.
-          console.log(success);
-        }
-      });
       
-      console.log(username, password)
+      const username = this.loginForm.get('username')?.value;
+      const password = this.loginForm.get('password')?.value;
+
+      const sessionId = uuidv4()
+      
+      Loginuser(username, password, sessionId)
+      .then((response) => {
+        // Handle the response
+        this.UserLogin();
+        console.log('Login successful!');
+        sessionStorage.setItem('sessionID', JSON.stringify(sessionId));
+        sessionStorage.setItem('userAcces', JSON.stringify(response.result[0]));
+        console.log(response.result[0]);
+        // this.UserLogin();
+        // Perform login logic
+        
+      })
+      .catch((error) => {
+        console.log(error);
+        console.error(error.result[0].message);
+        
+      });
+
     }
     
   }
+
+
+  UserLogin(): void {
+    const modal = this.otpModal.nativeElement;
+    console.log(modal);
+    const username = this.loginForm.get('username')?.value;
+    const password = this.loginForm.get('password')?.value;
+  
+    this.authService.simulateLogin(username, password).subscribe((success) => {
+      if (success) {
+        const generatedOtp = this.authService.generateAndSaveOtp();
+        console.log(`Simulated OTP: ${generatedOtp}`);
+  
+        if (modal) {
+          this.renderer.addClass(modal, 'show');
+          this.renderer.setStyle(modal, 'display', 'block');
+        }
+      } else {
+        window.alert('Invalid Credentials');
+        console.log(success);
+      }
+    });
+  
+    console.log(username, password);
+}
+  
 
 
   verifyOtp(): void {
@@ -150,6 +179,7 @@ export class LoginComponent implements OnInit {
       console.log('OTP successfully verified');
       this.authService.clearOtp(); // Clear the OTP after successful verification
       this.router.navigate(['/dashboard']);
+      console.log(this.router.navigate(['/dashboard']));
     } else {
       console.log('OTP verification failed');
       // Handle unsuccessful OTP verification, show an error message, etc.
