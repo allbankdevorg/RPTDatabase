@@ -1,17 +1,28 @@
+// nav-items.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators'; // Replace with the correct path
+
+
+export interface INavItem {
+  name: string;
+  url: string;
+  children?: INavItem[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavItemsService {
-  private apiUrl = '10.232.236.15:8092/api/dataTables'; // Replace with your API endpoint
+  private apiUrl = 'http://10.232.236.15:8092/api/dataTables';
 
   constructor(private http: HttpClient) {}
+  
+ 
 
-  getData(): Observable<any> {
+  getData(): Observable<INavItem[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -20,7 +31,7 @@ export class NavItemsService {
       cmd: 111,
     };
 
-    return this.http.post<any>(this.apiUrl, body, { headers })
+    return this.http.post<INavItem[]>(this.apiUrl, body, { headers })
       .pipe(
         catchError(this.handleError)
       );
