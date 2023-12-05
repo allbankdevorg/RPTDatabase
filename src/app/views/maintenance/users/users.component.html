@@ -200,7 +200,7 @@
     </c-modal-header>
     <c-modal-body>
         <!-- Modal Form -->
-        <form cForm [formGroup]="userForm"  class="mb-2">
+        <form cForm [formGroup]="userForm"  class="mb-2" (ngSubmit)="onUserSubmit()">
             <c-modal-body>
               <c-row class="align-items-center">
                 

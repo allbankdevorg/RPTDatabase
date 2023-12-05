@@ -10,6 +10,7 @@ import {AuthSessionService} from '../../../services/authentication/auth-session.
 
 // Imports for Functions
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
+import {addUsers} from '../../../functions-files/addUser';
 
 interface Users {
   id: number;
@@ -127,7 +128,7 @@ export class UsersComponent {
         lName: ['', [Validators.required]],
         uEmail: ['', [Validators.required]],
         uMobile: ['', [Validators.required]],
-        commandControl: ['', [Validators.required]],
+        commandControl: [''],
         userName: ['', [Validators.required]],
         uPass: ['', [Validators.required]]
       });
@@ -184,6 +185,18 @@ export class UsersComponent {
 
 
   // Functions
+
+  onUserSubmit() {
+    if (this.userForm.valid) {
+      const formData = this.userForm.value;
+      console.log(formData);
+      // Call the JavaScript function with form data
+      addUsers(formData); // Pass the entire formData object
+      }
+  }
+
+
+  
 updateTableData(): void {
   // const User = this.users
   const UsersData = SAMPLE_DATA.map(user => {
