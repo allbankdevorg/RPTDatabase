@@ -8,7 +8,8 @@
  * - 107 Start of getAffiliatesOfficer            => Fetch
  * - 108 Start of getAffiliatesCompanyOfficers    => Fetch
  * - 109 Start of getManagingCompany              => Fetch Feth Companies with Module = ORP
- * - 110 Start of getOtherCompany                 => Fetch
+ * - 110 Start of getOtherCompany      
+ * - 111 Start of getNav                          => Fetch Navigation Menu
  */
 
 
@@ -346,6 +347,39 @@ function getOfficers(callback) {
       });
   }
 
+
+  function getNavi(callback) {
+    console.log("110");
+    var settings = {
+        "url": "http://10.232.236.15:8092/api/dataTables",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cmd": 111
+        }),
+      };
+      
+      $.ajax(settings).done(function (response) {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+            var navItems = response.result[0].Data;
+            //console.log(affilComp);
+            if (callback) {
+                callback(navItems);
+            }
+        } else {
+            // Handle the case where there is no data or it doesn't have the expected structure
+            console.log("No Navigation Menu");
+            if (callback) {
+                // You can choose to call the callback with some default value or handle it as needed
+                callback(null);
+            }
+        }
+      });
+  }
+
     
     
   
@@ -359,5 +393,6 @@ function getOfficers(callback) {
         getAffiliatesOfficers,
         getAffiliatesCompanyOfficers,
         getManagingCompany,
-        getOtherCompany };
+        getOtherCompany,
+        getNavi };
   
