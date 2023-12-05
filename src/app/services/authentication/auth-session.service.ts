@@ -78,6 +78,7 @@ export class AuthSessionService {
     this.role = null;
     sessionStorage.removeItem('userData');
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('sessionID');
   }
 
   getUsername(): string | null {
