@@ -18,7 +18,8 @@ interface Authority {
 export class HasPermissionDirective {
   private permissions: string[] = [];
   private allowedRoute: string | undefined;
-  private user: any; // Change to dynamic user data
+   private user: any; // Change to dynamic user data
+  private jsonData: any;
 
   @Input() set appHasPermission(value: string) {
     this.permissions = value.split(',');
@@ -40,8 +41,10 @@ export class HasPermissionDirective {
     // ).subscribe(() => {
     //   this.updateView();
     // });
-    this.user = this.authSessionService.getUserData();
-  // this.userDataService.userData$.subscribe(userData => {
+    // this.user = this.authSessionService.getUserData();
+    this.user = sessionStorage.getItem('userAcces');
+    // console.log(JSON.parse(this.user));
+    this.jsonData =  JSON.parse(this.user) // this.userDataService.userData$.subscribe(userData => {
   //   this.user = userData;
   //   // this.updateView();
   // });
@@ -70,11 +73,12 @@ export class HasPermissionDirective {
 
   private checkPermission(): boolean {
     // Ensure that this.user.authority is an array before using find
-    if (Array.isArray(this.user.authority)) {
+    if (Array.isArray(this.jsonData.user_access)) {
       // Find the authority that matches the current route
-      const matchingAuthority = this.user.authority.find((authority: Authority) => authority?.access?.toLowerCase() === this.allowedRoute);
-
+      const matchingAuthority = this.jsonData.user_access.find((user_access: Authority) => user_access?.access?.toLowerCase() === this.allowedRoute);
+      // console.log(sessionStorage.getItem('userAccess'))
       console.log(this.allowedRoute);
+      // console.log(matchingAuthority);
 
       // Check if matching authority is found
       if (matchingAuthority) {
@@ -113,6 +117,15 @@ export class HasPermissionDirective {
   //     { access: 'users', view: 0, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
   //   ] ,
   // };
+
+  // private user = {
+  //   message: 'success',
+  //   user_access: [
+  //     {navigation_name: "dashboard", access: "dashboard", userid: "SampleUser", nav_id: 1, add: 0, edit: 0},
+  //     {navigation_name: "DOSRI", access: "DOSRI", userid: "SampleUser", nav_id: 2, add: 0, edit: 0},
+  //     {navigation_name: "dri", access: "dri", userid: "SampleUser", nav_id: 3, add: 1, edit: 1, update: 1}
+  //   ]
+  // }
 }
 
 
