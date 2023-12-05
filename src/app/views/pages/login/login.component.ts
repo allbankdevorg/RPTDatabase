@@ -2,11 +2,18 @@ import { Component, NgZone, ViewChild, ViewChildren, QueryList, ElementRef, Rend
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthSessionService } from 'src/app/services/authentication/auth-session.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { LocalStorageService } from 'ngx-webstorage';
 
 // Functions imports
 import {Loginuser} from '../../../functions-files/login';
 
 import { v4 as uuidv4 } from 'uuid';
+
+import {AddServicesService} from '../../../services/add/add-services.service';
+
+import { SESSION_STORAGE, SessionStorageService } from 'ngx-webstorage';
+
 
 @Component({
   selector: 'app-login',
@@ -14,6 +21,9 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  localStorageAvailable = false;
+
   loginForm!: FormGroup;
   otpForm!: FormGroup;
   otp: any = '';
@@ -49,7 +59,14 @@ export class LoginComponent implements OnInit {
     private renderer: Renderer2,
     private el: ElementRef,
     public authService: AuthSessionService,
-    public zone: NgZone) {
+    public zone: NgZone,
+    private storageService: SessionStorageService,
+    private addAPI: AddServicesService) {
+      try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        this.localStorageAvailable = true; 
+      } catch(e) { }
   }
 
   ngAfterViewInit() {
@@ -109,40 +126,56 @@ export class LoginComponent implements OnInit {
       }, 1000);
     }
   }
+  
 
   login(): void {
    
-    // Simulate login with username and password
+        // Simulate login with username and password
+        if (this.loginForm.valid) {
+          const username = this.loginForm.get('username')?.value;
+          const password = this.loginForm.get('password')?.value;
 
-    if (this.loginForm.valid) {
-    
-      
-      
-      const username = this.loginForm.get('username')?.value;
-      const password = this.loginForm.get('password')?.value;
+          const sessionId = uuidv4()
+          
+          Loginuser(username, password, sessionId)
+          .then((response) => {
+            // Handle the response
+            this.UserLogin();
+            console.log('Login successful!');
+            sessionStorage.setItem('sessionID', JSON.stringify(sessionId));
+            sessionStorage.setItem('userAcces', JSON.stringify(response.result[0]));
+            console.log(response.result[0]);
 
-      const sessionId = uuidv4()
-      
-      Loginuser(username, password, sessionId)
-      .then((response) => {
-        // Handle the response
-        this.UserLogin();
-        console.log('Login successful!');
-        sessionStorage.setItem('sessionID', JSON.stringify(sessionId));
-        sessionStorage.setItem('userAcces', JSON.stringify(response.result[0]));
-        console.log(response.result[0]);
-        // this.UserLogin();
-        // Perform login logic
+            var uID = response.result[0].user_details[0].id;
+            var userName = response.result[0].user_details[0].username;
+            var sessionID = response.result[0].user_details[0].login_session;
+
+            console.log(uID);
+            console.log(userName);
+            console.log(sessionID);
+            
+            
+            // this.localStorage.store('userName', userName);
+            // this.localStorage.store('sessionID', sessionID);
+            // this.localStorage.store('access', response.result[0].user_access[0]);
+            // console.log(this.localStorageService.retrieve('uID'));
+            // console.log(details);
+            // console.log(response.result[1].id);
+
+            // this.localStorage.store('uID', response.result.userdetails.id);
+            // console.log(this.localStorage);
+            // this.UserLogin();
+            // Perform login logic
+            
+          })
+          .catch((error) => {
+            console.log(error);
+            console.error(error.result[0].message);
+            
+          });
+
+        }
         
-      })
-      .catch((error) => {
-        console.log(error);
-        console.error(error.result[0].message);
-        
-      });
-
-    }
-    
   }
 
 
@@ -162,8 +195,11 @@ export class LoginComponent implements OnInit {
           this.renderer.setStyle(modal, 'display', 'block');
         }
       } else {
-        window.alert('Invalid Credentials');
-        console.log(success);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Invalid username or password',
+        });
       }
     });
   
@@ -174,16 +210,32 @@ export class LoginComponent implements OnInit {
 
   verifyOtp(): void {
     // Simulate OTP verification
-    if (this.authService.verifyOtp(this.otp)) {
-      // Navigate to the dashboard or another secured page upon successful OTP verification
-      console.log('OTP successfully verified');
-      this.authService.clearOtp(); // Clear the OTP after successful verification
-      this.router.navigate(['/dashboard']);
-      console.log(this.router.navigate(['/dashboard']));
-    } else {
-      console.log('OTP verification failed');
-      // Handle unsuccessful OTP verification, show an error message, etc.
+    if (this.otp != '') {
+      if (this.authService.verifyOtp(this.otp)) {
+        // Navigate to the dashboard or another secured page upon successful OTP verification
+        console.log('OTP successfully verified');
+        this.authService.clearOtp(); // Clear the OTP after successful verification
+        this.router.navigate(['/dashboard']);
+        // console.log(this.router.navigate(['/dashboard']));
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid OTP',
+          text: 'OTP is Invalid',
+        });
+        // Handle unsuccessful OTP verification, show an error message, etc.
+      }
     }
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid OTP',
+        text: 'OTP is required',
+      });
+    }
+
+
+    
   }
 
   resendOTP() {
