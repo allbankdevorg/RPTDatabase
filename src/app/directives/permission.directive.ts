@@ -71,13 +71,14 @@ export class HasPermissionDirective {
     }
   }
 
-  private checkPermission(): boolean {
+
+    private checkPermission(): boolean {
     // Ensure that this.user.authority is an array before using find
     if (Array.isArray(this.jsonData.user_access)) {
       // Find the authority that matches the current route
       const matchingAuthority = this.jsonData.user_access.find((user_access: Authority) => user_access?.access?.toLowerCase() === this.allowedRoute);
       // console.log(sessionStorage.getItem('userAccess'))
-      console.log(this.allowedRoute);
+      // console.log(this.allowedRoute);
       // console.log(matchingAuthority);
 
       // Check if matching authority is found
@@ -88,9 +89,29 @@ export class HasPermissionDirective {
       }
   }
 
+
+  // private checkPermission(): boolean {
+  //   // Ensure that this.user.authority is an array before using find
+  //   if (Array.isArray(this.user.authority)) {
+  //     // Find the authority that matches the current route
+  //     const matchingAuthority = this.user.authority.find((user_access: Authority) => user_access?.access?.toLowerCase() === this.allowedRoute);
+  //     // console.log(sessionStorage.getItem('userAccess'))
+  //     console.log(this.allowedRoute);
+  //     // console.log(matchingAuthority);
+
+  //     // Check if matching authority is found
+  //     if (matchingAuthority) {
+  //         // Check if all permissions are granted
+  //         const allPermissionsGranted = this.permissions.every(permission => matchingAuthority[permission] === 1);
+  //         return allPermissionsGranted;
+  //     }
+  // }
+
   // Handle the case when this.user.authority is not an array or is empty
   return false;
 }
+
+
 
   // Replace 'user' with the actual variable representing your user data
   // private user = {
