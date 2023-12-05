@@ -23,6 +23,7 @@ function Loginuser(username, password, sessionId) {
         $.ajax(settings).done(function (response) {
             // Log the response
             console.log(response.result[0].message);
+            console.log(response.result[0].status);
             
             // Check the status and resolve/reject the promise accordingly
             Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);

@@ -253,4 +253,27 @@ export class AddServicesService {
 
     return this.http.post(`${this.apiUrl}addData`, requestPayload);
   }
+
+
+
+  /**
+   * Login.
+   * @param {any} username - The username of the user.
+   * @param {any} password - The password of the user.
+   * @param {any} sessionID - The session ID of the user when the login process is successful.
+   * @returns {Observable<any>} - The observable to handle the HTTP request.
+   */
+  Login(username: any, password: any, sessionId: any): Observable<any> {
+    const requestPayload = {
+      cmd: 2,
+      request: {
+        username: username,
+        password: password,
+        role: 1,
+        session: sessionId
+      },
+    };
+
+    return this.http.post(`${this.apiUrl}userManagement`, requestPayload);
+  }
 }
