@@ -35,5 +35,6 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.spec.json" },
-  ]
+  ],
+  "exclude": ["node_modules/sweetalert2/sweetalert2.d.ts"]
 }
