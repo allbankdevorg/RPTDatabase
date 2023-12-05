@@ -136,7 +136,9 @@ export class AuthSessionService {
       console.log(matchingUser);
       if (matchingUser) {
         // Set session data and authentication token
-        sessionStorage.setItem('user', JSON.stringify(matchingUser));
+        
+        const userD: any[] = [{ id: matchingUser.id, userName: matchingUser.userName }];
+        sessionStorage.setItem('user', JSON.stringify(userD));
         
         this.setAuthToken('yourAuthToken'); // Replace with an actual token
   
