@@ -1,154 +1,69 @@
-
-
 import { INavData } from '@coreui/angular';
 
 
-export const navItems: INavData [] = [
-  {
-      "name": "Dashboard",
-      "url": "/dashboard"
-  },
-  {
-      "name": "DOSRI",
-      "url": "/",
-      "children": [
-          {
-              "name": "Directors Related Interest",
-              "url": "/dosri/dri"
-          },
-          {
-              "name": "Bank Officer",
-              "url": "/dosri/bankofficer"
-          },
-          {
-              "name": "Banks Stockholder",
-              "url": "/dosri/bankstockholders"
-          }
-      ]
-  },
-  {
-      "name": "Affiliates and RP",
-      "url": "/",
-      "children": [
-          {
-              "name": "Affiliates",
-              "url": "/arp/affiliates"
-          },
-          {
-              "name": "Other Related Companies",
-              "url": "/arp/affiliates-related-companies"
-          },
-          {
-              "name": "Other RC Under JMN'",
-              "url": "/arp/other-related-parties"
-          },
-          {
-              "name": "Other RP Officers",
-              "url": "/arp/rp-officer"
-          }
-      ]
-  },
-  {
-      "name": "Maintenance",
-      "url": "/",
-      "children": [
-          {
-              "name": "Users",
-              "url": "/maintenance/users"
-          },
-          {
-              "name": "Settings",
-              "url": "/maintenance/settings"
-          },
-          // {
-          //     "name": "Manuals",
-          //     "url": "/maintenance/manuals"
-          // }
-      ]
-    }
-]
-
-
-
-// export const navItems: INavData[] = [
+// export const navItems: INavData [] = [
 //   {
-//     name: 'Dashboard',
-//     url: '/dashboard',
-//     iconComponent: { name: 'cil-speedometer' },
+//       "name": "Dashboard",
+//       "url": "/dashboard"
 //   },
 //   {
-//       name: 'DOSRI',
-//       url: '/',
-//       iconComponent: { name: '' },
-//       children: [
-//             {
-//             name: 'Directors Related Interest',
-//             url: '/dosri/dri',
-//             iconComponent: { name: '' },
-//             },
-//             {
-//               name: 'Bank Officer',
-//               url: '/dosri/bankofficer',
-//               iconComponent: { name: '' }
-//             },
-//             {
-//               name: 'Banks Stockholder',
-//               url: '/dosri/bankstockholders',
-//               iconComponent: { name: '' }
-//             },
-//           ]
+//       "name": "DOSRI",
+//       "url": "/",
+//       "children": [
+//           {
+//               "name": "Directors Related Interest",
+//               "url": "/dosri/dri"
+//           },
+//           {
+//               "name": "Bank Officer",
+//               "url": "/dosri/bankofficer"
+//           },
+//           {
+//               "name": "Banks Stockholder",
+//               "url": "/dosri/bankstockholders"
+//           }
+//       ]
 //   },
 //   {
-//     name: 'Affiliates and RP',
-//     url: '/',
-//     iconComponent: { name: '' },
-//     children: [
+//       "name": "Affiliates and RP",
+//       "url": "/",
+//       "children": [
 //           {
-//             name: 'Affiliates',
-//             url: '/arp/affiliates',
-//             iconComponent: { name: '' },
+//               "name": "Affiliates",
+//               "url": "/arp/affiliates"
 //           },
 //           {
-//             name: 'Other Related Companies',
-//             url: '/arp/affiliates-related-companies',
-//             iconComponent: { name: '' },
+//               "name": "Other Related Companies",
+//               "url": "/arp/affiliates-related-companies"
 //           },
 //           {
-//             name: 'Other RC Under JMN',
-//             url: '/arp/other-related-parties',
-//             iconComponent: { name: '' },
+//               "name": "Other RC Under JMN'",
+//               "url": "/arp/other-related-parties"
 //           },
 //           {
-//             name: 'Other RP Officers',
-//             url: '/arp/rp-officer',
-//             iconComponent: { name: '' },
-//           },
-//         ]
+//               "name": "Other RP Officers",
+//               "url": "/arp/rp-officer"
+//           }
+//       ]
 //   },
 //   {
-//     name: 'Maintenance',
-//     url: '/',
-//     iconComponent: { name: '' },
-//     children: [
+//       "name": "Maintenance",
+//       "url": "/",
+//       "children": [
 //           {
-//           name: 'Users',
-//           url: '/maintenance/users',
-//           iconComponent: { name: '' },
+//               "name": "Users",
+//               "url": "/maintenance/users"
 //           },
 //           {
-//             name: 'Settings',
-//             url: '/maintenance/settings',
-//             iconComponent: { name: '' }
+//               "name": "Settings",
+//               "url": "/maintenance/settings"
 //           },
-//           {
-//             name: 'Manuals',
-//             url: '/maintenance/manuals',
-//             iconComponent: { name: '' }
-//           },
-//         ]
-// },
- 
-  
-  
- 
-// ];
+//           // {
+//           //     "name": "Manuals",
+//           //     "url": "/maintenance/manuals"
+//           // }
+//       ]
+//     }
+// ]
+
+
