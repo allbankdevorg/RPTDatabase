@@ -23,6 +23,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
+import { LocalStorageService, SessionStorageService, NgxWebstorageModule } from 'ngx-webstorage';
+
+
+
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
 
@@ -160,7 +164,10 @@ const APP_CONTAINERS = [
     NgIdleModule,
     NgIdleKeepaliveModule,
     MatCheckboxModule,
-    NgOtpInputModule
+    NgOtpInputModule,
+    NgxWebstorageModule,
+    NgxWebstorageModule.forRoot()
+    
   ],
   providers: [
     {
@@ -170,7 +177,10 @@ const APP_CONTAINERS = [
     },
     Keepalive,
     IconSetService,
-    Title
+    Title,
+    LocalStorageService,
+    SessionStorageService
+
   ],
   bootstrap: [AppComponent]
 })
