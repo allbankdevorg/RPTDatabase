@@ -1,9 +1,9 @@
-<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+<div class="bg-clight min-vh-100 d-flex flex-row align-items-center">
   <c-container>
     <c-row class="justify-content-center">
-      <c-col md="8">
-        <c-card-group>
-          <c-card class="p-4">
+      <c-col md="4">
+        <c-card-group class="cCard-group">
+          <c-card class="p-4 bg">
             <c-card-body>
               <!-- <form cForm (ngSubmit)="login()"> -->
                 <h1>Login</h1>
@@ -32,7 +32,7 @@
 
                   <c-row>
                     <c-col xs="6">
-                      <button cButton class="px-4" color="primary" (click)="login()">Login</button>
+                      <button cButton class="px-4" color="cprimary" (click)="login()">Login</button>
                     </c-col>
                   </c-row>
                 </form>
@@ -53,7 +53,7 @@
               <!-- </form> -->
             </c-card-body>
           </c-card>
-          <c-card [ngStyle]="{'width.%': 100}" class="text-white bg-primary py-5" >
+          <!-- <c-card [ngStyle]="{'width.%': 100}" class="text-white bg-cprimary py-5" >
             <c-card-body class="text-center" hidden>
               <div>
                 <h2>Sign up</h2>
@@ -66,7 +66,7 @@
                 </button>
               </div>
             </c-card-body>
-          </c-card>
+          </c-card> -->
         </c-card-group>
       </c-col>
     </c-row>
@@ -86,16 +86,16 @@
                       </span>
 
                       <!-- <form cForm class="mb-2" (ngSubmit)="onSubmit()"> -->
-                           <div class="wrap-otp validate-input">
+                          <div class="wrap-otp validate-input">
                                      <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" *ngIf="showOtpComponent" [config]="config"></ng-otp-input>
                           </div> 
                           <div class="container-login100-form-btn">
-                            <div id="otp-message"></div>
-                            <button cButton class="px-0 resend-link" color="link" href="#" id="resend-link" (click)="resendOTP()">Resend OTP</button>
+                              <div id="otp-message"></div>
+                              <button cButton class="px-0 resend-link mb-3" color="link" href="#" id="resend-link" (click)="resendOTP()">Resend OTP</button>
                            </div>
                       <!-- </form> -->
 
-          <div class="container-login100-form-btn">
+                          <div class="container-login100-form-btn">
                               <div class="wrap-login100-form-btn">
                                   <div class="login100-form-bgbtn"></div>
                                   <button id="confirm-otp" cButton class="px-4" color="primary" (click)="verifyOtp()">
