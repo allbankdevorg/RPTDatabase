@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {AddServicesService} from '../../../services/add/add-services.service';
 
 import { SESSION_STORAGE, SessionStorageService } from 'ngx-webstorage';
+import { SessionTimeoutService } from 'src/app/services/useridle/session-timeout.service';
 
 
 @Component({
@@ -61,7 +62,8 @@ export class LoginComponent implements OnInit {
     public authService: AuthSessionService,
     public zone: NgZone,
     private storageService: SessionStorageService,
-    private addAPI: AddServicesService) {
+    private addAPI: AddServicesService,
+    private idle: SessionTimeoutService) {
       try {
         localStorage.setItem('test', 'test');
         localStorage.removeItem('test');
@@ -91,7 +93,7 @@ export class LoginComponent implements OnInit {
   
   onOtpChange(otp) {
     this.otp = otp;
-    console.log(this.otp)
+    // console.log(this.otp)
   }
 
   setVal(val) {
@@ -216,6 +218,7 @@ export class LoginComponent implements OnInit {
         console.log('OTP successfully verified');
         this.authService.clearOtp(); // Clear the OTP after successful verification
         this.router.navigate(['/dashboard']);
+        this.idle.setIdleConfig();
         // console.log(this.router.navigate(['/dashboard']));
       } else {
         Swal.fire({
@@ -229,7 +232,7 @@ export class LoginComponent implements OnInit {
     else {
       Swal.fire({
         icon: 'error',
-        title: 'Invalid OTP',
+        title: 'OTP is Empty!',
         text: 'OTP is required',
       });
     }
