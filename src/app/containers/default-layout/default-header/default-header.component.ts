@@ -25,16 +25,17 @@ export class DefaultHeaderComponent extends HeaderComponent {
   }
 
   ngOnInt() {
-    this.idle.timedOut()
+    this.idle.timedOut();
+    // this.idle.setIdleConfig();
   }
 
   // Simulate logout
   Logout(): void {
     const userConfirmed = window.confirm("Are You Sure You Want To Logout?");
 
-  if (userConfirmed) {
-    this.authService.simulateLogout();
-  }
+    if (userConfirmed) {
+      this.authService.simulateLogout();
+    }
     
   }
 
