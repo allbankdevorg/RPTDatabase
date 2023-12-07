@@ -21,11 +21,12 @@ import { SharedservicesService } from './../dataintegration/sharedservices.servi
 
 // Functions Import
 import {getAffiliatesCompany, getAffiliatesDirectors, getManagingCompany} from '../../../functions-files/getFunctions';
-import {createAffil} from '../../../functions-files/addAffiliates.js';
+import {createAffil} from '../../../functions-files/add/postAPI';
 import {deleteAffiliates} from '../../../functions-files/delFunctions';
 
 // File Saver
 import { saveAs } from 'file-saver';
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 
 export interface Child {
@@ -142,7 +143,8 @@ export class AffiliatesComponent implements AfterViewInit {
     private ngZone: NgZone,
     private sharedService: SharedservicesService,
     private renderer: Renderer2,
-    private el: ElementRef) {
+    private el: ElementRef,
+    private get: FetchDataService) {
 this.affForm = this.formBuilder.group({
 affilCisNumberM: ['', [Validators.required]],
 accountName: ['', [Validators.required]],
@@ -162,7 +164,7 @@ console.log(this.displayedData)
 
 //All functions are below
 updateTableData() {
-    getAffiliatesCompany((affilComp) => {
+    this.get.getAffiliatesCompany((affilComp) => {
     if (affilComp) {
     // Process the data to count directors related to each company
     const companiesWithDirectors = affilComp.map(company => {
@@ -178,10 +180,10 @@ updateTableData() {
     }
     });
 
-    getAffiliatesCompany((affilComp) => {
+    this.get.getAffiliatesCompany((affilComp) => {
     if (affilComp) {
     // Fetch director data
-    getAffiliatesDirectors((affilDirData) => {
+    this.get.getAffiliatesDirectors((affilDirData) => {
     // Process the data to count directors related to each company
     const affiliatesWithDirectors: DData[] = affilComp.map(company => {
       const affiliatesDirectors = affilDirData.filter(director => director.com_related === company.aff_com_account_name);
@@ -197,7 +199,7 @@ updateTableData() {
     }
     });
 
-    getManagingCompany((mngComp) => {
+    this.get.getManagingCompany((mngComp) => {
     this.compData = mngComp;
     this.commandGroups = []; // Clear the existing commandGroups
     console.log(this.compData);
