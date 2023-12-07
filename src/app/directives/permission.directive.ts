@@ -45,6 +45,7 @@ export class HasPermissionDirective {
     this.user = sessionStorage.getItem('userAcces');
     // console.log(JSON.parse(this.user));
     this.jsonData =  JSON.parse(this.user) // this.userDataService.userData$.subscribe(userData => {
+      // console.log(this.jsonData);
   //   this.user = userData;
   //   // this.updateView();
   // });
@@ -74,9 +75,10 @@ export class HasPermissionDirective {
 
     private checkPermission(): boolean {
     // Ensure that this.user.authority is an array before using find
-    if (Array.isArray(this.jsonData.user_access)) {
+    if (Array.isArray(this.jsonData)) {
+      // console.log(this.jsonData)
       // Find the authority that matches the current route
-      const matchingAuthority = this.jsonData.user_access.find((user_access: Authority) => user_access?.access?.toLowerCase() === this.allowedRoute);
+      const matchingAuthority = this.jsonData.find((userAccess: any) => userAccess.access?.toLowerCase() === this.allowedRoute);
       // console.log(sessionStorage.getItem('userAccess'))
       // console.log(this.allowedRoute);
       // console.log(matchingAuthority);
