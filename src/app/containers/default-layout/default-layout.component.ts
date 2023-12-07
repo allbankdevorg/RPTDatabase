@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {NavItemsService} from '../../services/nav-items/nav-items.service';
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 // import { navItems } from './_nav';
 
 
 // Functions Import
-import {getNavi} from '../../functions-files/getFunctions';
+// import {getNavi} from '../../functions-files/getFunctions';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,8 @@ export class DefaultLayoutComponent {
 
   public navItems = [];
 
-  constructor(private nI: NavItemsService) {
+  constructor(private nI: NavItemsService,
+    private get: FetchDataService) {
    
 
   }
@@ -31,7 +33,7 @@ export class DefaultLayoutComponent {
 
 
   getNav() {
-    getNavi((navItems) => {
+    this.get.getNavi((navItems) => {
       // Process the data to count directors related to each company
         
 
