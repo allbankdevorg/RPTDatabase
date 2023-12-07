@@ -15,6 +15,11 @@ const routes: Routes = [
           },
           children: [
             {
+              path: '',
+              pathMatch: 'full',
+              redirectTo: 'dri',
+            },
+            {
               path: 'dri',
               component: DriComponent,
               data: {
@@ -25,7 +30,7 @@ const routes: Routes = [
               path: 'bankofficer',
               component: BankofficerComponent,
               data: {
-                title: 'Settings ',
+                title: 'Bank Officers ',
               },
             },
             {
