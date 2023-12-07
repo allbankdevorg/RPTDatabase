@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ShareddataService } from '../userdata/shareddata.service'; // Adjust the import path
 
 import {DummyDataService, Users} from '../dummyData/dummy-data.service';
+import * as localforage from 'localforage';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -76,9 +78,10 @@ export class AuthSessionService {
   clearSession(): void {
     this.username = null;
     this.role = null;
-    sessionStorage.removeItem('userData');
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('sessionID');
+    // sessionStorage.removeItem('userData');
+    // sessionStorage.removeItem('user');
+    // sessionStorage.removeItem('sessionID');
+    sessionStorage.clear();
   }
 
   getUsername(): string | null {
@@ -139,11 +142,12 @@ export class AuthSessionService {
         
         const userD: any[] = [{ id: matchingUser.id, userName: matchingUser.userName }];
         sessionStorage.setItem('user', JSON.stringify(userD));
+        // localforage.setItem('user', userD);
         
         this.setAuthToken('yourAuthToken'); // Replace with an actual token
   
         console.log('Login successful!'); // Log success
-        this.userDataService.setUserData(matchingUser);
+        // this.userDataService.setUserData(matchingUser);
   
         // this.userDataService.setUserAuthority(matchingAuthority);  
   
