@@ -260,10 +260,10 @@
 
               <c-row class="align-items-center">
                 <c-col [sm]="12">
-                  <label cLabel="col" for="uDept">Department</label>
-                  <mat-form-field appearance="fill" [style.width.%]="100">
-                    <mat-select formControlName="commandControl" placeholder="Department" >
-                      <mat-option id="uDept">-- None --</mat-option>
+                  <label cLabel="col" >Department</label>
+                  <mat-form-field appearance="fill" [style.width.%]="100" >
+                    <mat-select formControlName="commandControl" placeholder="Department" id="uDept" name="uDept">
+                      <mat-option>-- None --</mat-option>
                       <mat-option *ngFor="let group of commandGroups" [value]="group.value">
                         {{ group.viewValue }}
                       </mat-option>
@@ -363,14 +363,16 @@
                 <c-col [sm]="6">
                   <label cLabel="col" for="uDept">Department</label>
                   <mat-form-field appearance="fill" [style.width.%]="100">
-                    <mat-select formControlName="commandControl" placeholder="Department">
-                      <mat-option id="uDept">-- None --</mat-option>
-                      <mat-option *ngFor="let group of commandGroups" [value]="group.value">
-                        {{ group.viewValue }}
-                      </mat-option>
-                    </mat-select>
+                    <!-- <mat-label>Company Name</mat-label> -->
+                      <mat-select id="uDept" formControlName="commandControl" placeholder="Department">
+                          <mat-option>-- None --</mat-option>
+                          <mat-option *ngFor="let group of commandGroups" [value]="group.value">
+                              {{ group.viewValue }}
+                          </mat-option>
+                      </mat-select>
                   </mat-form-field>
-                </c-col>
+              </c-col>
+              
               </c-row>
 
               
