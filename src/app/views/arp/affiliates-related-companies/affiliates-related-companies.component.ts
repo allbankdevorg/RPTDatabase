@@ -9,7 +9,7 @@ import { NgFor, NgIf } from '@angular/common';
 
 // Functions Import
 import {getManagingCompany} from '../../../functions-files/getFunctions';
-import {createAffil} from '../../../functions-files/addAffiliates.js';
+import {createAffil} from '../../../functions-files/add/postAPI';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,6 +24,7 @@ export interface Child {
 
 // Service
 import { OrgsDataServicesService } from '../../../services/orgs-data-services.service'
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 export interface Data {
   cis: number;
@@ -119,7 +120,8 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     private formBuilder: FormBuilder,
     private renderer: Renderer2,
     private el: ElementRef,
-    private orgsDataService: OrgsDataServicesService
+    private orgsDataService: OrgsDataServicesService,
+    private get: FetchDataService
   ) {
     this.affForm = this.formBuilder.group({
       affilCisNumberM: ['', [Validators.required]],
@@ -210,7 +212,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
   fetchAssocCompany() {
     return new Promise<void>((resolve, reject) => {
-      getManagingCompany((mngComp) => {
+      this.get.getManagingCompany((mngComp) => {
         try {
           // Assuming getManagingCompany returns an array
           this.orgsDataService.orgsData = mngComp.map(item => [item.aff_com_account_name, item.manager]);
@@ -230,7 +232,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
 
   getParentCompany() {
-    getManagingCompany((mngComp) => {
+    this.get.getManagingCompany((mngComp) => {
       this.compData = mngComp;
     this.commandGroups = []; // Clear the existing commandGroups
     // console.log(this.compData);
