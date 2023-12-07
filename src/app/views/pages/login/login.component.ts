@@ -6,11 +6,11 @@ import Swal from 'sweetalert2';
 import { LocalStorageService } from 'ngx-webstorage';
 
 // Functions imports
-import {Loginuser} from '../../../functions-files/login';
+import {Loginuser} from '../../../functions-files/add/postAPI';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import {AddServicesService} from '../../../services/add/add-services.service';
+// import {AddServicesService} from '../../../services/add/add-services.service';
 
 import { SESSION_STORAGE, SessionStorageService } from 'ngx-webstorage';
 import { SessionTimeoutService } from 'src/app/services/useridle/session-timeout.service';
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
     public authService: AuthSessionService,
     public zone: NgZone,
     private storageService: SessionStorageService,
-    private addAPI: AddServicesService,
+    // private addAPI: AddServicesService,
     private idle: SessionTimeoutService) {
       try {
         localStorage.setItem('test', 'test');
@@ -145,7 +145,7 @@ export class LoginComponent implements OnInit {
             this.UserLogin();
             console.log('Login successful!');
             sessionStorage.setItem('sessionID', JSON.stringify(sessionId));
-            sessionStorage.setItem('userAcces', JSON.stringify(response.result[0]));
+            sessionStorage.setItem('userAcces', JSON.stringify(response.result[0].user_access));
             console.log(response.result[0]);
 
             var uID = response.result[0].user_details[0].id;
