@@ -17,9 +17,7 @@ import { Injectable } from '@angular/core';
 import { DataTransferService } from '../../../services/data-transfer.service';
 import { SharedService } from '../../dosri/dataintegration/shared.service';
 // Imports for Functions
-import {createAffilDir} from '../../../functions-files/addAffiliatesDir';
-import {createAffilOff} from '../../../functions-files/addAffiliatesOfficer'
-import {createAffilOffRI} from '../../../functions-files/addAffiliatesOfficerRI';
+import {createAffilDir, createAffilOff, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getManagingCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilOff, deleteAffilOffRI} from '../../../functions-files/delFunctions'
 

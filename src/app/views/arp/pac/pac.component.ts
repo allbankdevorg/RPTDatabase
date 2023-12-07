@@ -16,16 +16,14 @@ import { DataTransferService } from '../../../services/data-transfer.service';
 import { SharedService } from '../../dosri/dataintegration/shared.service';
 
 // Imports for Functions
-import {createAffilDir} from '../../../functions-files/addAffiliatesDir';
-import {createAffilOff} from '../../../functions-files/addAffiliatesOfficer'
-import {createRPDIrectorsRelatedInterest} from '../../../functions-files/addRPDirectorsRI';
-import {createAffilOffRI} from '../../../functions-files/addAffiliatesOfficerRI'
+import {createAffilDir, createAffilOff, createRPDIrectorsRelatedInterest, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilDir, deleteAffilOff, deleteAffilDirRI, deleteAffilOffRI} from '../../../functions-files/delFunctions'
 
 //For export
 import { CsvExportService } from '../../exportservices/csv-export.service';
 import * as Papa from 'papaparse';
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 
 export interface Child {
@@ -179,7 +177,8 @@ export class PacComponent implements AfterViewInit {
       private route: ActivatedRoute,
       private changeDetectorRef: ChangeDetectorRef,
       private ngZone: NgZone,
-      private csvExportService: CsvExportService)
+      private csvExportService: CsvExportService,
+      private get: FetchDataService)
       {
           this.affilDrctrForm = this.formBuilder.group({
             affildcisNumber: ['',  [Validators.required]],
@@ -211,7 +210,7 @@ export class PacComponent implements AfterViewInit {
             this.compId = params['id'];
             const companyName = this.sharedService.getCompName();
 
-            getAffiliatesCompany((affilComp) => {
+            this.get.getAffiliatesCompany((affilComp) => {
                 // Process the data to count directors related to each company
                 const companytoDisplay = companyName;
                 // console.log(affilComp);
@@ -225,12 +224,12 @@ export class PacComponent implements AfterViewInit {
           });
       }
 
-async getAffilCompanyName(companyId: string): Promise<string> {
-  // Call your external JavaScript function to get the company name
-  const companyDetails = await getAffiliatesCompany(companyId);
-  console.log(companyDetails);
-  return companyDetails?.name || 'N/A';
-}
+// async getAffilCompanyName(companyId: string): Promise<string> {
+//   // Call your external JavaScript function to get the company name
+//   const companyDetails = await getAffiliatesCompany(companyId);
+//   console.log(companyDetails);
+//   return companyDetails?.name || 'N/A';
+// }
   
 async  ngOnInit() {
   this.updateTableData();
@@ -244,7 +243,7 @@ async  ngOnInit() {
 
   updateTableData(): void {
     // Get Directors
-    getAffiliatesDirectors((affilDirData) => {
+    this.get.getAffiliatesDirectors((affilDirData) => {
       // const directorIdToDisplay = directorId;
       // console.log(affilDirData);
       // console.log('directorIdToDisplay:', directorIdToDisplay)
@@ -309,7 +308,7 @@ async  ngOnInit() {
 
 
     // Get Officers
-    getAffiliatesOfficers((affilOffData) => {
+    this.get.getAffiliatesOfficers((affilOffData) => {
       // const directorIdToDisplay = directorId;
       // console.log(affilOffData);
       // console.log('directorIdToDisplay:', directorIdToDisplay)

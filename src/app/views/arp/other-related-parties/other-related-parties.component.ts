@@ -5,7 +5,7 @@ import { NgFor, NgIf } from '@angular/common';
 
 // Functions Import
 import {getOtherCompany} from '../../../functions-files/getFunctions';
-import {createAffil} from '../../../functions-files/addAffiliates.js';
+import {createAffil} from '../../../functions-files/add/postAPI';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 
 import { Injectable } from '@angular/core';
 import axios, { AxiosRequestConfig } from 'axios';
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 declare var google: any;
 export interface Child {
@@ -90,7 +91,8 @@ export class OtherRelatedPartiesComponent {
     // private ngZone: NgZone,
     // private sharedService: SharedservicesService,
     private renderer: Renderer2,
-    private el: ElementRef) {
+    private el: ElementRef,
+    private get: FetchDataService) {
 this.affForm = this.formBuilder.group({
 affilCisNumberM: ['', [Validators.required]],
 accountName: ['', [Validators.required]],
@@ -180,7 +182,7 @@ commandControl: ['']
 
 
   fetchAssocCompany() {
-    getOtherCompany((OtherComp) => {
+    this.get.getOtherCompany((OtherComp) => {
         const dataArr: any[] = [];
         OtherComp.forEach((item) => {
         // Create a new object with the desired structure and add it to dataArr
@@ -200,7 +202,7 @@ commandControl: ['']
 
 
   getParentCompany() {
-    getOtherCompany((mngComp) => {
+    this.get.getOtherCompany((mngComp) => {
       this.compData = mngComp;
     this.commandGroups = []; // Clear the existing commandGroups
     console.log(this.compData);

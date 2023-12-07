@@ -16,8 +16,9 @@ import {AuthSessionService} from '../../../services/authentication/auth-session.
 
 // Functions Imports
 import {callJSFun} from '../../../functions-files/javascriptfun.js';
+import {FetchDataService} from '../../../services/fetch/fetch-data.service';
 import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createDosri} from '../../../functions-files/addDosri.js'
+import {createDosri} from '../../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
 
 
@@ -96,7 +97,8 @@ export class DriComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
     private renderer: Renderer2,
-    private el: ElementRef) {
+    private el: ElementRef,
+    private get: FetchDataService) {
     this.postForm = this.formBuilder.group({
     title: ['', Validators.required],
     body: ['', Validators.required]
@@ -118,39 +120,71 @@ export class DriComponent {
 
   // All Functions below
   updateTableData(): void {
-    getCompany((compData) => {
+    this.get.getCompany((compData) => {
       // Process the data to count directors related to each company
+      const companiesWithDirectors = compData.map(company => {
+        const directors = company.directors || []; // Ensure there is a directors array
+        const directorCount = directors.length;
+        return { ...company, directorCount, directors };
+      });
+
+      // Set the data source for your MatTable
+      this.compDataSource.data = companiesWithDirectors;
+      console.log(this.compDataSource.data);
+    });
+
+    this.get.getDirectors((DData) => {
+      this.get.getCompany((compData) => {
+        // Process the data to count directors related to each company
         const companiesWithDirectors = compData.map(company => {
-          const directors = company.directors || []; // Ensure there is a directors array
-          const directorCount = directors.length;
-          return { ...company, directorCount, directors };
+          const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+          return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
         });
 
         // Set the data source for your MatTable
-        this.compDataSource.data = companiesWithDirectors;
-        console.log(this.compDataSource.data);
-    });
-
-      getCompany((compData) => {
-        // Fetch director data
-        getDirectors((DData) => {
-          // Process the data to count directors related to each company
-          const companiesWithDirectors: DData[] = compData.map(company => {
-            const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
-            return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
-          });
-      
-          // Set the data source for your MatTable
-          console.log(companiesWithDirectors)
-          this.dDataSource.data = companiesWithDirectors;
-          console.log(companiesWithDirectors);
-          console.log(this.dDataSource.data);
+        console.log(companiesWithDirectors)
+        this.dDataSource.data = companiesWithDirectors;
+        console.log(companiesWithDirectors);
+        console.log(this.dDataSource.data);
         // Trigger change detection
         this.changeDetectorRef.detectChanges();
-        });
-        
       });
-   }
+    });
+  }
+  // updateTableData(): void {
+  //   getCompany((compData) => {
+  //     // Process the data to count directors related to each company
+  //       const companiesWithDirectors = compData.map(company => {
+  //         const directors = company.directors || []; // Ensure there is a directors array
+  //         const directorCount = directors.length;
+  //         return { ...company, directorCount, directors };
+  //       });
+
+  //       // Set the data source for your MatTable
+  //       this.compDataSource.data = companiesWithDirectors;
+  //       console.log(this.compDataSource.data);
+  //   });
+
+  //     getCompany((compData) => {
+  //       // Fetch director data
+  //       getDirectors((DData) => {
+  //         // Process the data to count directors related to each company
+  //         const companiesWithDirectors: DData[] = compData.map(company => {
+  //           const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+  //           return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+  //         });
+      
+  //         // Set the data source for your MatTable
+  //         console.log(companiesWithDirectors)
+  //         this.dDataSource.data = companiesWithDirectors;
+  //         console.log(companiesWithDirectors);
+  //         console.log(this.dDataSource.data);
+  //       // Trigger change detection
+  //       this.changeDetectorRef.detectChanges();
+  //       });
+        
+  //     });
+  //  }
 
    onSubmit() {
 

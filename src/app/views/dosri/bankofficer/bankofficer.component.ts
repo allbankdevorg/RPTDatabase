@@ -13,10 +13,10 @@ import { Injectable } from '@angular/core';
 import { DataTransferService } from '../../../services/data-transfer.service';
 
 // Functions Import
-import {createBankOfficer} from '../../../functions-files/addBankOfficer';
-import {createBankOfficerRelationship} from '../../../functions-files/addBankOfficerRelationship';
+import {createBankOfficer, createBankOfficerRelationship} from '../../../functions-files/add/postAPI';
 import {getOfficers, getCompany, getOfficersRI} from '../../../functions-files/getFunctions'
 import {deleteDOSRIOfficer, deleteDOSRIOfficerRI} from '../../../functions-files/delFunctions'
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 export interface Child {
   name: string;
@@ -112,7 +112,8 @@ export class BankofficerComponent implements AfterViewInit{
           private http: HttpClient, 
           private dataTransferService: DataTransferService,
           private changeDetectorRef: ChangeDetectorRef,
-          private ngZone: NgZone)
+          private ngZone: NgZone,
+          private get: FetchDataService)
           {
             this.boForm = this.formBuilder.group({
               boCisNumber: ['',[Validators.required]],
@@ -135,10 +136,10 @@ export class BankofficerComponent implements AfterViewInit{
 
    // Functions Below
   updateTableData(): void {
-    getCompany((compData) => {
+    this.get.getCompany((compData) => {
       console.log(compData);
       // Process the data to count directors related to each company
-      getOfficers((Officers) => {
+      this.get.getOfficers((Officers) => {
         console.log(Officers);
         const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
         const tableData: Record<string, any>[] = [];

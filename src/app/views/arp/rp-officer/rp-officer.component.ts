@@ -14,11 +14,10 @@ import { DataTransferService } from '../../../services/data-transfer.service';
 import { SharedservicesService } from './Services/sharedservices.service';
 
 // Functions Import
-import {createBankOfficer} from '../../../functions-files/addBankOfficer';
-import {createBankOfficerRelationship} from '../../../functions-files/addBankOfficerRelationship';
+import {createBankOfficer, createBankOfficerRelationship, createAffil} from '../../../functions-files/add/postAPI';
 import {getAffiliatesCompanyOfficers, getManagingCompany} from '../../../functions-files/getFunctions';
-import {createAffil} from '../../../functions-files/addAffiliates.js';
 import {deleteAffiliates} from '../../../functions-files/delFunctions'
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 export interface Child {
   name: string;
@@ -146,7 +145,8 @@ export class RpOfficerComponent implements AfterViewInit {
           private dataTransferService: DataTransferService,
           private cdr: ChangeDetectorRef,
           private ngZone: NgZone,
-          private sharedService: SharedservicesService )
+          private sharedService: SharedservicesService,
+          private get: FetchDataService )
           {
             this.boForm = this.formBuilder.group({
               boCisNumber: [''],
@@ -177,7 +177,7 @@ export class RpOfficerComponent implements AfterViewInit {
 
   // Functions Below
   updateTableData() {
-    getAffiliatesCompanyOfficers((affilCompOff) => {
+    this.get.getAffiliatesCompanyOfficers((affilCompOff) => {
       if (affilCompOff) {
         // Process the data to count directors related to each company
         const companiesWithDirectors = affilCompOff.map(company => {
@@ -193,10 +193,10 @@ export class RpOfficerComponent implements AfterViewInit {
       }
     });
   
-    getAffiliatesCompanyOfficers((affilCompOff) => {
+    this.get.getAffiliatesCompanyOfficers((affilCompOff) => {
       if (affilCompOff) {
         // Fetch director data
-        getAffiliatesCompanyOfficers((affilCompOff) => {
+        this.get.getAffiliatesCompanyOfficers((affilCompOff) => {
 
           // Process the data to count directors related to each company
           const affiliatesWithDirectors: OffData[] = affilCompOff.map(company => {
@@ -213,7 +213,7 @@ export class RpOfficerComponent implements AfterViewInit {
       }
     });
 
-    getManagingCompany((mngComp) => {
+    this.get.getManagingCompany((mngComp) => {
       this.compData = mngComp;
     this.commandGroups = []; // Clear the existing commandGroups
     console.log(this.compData);

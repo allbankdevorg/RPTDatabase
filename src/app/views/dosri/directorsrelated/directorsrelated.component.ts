@@ -19,10 +19,11 @@ import { DataTransferService } from '../../../services/data-transfer.service';
 import { SharedService } from '../dataintegration/shared.service';
 
 // Imports for Functions
-import {createDirectors} from '../../../functions-files/addDirectors';
-import {createRelatedInterest} from '../../../functions-files/addRelatedInterest';
+import {createDirectors} from '../../../functions-files/add/postAPI';
+import {createRelatedInterest} from '../../../functions-files/add/postAPI';
 import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
 import {deleteDosri, deleteDOSRIDirector, deleteDOSRIDirRelationship} from '../../../functions-files/delFunctions'
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 export interface Child {
   name: string;
@@ -101,7 +102,8 @@ export class DirectorsrelatedComponent {
               private dataTransferService: DataTransferService,
               private route: ActivatedRoute,
               private changeDetectorRef: ChangeDetectorRef,
-              private ngZone: NgZone)
+              private ngZone: NgZone,
+              private get: FetchDataService)
   {
     this.drctrForm = this.formBuilder.group({
       cisNumber: ['', [Validators.required]],
@@ -150,7 +152,7 @@ export class DirectorsrelatedComponent {
   // All Functions Below
 
   updateTableData(): void {
-    getDirectors((Director) => {
+    this.get.getDirectors((Director) => {
       // const directorIdToDisplay = directorId;
       console.log(Director);
       // console.log('directorIdToDisplay:', directorIdToDisplay)
