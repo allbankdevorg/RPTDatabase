@@ -238,7 +238,7 @@ export class AddServicesService {
    * @param {any} selectedDirCisNumber - The selected director's CIS number.
    * @returns {Observable<any>} - The observable to handle the HTTP request.
    */
-  createRPDirectorsRelatedInterest(riData: any, buttonId: any, selectedDirCisNumber: any): Observable<any> {
+  createRPDIrectorsRelatedInterest(riData: any, buttonId: any, selectedDirCisNumber: any): Observable<any> {
     const requestPayload = {
       cmd: 10,
       request: {
