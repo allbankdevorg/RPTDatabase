@@ -71,7 +71,7 @@
                         <button mat-icon-button (click)="onRowClick(row, $event)" aria-label="View Users Info" *appHasPermission="'view'">
                           <mat-icon>visibility</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="editDosri(row, $event)" aria-label="Edit Users Info" *appHasPermission="'add'">
+                        <button mat-icon-button (click)="editDosri(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
                           <mat-icon>create</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="delDosri(row, row.com_cis_number, $event)" *appHasPermission="'delete'" aria-label="Delete Users">
