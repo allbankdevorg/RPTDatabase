@@ -9,7 +9,7 @@
                 <h1>Login</h1>
                 <p class="text-medium-emphasis">Sign In to your account</p>
                 
-                <form [formGroup]="loginForm">
+                <form [formGroup]="loginForm" (ngSubmit)="login()">
 
                   <c-row class="align-items-center">
                     <c-col [sm]="12">
@@ -42,7 +42,7 @@
 
                   <c-row>
                     <c-col xs="6">
-                      <button cButton class="px-4" color="cprimary" (click)="login()">Login</button>
+                      <button cButton type="submit" class="px-4" color="cprimary">Login</button>
                     </c-col>
                   </c-row>
                 </form>
