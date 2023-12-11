@@ -58,10 +58,14 @@ import { INavData } from '@coreui/angular';
 //               "name": "Settings",
 //               "url": "/maintenance/settings"
 //           },
-//           // {
-//           //     "name": "Manuals",
-//           //     "url": "/maintenance/manuals"
-//           // }
+//           {
+//                "name": "Manuals",
+//                "url": "/maintenance/manuals"
+//           }
+//           {
+//                "name": "Audit-Logs",
+//                "url": "/maintenance/audit-logs"
+//           }
 //       ]
 //     }
 // ]
