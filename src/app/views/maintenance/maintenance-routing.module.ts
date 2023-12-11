@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users/users.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ManualsComponent } from './manuals/manuals.component';
+import { AuditLogsComponent } from './audit-logs/audit-logs.component';
+
 
 const routes: Routes = [
         {
@@ -36,6 +38,13 @@ const routes: Routes = [
               component: ManualsComponent,
               data: {
                 title: 'Manuals ',
+              },
+            },
+            {
+              path: 'audit-logs',
+              component: AuditLogsComponent,
+              data: {
+                title: 'Audit Logs ',
               },
             },
           ]
