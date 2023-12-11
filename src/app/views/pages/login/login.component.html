@@ -11,24 +11,34 @@
                 
                 <form [formGroup]="loginForm">
 
-                  <c-input-group class="mb-3">
-                    <span cInputGroupText>
-                      <svg cIcon name="cilUser"></svg>
-                    </span>
-                    <input autoComplete="username" cFormControl placeholder="Username" formControlName="username"/>
-                  </c-input-group>
-
-                  <c-input-group class="mb-4">
-                    <span cInputGroupText>
-                      <svg cIcon name="cilLockLocked"></svg>
-                    </span>
-                    <input
-                      autoComplete="current-password"
-                      cFormControl
-                      placeholder="Password"
-                      type="password" formControlName="password"
-                    />
-                  </c-input-group> 
+                  <c-row class="align-items-center">
+                    <c-col [sm]="12">
+                      <!-- <label cLabel="col" for="userName">User Name</label> -->
+                      <mat-form-field appearance="outline" [style.width.%]=100>
+                        <!-- <mat-label>Company Name</mat-label> -->
+                        <mat-icon matPrefix>account_circle</mat-icon>
+                        <input matInput #accDinput id="userName" name="userName"
+                        type="text" placeholder="Username" formControlName="username" autoComplete="username">
+                        
+                        <mat-error *ngIf="loginForm.get('username')?.hasError('required')" class="error-msg">User Name is Required</mat-error>
+                      </mat-form-field>
+                    </c-col>
+                  </c-row>
+                  <c-row>
+                    <c-col [sm]="12">
+                        <!-- <label cLabel="col" for="uPass">Password</label> -->
+                        <mat-form-field appearance="outline" [style.width.%]=100>
+                            <!-- <mat-label>Company Name</mat-label> -->
+                            <mat-icon matPrefix>lock</mat-icon>
+                            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" id="uPass" formControlName="password"  autoComplete="current-password">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            
+                          <mat-error *ngIf="loginForm.get('password')?.hasError('required')" class="error-msg">Password is Required</mat-error>
+                          </mat-form-field>
+                      </c-col>
+                  </c-row>
 
                   <c-row>
                     <c-col xs="6">
