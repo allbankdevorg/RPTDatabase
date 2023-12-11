@@ -81,6 +81,7 @@ export class AuthSessionService {
     // sessionStorage.removeItem('userData');
     // sessionStorage.removeItem('user');
     // sessionStorage.removeItem('sessionID');
+    localStorage.clear();
     sessionStorage.clear();
   }
 
@@ -198,7 +199,6 @@ export class AuthSessionService {
   // Simulate logout
   simulateLogout(): void {
     this.clearSession();
-    this.removeAuthToken();
     this.router.navigate(['/login']);
   }
 
