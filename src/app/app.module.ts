@@ -76,8 +76,6 @@ import { DIR2ndDegRelativesComponent } from './views/dir2nd-deg-relatives/dir2nd
 import { Officer2ndDegRelativesComponent } from './views/officer2nd-deg-relatives/officer2nd-deg-relatives.component'
 import { ResizableDirective } from './views/arp/other-related-parties/other-related-parties.component';
 import { DraggableDirective } from './views/arp/other-related-parties/other-related-parties.component';
-import { LoginComponent } from './views/pages/login/login.component';
-import { UsersComponent} from './views/maintenance/users/users.component';
 import { SettingsComponent} from './views/maintenance/settings/settings.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
@@ -95,6 +93,11 @@ import { OtherRelatedPartiesComponent } from './views/arp/other-related-parties/
 import { RpOfficerComponent } from './views/arp/rp-officer/rp-officer.component';
 import { RPOfficerRIComponent } from './views/arp/rpofficer-ri/rpofficer-ri.component';
 
+// Maintenance
+import { LoginComponent } from './views/pages/login/login.component';
+import { UsersComponent} from './views/maintenance/users/users.component';
+import { ManualsComponent } from './views/maintenance/manuals/manuals.component';
+import { AuditLogsComponent } from './views/maintenance/audit-logs/audit-logs.component';
 
 // Import for directives
 import { TitleCaseDirective } from './directives/titleCase.directive';
@@ -102,6 +105,7 @@ import { NumericOnlyDirective } from './directives/numeric.directive';
 import { CapsLockFormatDirective } from './directives/upperCase.directive';
 import { ShowIfPermissionDirective } from './directives/authority.directive';
 import { HasPermissionDirective} from './directives/permission.directive';
+
 
     
  
@@ -115,7 +119,7 @@ const APP_CONTAINERS = [
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
     BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
+    ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective],
   imports: [
     BrowserModule,
