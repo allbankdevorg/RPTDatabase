@@ -25,6 +25,11 @@ import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
 import {deleteDosri, deleteDOSRIDirector, deleteDOSRIDirRelationship} from '../../../functions-files/delFunctions'
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
+
+// Audit Trail
+import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
+import {AuditTrail} from '../../../model/audit-trail.model';
+
 export interface Child {
   name: string;
 }
@@ -103,7 +108,8 @@ export class DirectorsrelatedComponent {
               private route: ActivatedRoute,
               private changeDetectorRef: ChangeDetectorRef,
               private ngZone: NgZone,
-              private get: FetchDataService)
+              private get: FetchDataService,
+              private auditTrailService: AuditTrailService)
   {
     this.drctrForm = this.formBuilder.group({
       cisNumber: ['', [Validators.required]],
@@ -119,7 +125,7 @@ export class DirectorsrelatedComponent {
       riLastName: ['', [Validators.required]],
     });
     
-    
+    this.updateTableData();
     this.route.params.subscribe(params => {
       this.compId = params['id'];
     const companyName = this.sharedService.getCompName();
@@ -231,8 +237,18 @@ export class DirectorsrelatedComponent {
       const companyName = this.sharedService.getCompName();
     
       // Call the JavaScript function with form data
-      createDirectors(directData, this.selectedCompCISNumber); // Pass the entire formData object
-      this.ngOnInit();
+      createDirectors(directData, this.selectedCompCISNumber)
+      .then((response) => {
+        this.logAction('Add', 'Successfuly Added Director', true, 'directorsrelated');
+        this.updateTableData();
+      })
+      .catch((error) => {
+        this.logAction('Add', 'Failed Adding Director', false, 'directorsrelated');
+        this.updateTableData();
+      }); // Pass the entire formData object
+      
+
+
 
       
     }
@@ -256,9 +272,16 @@ export class DirectorsrelatedComponent {
       const riData = this.riForm.value;
       
       // Call the JavaScript function with form data
-      createRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber); // Pass the entire formData object
-      
-      this.ngOnInit();
+      createRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber) // Pass the entire formData object
+      .then((response) => {
+        this.logAction('Add', 'Successfuly Added Related Interest', true, 'directorsrelated');
+        this.updateTableData();
+      })
+      .catch((error) => {
+        this.logAction('Add', 'Failed Adding Related Interest', false, 'directorsrelated');
+        this.updateTableData();
+        console.log(this.dataSource);
+      });
 
       
     }
@@ -311,5 +334,40 @@ export class DirectorsrelatedComponent {
 
     })
   }
+
+
+
+  
+
+
+
+    // Start of Functions for Audit Trail
+logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+  const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+  this.logAuditTrail(auditTrailEntry);
+}
+
+
+
+private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+  return {
+    userId: 'current_user_id',
+    userName: 'Current_user',
+    timestamp: new Date(),
+    actionType,
+    details,
+    success,
+    page, // Include the page information
+    errorMessage: errorMessage || '', // Optional: Include error message if available
+  };
+}
+
+
+private logAuditTrail(auditTrailEntry: AuditTrail) {
+  this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+    console.log('Audit trail entry logged successfully.');
+  });
+  // console.log('Audit trail entry logged successfully.');
+}
 
 }
