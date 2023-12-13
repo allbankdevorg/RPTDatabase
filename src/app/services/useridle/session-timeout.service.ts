@@ -27,10 +27,10 @@ export class SessionTimeoutService {
 }
 
   public setIdleConfig(): void {
-    this.idle.setIdle(10); // 5 minutes
-    this.idle.setTimeout(60); // 3 sec
+    this.idle.setIdle(10); // 10 seconds
+    this.idle.setTimeout(60); // 60 secconds
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-    this.keepalive.interval(5); // 15 seconds
+    this.keepalive.interval(5); // 5 seconds
     
     // this.document.body.addEventListener('mousemove', () => {
     //   this.resetIdleTimer(); 
@@ -48,6 +48,7 @@ export class SessionTimeoutService {
     
 
     this.idle.watch();
+
     this.idle.onIdleEnd.subscribe(() => {
       console.log('No longer idle.');
       this.resetIdleTimer();
@@ -68,12 +69,8 @@ export class SessionTimeoutService {
 
   public timedOut(): void {
     // Implement your logout logic here
-    // For example, clear authentication-related data and redirect to the login page
     console.log('Logging out...');
-    // Clear authentication data (e.g., tokens)
+    // Calling the Logout Function
     this.authService.simulateLogout();
-    // Redirect to the login page
-    // Note: You need to implement the Router or navigate as per your application's structure
-    // this.router.navigate(['/login']);
   }
 }
