@@ -28,7 +28,7 @@ export class SessionTimeoutService {
 
   public setIdleConfig(): void {
     this.idle.setIdle(10); // 10 seconds
-    this.idle.setTimeout(60); // 60 secconds
+    this.idle.setTimeout(3000); // 60 secconds
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
     this.keepalive.interval(5); // 5 seconds
     
