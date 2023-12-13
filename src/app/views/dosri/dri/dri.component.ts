@@ -17,9 +17,14 @@ import {AuthSessionService} from '../../../services/authentication/auth-session.
 // Functions Imports
 import {callJSFun} from '../../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../../services/fetch/fetch-data.service';
-import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
+// import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
 import {createDosri} from '../../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
+
+
+// Audit Trail
+import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
+import {AuditTrail} from '../../../model/audit-trail.model';
 
 
 // Interfaces
@@ -98,7 +103,8 @@ export class DriComponent {
     private ngZone: NgZone,
     private renderer: Renderer2,
     private el: ElementRef,
-    private get: FetchDataService) {
+    private get: FetchDataService,
+    private auditTrailService: AuditTrailService) {
     this.postForm = this.formBuilder.group({
     title: ['', Validators.required],
     body: ['', Validators.required]
@@ -192,7 +198,18 @@ export class DriComponent {
       const formData = this.dosriForm.value;
 
       // Call the JavaScript function with form data
-      createDosri(formData); // Pass the entire formData object
+      createDosri(formData)
+      .then((response) => {
+        // Log the response when the promise is resolved
+          this.ngOnInit();
+          this.logAction('Add', 'Added Company', true, 'DRI');
+      })
+      .catch((error) => {
+        // Handle errors when the promise is rejected
+        console.error(error.result[0].status);
+        this.logAction('Add', 'Adding Company Failed', false, 'DRI');
+        // Swal.fire('Error occurred', '', 'error');
+      }); // Pass the entire formData object
     }
 
     }
@@ -214,6 +231,9 @@ export class DriComponent {
       const directorId = element.com_cis_number; // Extract the ID from the clicked row
       const companyName = element.com_company_name;
 
+      
+      this.logAction('View', 'Viewed ' + companyName + " Directors and It's related interest", true, 'DRI');
+
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       this.sharedService.setCompanyCis(companyName);
@@ -223,6 +243,7 @@ export class DriComponent {
       console.log('Clicked row data:', element);
       this.router.navigate(['/dosri/directorsrelated', directorId]);
     }
+
 
     onAccRowClick(element: any) {
       console.log(element);
@@ -296,5 +317,35 @@ export class DriComponent {
       })
     }
 
+
+
+  // Start of Functions for Audit Trail
+logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+  const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+  this.logAuditTrail(auditTrailEntry);
+}
+
+
+
+private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+  return {
+    userId: 'current_user_id',
+    userName: 'Current_user',
+    timestamp: new Date(),
+    actionType,
+    details,
+    success,
+    page, // Include the page information
+    errorMessage: errorMessage || '', // Optional: Include error message if available
+  };
+}
+
+
+private logAuditTrail(auditTrailEntry: AuditTrail) {
+  this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+    console.log('Audit trail entry logged successfully.');
+  });
+  // console.log('Audit trail entry logged successfully.');
+}
 
 }
