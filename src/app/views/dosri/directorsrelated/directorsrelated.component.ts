@@ -124,7 +124,7 @@ export class DirectorsrelatedComponent {
       this.compId = params['id'];
     const companyName = this.sharedService.getCompName();
 
-      getCompany((compData) => {
+    this.get.getCompany((compData) => {
         // Process the data to count directors related to each company
         const companytoDisplay = companyName;
         
