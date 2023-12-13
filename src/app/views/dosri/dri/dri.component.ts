@@ -259,6 +259,7 @@ export class DriComponent {
       console.log(companyName);
       console.log('row has been clicked');
       console.log('Clicked row data:', element);
+      this.logAction('View', 'Viewed ' + companyName + " Directors and It's related interest", true, 'DRI');
       this.router.navigate(['/dosri/directorsrelated', directorId]);
     }
     
