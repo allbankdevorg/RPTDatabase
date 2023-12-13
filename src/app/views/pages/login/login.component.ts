@@ -17,6 +17,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { SESSION_STORAGE, SessionStorageService } from 'ngx-webstorage';
 import { SessionTimeoutService } from 'src/app/services/useridle/session-timeout.service';
 
+// Audit Trail
+import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
+import {AuditTrail} from '../../../model/audit-trail.model';
 
 @Component({
   selector: 'app-login',
@@ -71,7 +74,8 @@ export class LoginComponent implements OnInit {
     public zone: NgZone,
     private storageService: SessionStorageService,
     // private addAPI: AddServicesService,
-    private idle: SessionTimeoutService) {
+    private idle: SessionTimeoutService,
+    private auditTrailService: AuditTrailService ) {
       try {
         localStorage.setItem('test', 'test');
         localStorage.removeItem('test');
@@ -137,251 +141,160 @@ export class LoginComponent implements OnInit {
     }
   }
   
-login(): void {
+// login(): void {
+//   // Simulate login with username and password
+//   if (this.loginForm.valid) {
+//     const username = this.loginForm.get('username')?.value;
+//     const password = this.loginForm.get('password')?.value;
+
+//     const sessionId = uuidv4()
+
+//     Loginuser(username, password, sessionId)
+//     .then((response) => {
+//       this.uD = response.result[0].user_details;
+//       this.sID = sessionId;
+//       this.uA = response.result[0].user_access
+        
+//         this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
+  
+//            console.log(response.result[0]);
+
+//             const modal = this.otpModal.nativeElement;
+//                 // console.log(modal);
+
+//         if (response.result[0].message == 'success') {
+//           const generatedOtp = this.authService.generateAndSaveOtp();
+//           console.log(`Simulated OTP: ${generatedOtp}`);
+
+//           if (modal) {
+//             this.renderer.addClass(modal, 'show');
+//             this.renderer.setStyle(modal, 'display', 'block');
+//           }
+//         } else {
+//           Swal.fire({
+//             icon: 'error',
+//             title: 'Login Failed',
+//             // text: 'Invalid username or password',
+//           });
+//         }
+//     })
+//     .catch((error) => {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Login Failed',
+//         text: 'Invalid username or password',
+//       });
+//     });
+//   }
+// }
+
+async login() {
   // Simulate login with username and password
   if (this.loginForm.valid) {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    const sessionId = uuidv4()
+    const sessionId = uuidv4();
 
-    Loginuser(username, password, sessionId)
-    .then((response) => {
-      // console.log(response);
-      
-      // console.log(response.result[0].message);
-      // console.log(response.result[0].status);
-      // console.log('Login successful!');
-
+    try {
+      const response = await Loginuser(username, password, sessionId);
       this.uD = response.result[0].user_details;
       this.sID = sessionId;
-      this.uA = response.result[0].user_access
-      // sessionStorage.setItem('user', JSON.stringify(response.result[0].user_details));
-        // localforage.setItem('user', userD);
-        
-        this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
-  
-           console.log(response.result[0]);
-      
-            // let uID = response.result[0].user_details[0].id;
-            // let userName = response.result[0].user_details[0].username;
-            // let  sessionID = response.result[0].user_details[0].login_session;
+      this.uA = response.result[0].user_access;
 
-            // console.log(uID);
-            // console.log(userName);
-            // console.log(sessionID);
+      this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
 
-            const modal = this.otpModal.nativeElement;
-                // console.log(modal);
+      console.log(response.result[0]);
 
-        if (response.result[0].message == 'success') {
-          const generatedOtp = this.authService.generateAndSaveOtp();
-          console.log(`Simulated OTP: ${generatedOtp}`);
+      const modal = this.otpModal.nativeElement;
 
-          if (modal) {
-            this.renderer.addClass(modal, 'show');
-            this.renderer.setStyle(modal, 'display', 'block');
-          }
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            // text: 'Invalid username or password',
-          });
+      if (response.result[0].message === 'success') {
+        const generatedOtp = this.authService.generateAndSaveOtp();
+        console.log(`Simulated OTP: ${generatedOtp}`);
+
+        if (modal) {
+          this.renderer.addClass(modal, 'show');
+          this.renderer.setStyle(modal, 'display', 'block');
         }
-    })
-    .catch((error) => {
+        // Log successful login
+        this.logAction('login', 'Login success', true, 'Login');
+      } else {
+        // Log unsuccessful login
+        this.logAction('login', 'Invalid username or password', false, 'Login');
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          // text: 'Invalid username or password',
+        });
+      }
+    } catch (error: any) {
+      // Log unsuccessful login with error message
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.logAction('login', 'Invalid username or password', false, 'Login', errorMessage);
+    
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',
         text: 'Invalid username or password',
       });
-      // console.error('Error:', error);
-      // console.log(error.result[0].message);
-      // console.log(error.result[0].status);
+    }
+  }
+}
+
+
+
+async verifyOtp() {
+  if (this.otp !== '') {
+    // Verify OTP 
+    const isVerified = await this.authService.verifyOtp(this.otp);
+
+    if (isVerified) {
+      // Log successful OTP verification
+      this.logAction('otpVerification', 'Entered valid OTP', true, 'Login');
+
+      // Continue with the rest of your logic
+      sessionStorage.setItem('user', JSON.stringify(this.uD));
+      sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
+      sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
+
+      // Show loading modal 
+      Swal.fire({
+        title: 'Verifying...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading() 
+        }
+      });
+
+      // Navigate dashboard
+      await this.router.navigate(['/dashboard']);
+
+      // Hide loading modal  
+      Swal.close();
+    } else {
+      // Log unsuccessful OTP verification
+      this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
+
+      // Invalid OTP, show error 
+      Swal.fire({        
+        icon: 'error',
+        title: 'Invalid OTP'
+      });
+    }
+  } else {
+    // Log OTP verification with empty OTP
+    this.logAction('otpVerification', 'OTP is Empty', false, 'Login');
+
+    Swal.fire({
+      icon: 'error',
+      title: 'OTP is Empty!',
+      text: 'OTP is required',
     });
   }
 }
 
 
-
-//   login(): void {
-   
-//         // Simulate login with username and password
-//         if (this.loginForm.valid) {
-//           const username = this.loginForm.get('username')?.value;
-//           const password = this.loginForm.get('password')?.value;
-
-//           const sessionId = uuidv4()
-          
-//           Loginuser(username, password, sessionId)
-//           .then((response) => {
-//             // Handle the response
-//             this.UserLogin();
-//             console.log('Login successful!');
-//             sessionStorage.setItem('sessionID', JSON.stringify(sessionId));
-//             sessionStorage.setItem('userAcces', JSON.stringify(response.result[0].user_access));
-//             console.log(response.result[0]);
-
-//             var uID = response.result[0].user_details[0].id;
-//             var userName = response.result[0].user_details[0].username;
-//             var sessionID = response.result[0].user_details[0].login_session;
-
-//             console.log(uID);
-//             console.log(userName);
-//             console.log(sessionID);
-            
-            
-//             // this.localStorage.store('userName', userName);
-//             // this.localStorage.store('sessionID', sessionID);
-//             // this.localStorage.store('access', response.result[0].user_access[0]);
-//             // console.log(this.localStorageService.retrieve('uID'));
-//             // console.log(details);
-//             // console.log(response.result[1].id);
-
-//             // this.localStorage.store('uID', response.result.userdetails.id);
-//             // console.log(this.localStorage);
-//             // this.UserLogin();
-//             // Perform login logic
-            
-//           })
-//           .catch((error) => {
-//             console.log(error);
-//             console.error(error.result[0].message);
-            
-//           });
-
-//         }
-        
-//   }
-
-
-//   UserLogin(): void {
-//     const modal = this.otpModal.nativeElement;
-//     console.log(modal);
-//     const username = this.loginForm.get('username')?.value;
-//     const password = this.loginForm.get('password')?.value;
-  
-//     this.authService.simulateLogin(username, password).subscribe((success) => {
-//       if (success) {
-//         const generatedOtp = this.authService.generateAndSaveOtp();
-//         console.log(`Simulated OTP: ${generatedOtp}`);
-  
-//         if (modal) {
-//           this.renderer.addClass(modal, 'show');
-//           this.renderer.setStyle(modal, 'display', 'block');
-//         }
-//       } else {
-//         Swal.fire({
-//           icon: 'error',
-//           title: 'Login Failed',
-//           text: 'Invalid username or password',
-//         });
-//       }
-//     });
-  
-//     console.log(username, password);
-// }
-  
-
-async verifyOtp() {
-
-  if(this.otp != '') {
-    // show error modal for empty OTP
-     // Verify OTP 
-     const isVerified = await this.authService.verifyOtp(this.otp);
-    
-     if(isVerified) {
-
-        
-      sessionStorage.setItem('user', JSON.stringify(this.uD));
-      sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
-      sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
-      
-      
-       // Show loading modal 
-       Swal.fire({
-         title: 'Verifying...',
-         allowOutsideClick: false,
-         didOpen: () => {
-           Swal.showLoading() 
-         }
-       });
- 
-       // Navigate dashboard
-       await this.router.navigate(['/dashboard']);
-       
-       // Hide loading modal  
-       Swal.close();
- 
-     } else {
-     
-       // Invalid OTP, show error 
-       Swal.fire({        
-         icon: 'error',
-         title: 'Invalid OTP'
-       });
-     
-     }
-  } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'OTP is Empty!',
-        text: 'OTP is required',
-      });
-  }
-
-}
-
-
-//  async verifyOtp() {
-//     // Simulate OTP verification
-//     if (this.otp != '') {
-//       Swal.fire({
-//         title: 'Loading...',
-//         allowOutsideClick: false,
-//         didOpen: () => {
-//           Swal.showLoading();
-//         },
-//       });
-//       if (this.authService.verifyOtp(this.otp)) {
-//         // Navigate to the dashboard or another secured page upon successful OTP verification
-         
-//         Swal.close();
-
-//         // Make the asynchronous request
-//         const response = await this.router.navigate(['/dashboard']);
-
-//         // Close the loading spinner
-      
-
-        
-//         this.authService.clearOtp(); // Clear the OTP after successful verification
-        
-//         this.idle.setIdleConfig();
-//         // console.log(this.router.navigate(['/dashboard']));
-//       } else {
-//         Swal.close();
-//         Swal.fire({
-//           icon: 'error',
-//           title: 'Invalid OTP',
-//           text: 'OTP is Invalid',
-//         });
-//         // Handle unsuccessful OTP verification, show an error message, etc.
-//       }
-//     }
-//     else {
-//       Swal.close();
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'OTP is Empty!',
-//         text: 'OTP is required',
-//       });
-//     }
-
-
-    
-//   }
 
   resendOTP() {
     this.authService.generateAndSaveOtp 
@@ -402,4 +315,37 @@ async verifyOtp() {
   Proceed(){
 
   }
+
+
+// Start of Functions for Audit Trail
+logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+  const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+  this.logAuditTrail(auditTrailEntry);
+}
+
+
+
+private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+  return {
+    userId: 'current_user_id',
+    userName: 'Current_user',
+    timestamp: new Date(),
+    actionType,
+    details,
+    success,
+    page, // Include the page information
+    errorMessage: errorMessage || '', // Optional: Include error message if available
+  };
+}
+
+
+private logAuditTrail(auditTrailEntry: AuditTrail) {
+  this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+    console.log('Audit trail entry logged successfully.');
+  });
+  // console.log('Audit trail entry logged successfully.');
+}
+
+
+  
 }
