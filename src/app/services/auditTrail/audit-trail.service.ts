@@ -53,6 +53,13 @@ export class AuditTrailService {
   getAuditTrail(): Observable<AuditTrail[]> {
     return this.http.get<AuditTrail[]>(this.apiUrl);
   }
+
+
+
+  
+
+
+
 }
 
   
