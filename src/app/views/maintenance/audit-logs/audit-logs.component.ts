@@ -17,7 +17,7 @@ import { SharedservicesService } from '../../arp/dataintegration/sharedservices.
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 // File Saver
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver-es';
 
 export interface logDatas {
   aff_com_cis_number: number;
