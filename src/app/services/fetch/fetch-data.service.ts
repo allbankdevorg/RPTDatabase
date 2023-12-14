@@ -20,7 +20,8 @@
 // Import necessary Angular modules
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 
 // Injectable decorator to allow dependency injection
@@ -81,15 +82,55 @@ export class FetchDataService {
 
   // Public methods to fetch specific types of data using predefined commands
 
-  // 100
-  getCompany(callback: (compData: any) => void): void {
-    this.getData(100, callback);      
+  getCompany(): Observable<any> {
+    return this.makeRequest(100).pipe(
+      map(response => {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          return response.result[0].Data;
+        } else {
+          console.log(`No Data for cmd 100`);
+          return null;
+        }
+      }),
+      catchError(error => {
+        console.error(`Error fetching data for cmd 100:`, error);
+        return of(null);
+      })
+    );
   }
+  
+  
 
-  // 101
-  getDirectors(callback: (dirData: any) => void): void {
-    this.getData(101, callback);
+  // 
+  getDirectors(): Observable<any> {
+    return this.makeRequest(101).pipe(
+      map(response => {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          return response.result[0].Data;
+        } else {
+          console.log(`No Data for cmd 101`);
+          return null;
+        }
+      }),
+      catchError(error => {
+        console.error(`Error fetching data for cmd 101:`, error);
+        return of(null);
+      })
+    );
   }
+  
+
+
+
+  // 100
+  // getCompany(callback: (compData: any) => void): void {
+  //   this.getData(100, callback);      
+  // }
+
+  // // 101
+  // getDirectors(callback: (dirData: any) => void): void {
+  //   this.getData(101, callback);
+  // }
 
   // 103
   getOfficers(callback: (officers: any) => void): void {
