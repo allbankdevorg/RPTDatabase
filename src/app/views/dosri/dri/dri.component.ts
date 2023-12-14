@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
 
+
+import { DosriModalComponent } from 'src/app/modal-dialog/dosri-modal/dosri-modal.component';
 // Services
 import { DataTransferService } from '../../../services/data-transfer.service';
 import { SessionTimeoutService } from '../../../services/useridle/session-timeout.service';
@@ -27,6 +29,9 @@ import { AuditTrailService } from '../../../services/auditTrail/audit-trail.serv
 import {AuditTrail} from '../../../model/audit-trail.model';
 
 
+
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { forkJoin } from 'rxjs';
 // Interfaces
 export interface compData {
   com_cis_number: string;
@@ -73,8 +78,11 @@ export class DriComponent {
   public visible = false;
   selectedItem: any;
 
-  compDataSource = new MatTableDataSource<compData>([]);
+  
+  compDataSource = new MatTableDataSource<any>;
+  // compDataSource = new MatTableDataSource<compData>([]);
   ToDisplay: string[] = [];
+  
   columnsToDisplay: string[] = ['expand', 'com_cis_number', 'com_company_name', 'directorCount', 'date_inserted', 'view'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: compData | null = null;
@@ -94,6 +102,7 @@ export class DriComponent {
 
 
   constructor(private router: Router,
+    public _dialog: MatDialog,
     private authService: AuthSessionService,
     private idleService: SessionTimeoutService,
     private formBuilder: FormBuilder, 
@@ -126,37 +135,62 @@ export class DriComponent {
 
   // All Functions below
   updateTableData(): void {
-    this.get.getCompany((compData) => {
-      // Process the data to count directors related to each company
-      const companiesWithDirectors = compData.map(company => {
-        const directors = company.directors || []; // Ensure there is a directors array
-        const directorCount = directors.length;
-        return { ...company, directorCount, directors };
-      });
-
-      // Set the data source for your MatTable
-      this.compDataSource.data = companiesWithDirectors;
-      console.log(this.compDataSource.data);
-    });
-
-    this.get.getDirectors((DData) => {
-      this.get.getCompany((compData) => {
+    // Assuming `getCompany` and `getDirectors` return Observables
+    forkJoin([this.get.getCompany(), this.get.getDirectors()]).subscribe({
+      next: ([compData, DData]) => {
         // Process the data to count directors related to each company
         const companiesWithDirectors = compData.map(company => {
           const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
           return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
         });
-
-        // Set the data source for your MatTable
-        console.log(companiesWithDirectors)
+  
+        // Update the data source for companies
+        this.compDataSource.data = companiesWithDirectors;
+        console.log(this.compDataSource.data);
+  
+        // Update the data source for directors
         this.dDataSource.data = companiesWithDirectors;
-        console.log(companiesWithDirectors);
         console.log(this.dDataSource.data);
+  
         // Trigger change detection
         this.changeDetectorRef.detectChanges();
-      });
+      },
+      error: console.log,
     });
   }
+  
+  // updateTableData(): void {
+  //   this.get.getCompany((compData) => {
+  //     // Process the data to count directors related to each company
+  //     const companiesWithDirectors = compData.map(company => {
+  //       const directors = company.directors || []; // Ensure there is a directors array
+  //       const directorCount = directors.length;
+  //       return { ...company, directorCount, directors };
+  //     });
+
+  //     // Set the data source for your MatTable
+  //     this.compDataSource.data = companiesWithDirectors;
+  //     console.log(this.compDataSource.data);
+  //   });
+
+  //   this.get.getDirectors((DData) => {
+  //     this.get.getCompany((compData) => {
+  //       // Process the data to count directors related to each company
+  //       const companiesWithDirectors = compData.map(company => {
+  //         const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+  //         return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+  //       });
+
+  //       // Set the data source for your MatTable
+  //       console.log(companiesWithDirectors)
+  //       this.dDataSource.data = companiesWithDirectors;
+  //       console.log(companiesWithDirectors);
+  //       console.log(this.dDataSource.data);
+  //       // Trigger change detection
+  //       this.changeDetectorRef.detectChanges();
+  //     });
+  //   });
+  // }
   // updateTableData(): void {
   //   getCompany((compData) => {
   //     // Process the data to count directors related to each company
@@ -192,28 +226,7 @@ export class DriComponent {
   //     });
   //  }
 
-   onSubmit() {
-
-    if (this.dosriForm.valid) {
-      const formData = this.dosriForm.value;
-
-      // Call the JavaScript function with form data
-      createDosri(formData)
-      .then((response) => {
-        // Log the response when the promise is resolved
-          this.ngOnInit();
-          this.logAction('Add', 'Added Company', true, 'DRI');
-      })
-      .catch((error) => {
-        // Handle errors when the promise is rejected
-        console.error(error.result[0].status);
-        this.logAction('Add', 'Adding Company Failed', false, 'DRI');
-        // Swal.fire('Error occurred', '', 'error');
-      }); // Pass the entire formData object
-    }
-
-    }
-
+   
     addData() {
       
     }
@@ -222,6 +235,7 @@ export class DriComponent {
       console.log('Show Modal');
       
     }
+    
 
     onRowClick(element: any, event: Event) {
       event.stopPropagation();
@@ -317,6 +331,36 @@ export class DriComponent {
     
       })
     }
+
+
+// Show Modal Form
+openAddEditEmpForm() {
+  const dialogRef = this._dialog.open(DosriModalComponent);
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.updateTableData();
+      }
+    },
+  });
+}
+
+openEditForm(data: any, event: any) {
+  event.stopPropagation();
+  console.log(data);
+  const dialogRef = this._dialog.open(DosriModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        console.log("Successs");
+      }
+    },
+  });
+}
 
 
 
