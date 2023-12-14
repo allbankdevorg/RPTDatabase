@@ -1,0 +1,181 @@
+<!-- ADD DOSRI FORM -->
+<div mat-dialog-title static>
+    <h1>DOSRI Form</h1>
+</div>
+<form cForm class="mb-2" [formGroup]="dosriForm" (ngSubmit)="onSubmit()">    
+    <div mat-dialog-content class="content">
+        <!-- Modal Form -->
+        <c-modal-body>
+          <c-row class="align-items-center">
+             <!-- CIS Number Input -->
+            <c-col [sm]="12">
+              <label cLabel="col" for="cisNumber">CIS Number</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
+                <!-- <mat-label>First Name</mat-label> -->
+                <input matInput id="cisNumber" name="cisNumber"
+                type="text" placeholder="CIS Number" formControlName="com_cis_number" appNum>
+                 <mat-error *ngIf="dosriForm.get('cisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                
+              </mat-form-field>
+            </c-col>
+          </c-row>
+  
+            <!-- Account Name Input -->
+        <c-row class="align-items-center">
+            <c-col [sm]="12">
+              <label cLabel="col" for="accountName">Account Name</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
+                <!-- <mat-label>Middle Name</mat-label> -->
+                <input matInput #accDinput id="accountName"  name="accountName"
+                type="text" placeholder="Account Name" formControlName="com_account_name" appCaps>
+                <mat-error *ngIf="dosriForm.get('accountName')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
+                
+              </mat-form-field>
+            </c-col>
+        </c-row>
+  
+            <!-- Company Name Input -->
+        <c-row class="align-items-center">
+            <c-col [sm]="12">
+              <label cLabel="col" for="companyName">Company Name</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
+                <!-- <mat-label>Last Name</mat-label> -->
+                <input matInput #accDinput id="companyName"  name="companyName"
+                type="text" placeholder="Company Name" formControlName="com_company_name" appCaps>
+                <mat-error *ngIf="dosriForm.get('companyName')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                
+              </mat-form-field>
+            </c-col>
+          </c-row>
+        </c-modal-body>
+        <c-modal-footer>
+          </c-modal-footer>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+        <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+        
+        <button mat-raised-button color="primary" type="submit">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form>
+
+
+<!-- <div mat-dialog-title static>
+    <h1>EDIT DOSRI</h1> -->
+    <!-- Modal Form -->
+<!-- </div>
+<form cForm class="mb-2" [formGroup]="editdosriForm" (ngSubmit)="onSubmit()">    
+    <div mat-dialog-content class="content">
+        
+            <c-row class="align-items-center">
+              <c-col [sm]="12">
+                  <label cLabel="col" for="cisNum">CIS Number</label>
+                  <mat-form-field appearance="fill" [style.width.%]=100> -->
+                    <!-- <mat-label>First Name</mat-label> -->
+                    <!-- <input matInput #accDinput id="cisNum" name="cisNum"
+                    type="text" placeholder="CIS Number" [value]="editData.com_cis_number" appNum>
+                  </mat-form-field>
+              </c-col>
+            </c-row>
+            
+            <c-row class="align-items-center">
+              <c-col [sm]="12">
+                  <label cLabel="col" for="accName">Account Name</label>
+                  <mat-form-field appearance="fill" [style.width.%]=100> -->
+                    <!-- <mat-label>Middle Name</mat-label> -->
+                    <!-- <input matInput #accDinput id="accName"  name="accName"
+                    type="text" placeholder="Account Name" [value]="editData.com_account_name" appCaps>
+                  </mat-form-field>
+              </c-col>
+            </c-row>
+            
+            <c-row class="align-items-center">
+              <c-col [sm]="12">
+                  <label cLabel="col" for="compName">Company Name</label>
+                  <mat-form-field appearance="fill" [style.width.%]=100> -->
+                    <!-- <mat-label>Last Name</mat-label> -->
+                    <!-- <input matInput #accDinput id="compName"  name="compName"
+                    type="text" placeholder="Company Name" [value]="editData.com_company_name" appCaps>
+                  </mat-form-field>
+              </c-col>
+            </c-row>
+  
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" mat-dialog-close>Cancel</button> -->
+        <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+        
+        <!-- <button mat-raised-button color="primary" type="submit">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form> -->
+
+
+<!-- <div mat-dialog-title static>
+    <h1>DOSRI Form</h1>
+</div>
+<form [formGroup]="empForm" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>First name</mat-label>
+                <input matInput type="text" placeholder="Ex. Technical" formControlName="firstName">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Ex. Babaji" formControlName="lastName">
+            </mat-form-field>
+        </div>
+
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" placeholder="Ex. test@gmail.com" formControlName="email">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Date of birth</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dob">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="row">
+            <mat-radio-group aria-label="Select an option" formControlName="gender">
+                <mat-label><b>Gender</b></mat-label>
+                <mat-radio-button value="male">Male</mat-radio-button>
+                <mat-radio-button value="female">Female</mat-radio-button>
+                <mat-radio-button value="others">Others</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Education</mat-label>
+                <mat-select formControlName="education">
+                    <mat-option *ngFor="let val of education" [value]="val">{{val}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Company</mat-label>
+                <input matInput placeholder="Ex. Google" formControlName="company">
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Experience</mat-label>
+                <input matInput placeholder="Ex. 4" type="number" formControlName="experience">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Package</mat-label>
+                <input matInput placeholder="Ex. 12" type="number" formControlName="package">
+                <mat-hint>In rupees</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" type="submit">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form> -->
