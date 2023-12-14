@@ -25,7 +25,7 @@ import {createAffil} from '../../../functions-files/add/postAPI';
 import {deleteAffiliates} from '../../../functions-files/delFunctions';
 
 // File Saver
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 
