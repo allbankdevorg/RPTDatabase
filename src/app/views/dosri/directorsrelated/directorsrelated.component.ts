@@ -130,17 +130,14 @@ export class DirectorsrelatedComponent {
       this.compId = params['id'];
     const companyName = this.sharedService.getCompName();
 
-    this.get.getCompany((compData) => {
+      this.get.getCompany().subscribe((compData) => {
         // Process the data to count directors related to each company
-        const companytoDisplay = companyName;
+            const filteredCompany = compData.filter((company) => company.com_cis_number === this.compId);
         
-        const filteredCompany = compData.filter((company) => company.com_cis_number === this.compId);
-        
-        for (const company of filteredCompany ) {
-          const Company = company.com_company_name;
-          this.Company = Company;
-        }
-          // Set the data source for your MatTable
+            for (const company of filteredCompany) {
+              this.Company = company.com_company_name;
+            }
+                  // Set the data source for your MatTable
       });
     });
   }
@@ -156,58 +153,99 @@ export class DirectorsrelatedComponent {
   }
 
   // All Functions Below
-
   updateTableData(): void {
-    this.get.getDirectors((Director) => {
-      // const directorIdToDisplay = directorId;
-      console.log(Director);
-      // console.log('directorIdToDisplay:', directorIdToDisplay)
-      // console.log(companytoDisplay);
-      const filteredDirectors = Director.filter((director) => director.com_related === this.compId);
-      
+     // Now that you have processed the data, you can fetch directors or perform any other operation
+     this.get.getDirectors().subscribe((directors) => {
+      const filteredDirectors = directors.filter((director) => director.com_related === this.compId);
+
       const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
-      const tableData: Record<string, any>[] = [];
-      
-      for (const director of filteredDirectors) {
-          // const dir_relatedId = director.dir_cisnumber;
-          const row: Record<string, any> = {
-              'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
-              'Company': this.Company,
-              'Position': director.position,
-              'dir_CisNumber': director.dir_cisnumber,
-              'comp_CIS': director.com_related,
-          };
-          // Loop through each element in the 'relationColumn' array
-          for (let index = 0; index < relationColumn.length; index++) {
-              const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
-              // Filter 'director.related_interest' array to get related names based on the relation index
-              const relatedData = director.related_interest
-              .filter(related => related.relation === index + 1)
-              // Create an object with the required properties
-              .map(related => ({
-                  fullName: `${related.fname} ${related.mname} ${related.lname}`,
-                  cisNumber: related.cis_number,
-                  dirRelated: related.dir_related
-              }))
-              // Filter out objects with empty names (names with only whitespace)
-              .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
 
-                    // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
-                    row[relationName] = relatedData;
-
-          }
-      
-          tableData.push(row);
-
-      }
-      
-     this.dataSource.data = tableData;
-      console.log(this.dataSource.data);
+      const tableData = filteredDirectors.map((director) => {
+        const row: Record<string, any> = {
+          'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
+          'Company': this.Company,
+          'Position': director.position,
+          'dir_CisNumber': director.dir_cisnumber,
+          'comp_CIS': director.com_related,
+        };
+    
+        for (let index = 0; index < relationColumn.length; index++) {
+          const relationName = relationColumn[index];
+          const relatedData = director.related_interest
+            .filter(related => related.relation === index + 1)
+            .map(related => ({
+              fullName: `${related.fname} ${related.mname} ${related.lname}`,
+              cisNumber: related.cis_number,
+              dirRelated: related.dir_related
+            }))
+            .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+    
+          row[relationName] = relatedData;
+        }
+    
+        return row;
+      });
+    
+      this.dataSource = new MatTableDataSource(tableData);
+      // this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    
       // Trigger change detection
       this.changeDetectorRef.detectChanges();
     });
     
   }
+  // updateTableData(): void {
+  //   getDirectors((Director) => {
+  //     // const directorIdToDisplay = directorId;
+  //     console.log(Director);
+  //     // console.log('directorIdToDisplay:', directorIdToDisplay)
+  //     // console.log(companytoDisplay);
+  //     const filteredDirectors = Director.filter((director) => director.com_related === this.compId);
+      
+  //     const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  //     const tableData: Record<string, any>[] = [];
+      
+  //     for (const director of filteredDirectors) {
+  //         // const dir_relatedId = director.dir_cisnumber;
+  //         const row: Record<string, any> = {
+  //             'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
+  //             'Company': this.Company,
+  //             'Position': director.position,
+  //             'dir_CisNumber': director.dir_cisnumber,
+  //             'comp_CIS': director.com_related,
+  //         };
+  //         // Loop through each element in the 'relationColumn' array
+  //         for (let index = 0; index < relationColumn.length; index++) {
+  //             const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
+  //             // Filter 'director.related_interest' array to get related names based on the relation index
+  //             const relatedData = director.related_interest
+  //             .filter(related => related.relation === index + 1)
+  //             // Create an object with the required properties
+  //             .map(related => ({
+  //                 fullName: `${related.fname} ${related.mname} ${related.lname}`,
+  //                 cisNumber: related.cis_number,
+  //                 dirRelated: related.dir_related
+  //             }))
+  //             // Filter out objects with empty names (names with only whitespace)
+  //             .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+
+  //                   // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
+  //                   row[relationName] = relatedData;
+
+  //         }
+      
+  //         tableData.push(row);
+
+  //     }
+      
+  //    this.dataSource.data = tableData;
+  //     console.log(this.dataSource.data);
+  //     // Trigger change detection
+  //     this.changeDetectorRef.detectChanges();
+  //   });
+    
+  // }
 
   
   setButtonId(id: number, dirCisNumber: number) {
