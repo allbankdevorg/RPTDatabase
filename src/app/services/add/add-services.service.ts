@@ -27,6 +27,8 @@ import { Observable } from 'rxjs';
 export class AddServicesService {
   private apiUrl = 'http://10.232.236.15:8092/api/';
 
+  
+
   /**
    * Constructor for AddServicesService.
    * @constructor
@@ -276,4 +278,15 @@ export class AddServicesService {
 
     return this.http.post(`${this.apiUrl}userManagement`, requestPayload);
   }
+
+
+
+
+
+
+// Update
+updateEmployee(id: number, data: any): Observable<any> {
+  return this.http.put(`http://localhost:3000/employees/${id}`, data);
+}
+
 }
