@@ -21,6 +21,7 @@ import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 import { LocalStorageService, SessionStorageService, NgxWebstorageModule } from 'ngx-webstorage';
@@ -107,7 +108,12 @@ import { ShowIfPermissionDirective } from './directives/authority.directive';
 import { HasPermissionDirective} from './directives/permission.directive';
 
 
-    
+// Modal
+import { DosriModalComponent } from './modal-dialog/dosri-modal/dosri-modal.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatNativeDateModule } from '@angular/material/core';
  
 
 const APP_CONTAINERS = [
@@ -120,7 +126,8 @@ const APP_CONTAINERS = [
   declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
     BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
     ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
-    HasPermissionDirective],
+    HasPermissionDirective,
+    DosriModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -170,7 +177,14 @@ const APP_CONTAINERS = [
     MatCheckboxModule,
     NgOtpInputModule,
     NgxWebstorageModule,
-    NgxWebstorageModule.forRoot()
+    NgxWebstorageModule.forRoot(),
+    MatDatepickerModule,
+    MatRadioModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    
     
   ],
   providers: [
