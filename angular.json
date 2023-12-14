@@ -44,7 +44,10 @@
               "src/assets/jquery-3.7.1.min.js"
             ],
             "allowedCommonJsDependencies": [
-              "chart.js"
+              "chart.js",
+              "moment",
+              "lodash",
+              "sweetalert2"
             ]
           },
           "configurations": {
