@@ -154,6 +154,7 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
  * @param {any} boData - The data for the bank officer.
  */
 function createBankOfficer(boData) {
+  return new Promise((resolve, reject) => {
     console.log(boData)
     // Implement code to insert a new director into the database
     var settings = {
@@ -175,10 +176,21 @@ function createBankOfficer(boData) {
         }
       }),
     };
-    
+
     $.ajax(settings).done(function (response) {
+      // Log the response
+      console.log(response.result[0].status);
+      
+      // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+      if (response.result[0].status === 'success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
     });
+  });
+
 }
 
 
@@ -189,6 +201,8 @@ function createBankOfficer(boData) {
  * @param {any} selectedcomCisNumber - The selected company's CIS number.
 */
 function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber) {
+  return new Promise((resolve, reject) => {
+    
     console.log(boRIData)
     console.log(buttonId)
     console.log(selectedcomCisNumber)
@@ -213,9 +227,20 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber)
       }),
     };
     
+
     $.ajax(settings).done(function (response) {
+      // Log the response
+      console.log(response.result[0].status);
+      
+      // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+      if (response.result[0].status === 'success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
     });
+  });
 }
 
 
