@@ -22,7 +22,7 @@ import {deleteAffilDir, deleteAffilOff, deleteAffilDirRI, deleteAffilOffRI} from
 
 //For export
 import { CsvExportService } from '../../exportservices/csv-export.service';
-import * as Papa from 'papaparse';
+// import Papa from 'papaparse';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 
@@ -588,26 +588,26 @@ joinNames(namesArray: any[]): string {
   return namesArray.map(nameObj => nameObj.fullName).join(' ');
 }
 
-exportDataToCsv(data: any[]) {
-  const csv = Papa.unparse(data, {
-    header: true,
-    quotes: true
-  });
+// exportDataToCsv(data: any[]) {
+//   const csv = Papa.unparse(data, {
+//     header: true,
+//     quotes: true
+//   });
 
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+//   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
-  // Create a download link
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'export.csv';
+//   // Create a download link
+//   const link = document.createElement('a');
+//   link.href = URL.createObjectURL(blob);
+//   link.download = 'export.csv';
 
-  // Append the link to the body and trigger the click event
-  document.body.appendChild(link);
-  link.click();
+//   // Append the link to the body and trigger the click event
+//   document.body.appendChild(link);
+//   link.click();
 
-  // Clean up
-  document.body.removeChild(link);
-}
+//   // Clean up
+//   document.body.removeChild(link);
+// }
 
 
   
