@@ -1,4 +1,3 @@
-// caps-lock-format.directive.ts
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
@@ -10,10 +9,6 @@ export class CapsLockFormatDirective {
 
   @HostListener('input', ['$event'])
   onInput(event: any) {
-    const initialValue = this.el.nativeElement.value;
-    this.el.nativeElement.value = initialValue.toUpperCase();
-    if (initialValue !== this.el.nativeElement.value) {
-      event.stopPropagation();
-    }
+    this.el.nativeElement.value = this.el.nativeElement.value.toUpperCase();
   }
 }
