@@ -66,6 +66,8 @@ export class DosriModalComponent implements OnInit {
     if (this.dosriForm.valid) {
       const formData = this.dosriForm.value;
 
+      
+      console.log(formData);
       // Call the JavaScript function with form data
       createDosri(formData)
       .then((response) => {
@@ -82,7 +84,7 @@ export class DosriModalComponent implements OnInit {
       }); // Pass the entire formData object
     }
 
-    }
+  }
     
 
 
