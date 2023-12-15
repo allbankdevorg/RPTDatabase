@@ -97,7 +97,7 @@
 
                       <!-- <form cForm class="mb-2" (ngSubmit)="onSubmit()"> -->
                           <div class="wrap-otp validate-input">
-                                     <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" *ngIf="showOtpComponent" [config]="config"></ng-otp-input>
+                                     <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" *ngIf="showOtpComponent" [config]="config" [attr.autofocus]="true"></ng-otp-input>
                           </div> 
                           <div class="container-login100-form-btn">
                               <div id="otp-message"></div>
