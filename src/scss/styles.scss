@@ -61,13 +61,14 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
-
-
-// .cdk-global-overlay-wrapper, .cdk-overlay-container { z-index: 9999!important; } 
-
-.swal2-popup {
-  z-index: 1100; 
+.swal2-container {
+  z-index: 10000 !important; 
 }
+
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container { z-index: 9999 !important; } 
+
+
 .sidebar-nav .nav-group.show .nav-group-toggle {
   background-color: #947972;
 }
