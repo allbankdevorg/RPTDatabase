@@ -23,6 +23,9 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../../model/audit-trail.model';
 
+// For Modal
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { BankofficerModalComponent } from 'src/app/modal-dialog/bankofficer-modal/bankofficer-modal.component';
 
 export interface Child {
   name: string;
@@ -84,7 +87,7 @@ export class BankofficerComponent implements AfterViewInit{
 
   sharedData: string | any;
   positionOptions: TooltipPosition = 'right';
-  boForm: FormGroup;
+  
   boRIForm: FormGroup;
   buttonId: number = 0;
   selectedcomCisNumber: number = 0;
@@ -114,6 +117,7 @@ export class BankofficerComponent implements AfterViewInit{
 
 
   constructor(private router: Router,
+          public _dialog: MatDialog,  
           private formBuilder: FormBuilder, 
           private http: HttpClient, 
           private dataTransferService: DataTransferService,
@@ -122,13 +126,6 @@ export class BankofficerComponent implements AfterViewInit{
           private get: FetchDataService,
           private auditTrailService: AuditTrailService)
           {
-            this.boForm = this.formBuilder.group({
-              boCisNumber: ['',[Validators.required]],
-              boFirstName: ['', [Validators.required]],
-              boMiddleName: [''],
-              boLastName: ['', [Validators.required]],
-              boPosition: ['', [Validators.required]],
-          });
           this.boRIForm = this.formBuilder.group({
             boRICisNumber: [''],
             boRIFirstName: ['', [Validators.required]],
@@ -143,6 +140,83 @@ export class BankofficerComponent implements AfterViewInit{
 
    // Functions Below
   updateTableData(): void {
+    this.get.getCompany().subscribe((compData) => {
+      const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+      const tableData: Record<string, any>[] = [];
+
+
+      this.get.getOfficers().subscribe((Officers) => {
+        const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+        const tableData: Record<string, any>[] = [];
+
+        for (const officer of Officers) {
+          const officerData = officer.Officers || [];
+
+          const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
+
+          const companyName = matchingCompany ? matchingCompany.com_company_name : '';
+
+          const row: Record<string, any> = {
+                'FullName': `(${officer.off_cisnumber}) ${officer.fname} ${officer.mname}  ${officer.lname}`,
+                'Company': companyName,
+                'Position': officer.position,
+                'offc_CisNumber': officer.off_cisnumber,
+                'comp_CIS': officer.com_related,
+          };
+
+          console.log(officer.off_cisnumber);
+          // Loop through each element in the 'relationColumn' array
+          for (let index = 0; index < relationColumn.length; index++) {
+              const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
+              // Filter 'director.related_interest' array to get related names based on the relation index
+              const relatedData = officer.related_interest 
+                  .filter(related => related.relation === index + 1)
+                  // Create a full name by concatenating 'fname', 'mname', and 'lname'
+                  .map(related => ({
+                    fullName: `${related.fname} ${related.mname} ${related.lname}`,
+                    cisNumber: related.cis_number,
+                    offRelated: related.officer_related
+                }))
+                // Filter out objects with empty names (names with only whitespace)
+                .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+  
+              // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
+              row[relationName] = relatedData;
+          }
+
+          tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
+          tableData.push(row);
+
+          const officers: Officers[] = tableData.map(item => {
+            return {
+              FullName: item['FullName'],
+              Company: item['Company'],
+              Position: item['Position'],
+              MothersName: item['MothersName'],
+              FathersName: item['FathersName'],
+              Spouse: item['Spouse'],
+              Children: item['Children'],
+              MotherinLaw: item['MotherinLaw'],
+              FatherinLaw: item['FatherinLaw'],
+              offc_CisNumber: item['offc_CisNumber'],
+
+              // Map other properties here
+            };
+          });
+
+          this.officers = officers;
+          console.log(tableData);
+      }
+        
+        this.dataSource.data = tableData;
+        console.log(this.officers);
+        // Trigger change detection
+        this.changeDetectorRef.detectChanges();
+      });
+      
+     console.log(this.tableData);
+    })
+
     // this.get.getCompany((compData) => {
     //   console.log(compData);
     //   // Process the data to count directors related to each company
@@ -230,30 +304,35 @@ export class BankofficerComponent implements AfterViewInit{
     
   }
 
-  onBOSubmit() {
- 
-    if (this.boForm.valid) {
-      const boData = this.boForm.value;
-  
-      // Call the JavaScript function with form data
-      createBankOfficer(boData)
-      .then((response) => {
-        this.logAction('Add Bank Officer', 'Successfuly Added Bank Officer', true, 'bankofficer');
-        // this.updateTableData();
-        this.ngZone.run(() => {
+
+  openAddEditOffForm() {
+    const dialogRef = this._dialog.open(BankofficerModalComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
           this.updateTableData();
-          this.changeDetectorRef.detectChanges();
-          console.log(this.changeDetectorRef.detectChanges);
-          console.log(this.dataSource);
-        });
-      })
-      .catch((error) => {
-        this.logAction('Add Bank Officer', 'Failed Adding Bank Officer', false, 'bankofficer');
-        // this.updateTableData();
-      }) // Pass the entire formData object
-    }
-    
+        }
+      },
+    });
   }
+  
+  openEditForm(data: any, event: any) {
+    event.stopPropagation();
+    console.log(data);
+    const dialogRef = this._dialog.open(BankofficerModalComponent, {
+      data,    
+    });
+  
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          // this.getEmployeeList();
+          console.log("Successs");
+        }
+      },
+    });
+  }
+  
 
   onBORISubmit() {
  
@@ -263,7 +342,7 @@ export class BankofficerComponent implements AfterViewInit{
       // Call the JavaScript function with form data
       createBankOfficerRelationship(boRIData, this.buttonId, this.selectedcomCisNumber)
       .then((response) => {
-        this.logAction('Add Bank Officer Related Interest', 'Successfuly Added Related Interest', true, 'bankofficer');
+        // this.logAction('Add Bank Officer Related Interest', 'Successfuly Added Related Interest', true, 'bankofficer');
         this.ngZone.run(() => {
           this.updateTableData();
           this.changeDetectorRef.detectChanges();
@@ -272,7 +351,7 @@ export class BankofficerComponent implements AfterViewInit{
         });
       })
       .catch((error) => {
-        this.logAction('Add Bank Officer Related Interest', 'Failed Adding Related Interest', false, 'bankofficer');
+        // this.logAction('Add Bank Officer Related Interest', 'Failed Adding Related Interest', false, 'bankofficer');
        
       }) // Pass the entire formData object
     }
@@ -318,33 +397,32 @@ export class BankofficerComponent implements AfterViewInit{
 
 
 
-  // Start of Functions for Audit Trail
-   // Start of Functions for Audit Trail
-   logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
-    const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
-    this.logAuditTrail(auditTrailEntry);
-  }
+  // // Start of Functions for Audit Trail
+  //  logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+  //   const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+  //   this.logAuditTrail(auditTrailEntry);
+  // }
   
   
   
-  private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
-    return {
-      userId: 'current_user_id',
-      userName: 'Current_user',
-      timestamp: new Date(),
-      actionType,
-      details,
-      success,
-      page, // Include the page information
-      errorMessage: errorMessage || '', // Optional: Include error message if available
-    };
-  }
+  // private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+  //   return {
+  //     userId: 'current_user_id',
+  //     userName: 'Current_user',
+  //     timestamp: new Date(),
+  //     actionType,
+  //     details,
+  //     success,
+  //     page, // Include the page information
+  //     errorMessage: errorMessage || '', // Optional: Include error message if available
+  //   };
+  // }
   
   
-  private logAuditTrail(auditTrailEntry: AuditTrail) {
-    this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      console.log('Audit trail entry logged successfully.');
-    });
-    // console.log('Audit trail entry logged successfully.');
-  }
+  // private logAuditTrail(auditTrailEntry: AuditTrail) {
+  //   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+  //     console.log('Audit trail entry logged successfully.');
+  //   });
+  //   // console.log('Audit trail entry logged successfully.');
+  // }
 }
