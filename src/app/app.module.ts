@@ -114,6 +114,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatNativeDateModule } from '@angular/material/core';
+import { BankofficerModalComponent } from './modal-dialog/bankofficer-modal/bankofficer-modal.component';
  
 
 const APP_CONTAINERS = [
@@ -127,7 +128,8 @@ const APP_CONTAINERS = [
     BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
     ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective,
-    DosriModalComponent],
+    DosriModalComponent,
+    BankofficerModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
