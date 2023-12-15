@@ -119,7 +119,22 @@ export class FetchDataService {
     );
   }
   
-
+  getOfficers(): Observable<any> {
+    return this.makeRequest(103).pipe(
+      map(response => {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          return response.result[0].Data;
+        } else {
+          console.log(`No Data for cmd 103`);
+          return null;
+        }
+      }),
+      catchError(error => {
+        console.error(`Error fetching data for cmd 101:`, error);
+        return of(null);
+      })
+    );
+  }
 
 
   // 100
@@ -133,9 +148,9 @@ export class FetchDataService {
   // }
 
   // 103
-  getOfficers(callback: (officers: any) => void): void {
-    this.getData(103, callback);
-  }
+  // getOfficers(callback: (officers: any) => void): void {
+  //   this.getData(103, callback);
+  // }
 
   // 104
   getOfficersRI(callback: (officersRI: any) => void): void {
