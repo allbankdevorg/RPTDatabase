@@ -30,9 +30,9 @@ function createDosri(formData) {
       "data": JSON.stringify({
         "cmd": 1,
         "request": {
-              "cis_number": formData.cisNumber,       // Use form data
-              "account_name": formData.accountName,   // Use form data
-              "company_name": formData.companyName    // Use form data
+              "cis_number": formData.com_cis_number,       // Use form data
+              "account_name": formData.com_account_name,   // Use form data
+              "company_name": formData.com_company_name    // Use form data
             }
       }),
     };
