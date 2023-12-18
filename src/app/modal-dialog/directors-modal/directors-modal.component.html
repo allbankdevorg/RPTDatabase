@@ -1,0 +1,92 @@
+<!-- ADD DOSRI FORM -->
+<div mat-dialog-title>
+    <h3 cModalTitle>Directors Form</h3>
+</div>
+
+<form cForm class="mb-2" [formGroup]="drctrForm" (ngSubmit)="onDSubmit()">    
+<div mat-dialog-content class="content">
+<!-- Modal Form -->
+   <c-modal-body>
+    <c-row class="align-items-center">
+        <c-col [sm]="12">
+            <label cLabel="col" for="cisNumber">CIS Number</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
+              <!-- <mat-label>First Name</mat-label> -->
+              <input matInput id="cisNumber" name="cisNumber"
+              type="text" placeholder="CIS Number" formControlName="cisNumber" appNum>
+              <mat-error *ngIf="drctrForm.get('cisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+            </mat-form-field>
+
+            <input
+              aria-describedby="passwordHelpInline-3"cFormControl
+              id="comp_CIS" name="comp_CIS"
+              placeholder="comp_CIS"
+              type="text" [value]="selectedCompCISNumber" hidden>
+          </c-col>  
+    </c-row>
+
+    
+    <c-row class="align-items-center">
+      <c-col [sm]="6">
+            <label cLabel="col" for="dFirstName">First Name</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
+            <input
+                aria-describedby="passwordHelpInline-3" matInput
+                id="dFirstName" name="dFirstName"
+                placeholder="First Name"
+                type="text" formControlName="dFirstName" appTitleCase>
+                <mat-error *ngIf="drctrForm.get('dFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+            </mat-form-field>
+      </c-col>
+    
+        <c-col [sm]="6">
+            <label cLabel="col" for="dMiddleName">Middle Name</label>
+                  <mat-form-field appearance="fill" [style.width.%]=100>
+                  <input
+                    aria-describedby="passwordHelpInline-3" matInput
+                    id="dMiddleName" name="dMiddleName"
+                    placeholder="Middle Name"
+                    type="text" formControlName="dMiddleName" appTitleCase>
+                  </mat-form-field>
+        </c-col>
+    </c-row>
+    
+    
+    <c-row class="align-items-center">    
+        <c-col [sm]="6">
+            <label cLabel="col" for="dLastName">Last Name</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
+              <input
+                aria-describedby="passwordHelpInline-3" matInput
+                id="dLastName" name="dLastName"
+                placeholder="Last Name"
+                type="text" formControlName="dLastName" appTitleCase>
+                <mat-error *ngIf="drctrForm.get('dLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+              </mat-form-field>
+        </c-col>
+
+        <c-col [sm]="6">
+            <label cLabel="col" for="dPosition">Position</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
+            <input
+              matInput
+              id="dPosition" name="dPosition"
+              placeholder="Position"
+              type="text" formControlName="dPosition" appTitleCase>
+              <mat-error *ngIf="drctrForm.get('dPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
+            </mat-form-field>
+          </c-col>
+
+    </c-row>
+
+  </c-modal-body>
+</div>
+<div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+    <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+    
+    <button mat-raised-button color="primary" type="submit" [disabled]="!drctrForm.valid">{{data ? 'Update': 'Save'}}</button>
+</div>
+</form>
+
+
