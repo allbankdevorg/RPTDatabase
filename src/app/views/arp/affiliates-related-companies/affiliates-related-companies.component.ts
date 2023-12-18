@@ -213,19 +213,24 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   fetchAssocCompany() {
     return new Promise<void>((resolve, reject) => {
       this.get.getManagingCompany((mngComp) => {
-        try {
-          // Assuming getManagingCompany returns an array
-          this.orgsDataService.orgsData = mngComp.map(item => [item.aff_com_account_name, item.manager]);
-  
-          // Update the orgsData in the orgsDataService
-          google.charts.load('current', { packages: ['orgchart'] });
-          google.charts.setOnLoadCallback(() => this.drawChart( this.orgsDataService.orgsData));
-          // console.log(this.orgsDataService.orgsData);
+        if (mngComp) {
+          try {
+            // Assuming getManagingCompany returns an array
+            this.orgsDataService.orgsData = mngComp.map(item => [item.aff_com_account_name, item.manager]);
+    
+            // Update the orgsData in the orgsDataService
+            google.charts.load('current', { packages: ['orgchart'] });
+            google.charts.setOnLoadCallback(() => this.drawChart( this.orgsDataService.orgsData));
+            // console.log(this.orgsDataService.orgsData);
+            
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        }else {
           
-          resolve();
-        } catch (error) {
-          reject(error);
         }
+        
       });
     });
   }
