@@ -48,7 +48,7 @@
                         </div>
                         <br>
                       </ng-container> 
-                        <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(1, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                       </td>
                 </ng-container>
         
@@ -65,7 +65,7 @@
                           </div>
                           <br>
                         </ng-container>
-                        <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(2, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                     </td>
                 </ng-container>
                 
@@ -82,7 +82,7 @@
                           </div>
                             <br>
                         </ng-container>
-                        <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(3, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                     </td>
                 </ng-container>
         
@@ -99,7 +99,7 @@
                           </div>
                             <br>
                         </ng-container>
-                        <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
+                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(4, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
                     </td>
                 </ng-container>
         
@@ -116,7 +116,7 @@
                           </div>
                               <br>
                         </ng-container>
-                          <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
+                          <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(5, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
                 </ng-container>
         
                 <!-- Father in Law -->
@@ -132,7 +132,7 @@
                           </div>
                           <br>
                         </ng-container>  
-                          <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
+                          <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(6, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
                 </ng-container>
         
                 <!-- Header row first group -->
@@ -141,7 +141,7 @@
                         
                         [attr.colspan]="3"> 
                     Directors  
-                    <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" class="add-btn-icon" (click)="setComp()" *appHasPermission="'add'">
+                    <button (click)="openDirectorsForm()" mat-fab extended color="primary" class="add-btn-icon" (click)="setComp()" *appHasPermission="'add'">
                       <mat-icon>add</mat-icon>
                       ADD
                     </button>   
@@ -168,187 +168,4 @@
       </c-col>
     </c-row>
   </c-container>
-  
-  
-  
-  
-  
-  
-  <!-- All Modals are below -->
-  
-  
-  <!-- Add Directors Modal -->
-  <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
-      <c-modal-header>
-        <h3 cModalTitle>Directors</h3>
-        <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
-      </c-modal-header>
-    
-      <form cForm class="mb-2" [formGroup]="drctrForm" (ngSubmit)="onDSubmit()">
-        <c-modal-body>
-          <c-row class="align-items-center">
-  
-  
-              <c-col [sm]="4">
-                <label cLabel="col" for="cisNumber">CIS Number</label>
-                <mat-form-field appearance="fill" [style.width.%]=100>
-                  <!-- <mat-label>First Name</mat-label> -->
-                  <input matInput id="cisNumber" name="cisNumber"
-                  type="text" placeholder="CIS Number" formControlName="cisNumber" appNum>
-                  <mat-error *ngIf="drctrForm.get('cisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-                </mat-form-field>
-  
-                <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
-                  id="comp_CIS" name="comp_CIS"
-                  placeholder="comp_CIS"
-                  type="text" [value]="selectedCompCISNumber" hidden>
-                
-              </c-col>  
-            
-              <c-col [sm]="4">
-                  <label cLabel="col" for="dFirstName">First Name</label>
-                  <mat-form-field appearance="fill" [style.width.%]=100>
-                  <input
-                    aria-describedby="passwordHelpInline-3" matInput
-                    id="dFirstName" name="dFirstName"
-                    placeholder="First Name"
-                    type="text" formControlName="dFirstName" appTitleCase>
-                    <mat-error *ngIf="drctrForm.get('dFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
-                  </mat-form-field>
-              </c-col>
-      
-              <c-col [sm]="4">
-                  <label cLabel="col" for="dMiddleName">Middle Name</label>
-                  <mat-form-field appearance="fill" [style.width.%]=100>
-                  <input
-                    aria-describedby="passwordHelpInline-3" matInput
-                    id="dMiddleName" name="dMiddleName"
-                    placeholder="Middle Name"
-                    type="text" formControlName="dMiddleName" appTitleCase>
-                  </mat-form-field>
-              </c-col>
-  
-              
-      
-      
-          </c-row>
-  
-          <c-row class="align-items-center">
-            
-            <c-col [sm]="6">
-              <label cLabel="col" for="dLastName">Last Name</label>
-              <mat-form-field appearance="fill" [style.width.%]=100>
-              <input
-                aria-describedby="passwordHelpInline-3" matInput
-                id="dLastName" name="dLastName"
-                placeholder="Last Name"
-                type="text" formControlName="dLastName" appTitleCase>
-                <mat-error *ngIf="drctrForm.get('dLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-              </mat-form-field>
-          </c-col>
-            
-            <c-col [sm]="6">
-              <label cLabel="col" for="dPosition">Position</label>
-              <mat-form-field appearance="fill" [style.width.%]=100>
-              <input
-                matInput
-                id="dPosition" name="dPosition"
-                placeholder="Position"
-                type="text" formControlName="dPosition" appTitleCase>
-                <mat-error *ngIf="drctrForm.get('dPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
-              </mat-form-field>
-            </c-col>
-    
-          </c-row>
-        </c-modal-body>
-        <c-modal-footer>
-          <button type="submit" cButton color="success" class="proceed" [disabled]="!drctrForm.valid">Proceed</button>
-        </c-modal-footer>
-      </form>
-          
-  </c-modal>
-  
-  <!-- End of Modal for Add Director -->
-  
-  
-  <!-- Start of Modal for Related Interest -->
-  <c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
-      <c-modal-header>
-        <h3 cModalTitle> Relationship </h3>
-        <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
-      </c-modal-header>
-    
-      <form cForm class="mb-2" [formGroup]="riForm" (ngSubmit)="onRISubmit()">
-        <c-modal-body>
-          <c-row class="align-items-center">
-            
-              <c-row class="align-items-center">
-  
-                <c-col [sm]="6">
-                  <label cLabel="col" for="riCisNumber">CIS Number</label>
-                  <input
-                  aria-describedby="passwordHelpInline-3"cFormControl
-                  id="dir_CIS" name="dir_CIS"
-                  placeholder="dir_CIS"
-                  type="text" [value]="selectedDirCisNumber || ''" hidden>
-                  <mat-form-field appearance="fill" [style.width.%]=100>
-                  <input
-                    aria-describedby="passwordHelpInline-3" matInput
-                    id="riCisNumber" name="riCisNumber"
-                    placeholder="CIS Number"
-                    type="text" formControlName="riCisNumber" appNum>
-                  </mat-form-field>
-                </c-col>
-            
-                  <c-col [sm]="6">
-                      <label cLabel="col" for="riFirstName">First Name</label>
-                      <mat-form-field appearance="fill" [style.width.%]=100>
-                      <input
-                        aria-describedby="passwordHelpInline-3" matInput
-                        id="riFirstName" name="riFirstName"
-                        placeholder="First Name"
-                        type="text" formControlName="riFirstName" appTitleCase>
-                        <mat-error *ngIf="riForm.get('riFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
-                      </mat-form-field>
-                  </c-col>
-              </c-row>
-              
-              <c-row class="align-items-center">
-                  <c-col [sm]="6">
-                      <label cLabel="col" for="riMiddleName">Middle Name</label>
-                      <mat-form-field appearance="fill" [style.width.%]=100>
-                      <input
-                        aria-describedby="passwordHelpInline-3" matInput
-                        id="riMiddleName" name="riMiddleName"
-                        placeholder="Middle Name"
-                        type="text" formControlName="riMiddleName" appTitleCase>
-                      </mat-form-field>
-                  </c-col>
-      
-                  <c-col [sm]="6">
-                      <label cLabel="col" for="riLastName">Last Name</label>
-                      <mat-form-field appearance="fill" [style.width.%]=100>
-                      <input
-                        aria-describedby="passwordHelpInline-3" matInput
-                        id="riLastName" name="riLastName"
-                        placeholder="Last Name"
-                        type="text" formControlName="riLastName" appTitleCase>
-                        <mat-error *ngIf="riForm.get('riLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-                      </mat-form-field>
-                  </c-col>
-          
-          
-              </c-row>
-    
-    
-          </c-row>
-        </c-modal-body>
-        <c-modal-footer>
-          <button type="submit" cButton color="success" class="proceed" [disabled]="!riForm.valid">Proceed</button>
-        </c-modal-footer>
-      </form>
-          
-  </c-modal>
-  
   
