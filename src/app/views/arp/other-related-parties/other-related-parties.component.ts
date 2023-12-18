@@ -184,17 +184,21 @@ commandControl: ['']
   fetchAssocCompany() {
     this.get.getOtherCompany((OtherComp) => {
         const dataArr: any[] = [];
-        OtherComp.forEach((item) => {
-        // Create a new object with the desired structure and add it to dataArr
-        dataArr.push([ item.aff_com_account_name,
-          item.manager,]
-        );
-      this.orgsData = dataArr;
-      google.charts.load('current', { packages: ['orgchart'] });
-      google.charts.setOnLoadCallback(() => this.drawChart());
-      console.log(this.orgsData);
-      return dataArr;
-      });
+        if (OtherComp) {
+          OtherComp.forEach((item) => {
+            // Create a new object with the desired structure and add it to dataArr
+            dataArr.push([ item.aff_com_account_name,
+              item.manager,]
+            );
+          this.orgsData = dataArr;
+          google.charts.load('current', { packages: ['orgchart'] });
+          google.charts.setOnLoadCallback(() => this.drawChart());
+          console.log(this.orgsData);
+          return dataArr;
+          });
+        }else {
+          
+        } 
     }) 
     
     // console.log(orgsData);
