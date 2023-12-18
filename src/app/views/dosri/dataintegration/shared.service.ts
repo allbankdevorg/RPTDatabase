@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class SharedService {
   private directorIdToDisplay: number = 0;
+  private directorCISToDisplay: number = 0;
   private companytoDisplay: string = '';
   private comCisNumber: number = 0;
 
@@ -20,6 +21,10 @@ export class SharedService {
     this.comCisNumber = cis;
   }
 
+  setDirectorCIS(id: number) {
+    this.directorCISToDisplay = id;
+  }
+
   getDirectorId(): number {
     return this.directorIdToDisplay;
   }
@@ -30,5 +35,9 @@ export class SharedService {
 
   getCompCIS(): number {
     return this.comCisNumber;
+  }
+
+  getDirectorCIS(): number {
+    return this.directorCISToDisplay;
   }
 }
