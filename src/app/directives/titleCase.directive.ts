@@ -26,6 +26,11 @@ export class TitleCaseDirective implements ControlValueAccessor {
     this.onChange(transformedValue);
   }
 
+  @HostListener('blur')
+  onBlur() {
+    this.onTouched();
+  }
+
   writeValue(value: any): void {
     const transformedValue = this.toTitleCase(value);
     this.renderer.setProperty(this.el.nativeElement, 'value', transformedValue);
@@ -34,6 +39,8 @@ export class TitleCaseDirective implements ControlValueAccessor {
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
+    // Call it initially for empty values
+    this.onChange(this.el.nativeElement.value);
   }
 
   registerOnTouched(fn: any): void {
