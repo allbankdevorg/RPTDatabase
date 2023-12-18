@@ -220,7 +220,10 @@ export class DirectorsrelatedComponent {
 
 
   setComp() {
+
     this.selectedCompCISNumber = this.compId;
+    
+    this.dataService.setCompCIS(this.selectedCompCISNumber);
     console.log(this.selectedCompCISNumber)
   }
 
