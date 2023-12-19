@@ -441,10 +441,10 @@ function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber
  * @param {any} password - The password of the user.
  * @param {any} sessionID - The session ID of the user when the login process is successful.
 */
-function Loginuser(username, password, sessionId) {
+function Loginuser(username, password, sessionId, otpGen) {
     return new Promise((resolve, reject) => {
-        console.log(username)
-        console.log([password]);
+        // console.log(username);
+        // console.log(password);
         var settings = {
           "url": "http://10.232.236.15:8092/api/userManagement",
           "method": "POST",
@@ -457,16 +457,17 @@ function Loginuser(username, password, sessionId) {
             "request": {
                 "username": username,
                 "password": password,
-                "role": 1,
-                "session": sessionId
+                // "role": 1,
+                "session": sessionId,
+                "otp": otpGen
             }
           }),
         };
     
         $.ajax(settings).done(function (response) {
             // Log the response
-            console.log(response.result[0].message);
-            console.log(response.result[0].status);
+            // console.log(response.result[0].message);
+            // console.log(response.result[0].status);
             
             // Check the status and resolve/reject the promise accordingly
             Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -481,6 +482,92 @@ function Loginuser(username, password, sessionId) {
 
 
 
+/**
+ * Send OTP.
+ * @param {any} mobile - The mobile number of the user.
+ * @param {any} otpGen - The otp generated.
+*/
+function sendOTP(mobile, otpGen) {
+  return new Promise((resolve, reject) => {
+      // console.log(mobile);
+      // console.log(otpGen);
+      var settings = {
+        "url": "http://10.232.236.15:8092/api/OTP",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "mobile": mobile,
+          "otp": otpGen
+        }),
+      };
+  
+      $.ajax(settings).done(function (response) {
+          // Log the response
+          console.log(response.result[0].message);
+          console.log(response.result[0].status);
+          
+          // Check the status and resolve/reject the promise accordingly
+          Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+          if (response.result[0].message === 'success') {
+            resolve(response);
+          } else {
+            reject(response);
+          }
+        });
+    });
+}
+
+
+
+/**
+ * Send OTP.
+ * @param {any} user - The mobile number of the user.
+ * @param {any} enteredOTP - The otp generated.
+*/
+function checkOTP(user, enteredOTP) {
+  return new Promise((resolve, reject) => {
+      // console.log(mobile);
+      // console.log(otpGen);
+      var settings = {
+        "url": "http://10.232.236.15:8092/api/userManagement",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cmd": 21,
+          "request": {
+            "username": user,
+            "otp": enteredOTP,
+          }
+        }),
+      };
+  
+      $.ajax(settings).done(function (response) {
+          // Log the response
+          console.log(response.result[0].message);
+          console.log(response.result[0].status);
+          
+          // Check the status and resolve/reject the promise accordingly
+          Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+          if (response.result[0].message === 'success') {
+            resolve(response);
+          } else {
+            reject(response);
+          }
+        });
+    });
+}
+
+
+
+
+
+
  module.exports = {
     createDosri,
     createDirectors,
@@ -492,5 +579,7 @@ function Loginuser(username, password, sessionId) {
     createAffilOff,
     createAffilOffRI,
     createRPDIrectorsRelatedInterest,
-    Loginuser
+    Loginuser,
+    sendOTP,
+    checkOTP
  }
