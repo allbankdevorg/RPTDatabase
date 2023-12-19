@@ -10,6 +10,7 @@ import * as localforage from 'localforage';
   providedIn: 'root'
 })
 export class AuthSessionService {
+  actualOTP: any
   lastAction = Date.now();
   private tokenKey = 'authToken';
   private username: string | null = null;
@@ -110,7 +111,8 @@ export class AuthSessionService {
   // Simulate generating and saving OTP
   generateAndSaveOtp(): string {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    localStorage.setItem(this.otpKey, otp);
+    this.actualOTP = otp;
+    // localStorage.setItem(this.otpKey, otp);
     return otp;
   }
 
@@ -215,8 +217,8 @@ export class AuthSessionService {
 
   // Simulate OTP verification
   verifyOtp(otp: string): boolean {
-    const storedOtp = localStorage.getItem(this.otpKey);
-    this.isOtpVerified = otp === storedOtp;
+    // const storedOtp = localStorage.getItem(this.otpKey);
+    this.isOtpVerified = otp === this.actualOTP;
     
     return this.isOtpVerified;
   }
