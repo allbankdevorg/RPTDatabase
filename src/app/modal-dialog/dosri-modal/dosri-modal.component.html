@@ -10,7 +10,7 @@
         <c-modal-body>
           <c-row class="align-items-center">
              <!-- CIS Number Input -->
-            <c-col [sm]="12">
+            <c-col [sm]="6">
               <label cLabel="col" for="cisNumber">CIS Number</label>
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>First Name</mat-label> -->
@@ -19,11 +19,8 @@
                  <mat-error *ngIf="dosriForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               </mat-form-field>
             </c-col>
-          </c-row>
-  
-            <!-- Account Name Input -->
-        <c-row class="align-items-center">
-            <c-col [sm]="12">
+
+            <c-col [sm]="6">
               <label cLabel="col" for="accountName">Account Name</label>
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Middle Name</mat-label> -->
@@ -33,8 +30,13 @@
                 
               </mat-form-field>
             </c-col>
-        </c-row>
+          </c-row>
   
+            <!-- Account Name Input -->
+        <!-- <c-row class="align-items-center">
+            
+        </c-row>
+   -->
             <!-- Company Name Input -->
         <c-row class="align-items-center">
             <c-col [sm]="12">
