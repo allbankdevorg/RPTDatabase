@@ -1,0 +1,70 @@
+<!-- ADD Bank Officer RI FORM -->
+<div mat-dialog-title>
+    <h3 cModalTitle>Related Interest Form</h3>
+</div>
+
+<form cForm class="mb-2" [formGroup]="boRIForm" (ngSubmit)="onBORISubmit()">    
+<div mat-dialog-content class="content">
+<!-- Modal Form -->
+   <c-modal-body>
+    <c-row class="align-items-center">
+        <c-col [sm]="6">
+            <label cLabel="col" for="boRICisNumber">CIS Number</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
+            <input
+              aria-describedby="passwordHelpInline-3" matInput
+              id="boRICisNumber" name="boRICisNumber"
+              placeholder="CIS Number"
+              type="text" formControlName="boRICisNumber" appNum>
+            </mat-form-field>
+          </c-col>
+      
+            <c-col [sm]="6">
+                <label cLabel="col" for="boRIFirstName">First Name</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                <input
+                  aria-describedby="passwordHelpInline-3" matInput
+                  id="boRIFirstName" name="boRIFirstName"
+                  placeholder="First Name"
+                  type="text" formControlName="boRIFirstName" appTitleCase>
+                  <mat-error *ngIf="boRIForm.get('boRIFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+                </mat-form-field>
+            </c-col>
+    </c-row>
+      
+    <c-row class="align-items-center">
+        <c-col [sm]="6">
+            <label cLabel="col" for="boRIMiddleName">Middle Name</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
+            <input
+              aria-describedby="passwordHelpInline-3" matInput
+              id="boRIMiddleName" name="boRIMiddleName"
+              placeholder="Middle Name"
+              type="text" formControlName="boRIMiddleName" appTitleCase>
+            </mat-form-field>
+        </c-col>
+
+        <c-col [sm]="6">
+            <label cLabel="col" for="boRILastName">Last Name</label>
+            <mat-form-field appearance="fill" [style.width.%]=100>
+            <input
+              aria-describedby="passwordHelpInline-3" matInput
+              id="boRILastName" name="boRILastName"
+              placeholder="Last Name"
+              type="text" formControlName="boRILastName" appTitleCase>
+              <mat-error *ngIf="boRIForm.get('boRILastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+            </mat-form-field>
+        </c-col>
+    </c-row>
+
+  </c-modal-body>
+</div>
+<div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+    <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+    
+    <button mat-raised-button color="primary" type="submit" [disabled]="!boRIForm.valid">{{data ? 'Update': 'Save'}}</button>
+</div>
+</form>
+
+
