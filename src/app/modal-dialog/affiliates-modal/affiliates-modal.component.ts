@@ -8,7 +8,7 @@ import { CoreService } from '../../services/core/core.service';
 import {callJSFun} from '../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../services/fetch/fetch-data.service';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createAffil} from '../../functions-files/add/postAPI.js'
+import {createAffil, cisLookUP} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
@@ -116,6 +116,33 @@ export class AffiliatesModalComponent implements OnInit {
     }
 
 
+
+    CISlookup() {
+      const dataLookup = this.affForm.value;
+    
+      console.log(dataLookup.aff_com_cis_number);
+      if (dataLookup.aff_com_cis_number) {
+        let cis = dataLookup.aff_com_cis_number;
+        cisLookUP(cis)
+          .then((response) => {
+            console.log(response[0].name);
+            let accName = response[0].name;
+    
+            // Update form controls with new values
+            this.affForm.patchValue({
+              aff_com_account_name: accName,
+              aff_com_company_name: accName // Assuming you have company_name in the response
+              // Add other form controls if needed
+            });
+    
+            // Log the form control values
+            console.log('Form controls after patching:', this.affForm.value);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    }
 
 
     
