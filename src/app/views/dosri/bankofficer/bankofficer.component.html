@@ -71,7 +71,7 @@
                       </div>
                       <br>
                     </ng-container> 
-                      <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(1, element.offc_CisNumber)" (click)="setoffcRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(1, element.offc_CisNumber)" (click)="setoffcRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                     </td>
               </ng-container>
         
@@ -88,7 +88,7 @@
                         </div>
                         <br>
                       </ng-container>
-                      <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(2, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(2, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                   </td>
               </ng-container>
               
@@ -105,7 +105,7 @@
                         </div>
                         <br>
                       </ng-container>
-                      <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(3, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(3, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                   </td>
               </ng-container>
         
@@ -122,7 +122,7 @@
                         </div>
                           <br>
                       </ng-container>
-                      <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(4, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
+                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(4, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
                   </td>
               </ng-container>
         
@@ -139,7 +139,7 @@
                             </div>
                             <br>
                       </ng-container>
-                        <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(5, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(5, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                       </td>
               </ng-container>
         
@@ -156,7 +156,7 @@
                         </div>
                         <br>
                       </ng-container>  
-                        <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" (click)="setButtonId(6, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(6, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                       </td>
               </ng-container>
                 
@@ -179,97 +179,3 @@
 <!-- End of Main Container -->
 
 
-
-<!-- All Modals are below -->
-
-<!-- Start of Bank Officer Modal -->
-<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
-    <c-modal-header>
-      <h3 cModalTitle>Bank Officer</h3>
-      <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
-    </c-modal-header>
-  
-    <form cForm class="mb-2" >
-      
-      <c-modal-footer>
-        <button type="submit" cButton color="success" class="proceed">Proceed</button>
-      </c-modal-footer>
-    </form>
-        
-</c-modal>
-<!-- End of Officers Modal -->
-
-
-<!-- Start of Modal for Related Interest -->
-<c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
-  <c-modal-header>
-    <h3 cModalTitle> Bank Officer Related Interest </h3>
-    <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
-  </c-modal-header>
-
-  <form cForm class="mb-2" [formGroup]="boRIForm" (ngSubmit)="onBORISubmit()">
-    <c-modal-body>
-      <c-row class="align-items-center">
-        
-          <c-row class="align-items-center">
-
-            <c-col [sm]="6">
-              <label cLabel="col" for="boRICisNumber">CIS Number</label>
-              <mat-form-field appearance="fill" [style.width.%]=100>
-              <input
-                aria-describedby="passwordHelpInline-3" matInput
-                id="boRICisNumber" name="boRICisNumber"
-                placeholder="CIS Number"
-                type="text" formControlName="boRICisNumber" appNum>
-              </mat-form-field>
-            </c-col>
-        
-              <c-col [sm]="6">
-                  <label cLabel="col" for="boRIFirstName">First Name</label>
-                  <mat-form-field appearance="fill" [style.width.%]=100>
-                  <input
-                    aria-describedby="passwordHelpInline-3" matInput
-                    id="boRIFirstName" name="boRIFirstName"
-                    placeholder="First Name"
-                    type="text" formControlName="boRIFirstName" appTitleCase>
-                    <mat-error *ngIf="boRIForm.get('boRIFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
-                  </mat-form-field>
-              </c-col>
-          </c-row>
-          
-          <c-row class="align-items-center">
-              <c-col [sm]="6">
-                  <label cLabel="col" for="boRIMiddleName">Middle Name</label>
-                  <mat-form-field appearance="fill" [style.width.%]=100>
-                  <input
-                    aria-describedby="passwordHelpInline-3" matInput
-                    id="boRIMiddleName" name="boRIMiddleName"
-                    placeholder="Middle Name"
-                    type="text" formControlName="boRIMiddleName" appTitleCase>
-                  </mat-form-field>
-              </c-col>
-  
-              <c-col [sm]="6">
-                  <label cLabel="col" for="boRILastName">Last Name</label>
-                  <mat-form-field appearance="fill" [style.width.%]=100>
-                  <input
-                    aria-describedby="passwordHelpInline-3" matInput
-                    id="boRILastName" name="boRILastName"
-                    placeholder="Last Name"
-                    type="text" formControlName="boRILastName" appTitleCase>
-                    <mat-error *ngIf="boRIForm.get('boRILastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-                  </mat-form-field>
-              </c-col>
-          </c-row>
-
-      </c-row>
-    </c-modal-body>
-    <c-modal-footer>
-      <button type="submit" cButton color="success" class="proceed" [disabled]="!boRIForm.valid">Proceed</button>
-    </c-modal-footer>
-  </form>
-      
-</c-modal>
-
-<!-- End of Bank Officers Related Interest Modal -->
-  
