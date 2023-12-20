@@ -253,6 +253,7 @@ function createAffil(formData, moduleV) {
     return new Promise((resolve, reject) => {
       console.log(formData)
       console.log(moduleV);
+
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
         "method": "POST",
@@ -263,9 +264,9 @@ function createAffil(formData, moduleV) {
         "data": JSON.stringify({
           "cmd": 6,
           "request": {
-            "cis_number": formData.affilCisNumberM,
-            "account_name": formData.accountName,
-            "company_name": formData.companyName,
+            "cis_number": formData.aff_com_cis_number,
+            "account_name": formData.aff_com_account_name,
+            "company_name": formData.aff_com_company_name,
             "manager": formData.commandControl,
             "module": moduleV,
           }
