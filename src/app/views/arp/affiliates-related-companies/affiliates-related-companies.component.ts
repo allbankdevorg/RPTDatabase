@@ -213,7 +213,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   fetchAssocCompany() {
     return new Promise<void>((resolve, reject) => {
       this.get.getManagingCompany((mngComp) => {
-        if (mngComp) {
+        // if (mngComp) {
           try {
             // Assuming getManagingCompany returns an array
             this.orgsDataService.orgsData = mngComp.map(item => [item.aff_com_account_name, item.manager]);
@@ -227,9 +227,9 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
           } catch (error) {
             reject(error);
           }
-        }else {
+        // }else {
           
-        }
+        // }
         
       });
     });
@@ -242,7 +242,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     this.commandGroups = []; // Clear the existing commandGroups
     // console.log(this.compData);
 
-      if (mngComp) {
+      // if (mngComp) {
         const data = mngComp;
         // console.log(data);
         data.forEach(item => {
@@ -255,7 +255,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
           // Add the command group to the array
           this.commandGroups.push(commandGroup);
         });
-      }
+      // }
       // const data = this.compData.result[0].Data;
       // console.log(mngComp);
     })
