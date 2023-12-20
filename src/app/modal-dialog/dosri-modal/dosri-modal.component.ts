@@ -8,7 +8,7 @@ import { CoreService } from '../../services/core/core.service';
 import {callJSFun} from '../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../services/fetch/fetch-data.service';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createDosri} from '../../functions-files/add/postAPI.js'
+import {createDosri, cisLookUP} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
@@ -25,6 +25,7 @@ import {AddServicesService} from '../../services/add/add-services.service';
 })
 export class DosriModalComponent implements OnInit {
   
+  isInputDisabled = true;
   dosriForm: FormGroup;
   education: string[] = [
     'Matric',
@@ -123,6 +124,33 @@ export class DosriModalComponent implements OnInit {
   }
 
 
+  CISlookup() {
+    const dataLookup = this.dosriForm.value;
+  
+    console.log(dataLookup.com_cis_number);
+    if (dataLookup.com_cis_number) {
+      let cis = dataLookup.com_cis_number;
+      cisLookUP(cis)
+        .then((response) => {
+          console.log(response[0].name);
+          let accName = response[0].name;
+  
+          // Update form controls with new values
+          this.dosriForm.patchValue({
+            com_account_name: accName,
+            com_company_name: accName // Assuming you have company_name in the response
+            // Add other form controls if needed
+          });
+  
+          // Log the form control values
+          console.log('Form controls after patching:', this.dosriForm.value);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+  
 
 
 
