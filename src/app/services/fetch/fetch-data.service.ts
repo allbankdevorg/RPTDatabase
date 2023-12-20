@@ -4,7 +4,7 @@
  * 103 - getOfficers                     => fetch Officers
  * 104 - getOfficersRI                   => fetch Officers Related Interest
  * 105 - getAffiliatesCompany            => fetch Affiliates Company
- * 106 - getAffiliatesDirectors          => fetch Affiliates Directors
+ * 106 - getAffiliatesDirectors          => fetch Affiliates Directors and Related Interest
  * 107 - getAffiliatesOfficers           => fetch Affiliates Officers
  * 108 - getAffiliatesCompanyOfficers    => fetch Affiliates Company Officer
  * 109 - getManagingCompany              => fetch Managing Company
@@ -20,7 +20,7 @@
 // Import necessary Angular modules
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 
@@ -55,9 +55,34 @@ export class FetchDataService {
   }
 
   // Public method to fetch data based on a command and invoke a callback
-  getData(cmd: number, callback: (data: any) => void): void {
-    this.makeRequest(cmd).subscribe(
-      response => {
+  // getData(cmd: number, callback: (data: any) => void): void {
+  //   this.makeRequest(cmd).subscribe(
+  //     response => {
+  //       if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+  //         const data = response.result[0].Data;
+  //         if (callback) {
+  //           callback(data);
+  //         }
+  //       } else {
+  //         console.log(`No Data for cmd ${cmd}`);
+  //         if (callback) {
+  //           callback([]);
+  //         }
+  //       }
+  //     },
+  //     error => {
+  //       console.error(`Error fetching data for cmd ${cmd}:`, error);
+  //       if (callback) {
+  //         callback([]);
+  //       }
+  //     }
+  //   );
+  // }
+
+
+  getData(cmd: number, callback: (data: any) => void): Subscription {
+    return this.makeRequest(cmd).subscribe({
+      next: (response) => {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           const data = response.result[0].Data;
           if (callback) {
@@ -66,17 +91,17 @@ export class FetchDataService {
         } else {
           console.log(`No Data for cmd ${cmd}`);
           if (callback) {
-            callback(null);
+            callback([]);
           }
         }
       },
-      error => {
+      error: (error) => {
         console.error(`Error fetching data for cmd ${cmd}:`, error);
         if (callback) {
-          callback(null);
+          callback([]);
         }
-      }
-    );
+      },
+    });
   }
 
 
@@ -89,19 +114,19 @@ export class FetchDataService {
           return response.result[0].Data;
         } else {
           console.log(`No Data for cmd 100`);
-          return null;
+          return [];
         }
       }),
       catchError(error => {
         console.error(`Error fetching data for cmd 100:`, error);
-        return of(null);
+        return of([]);
       })
     );
   }
   
   
 
-  // 
+  
   getDirectors(): Observable<any> {
     return this.makeRequest(101).pipe(
       map(response => {
@@ -109,15 +134,16 @@ export class FetchDataService {
           return response.result[0].Data;
         } else {
           console.log(`No Data for cmd 101`);
-          return null;
+          return [];
         }
       }),
       catchError(error => {
         console.error(`Error fetching data for cmd 101:`, error);
-        return of(null);
+        return of([]);
       })
     );
   }
+
   
   getOfficers(): Observable<any> {
     return this.makeRequest(103).pipe(
@@ -126,24 +152,83 @@ export class FetchDataService {
           return response.result[0].Data;
         } else {
           console.log(`No Data for cmd 103`);
-          return null;
+          return [];
         }
       }),
       catchError(error => {
-        console.error(`Error fetching data for cmd 101:`, error);
-        return of(null);
+        console.error(`Error fetching data for cmd 103:`, error);
+        return of([]);
       })
     );
   }
 
 
+
+  // 106
+  getAffiliatesDirectors(): Observable<any> {
+    return this.makeRequest(106).pipe(
+      map(response => {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          return response.result[0].Data;
+        } else {
+          console.log(`No Data for cmd 103`);
+          return [];
+        }
+      }),
+      catchError(error => {
+        console.error(`Error fetching data for cmd 103:`, error);
+        return of([]);
+      })
+    );
+  }
+
+
+  // 107
+  getAffiliatesOfficers(): Observable<any> {
+    return this.makeRequest(107).pipe(
+      map(response => {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          return response.result[0].Data;
+        } else {
+          console.log(`No Data for cmd 107`);
+          return [];
+        }
+      }),
+      catchError(error => {
+        console.error(`Error fetching data for cmd 107:`, error);
+        return of([]);
+      })
+    );
+  }
+
+
+
+
+  // getOfficersRI(): Observable<any> {
+  //   return this.makeRequest(104).pipe(
+  //     map(response => {
+  //       if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+  //         return response.result[0].Data;
+  //       } else {
+  //         console.log(`No Data for cmd 104`);
+  //         return [];
+  //       }
+  //     }),
+  //     catchError(error => {
+  //       console.error(`Error fetching data for cmd 104:`, error);
+  //       return of(null);
+  //     })
+  //   );
+  // }
+ 
+
   // 100
-  // getCompany(callback: (compData: any) => void): void {
+  // getCompany(callback: (CompData: any) => void): void {
   //   this.getData(100, callback);      
   // }
 
   // // 101
-  // getDirectors(callback: (dirData: any) => void): void {
+  // getDirectors(callback: (DData: any) => void): void {
   //   this.getData(101, callback);
   // }
 
@@ -163,14 +248,14 @@ export class FetchDataService {
   }
 
   // 106
-  getAffiliatesDirectors(callback: (affilDirData: any) => void): void {
-    this.getData(106, callback);
-  }
+  // getAffiliatesDirectors(callback: (affilDirData: any) => void): void {
+  //   this.getData(106, callback);
+  // }
 
   // 107
-  getAffiliatesOfficers(callback: (affilOffData: any) => void): void {
-    this.getData(107, callback);
-  }
+  // getAffiliatesOfficers(callback: (affilOffData: any) => void): void {
+  //   this.getData(107, callback);
+  // }
 
   // 108
   getAffiliatesCompanyOfficers(callback: (affilCompOff: any) => void): void {
