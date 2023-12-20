@@ -4,9 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import {animate, state, style, transition, trigger} from '@angular/animations'
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
+
+import { catchError, map } from 'rxjs/operators';
 
 
 import { DosriModalComponent } from 'src/app/modal-dialog/dosri-modal/dosri-modal.component';
@@ -17,6 +20,8 @@ import { SharedService } from '../dataintegration/shared.service';
 import {AuthSessionService} from '../../../services/authentication/auth-session.service'
 
 // Functions Imports
+
+import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
 import {callJSFun} from '../../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../../services/fetch/fetch-data.service';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
@@ -31,7 +36,7 @@ import {AuditTrail} from '../../../model/audit-trail.model';
 
 
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 // Interfaces
 export interface compData {
   com_cis_number: string;
@@ -93,11 +98,20 @@ export class DriComponent {
   
   @ViewChild('editModal') editModal!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   // @ViewChild('editDosri') editDosri!: ElementRef;
   
 
   ngAfterViewInit() {
     this.compDataSource.paginator = this.paginator;
+
+    this.compDataSource.sort = this.sort;
+
+    this.sort.sort({
+      id: 'date_inserted',
+      start: 'desc',
+      disableClear: false
+    });
   }
 
 
@@ -134,36 +148,181 @@ export class DriComponent {
   
 
   // All Functions below
+  // updateTableData(): void {
+  //   // Assuming `getCompany` and `getDirectors` return Observables
+  //   forkJoin([this.get.getCompany(), this.get.getDirectors()]).subscribe({
+  //     next: ([compData, DData]) => {
+
+  //       if (compData) {
+  //         // Process the data to count directors related to each company
+  //       const companiesWithDirectors = compData.map(company => {
+  //         const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+  //         return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+  //       });
+  
+  //       // Update the data source for companies
+  //       this.compDataSource.data = companiesWithDirectors;
+  //       console.log(this.compDataSource.data);
+  
+  //       // Update the data source for directors
+  //       this.dDataSource.data = companiesWithDirectors;
+  //       console.log(this.dDataSource.data);
+  
+  //       // Trigger change detection
+  //       this.changeDetectorRef.detectChanges();
+  //       }
+  //       else{
+
+  //       }
+  //     },
+  //     error: console.log,
+  //   });
+  // }
+
   updateTableData(): void {
     // Assuming `getCompany` and `getDirectors` return Observables
-    forkJoin([this.get.getCompany(), this.get.getDirectors()]).subscribe({
-      next: ([compData, DData]) => {
+    this.get.getCompany().subscribe((compData) => {
 
-        if (compData) {
-          // Process the data to count directors related to each company
+      if (compData) {
         const companiesWithDirectors = compData.map(company => {
+          const directors = company.directors || []; // Ensure there is a directors array
+          const directorCount = directors.length;
+          return { ...company, directorCount, directors };
+        });
+
+        this.compDataSource.data = companiesWithDirectors; 
+      }
+    });
+
+    this.get.getCompany().subscribe((compData) => {
+      this.get.getDirectors().subscribe((DData) => {
+        const companiesWithDirectors: DData[] = compData.map(company => {
           const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
           return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
         });
-  
-        // Update the data source for companies
-        this.compDataSource.data = companiesWithDirectors;
-        console.log(this.compDataSource.data);
-  
-        // Update the data source for directors
+
         this.dDataSource.data = companiesWithDirectors;
-        console.log(this.dDataSource.data);
-  
         // Trigger change detection
         this.changeDetectorRef.detectChanges();
-        }
-        else{
-
-        }
-      },
-      error: console.log,
+      });
     });
+
+
   }
+
+
+    // forkJoin([this.get.getCompany(), this.get.getDirectors()]).subscribe({
+    //   next: ([compData, DData]) => {
+
+    //     if (compData) {
+    //       // Process the data to count directors related to each company
+    //     const companiesWithDirectors = compData.map(company => {
+    //       const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
+    //       return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+    //     });
+  
+    //     // Update the data source for companies
+    //     this.compDataSource.data = companiesWithDirectors;
+    //     console.log(this.compDataSource.data);
+  
+    //     // Update the data source for directors
+    //     this.dDataSource.data = companiesWithDirectors;
+    //     console.log(this.dDataSource.data);
+  
+    //     // Trigger change detection
+    //     this.changeDetectorRef.detectChanges();
+    //     }
+    //     else{
+
+    //     }
+    //   },
+    //   error: console.log,
+    // });
+  
+
+
+    
+
+  // updateTableData(): void {
+  //   // Assuming getCompany and getDirectors are asynchronous functions
+  //   getCompany((compData) => {
+  //     if (compData) {
+  //       // Process the data to count directors related to each company
+  //       const companiesWithDirectors = compData.map(company => {
+  //         const directors = company.directors || []; // Ensure there is a directors array
+  //         const directorCount = directors.length || 0;
+  //         return { ...company, directorCount, directors };
+  //       });
+  
+  //       // Set the data source for your MatTable
+  //       this.compDataSource.data = companiesWithDirectors;
+  //     } else {
+  //       console.error('Error: Empty or undefined compData');
+  //       // Handle the case where compData is empty or undefined, e.g., show an error message to the user
+  //     }
+  //   });
+  
+  //   getCompany((compData) => {
+  //     // Fetch director data
+  //     getDirectors((DData) => {
+  //       // Process the data to count directors related to each company
+  //       const companiesWithDirectors: DData[] = compData?.map(company => {
+  //         const relatedDirectors = DData?.filter(director => director.com_related === company.com_cis_number) || [];
+  //         return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+  //       }) || [];
+  
+  //       // Set the data source for your MatTable
+  //       // console.log(companiesWithDirectors);
+  //       this.dDataSource.data = companiesWithDirectors;
+  //       // console.log(this.dDataSource.data);
+  
+  //       // Trigger change detection
+  //       this.changeDetectorRef.detectChanges();
+  //     });
+  //   });
+  // }
+
+  // // *****
+  // updateTableData() {
+  //   // Fetching data for Affiliates with Officers
+  //   this.get.getCompany((CompData) => {
+  //     if (CompData) {
+  //       // Process the data to count officers related to each company
+  //       const companiesWithDirectors = CompData.map(company => {
+  //       const directors = company.directors || []; // Ensure there is a directors array
+  //       const directorCount = directors.length || 0;
+  //       return { ...company, directorCount, directors };
+  //     });
+  
+  //       // Set the data source for your MatTable
+  //       this.compDataSource.data = companiesWithDirectors;
+  //       // console.log(companiesWithDirectors);
+  //     }
+  //   });
+  
+  //   // Fetching managing companies
+  //   this.get.getCompany((CompData) => {
+  //     if (CompData) {
+  //       // Fetch director data
+  //       this.get.getDirectors((DData) => {
+  //         // Process the data to count directors related to each company
+  //         const companiesWithDirectors: DData[] = CompData?.map(company => {
+  //           const relatedDirectors = DData?.filter(director => director.com_related === company.com_cis_number) || [];
+  //           return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
+  //       });
+          
+  //         // Set the data source for your MatTable
+  //         console.log(companiesWithDirectors)
+  //         this.dDataSource.data = companiesWithDirectors;
+  //         // Trigger change detection
+  //         this.changeDetectorRef.detectChanges();
+  //       });
+  //     }
+  //   });
+  // }
+
+
+
 
    
     addData() {
