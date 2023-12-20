@@ -243,14 +243,11 @@ async  ngOnInit() {
 
   updateTableData(): void {
     // Get Directors
-    this.get.getAffiliatesDirectors((affilDirData) => {
-      // const directorIdToDisplay = directorId;
-      // console.log(affilDirData);
-      // console.log('directorIdToDisplay:', directorIdToDisplay)
-      // console.log(companytoDisplay);
-      if (affilDirData) {
+    this.get.getAffiliatesDirectors().subscribe((affilDirData) => {
+
+      // if (affilDirData) {
           const filteredDirectors = affilDirData.filter((director) => director.com_related === this.compId);
-          // console.log(filteredDirectors);
+          console.log(filteredDirectors);
           const relationColumn = ['MothersName', 'FathersName', 'Siblings', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const tableData: Record<string, any>[] = [];
@@ -300,15 +297,15 @@ async  ngOnInit() {
 
           // Trigger change detection
           this.changeDetectorRef.detectChanges();
-      }else {
+      // }else {
         // Handle the case where affilDirData is null or undefined
-        console.error('No directors');
-      }
+      //   console.error('No directors');
+      // }
     });
 
 
     // Get Officers
-    this.get.getAffiliatesOfficers((affilOffData) => {
+    this.get.getAffiliatesOfficers().subscribe((affilOffData) => {
       // const directorIdToDisplay = directorId;
       // console.log(affilOffData);
       // console.log('directorIdToDisplay:', directorIdToDisplay)
