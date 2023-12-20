@@ -118,6 +118,7 @@ import { BankofficerModalComponent } from './modal-dialog/bankofficer-modal/bank
 import { DirectorsRIModalComponent } from './modal-dialog/directors-ri-modal/directors-ri-modal.component';
 import { DirectorsModalComponent } from './modal-dialog/directors-modal/directors-modal.component';
 import { AffiliatesModalComponent } from './modal-dialog/affiliates-modal/affiliates-modal.component';
+import { BankofficerRIModalComponent } from './modal-dialog/bankofficer-rimodal/bankofficer-rimodal.component';
  
 
 const APP_CONTAINERS = [
@@ -135,7 +136,8 @@ const APP_CONTAINERS = [
     BankofficerModalComponent,
     DirectorsRIModalComponent,
     DirectorsModalComponent,
-    AffiliatesModalComponent],
+    AffiliatesModalComponent,
+    BankofficerRIModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
