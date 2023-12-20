@@ -18,6 +18,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 // Services
 import { SharedservicesService } from './../dataintegration/sharedservices.service';
+import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
 // Functions Import
 import {getAffiliatesCompany, getAffiliatesDirectors, getManagingCompany} from '../../../functions-files/getFunctions';
@@ -28,6 +29,14 @@ import {deleteAffiliates} from '../../../functions-files/delFunctions';
 import { saveAs } from 'file-saver-es';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
+// Audit Trail
+import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
+import {AuditTrail} from '../../../model/audit-trail.model';
+
+
+
+import { AffiliatesModalComponent } from 'src/app/modal-dialog/affiliates-modal/affiliates-modal.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 export interface Child {
   name: string;
@@ -79,7 +88,7 @@ interface commandGroup {
 })
 export class AffiliatesComponent implements AfterViewInit {
   sharedData: string | any;
-  affForm: FormGroup;
+  
   editAffilForm!: FormGroup;
   compData: any = [];
   moduleV: any;
@@ -118,6 +127,12 @@ export class AffiliatesComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.affDataSource.paginator = this.paginator;
     this.affDataSource.sort = this.sort;
+
+    this.sort.sort({
+      id: 'date_inserted',
+      start: 'desc',
+      disableClear: false
+    });
   }
 
 
@@ -128,29 +143,27 @@ export class AffiliatesComponent implements AfterViewInit {
   }
 
   
-  updateDisplayedData() {
-    // Implement logic to update displayed data based on current page
-    // For example, slice your data array to display only the relevant items for the current page
-    const startIndex = this.currentPage * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.displayedData = this.affDataSource.data.slice(startIndex, endIndex);
-  }
+  // updateDisplayedData() {
+  //   // Implement logic to update displayed data based on current page
+  //   // For example, slice your data array to display only the relevant items for the current page
+  //   const startIndex = this.currentPage * this.pageSize;
+  //   const endIndex = startIndex + this.pageSize;
+  //   this.displayedData = this.affDataSource.data.slice(startIndex, endIndex);
+  // }
 
   constructor(private router: Router,
+    public _dialog: MatDialog,
     private formBuilder: FormBuilder, 
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
     private sharedService: SharedservicesService,
+    private dataService: AffiliatesService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private get: FetchDataService) {
-this.affForm = this.formBuilder.group({
-affilCisNumberM: ['', [Validators.required]],
-accountName: ['', [Validators.required]],
-companyName: ['', [Validators.required]],
-commandControl: ['', [Validators.required]]
-});
+    private get: FetchDataService,
+    private auditTrailService: AuditTrailService) {
+
 // Initialize the commandGroups array based on your data
 this.initializeCommandGroups();
 }
@@ -163,85 +176,193 @@ console.log(this.displayedData)
 
 
 //All functions are below
+// updateTableData() {
+//     this.get.getAffiliatesCompany((affilComp) => {
+//     if (affilComp) {
+//     // Process the data to count directors related to each company
+//     const companiesWithDirectors = affilComp.map(company => {
+//     const directors = company.directors || []; // Ensure there is a directors array
+//     const directorCount = directors.length;
+//     // console.log(directorCount);
+//     return { ...company, directorCount, directors };
+//     });
+
+//     // Set the data source for your MatTable
+//     this.affDataSource.data = companiesWithDirectors;
+//     // console.log(this.affDataSource)
+//     }
+//     });
+
+//     this.get.getAffiliatesCompany((affilComp) => {
+//     if (affilComp) {
+//     // Fetch director data
+//     this.get.getAffiliatesDirectors((affilDirData) => {
+//     // Process the data to count directors related to each company
+//     const affiliatesWithDirectors: DData[] = affilComp.map(company => {
+//       const affiliatesDirectors = affilDirData.filter(director => director.com_related === company.aff_com_account_name);
+//       return { ...company, directorCount: affiliatesDirectors.length, directors: affiliatesDirectors };
+//     });
+
+//     // Set the data source for your MatTable
+//     console.log(affiliatesWithDirectors)
+//     this.affilDdataSource.data = affiliatesWithDirectors;
+//     // Trigger change detection
+//     this.changeDetectorRef.detectChanges();
+//     });
+//     }
+//     });
+
+//     this.get.getManagingCompany((mngComp) => {
+//     this.compData = mngComp;
+//     this.commandGroups = []; // Clear the existing commandGroups
+//     console.log(this.compData);
+
+//     if (mngComp) {
+//     const data = mngComp;
+//     console.log(data);
+//     data.forEach(item => {
+//     // Create a commandGroup item with value and viewValue
+//     const commandGroup = {
+//       value: item.aff_com_cis_number,
+//       viewValue: item.aff_com_company_name,
+//     };
+
+//     // Add the command group to the array
+//     this.commandGroups.push(commandGroup);
+//     });
+//     }
+//     // const data = this.compData.result[0].Data;
+//     // console.log(mngComp);
+//     })
+
+
+//     // Fetching of Directors and Related Interest
+
+// }
+
+
+// updateTableData() {
+//   getAffiliatesCompany((affilComp) => {
+//   if (affilComp) {
+//   // Process the data to count directors related to each company
+//   const companiesWithDirectors = affilComp.map(company => {
+//   const directors = company.directors || []; // Ensure there is a directors array
+//   const directorCount = directors.length;
+//   // console.log(directorCount);
+//   return { ...company, directorCount, directors };
+//   });
+  
+//   // Set the data source for your MatTable
+//   this.affDataSource.data = companiesWithDirectors;
+//   // console.log(this.affDataSource)
+//   }
+//   });
+  
+//   getAffiliatesCompany((affilComp) => {
+//   if (affilComp) {
+//   // Fetch director data
+//   getAffiliatesDirectors((affilDirData) => {
+//   // Process the data to count directors related to each company
+//   const affiliatesWithDirectors: DData[] = affilComp.map(company => {
+//     const affiliatesDirectors = affilDirData.filter(director => director.com_related === company.aff_com_account_name);
+//     return { ...company, directorCount: affiliatesDirectors.length, directors: affiliatesDirectors };
+//   });
+  
+//   // Set the data source for your MatTable
+//   console.log(affiliatesWithDirectors)
+//   this.affilDdataSource.data = affiliatesWithDirectors;
+//   // Trigger change detection
+//   this.changeDetectorRef.detectChanges();
+//   });
+//   }
+//   });
+  
+//   getManagingCompany((mngComp) => {
+//   this.compData = mngComp;
+//   this.commandGroups = []; // Clear the existing commandGroups
+//   console.log(this.compData);
+  
+//   if (mngComp) {
+//   const data = mngComp;
+//   console.log(data);
+//   data.forEach(item => {
+//   // Create a commandGroup item with value and viewValue
+//   const commandGroup = {
+//     value: item.aff_com_cis_number,
+//     viewValue: item.aff_com_company_name,
+//   };
+  
+//   // Add the command group to the array
+//   this.commandGroups.push(commandGroup);
+//   });
+//   }
+//   // const data = this.compData.result[0].Data;
+//   // console.log(mngComp);
+//   })
+  
+  
+//   // Fetching of Directors and Related Interest
+  
+//   }
+
+// updateTableData() {
+//   this.get.getAffiliatesCompany((affilComp) => {
+//     if (affilComp) {
+//       const companiesWithDirectors = affilComp.map(company => {
+//           const directors = company.directors || []; // Ensure there is a directors array
+//           const directorCount = directors.length;
+//           // console.log(directorCount);
+//           return { ...company, directorCount, directors };
+//         })
+//     }
+//   })
+// }
+
 updateTableData() {
-    this.get.getAffiliatesCompany((affilComp) => {
-    if (affilComp) {
-    // Process the data to count directors related to each company
-    const companiesWithDirectors = affilComp.map(company => {
-    const directors = company.directors || []; // Ensure there is a directors array
-    const directorCount = directors.length;
-    // console.log(directorCount);
-    return { ...company, directorCount, directors };
-    });
+  // Fetching data for Affiliates with Officers
+  this.get.getAffiliatesCompany((affilCompOff) => {
+    if (affilCompOff) {
+      // Process the data to count officers related to each company
+      const companiesWithOfficers = affilCompOff.map(company => {
+        const directors = company.directors || [];
+        const directorCount = directors.length;
+        return { ...company, directorCount, directors };
+      });
 
-    // Set the data source for your MatTable
-    this.affDataSource.data = companiesWithDirectors;
-    // console.log(this.affDataSource)
+      // Set the data source for your MatTable
+      this.affDataSource.data = companiesWithOfficers;
+      console.log(companiesWithOfficers);
     }
-    });
+  });
 
-    this.get.getAffiliatesCompany((affilComp) => {
-    if (affilComp) {
-    // Fetch director data
-    this.get.getAffiliatesDirectors((affilDirData) => {
-    // Process the data to count directors related to each company
-    const affiliatesWithDirectors: DData[] = affilComp.map(company => {
-      const affiliatesDirectors = affilDirData.filter(director => director.com_related === company.aff_com_account_name);
-      return { ...company, directorCount: affiliatesDirectors.length, directors: affiliatesDirectors };
-    });
-
-    // Set the data source for your MatTable
-    console.log(affiliatesWithDirectors)
-    this.affilDdataSource.data = affiliatesWithDirectors;
-    // Trigger change detection
-    this.changeDetectorRef.detectChanges();
-    });
-    }
-    });
-
-    this.get.getManagingCompany((mngComp) => {
+  // Fetching managing companies
+  this.get.getManagingCompany((mngComp) => {
     this.compData = mngComp;
-    this.commandGroups = []; // Clear the existing commandGroups
-    console.log(this.compData);
+    this.commandGroups = [];
 
     if (mngComp) {
-    const data = mngComp;
-    console.log(data);
-    data.forEach(item => {
-    // Create a commandGroup item with value and viewValue
-    const commandGroup = {
-      value: item.aff_com_cis_number,
-      viewValue: item.aff_com_company_name,
-    };
-
-    // Add the command group to the array
-    this.commandGroups.push(commandGroup);
-    });
+      const data = mngComp;
+      data.forEach(item => {
+        const commandGroup = {
+          value: item.aff_com_cis_number,
+          viewValue: item.aff_com_company_name,
+        };
+        this.commandGroups.push(commandGroup);
+      });
     }
-    // const data = this.compData.result[0].Data;
-    // console.log(mngComp);
-    })
-
-
-    // Fetching of Directors and Related Interest
-
+  });
 }
 
 
 
-onSubmit() {
-if (this.affForm.valid) {
-const formData = this.affForm.value;
-console.log(formData);
-// Call the JavaScript function with form data
-createAffil(formData, this.moduleV); // Pass the entire formData object
-}
-}
 
 onButtonClick(module: any) {
 console.log('Add Data');
 console.log(module);
 this.moduleV = module;
+
+this.dataService.setmoduleV(module);
+
 }
 
 onRowClick(row: any, event: Event) {
@@ -322,13 +443,13 @@ console.log('IsValidManager:', isValidManager);
 
 
 // Set the value only if it's a valid manager
-if (isValidManager) {
-this.affForm.get('commandControl')?.setValue(selectedManager);
-console.log(this.affForm);
-} else {
-// Optionally, handle the case where the manager is not valid
-console.error('Invalid manager:', selectedManager);
-}
+// if (isValidManager) {
+// this.affForm.get('commandControl')?.setValue(selectedManager);
+// console.log(this.affForm);
+// } else {
+// // Optionally, handle the case where the manager is not valid
+// console.error('Invalid manager:', selectedManager);
+// }
 
 this.editAffilData = {
 com_cis_number: row.aff_com_cis_number,
@@ -372,4 +493,73 @@ return csvContent.join('\n');
 
 downloadCSV(): void {}
 
+
+
+
+
+
+
+// Show Modal Form
+openAddEditEmpForm() {
+  const dialogRef = this._dialog.open(AffiliatesModalComponent);
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.updateTableData();
+      }
+    },
+  });
+}
+
+openEditForm(data: any, event: any) {
+  event.stopPropagation();
+  console.log(data);
+  const dialogRef = this._dialog.open(AffiliatesModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        console.log("Successs");
+      }
+    },
+  });
+}
+
+
+
+
+
+
+
+  // Start of Functions for Audit Trail
+  logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+    const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+    this.logAuditTrail(auditTrailEntry);
+  }
+  
+  
+  
+  private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+    return {
+      userId: 'current_user_id',
+      userName: 'Current_user',
+      timestamp: new Date(),
+      actionType,
+      details,
+      success,
+      page, // Include the page information
+      errorMessage: errorMessage || '', // Optional: Include error message if available
+    };
+  }
+  
+  
+  private logAuditTrail(auditTrailEntry: AuditTrail) {
+    this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+      console.log('Audit trail entry logged successfully.');
+    });
+    // console.log('Audit trail entry logged successfully.');
+  }
 }
