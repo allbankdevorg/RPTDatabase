@@ -11,9 +11,9 @@ import { Injectable } from '@angular/core';
 
 // Services
 import { DataTransferService } from '../../../services/data-transfer.service';
+import {BoRIService} from '../../../services/bankOfficerRI/bo-ri.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
 // Functions Import
-import {createBankOfficer, createBankOfficerRelationship} from '../../../functions-files/add/postAPI';
 import {getOfficers, getCompany, getOfficersRI} from '../../../functions-files/getFunctions'
 import {deleteDOSRIOfficer, deleteDOSRIOfficerRI} from '../../../functions-files/delFunctions'
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
@@ -26,6 +26,7 @@ import {AuditTrail} from '../../../model/audit-trail.model';
 // For Modal
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { BankofficerModalComponent } from 'src/app/modal-dialog/bankofficer-modal/bankofficer-modal.component';
+import { BankofficerRIModalComponent } from 'src/app/modal-dialog/bankofficer-rimodal/bankofficer-rimodal.component';
 
 export interface Child {
   name: string;
@@ -88,7 +89,6 @@ export class BankofficerComponent implements AfterViewInit{
   sharedData: string | any;
   positionOptions: TooltipPosition = 'right';
   
-  boRIForm: FormGroup;
   buttonId: number = 0;
   selectedcomCisNumber: number = 0;
   Company: any;
@@ -120,18 +120,13 @@ export class BankofficerComponent implements AfterViewInit{
           public _dialog: MatDialog,  
           private formBuilder: FormBuilder, 
           private http: HttpClient, 
-          private dataTransferService: DataTransferService,
+          private dataService: BoRIService,
           private changeDetectorRef: ChangeDetectorRef,
           private ngZone: NgZone,
           private get: FetchDataService,
           private auditTrailService: AuditTrailService)
           {
-          this.boRIForm = this.formBuilder.group({
-            boRICisNumber: [''],
-            boRIFirstName: ['', [Validators.required]],
-            boRIMiddleName: [''],
-            boRILastName: ['', [Validators.required]],
-        });
+          
     }
 
   ngOnInit(): void {
@@ -224,11 +219,14 @@ export class BankofficerComponent implements AfterViewInit{
     })
   }
   
-  setButtonId(id: number, comCisNumber: number) {
+  setButtonId(id: number, offCisNumber: number) {
     this.buttonId = id;
-    this.selectedcomCisNumber = comCisNumber;
-    console.log(comCisNumber);
+    this.selectedcomCisNumber = offCisNumber;
+    console.log(offCisNumber);
     console.log(id);
+
+    this.dataService.setboCIS(offCisNumber);
+    this.dataService.setButtonId(id);
     
   }
 
@@ -262,28 +260,7 @@ export class BankofficerComponent implements AfterViewInit{
   }
   
 
-  onBORISubmit() {
- 
-    if (this.boRIForm.valid) {
-      const boRIData = this.boRIForm.value;
   
-      // Call the JavaScript function with form data
-      createBankOfficerRelationship(boRIData, this.buttonId, this.selectedcomCisNumber)
-      .then((response) => {
-        // this.logAction('Add Bank Officer Related Interest', 'Successfuly Added Related Interest', true, 'bankofficer');
-        this.ngZone.run(() => {
-          this.updateTableData();
-          this.changeDetectorRef.detectChanges();
-          console.log(this.changeDetectorRef.detectChanges);
-          console.log(this.dataSource);
-        });
-      })
-      .catch((error) => {
-        // this.logAction('Add Bank Officer Related Interest', 'Failed Adding Related Interest', false, 'bankofficer');
-       
-      }) // Pass the entire formData object
-    }
-  }
   
 
   // Start of Button Click
@@ -322,7 +299,34 @@ export class BankofficerComponent implements AfterViewInit{
   }
 
 
+  // Show Modal Form
+openRIForm() {
+  const dialogRef = this._dialog.open(BankofficerRIModalComponent);
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.updateTableData();
+      }
+    },
+  });
+}
 
+openEditRIForm(data: any, event: any) {
+  event.stopPropagation();
+  console.log(data);
+  const dialogRef = this._dialog.open(BankofficerRIModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        console.log("Successs");
+      }
+    },
+  });
+}
 
 
   // // Start of Functions for Audit Trail
