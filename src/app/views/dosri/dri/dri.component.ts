@@ -322,11 +322,7 @@ export class DriComponent {
   // }
 
 
-    CISlookup(){
-      
-    }
-
-
+   
    
     addData() {
       
