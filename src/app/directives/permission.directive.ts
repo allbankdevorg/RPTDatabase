@@ -1,5 +1,5 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd, ActivatedRouteSnapshot } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { AuthSessionService } from '../services/authentication/auth-session.service';
@@ -47,21 +47,44 @@ export class HasPermissionDirective {
   }
 
   ngOnInit(): void {
-    
+    this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      this.updateView();
+    });
   }
 
 
 
   private updateView(): void {
-    // Get the current route from the activated route
+    // // Get the current route from the activated route
     this.allowedRoute = this.route.snapshot.routeConfig?.path?.toLowerCase() || '';
-    
+    // this.allowedRoute = this.getFullRoute().toLowerCase();
+   
     if (this.checkPermission()) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();
     }
   }
+
+
+  private getFullRoute(): string {
+    let fullRoute = '';
+    let currentRoute: ActivatedRouteSnapshot | null = this.route.snapshot;
+  
+    while (currentRoute) {
+      const routePath = currentRoute.routeConfig?.path;
+      if (routePath) {
+        fullRoute = routePath + (fullRoute ? '/' : '') + fullRoute;
+      }
+      currentRoute = currentRoute.parent;
+    }
+  
+    return fullRoute;
+  }
+
+  
 
   // Dynamic User
     private checkPermission(): boolean {
@@ -70,7 +93,8 @@ export class HasPermissionDirective {
       // console.log(this.jsonData)
 
       // Find the authority that matches the current route
-      const matchingAuthority = this.jsonData.find((jsonData: any) => jsonData.access?.toLowerCase() === this.allowedRoute);
+      // const matchingAuthority = this.jsonData.find((jsonData: any) => jsonData.access?.toLowerCase() === this.allowedRoute);
+      const matchingAuthority = this.jsonData.find((jsonData: any) => jsonData.navigation?.toLowerCase() === this.allowedRoute);
       
       // Check if matching authority is found
       if (matchingAuthority) {
