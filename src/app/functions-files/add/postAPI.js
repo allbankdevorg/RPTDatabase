@@ -565,6 +565,36 @@ function checkOTP(user, enteredOTP) {
 }
 
 
+function cisLookUP(cis) {
+    return new Promise((resolve, reject) => {
+      var settings = {
+        "url": "http://10.232.236.15:8092/api/Cis",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cis": cis
+        }),
+      };
+      
+      $.ajax(settings).done(function (response) {
+        // Log the response
+        console.log(response);
+        // console.log(response.result[0].status);
+        
+        // Check the status and resolve/reject the promise accordingly
+        // Swal.fire(`${response}`, ``, `${response}`);
+        if (response != null ) {
+          resolve(response);
+        } else {
+          reject(response);
+        }
+      });
+  });
+}
+
 
 
 
@@ -582,5 +612,6 @@ function checkOTP(user, enteredOTP) {
     createRPDIrectorsRelatedInterest,
     Loginuser,
     sendOTP,
-    checkOTP
+    checkOTP,
+    cisLookUP
  }
