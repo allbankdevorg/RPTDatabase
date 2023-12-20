@@ -15,7 +15,7 @@
                 <mat-form-field appearance="fill" [style.width.%]=100>
                   <!-- <mat-label>CIS Number</mat-label> -->
                   <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
-                  type="text" placeholder="CIS"
+                  type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
                   formControlName="aff_com_cis_number" appNum>
                   <mat-error *ngIf="affForm.get('cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 </mat-form-field>
