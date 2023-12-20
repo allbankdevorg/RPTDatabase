@@ -14,7 +14,7 @@
               <label cLabel="col" for="cisNumber">CIS Number</label>
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>First Name</mat-label> -->
-                <input matInput id="cisNumber" name="cisNumber"
+                <input matInput id="cisNumber" name="cisNumber" (keyup.enter)="CISlookup()"
                 type="text" placeholder="CIS Number" formControlName="com_cis_number" appNum>
                  <mat-error *ngIf="dosriForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               </mat-form-field>
@@ -25,7 +25,7 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Middle Name</mat-label> -->
                 <input matInput id="accountName"  name="accountName"
-                type="text" placeholder="Account Name" formControlName="com_account_name" oninput="this.value = this.value.toUpperCase()">
+                type="text" placeholder="Account Name" formControlName="com_account_name">
                 <mat-error *ngIf="dosriForm.get('com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
                 
               </mat-form-field>
