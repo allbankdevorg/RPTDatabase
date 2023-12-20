@@ -26,7 +26,7 @@ export class BankofficerModalComponent implements OnInit{
     private _dialogRef: MatDialogRef<BankofficerModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private auditTrailService: AuditTrailService) {
-      {
+      
         this.boForm = this.formBuilder.group({
           boCisNumber: ['',[Validators.required]],
           boFirstName: ['', [Validators.required]],
@@ -34,20 +34,17 @@ export class BankofficerModalComponent implements OnInit{
           boLastName: ['', [Validators.required]],
           boPosition: ['', [Validators.required]],
       });
-    }
     _dialogRef.disableClose = true;
   }
 
 
 
   ngOnInit(): void {
-    console.log('Data received in DosriModalComponent:', this.data);
-
   // Attempt to patch the form
   this.boForm.patchValue(this.data);
 
   // Log the form control values
-  console.log('Form controls after patching:', this.boForm.value);
+  // console.log('Form controls after patching:', this.boForm.value);
 
   }
 
@@ -64,13 +61,11 @@ export class BankofficerModalComponent implements OnInit{
  
     if (this.boForm.valid) {
       const boData = this.boForm.value;
-  
       // Call the JavaScript function with form data
       console.log(boData);
       createBankOfficer(boData)
       .then((response) => {
         // this.updateTableData();
-        this.ngOnInit();
         this.logAction('Add Bank Officer', 'Successfuly Added Bank Officer', true, 'bankofficer');
         this.close();
 
