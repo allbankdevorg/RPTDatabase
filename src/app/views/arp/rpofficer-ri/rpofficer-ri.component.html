@@ -335,6 +335,11 @@
                         <!-- <tr mat-header-row *matHeaderRowDef="['header-row-first-group']"></tr> -->
                         <tr mat-header-row *matHeaderRowDef="OffdisplayedColumns" class="cTableCol"></tr>
                         <tr mat-row *matRowDef="let row; columns: OffdisplayedColumns;" class="cTableRow"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell text-center p-3" colspan="4">No Data Available</td>
+                        </tr>
+
                         </table>
                     </section>
                 
