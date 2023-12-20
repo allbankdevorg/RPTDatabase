@@ -304,6 +304,11 @@
                         
                             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cTableCol"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cTableRow"></tr>
+
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell text-center" colspan="4">No Data Available</td>
+                            </tr>
+
                             </table>
                         </section>
                     
