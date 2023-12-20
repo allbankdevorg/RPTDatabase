@@ -19,7 +19,7 @@
                     <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Search">
                                   <mat-icon matSuffix>search</mat-icon>
                   </mat-form-field>
-                  <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" (click)="onButtonClick('A')" *appHasPermission="'add'">
+                  <button (click)="openAddEditEmpForm()" mat-fab extended color="primary" (click)="onButtonClick('A')" *appHasPermission="'add'">
                       <mat-icon>add</mat-icon>
                       ADD
                   </button>
@@ -84,7 +84,10 @@
                         <button mat-icon-button (click)="onRowClick(row, $event)" aria-label="View Users Info" *appHasPermission="'view'">
                           <mat-icon>visibility</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="editAffil(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
+                        <!-- <button mat-icon-button (click)="editAffil(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
+                          <mat-icon >create</mat-icon>
+                        </button> -->
+                        <button mat-icon-button (click)="openEditForm(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
                           <mat-icon >create</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="delAffiliates(row, row.aff_com_cis_number, $event)" aria-label="Delete Users" *appHasPermission="'delete'">
@@ -164,55 +167,23 @@
 
 
 <!-- Modals --> 
-<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
+<!-- <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
     <c-modal-header>
       <h3 cModalTitle>Add Affiliates Company</h3>
       <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
     </c-modal-header>
   
-    <form cForm class="mb-2" [formGroup]="affForm" (ngSubmit)="onSubmit()">
+    <form cForm class="mb-2">
       <c-modal-body>
         <c-row class="align-items-center">
           
-          <c-col [sm]="6">
-              <label cLabel="col" for="affilCisNumberM">CIS Number</label>
-              <mat-form-field appearance="fill" [style.width.%]=100>
-                <!-- <mat-label>CIS Number</mat-label> -->
-                <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
-                type="text" placeholder="CIS"
-                formControlName="affilCisNumberM" appNum>
-                <mat-error *ngIf="affForm.get('affilCisNumberM')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-              </mat-form-field>
-          </c-col>
-  
-          <c-col [sm]="6">
-              <label cLabel="col" for="accountName">Account Name</label>
-              <mat-form-field appearance="fill" [style.width.%]=100>
-                <!-- <mat-label>Account Name</mat-label> -->
-                <input matInput #accDinput id="accountName"  name="accountName"
-                type="text" placeholder="Account Name"
-                formControlName="accountName" appCaps>
-                <mat-error *ngIf="affForm.get('accountName')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
-              </mat-form-field>
-              <!-- <input
-                cFormControl
-                > -->
-          </c-col>
+          
 
         </c-row>
 
         <c-row class="align-items-center">
   
-          <c-col [sm]="12">
-            <label cLabel="col" for="companyName">Company Name</label>
-            <mat-form-field appearance="fill" [style.width.%]=100>
-              <!-- <mat-label>Company Name</mat-label> -->
-              <input matInput #accDinput id="companyName" name="companyName"
-              type="text" placeholder="Company Name"
-              formControlName="companyName" appCaps>
-              <mat-error *ngIf="affForm.get('companyName')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
-            </mat-form-field>
-          </c-col>
+          
   
 
         </c-row>
@@ -224,23 +195,28 @@
         
 </c-modal>
 
+ -->
+
+
+
+
 <!-- Edit Modals -->
-<c-modal id="editAffil" [visible]="editAffilvisible" (visibleChange)="handleChange($event)" size="lg">
+<!-- <c-modal id="editAffil" [visible]="editAffilvisible" (visibleChange)="handleChange($event)" size="lg">
 <c-modal-header>
     <h5 cModalTitle>Edit Affiliates Company</h5>
     <button (click)="closeEditAffil()" cButtonClose></button>
 </c-modal-header>
-<c-modal-body>
+<c-modal-body> -->
     <!-- Modal Form -->
-    <form cForm class="mb-2" [formGroup]="affForm" (ngSubmit)="onSubmit()">
+    <!-- <form cForm class="mb-2" [formGroup]="affForm" (ngSubmit)="onSubmit()">
         <c-modal-body>
         <c-row class="align-items-center">
             
             <c-col [sm]="6">
                 <label cLabel="col" for="affilCisNumberM">CIS Number</label>
-                <mat-form-field appearance="fill" [style.width.%]=100>
+                <mat-form-field appearance="fill" [style.width.%]=100> -->
                 <!-- <mat-label>CIS Number</mat-label> -->
-                <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
+                <!-- <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
                 type="text" placeholder="CIS"
                 formControlName="affilCisNumberM" [value]="editAffilData.com_cis_number" appNum>
                 </mat-form-field>
@@ -248,16 +224,16 @@
     
             <c-col [sm]="6">
                 <label cLabel="col" for="accountName">Account Name</label>
-                <mat-form-field appearance="fill" [style.width.%]=100>
+                <mat-form-field appearance="fill" [style.width.%]=100> -->
                 <!-- <mat-label>Account Name</mat-label> -->
-                <input matInput #accDinput id="accountName"  name="accountName"
+                <!-- <input matInput #accDinput id="accountName"  name="accountName"
                 type="text" placeholder="Account Name"
                 formControlName="accountName" [value]="editAffilData.com_account_name" appCaps>
-                </mat-form-field>
+                </mat-form-field> -->
                 <!-- <input
                 cFormControl
                 > -->
-            </c-col>
+            <!-- </c-col>
 
         </c-row>
 
@@ -265,9 +241,9 @@
     
             <c-col [sm]="12">
             <label cLabel="col" for="companyName">Company Name</label>
-            <mat-form-field appearance="fill" [style.width.%]=100>
+            <mat-form-field appearance="fill" [style.width.%]=100> -->
                 <!-- <mat-label>Company Name</mat-label> -->
-                <input matInput #accDinput id="companyName" name="companyName"
+                <!-- <input matInput #accDinput id="companyName" name="companyName"
                 type="text" placeholder="Company Name"
                 formControlName="companyName" [value]="editAffilData.com_company_name" appCaps>
             </mat-form-field>
@@ -279,4 +255,4 @@
         </c-modal-footer>
     </form>
 </c-modal-body>
-</c-modal>
+</c-modal> -->
