@@ -156,7 +156,11 @@
                 <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cTableCol1"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cTableRow"></tr>
-            </table>
+            
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell text-center" colspan="4">No Data Available</td>
+              </tr>
+              </table>
               <!-- Paginator for Data Table -->
               <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                     showFirstLastButtons
