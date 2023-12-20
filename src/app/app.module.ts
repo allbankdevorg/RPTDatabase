@@ -117,6 +117,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { BankofficerModalComponent } from './modal-dialog/bankofficer-modal/bankofficer-modal.component';
 import { DirectorsRIModalComponent } from './modal-dialog/directors-ri-modal/directors-ri-modal.component';
 import { DirectorsModalComponent } from './modal-dialog/directors-modal/directors-modal.component';
+import { AffiliatesModalComponent } from './modal-dialog/affiliates-modal/affiliates-modal.component';
  
 
 const APP_CONTAINERS = [
@@ -133,7 +134,8 @@ const APP_CONTAINERS = [
     DosriModalComponent,
     BankofficerModalComponent,
     DirectorsRIModalComponent,
-    DirectorsModalComponent],
+    DirectorsModalComponent,
+    AffiliatesModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
