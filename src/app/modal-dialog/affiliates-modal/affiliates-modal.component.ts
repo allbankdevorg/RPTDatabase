@@ -18,6 +18,7 @@ import {AuditTrail} from '../../model/audit-trail.model';
 // Services
 import {AddServicesService} from '../../services/add/add-services.service';
 import { AffiliatesService } from 'src/app/services/affiliates/affiliates.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-affiliates-modal',
@@ -139,7 +140,11 @@ export class AffiliatesModalComponent implements OnInit {
             console.log('Form controls after patching:', this.affForm.value);
           })
           .catch((error) => {
-            console.error(error);
+            Swal.fire({
+              icon: 'error',
+              title: 'No CIS Found!',
+              // text: 'Invalid username or password',
+            });
           });
       }
     }
