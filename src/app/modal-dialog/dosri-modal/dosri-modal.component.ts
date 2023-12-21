@@ -1,15 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
 // import { EmployeeService } from '../services/employee.service';
 
 // Functions Imports
-import {callJSFun} from '../../functions-files/javascriptfun.js';
-import {FetchDataService} from '../../services/fetch/fetch-data.service';
-// import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
 import {createDosri, cisLookUP} from '../../functions-files/add/postAPI.js'
-import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
@@ -17,6 +13,7 @@ import {AuditTrail} from '../../model/audit-trail.model';
 
 // Services
 import {AddServicesService} from '../../services/add/add-services.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dosri-modal',
@@ -26,6 +23,8 @@ import {AddServicesService} from '../../services/add/add-services.service';
 export class DosriModalComponent implements OnInit {
   
   isInputDisabled = true;
+  foodCtrl!: FormControl;
+  disabled: boolean = true;
   dosriForm: FormGroup;
   education: string[] = [
     'Matric',
@@ -45,7 +44,7 @@ export class DosriModalComponent implements OnInit {
   ) {
     this.dosriForm = this._fb.group({
       com_cis_number: ['', [Validators.required]],
-      com_account_name: ['', [Validators.required]],
+      com_account_name: [''],
       com_company_name: ['', [Validators.required]]
       });
     _dialogRef.disableClose = true;
@@ -53,6 +52,7 @@ export class DosriModalComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Data received in DosriModalComponent:', this.data);
+    this.foodCtrl = new FormControl({value: '', disabled: this.disabled})
 
   // Attempt to patch the form
   this.dosriForm.patchValue(this.data);
@@ -146,7 +146,11 @@ export class DosriModalComponent implements OnInit {
           console.log('Form controls after patching:', this.dosriForm.value);
         })
         .catch((error) => {
-          console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'No CIS Found!',
+            // text: 'Invalid username or password',
+          });
         });
     }
   }
