@@ -19,7 +19,7 @@
  */
 function createDosri(formData) {
   return new Promise((resolve, reject) => {
-    console.log(formData)
+    // console.log(formData)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -40,7 +40,7 @@ function createDosri(formData) {
 
     $.ajax(settings).done(function (response) {
       // Log the response
-      console.log(response.result[0].status);
+      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -63,7 +63,7 @@ function createDosri(formData) {
  */
  function createDirectors(directData, selectedCompCISNumber) {
   return new Promise((resolve, reject) => {
-    console.log(selectedCompCISNumber);
+    // console.log(selectedCompCISNumber);
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -86,7 +86,7 @@ function createDosri(formData) {
 
     $.ajax(settings).done(function (response) {
       // Log the response
-      console.log(response.result[0].status);
+      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -108,9 +108,9 @@ function createDosri(formData) {
 */
 function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
   return new Promise((resolve, reject) => {
-    console.log(buttonId)
-    console.log(selectedDirCisNumber)
-    console.log(riData)
+    // console.log(buttonId)
+    // console.log(selectedDirCisNumber)
+    // console.log(riData)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -134,8 +134,8 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
 
     $.ajax(settings).done(function (response) {
       // Log the response
-      console.log(response.result[0].status);
-      console.log(response.result[0].message);
+      // console.log(response.result[0].status);
+      // console.log(response.result[0].message);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -155,7 +155,7 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
  */
 function createBankOfficer(boData) {
   return new Promise((resolve, reject) => {
-    console.log(boData)
+    // console.log(boData)
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -179,7 +179,7 @@ function createBankOfficer(boData) {
 
     $.ajax(settings).done(function (response) {
       // Log the response
-      console.log(response.result[0].status);
+      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -203,9 +203,9 @@ function createBankOfficer(boData) {
 function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber) {
   return new Promise((resolve, reject) => {
     
-    console.log(boRIData)
-    console.log(buttonId)
-    console.log(selectedcomCisNumber)
+    // console.log(boRIData)
+    // console.log(buttonId)
+    // console.log(selectedcomCisNumber)
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -230,7 +230,7 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber)
 
     $.ajax(settings).done(function (response) {
       // Log the response
-      console.log(response.result[0].status);
+      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -251,8 +251,8 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber)
 */
 function createAffil(formData, moduleV) {
     return new Promise((resolve, reject) => {
-      console.log(formData)
-      console.log(moduleV);
+      // console.log(formData)
+      // console.log(moduleV);
 
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
@@ -275,7 +275,7 @@ function createAffil(formData, moduleV) {
   
       $.ajax(settings).done(function (response) {
         // Log the response
-        console.log(response.result[0].status);
+        // console.log(response.result[0].status);
         
         // Check the status and resolve/reject the promise accordingly
         Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -295,8 +295,8 @@ function createAffil(formData, moduleV) {
  * @param {any} compId - The company ID.
 */
 function createAffilDir(dirData, compId) {
-    console.log(dirData)
-    console.log(compId)
+    // console.log(dirData)
+    // console.log(compId)
    var settings = {
      "url": "http://10.232.236.15:8092/api/addData",
      "method": "POST",
@@ -331,8 +331,8 @@ function createAffilDir(dirData, compId) {
  * @param {any} compId - The company ID.
 */
 function createAffilOff(offData, compId) {
-    console.log(offData)
-    console.log(compId)
+    // console.log(offData)
+    // console.log(compId)
    var settings = {
      "url": "http://10.232.236.15:8092/api/addData",
      "method": "POST",
@@ -368,9 +368,9 @@ function createAffilOff(offData, compId) {
  * @param {any} selectedOffCisNumber - The selected officer's CIS number.
 */
 function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber) {
-    console.log(OffriData)
-    console.log(buttonId)
-    console.log(selectedOffCisNumber)
+    // console.log(OffriData)
+    // console.log(buttonId)
+    // console.log(selectedOffCisNumber)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -405,9 +405,9 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber) {
 */
 function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber) {
 
-    console.log(buttonId)
-    console.log(selectedDirCisNumber)
-    console.log(riData)
+    // console.log(buttonId)
+    // console.log(selectedDirCisNumber)
+    // console.log(riData)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -430,7 +430,7 @@ function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber
     
     $.ajax(settings).done(function (response) {
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-      console.log(response);
+      // console.log(response);
     });
     // Implement code to insert a new director into the database
 }
@@ -507,8 +507,8 @@ function sendOTP(mobile, otpGen) {
   
       $.ajax(settings).done(function (response) {
           // Log the response
-          console.log(response.result[0].message);
-          console.log(response.result[0].status);
+          // console.log(response.result[0].message);
+          // console.log(response.result[0].status);
           
           // Check the status and resolve/reject the promise accordingly
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -550,8 +550,8 @@ function checkOTP(user, enteredOTP) {
   
       $.ajax(settings).done(function (response) {
           // Log the response
-          console.log(response.result[0].message);
-          console.log(response.result[0].status);
+          // console.log(response.result[0].message);
+          // console.log(response.result[0].status);
           
           // Check the status and resolve/reject the promise accordingly
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -581,7 +581,7 @@ function cisLookUP(cis) {
       
       $.ajax(settings).done(function (response) {
         // Log the response
-        console.log(response);
+        // console.log(response);
         // console.log(response.result[0].status);
         
         // Check the status and resolve/reject the promise accordingly
