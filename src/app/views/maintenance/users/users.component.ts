@@ -170,7 +170,7 @@ export class UsersComponent {
       // Add more form controls as needed
     });
     this.updateTableData();
-    console.log(this.userDataSource.data);
+    // console.log(this.userDataSource.data);
     // this.dataSource.data = SAMPLE_DATA;
     // console.log(this.dataSource.data)
   }
@@ -189,7 +189,7 @@ export class UsersComponent {
   onUserSubmit() {
     if (this.userForm.valid) {
       const formData = this.userForm.value;
-      console.log(formData);
+      // console.log(formData);
       // Call the JavaScript function with form data
       addUsers(formData); // Pass the entire formData object
       }
@@ -215,7 +215,7 @@ updateTableData(): void {
 
   // Set the data source for your MatTable for users
   this.userDataSource.data = UsersData;
-  console.log('Users Data:', this.userDataSource.data);
+  // console.log('Users Data:', this.userDataSource.data);
 
 
 
@@ -251,7 +251,7 @@ updateDatabase(permission: Permissions, propertyName: any) {
     // Manually trigger change detection
     this.cdr.detectChanges();
 
-    console.log(this.userData);
+    // console.log(this.userData);
   
   // Assuming you have a service for handling database interactions
   // Replace 'yourService' with the actual service name
@@ -285,17 +285,17 @@ updateDatabase(permission: Permissions, propertyName: any) {
 
   editUsers(row: any): void {
     this.editvisible = !this.editvisible;
-    console.log(row);
-    console.log(this.commandGroups);
+    // console.log(row);
+    // console.log(this.commandGroups);
     const selectedDept = row.Dept;
-    console.log('Selected Department:', selectedDept);
+    // console.log('Selected Department:', selectedDept);
      // Check if the selectedManager exists in the commandGroups
      const isValidDept = this.commandGroups.some(group => {
-      console.log('Group Value:', group.value);
+      // console.log('Group Value:', group.value);
       return group.value === selectedDept;
     });
   
-    console.log('IsValidDepartment:', isValidDept);
+    // console.log('IsValidDepartment:', isValidDept);
   
 
 
@@ -305,8 +305,8 @@ updateDatabase(permission: Permissions, propertyName: any) {
     
   } else {
     // Optionally, handle the case where the manager is not valid
-    console.error('Invalid Department:', isValidDept);
-    console.log(this.userForm);
+    // console.error('Invalid Department:', isValidDept);
+    // console.log(this.userForm);
   }
 
     this.editUserData = {
@@ -320,7 +320,7 @@ updateDatabase(permission: Permissions, propertyName: any) {
       // Add other properties as needed
     };
 
-    console.log(this.editUserData);
+    // console.log(this.editUserData);
     
   }
 
@@ -338,7 +338,7 @@ updateDatabase(permission: Permissions, propertyName: any) {
 
   delRelationship(): void {
     // deleteRelationship()
-    console.log("Are you sure you want to delete?")
+    // console.log("Are you sure you want to delete?")
     deleteDosri((dosriId) => {
   
     })
@@ -346,8 +346,8 @@ updateDatabase(permission: Permissions, propertyName: any) {
 
 
   onButtonClick() {
-    console.log('Show Modal');
-    console.log("success: Login Successfully");
+    // console.log('Show Modal');
+    // console.log("success: Login Successfully");
     const modal = this.usersModal.nativeElement;
 
     if (modal) {
@@ -357,8 +357,8 @@ updateDatabase(permission: Permissions, propertyName: any) {
   }
 
   onModalClose() {
-    console.log('Show Modal');
-    console.log("success: Login Successfully");
+    // console.log('Show Modal');
+    // console.log("success: Login Successfully");
     const modal = this.usersModal.nativeElement;
 
     if (modal) {
@@ -375,7 +375,7 @@ updateDatabase(permission: Permissions, propertyName: any) {
 
     if (userButtons) {
       const buttonIds = userButtons.map(button => `${button}-${userId}`);
-      console.log('Button IDs:', buttonIds);
+      // console.log('Button IDs:', buttonIds);
       return buttonIds;
     }
   

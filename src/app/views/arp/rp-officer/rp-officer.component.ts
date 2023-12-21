@@ -189,7 +189,7 @@ export class RpOfficerComponent implements AfterViewInit {
   
         // Set the data source for your MatTable
         this.dataSource.data = companiesWithDirectors;
-        console.log(companiesWithDirectors);
+        // console.log(companiesWithDirectors);
       }
     });
   
@@ -205,7 +205,7 @@ export class RpOfficerComponent implements AfterViewInit {
           });
           
           // Set the data source for your MatTable
-          console.log(affiliatesWithDirectors)
+          // console.log(affiliatesWithDirectors)
           this.affilOffdataSource.data = affiliatesWithDirectors;
           // Trigger change detection
           this.cdr.detectChanges();
@@ -216,11 +216,11 @@ export class RpOfficerComponent implements AfterViewInit {
     this.get.getManagingCompany((mngComp) => {
       this.compData = mngComp;
     this.commandGroups = []; // Clear the existing commandGroups
-    console.log(this.compData);
+    // console.log(this.compData);
 
       if (mngComp) {
         const data = mngComp;
-        console.log(data);
+        // console.log(data);
         data.forEach(item => {
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
@@ -240,8 +240,8 @@ export class RpOfficerComponent implements AfterViewInit {
   setButtonId(id: number, comCisNumber: number) {
     this.buttonId = id;
     this.selectedcomCisNumber = comCisNumber;
-    console.log(comCisNumber);
-    console.log(id);
+    // console.log(comCisNumber);
+    // console.log(id);
     
   }
 
@@ -262,8 +262,8 @@ export class RpOfficerComponent implements AfterViewInit {
 
       // Trigger change detection
     this.cdr.detectChanges();
-    console.log(this.cdr.detectChanges);
-    console.log(this.dataSource);
+    // console.log(this.cdr.detectChanges);
+    // console.log(this.dataSource);
   }
 
   onBORISubmit() {
@@ -279,7 +279,7 @@ export class RpOfficerComponent implements AfterViewInit {
   onSubmit() {
     if (this.affForm.valid) {
       const formData = this.affForm.value;
-      console.log(formData);
+      // console.log(formData);
       // Call the JavaScript function with form data
       createAffil(formData); // Pass the entire formData object
     }
@@ -287,13 +287,13 @@ export class RpOfficerComponent implements AfterViewInit {
 
   // Start of Button Click
   onButtonClick() {
-    console.log('Show Modal Form');
+    // console.log('Show Modal Form');
     
   }
 
   onRowClick(row: any, event: Event) {
     event.stopPropagation();
-    console.log(row)
+    // console.log(row)
     // Capture the selected data and navigate to another component with it
       const directorId = row.aff_com_cis_number; // Extract the ID from the clicked row
       const companyName = row.aff_com_company_name;
@@ -301,12 +301,12 @@ export class RpOfficerComponent implements AfterViewInit {
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       this.sharedService.setCompanyCis(companyName);
-      console.log(directorId);
-      console.log(companyName);
-      console.log('row has been clicked');
-    // 
-    console.log('row has been clicked');
-    console.log('Clicked row data:', row);
+    //   console.log(directorId);
+    //   console.log(companyName);
+    //   console.log('row has been clicked');
+    // // 
+    // console.log('row has been clicked');
+    // console.log('Clicked row data:', row);
     this.router.navigate(['/arp/rpofficer-ri', directorId]);
   }
 
@@ -314,8 +314,8 @@ export class RpOfficerComponent implements AfterViewInit {
   delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
     event.stopPropagation();
     // deleteRelationship()
-    console.log(row);
-    console.log(aff_com_cis_number);
+    // console.log(row);
+    // console.log(aff_com_cis_number);
     // console.log(comCIS);
     deleteAffiliates((dosriId) => {
   
@@ -332,27 +332,27 @@ export class RpOfficerComponent implements AfterViewInit {
   editAffil(row: any, event: Event) {
     event.stopPropagation();
     this.editAffilvisible = !this.editAffilvisible;
-    console.log(row);
-    console.log(this.commandGroups);
+    // console.log(row);
+    // console.log(this.commandGroups);
     const selectedManager = row.managing_company;
-    console.log('Selected Manager:', selectedManager);
+    // console.log('Selected Manager:', selectedManager);
      // Check if the selectedManager exists in the commandGroups
      const isValidManager = this.commandGroups.some(group => {
-      console.log('Group Value:', group.value);
+      // console.log('Group Value:', group.value);
       return group.value === selectedManager;
     });
   
-    console.log('IsValidManager:', isValidManager);
+    // console.log('IsValidManager:', isValidManager);
   
 
 
   // Set the value only if it's a valid manager
   if (isValidManager) {
     this.affForm.get('commandControl')?.setValue(selectedManager);
-    console.log(this.affForm);
+    // console.log(this.affForm);
   } else {
     // Optionally, handle the case where the manager is not valid
-    console.error('Invalid manager:', selectedManager);
+    // console.error('Invalid manager:', selectedManager);
   }
 
     this.editAffilData = {

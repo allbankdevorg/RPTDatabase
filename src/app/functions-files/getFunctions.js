@@ -233,7 +233,7 @@ function getOfficers(callback) {
       $.ajax(settings).done(function (response) {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
             var affilOffData = response.result[0].Data;
-            console.log(affilOffData);
+            // console.log(affilOffData);
             if (callback) {
                 callback(affilOffData);
             }

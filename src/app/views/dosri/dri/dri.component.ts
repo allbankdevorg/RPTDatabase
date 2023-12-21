@@ -189,14 +189,14 @@ export class DriComponent {
     }
 
     onButtonClick() {
-      console.log('Show Modal');
+      // console.log('Show Modal');
       
     }
     
 
     onRowClick(element: any, event: Event) {
       event.stopPropagation();
-      console.log(element);
+      // console.log(element);
       // Capture the selected data and navigate to another component with it
       // this.router.navigate(['/details', row.id]);
       const directorId = element.com_cis_number; // Extract the ID from the clicked row
@@ -208,16 +208,16 @@ export class DriComponent {
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       this.sharedService.setCompanyCis(companyName);
-      console.log(directorId);
-      console.log(companyName);
-      console.log('row has been clicked');
-      console.log('Clicked row data:', element);
+      // console.log(directorId);
+      // console.log(companyName);
+      // console.log('row has been clicked');
+      // console.log('Clicked row data:', element);
       this.router.navigate(['/dosri/directorsrelated', directorId]);
     }
 
 
     onAccRowClick(element: any) {
-      console.log(element);
+      // console.log(element);
       // Capture the selected data and navigate to another component with it
       // this.router.navigate(['/details', row.id]);
       const directorId = element.com_cis_number; // Extract the ID from the clicked row
@@ -226,10 +226,10 @@ export class DriComponent {
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       this.sharedService.setCompanyCis(companyName);
-      console.log(directorId);
-      console.log(companyName);
-      console.log('row has been clicked');
-      console.log('Clicked row data:', element);
+      // console.log(directorId);
+      // console.log(companyName);
+      // console.log('row has been clicked');
+      // console.log('Clicked row data:', element);
       this.logAction('View', 'Viewed ' + companyName + " Directors and It's related interest", true, 'DRI');
       this.router.navigate(['/dosri/directorsrelated', directorId]);
     }
@@ -238,7 +238,7 @@ export class DriComponent {
     editDosri(element: any, event: Event): void {
       event.stopPropagation();
       this.visible = !this.visible;
-      console.log(element);
+      // console.log(element);
       this.selectedItem = element;
 
       this.editData = {
@@ -258,8 +258,8 @@ export class DriComponent {
     }
 
     edit(){
-      console.log('Show Modal');
-      console.log("success: Login Successfully");
+      // console.log('Show Modal');
+      // console.log("success: Login Successfully");
       const modal = this.editModal.nativeElement;
 
       if (modal) {
@@ -269,8 +269,8 @@ export class DriComponent {
     }
 
     onModalClose() {
-      console.log('Show Modal');
-      console.log("success: Login Successfully");
+      // console.log('Show Modal');
+      // console.log("success: Login Successfully");
       const modal = this.editModal.nativeElement;
   
       if (modal) {
@@ -321,7 +321,7 @@ openAddEditEmpForm() {
 
 openEditForm(data: any, event: any) {
   event.stopPropagation();
-  console.log(data);
+  // console.log(data);
   const dialogRef = this._dialog.open(DosriModalComponent, {
     data,    
   });
@@ -330,7 +330,7 @@ openEditForm(data: any, event: any) {
     next: (val) => {
       if (val) {
         // this.getEmployeeList();
-        console.log("Successs");
+        // console.log("Successs");
       }
     },
   });
@@ -362,7 +362,7 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    console.log('Audit trail entry logged successfully.');
+    // console.log('Audit trail entry logged successfully.');
   });
   // console.log('Audit trail entry logged successfully.');
 }

@@ -184,7 +184,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
           this.isNodeDetailsVisible = true;
           this.showPopup(); // 
           chart.collapse(data.getValue(chart.getSelection()[0].row, 0)); // Collapse on single-click
-          console.log(selectedItem);
+          // console.log(selectedItem);
         }
         lastClickTime = Date.now(); // Update the last click time
         
@@ -299,8 +299,8 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   
 
   onButtonClick(module: any) {
-    console.log('Add Data');
-    console.log(module);
+    // console.log('Add Data');
+    // console.log(module);
     // this.moduleV = module;
 
     this.dataService.setmoduleV(module);
@@ -357,7 +357,7 @@ openAddEditEmpForm() {
 
 openEditForm(data: any, event: any) {
   event.stopPropagation();
-  console.log(data);
+  // console.log(data);
   const dialogRef = this._dialog.open(AffiliatesRPModalComponent, {
     data,    
   });
@@ -366,7 +366,7 @@ openEditForm(data: any, event: any) {
     next: (val) => {
       if (val) {
         // this.getEmployeeList();
-        console.log("Successs");
+        // console.log("Successs");
       }
     },
   });
@@ -402,7 +402,7 @@ openEditForm(data: any, event: any) {
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      console.log('Audit trail entry logged successfully.');
+      // console.log('Audit trail entry logged successfully.');
     });
     // console.log('Audit trail entry logged successfully.');
   }

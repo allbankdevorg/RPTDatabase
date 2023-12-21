@@ -247,7 +247,7 @@ async  ngOnInit() {
 
       // if (affilDirData) {
           const filteredDirectors = affilDirData.filter((director) => director.com_related === this.compId);
-          console.log(filteredDirectors);
+          // console.log(filteredDirectors);
           const relationColumn = ['MothersName', 'FathersName', 'Siblings', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const tableData: Record<string, any>[] = [];
@@ -364,7 +364,7 @@ async  ngOnInit() {
           this.changeDetectorRef.detectChanges();
       }else {
         // Handle the case where affilDirData is null or undefined
-        console.error('No directors');
+        // console.error('No directors');
       }
     });
 
@@ -376,25 +376,25 @@ async  ngOnInit() {
   setButtonId(id: number, dirCisNumber: number) {
     this.buttonId = id;
     this.selectedDirCisNumber = dirCisNumber;
-   console.log(dirCisNumber);
-   console.log(id);
+  //  console.log(dirCisNumber);
+  //  console.log(id);
  }
 
  setButtonIds(id: number, OffCisNumber: number) {
    this.buttonId = id;
    this.selectedOffCisNumber = OffCisNumber;
-  console.log(OffCisNumber);
-  console.log(id);
+  // console.log(OffCisNumber);
+  // console.log(id);
 }
 
  setAffilComp() {
    this.selectedAffilCompCISNumber = this.compId;
-   console.log(this.selectedAffilCompCISNumber)
+  //  console.log(this.selectedAffilCompCISNumber)
  }
 
  setAffilCompOff() {
    this.selectedAffilCompCISNumber = this.compId;
-   console.log(this.selectedAffilCompCISNumber)
+  //  console.log(this.selectedAffilCompCISNumber)
  }
 
  setdirRelated() {
@@ -424,8 +424,8 @@ async  ngOnInit() {
    
      // Trigger change detection
    this.changeDetectorRef.detectChanges();
-   console.log(this.changeDetectorRef.detectChanges);
-   console.log(this.dataSource);
+  //  console.log(this.changeDetectorRef.detectChanges);
+  //  console.log(this.dataSource);
  }
 
  onOffRISubmit() {
@@ -449,8 +449,8 @@ async  ngOnInit() {
    
      // Trigger change detection
    this.changeDetectorRef.detectChanges();
-   console.log(this.changeDetectorRef.detectChanges);
-   console.log(this.dataSource);
+  //  console.log(this.changeDetectorRef.detectChanges);
+  //  console.log(this.dataSource);
  }
 
 
@@ -461,7 +461,7 @@ async  ngOnInit() {
      const directorId = this.sharedService.getDirectorId();
      const companyName = this.sharedService.getCompName();
      
-     console.log(directData);
+    //  console.log(directData);
      // Call the JavaScript function with form data
      createAffilDir(directData, this.compId); // Pass the entire formData object
      this.ngOnInit();
@@ -475,8 +475,8 @@ async  ngOnInit() {
 
      // Trigger change detection
    this.changeDetectorRef.detectChanges();
-   console.log(this.changeDetectorRef.detectChanges);
-   console.log(this.dataSource);
+  //  console.log(this.changeDetectorRef.detectChanges);
+  //  console.log(this.dataSource);
  }
 
  // Adding Affiliated Company Officers
@@ -491,7 +491,7 @@ async  ngOnInit() {
      createAffilOff(offData, this.compId); // Pass the entire formData object
      this.ngOnInit();
 
-     console.log(offData);
+    //  console.log(offData);
    }
 
    this.ngZone.run(() => {
@@ -507,9 +507,9 @@ async  ngOnInit() {
 
 //Delete Functions
 delAffilDirector(element: any, dirAffilCIS: any, dirRelatComCIS: any): void {
- console.log(element);
- console.log(dirAffilCIS);
- console.log(dirRelatComCIS);
+//  console.log(element);
+//  console.log(dirAffilCIS);
+//  console.log(dirRelatComCIS);
  deleteAffilDir((dosriId) => {
 
  })
@@ -517,10 +517,10 @@ delAffilDirector(element: any, dirAffilCIS: any, dirRelatComCIS: any): void {
 
 delAffilDirRI(element: any, cisNum: any, dirRelated: any): void {
  // deleteRelationship()
- console.log(element);
- console.log(cisNum);
- console.log(dirRelated);
- console.log("Are you sure you want to delete?")
+//  console.log(element);
+//  console.log(cisNum);
+//  console.log(dirRelated);
+//  console.log("Are you sure you want to delete?")
  deleteAffilDirRI((dosriId) => {
 
  })
@@ -528,9 +528,9 @@ delAffilDirRI(element: any, cisNum: any, dirRelated: any): void {
 
 
 delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
- console.log(element);
- console.log(dirAffilCIS);
- console.log(offRelatComCIS);
+//  console.log(element);
+//  console.log(dirAffilCIS);
+//  console.log(offRelatComCIS);
  deleteAffilOff((dosriId) => {
 
  })
@@ -539,11 +539,11 @@ delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
 
 
 delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
- console.log(element);
- console.log(cisNum);
- console.log(offRelated);
+//  console.log(element);
+//  console.log(cisNum);
+//  console.log(offRelated);
  // deleteRelationship()
- console.log("Are you sure you want to delete?")
+//  console.log("Are you sure you want to delete?")
  deleteAffilOffRI((dosriId) => {
 
  })

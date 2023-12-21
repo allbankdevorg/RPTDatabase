@@ -161,7 +161,7 @@ export class BankofficerComponent implements AfterViewInit{
                   'comp_CIS': officer.com_related,
             };
   
-            console.log(officer.off_cisnumber);
+            // console.log(officer.off_cisnumber);
             // Loop through each element in the 'relationColumn' array
             for (let index = 0; index < relationColumn.length; index++) {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
@@ -202,11 +202,11 @@ export class BankofficerComponent implements AfterViewInit{
             });
   
             this.officers = officers;
-            console.log(tableData);
+            // console.log(tableData);
         }
           
           this.dataSource.data = tableData;
-          console.log(this.officers);
+          // console.log(this.officers);
           // Trigger change detection
           this.changeDetectorRef.detectChanges();
         });
@@ -222,8 +222,8 @@ export class BankofficerComponent implements AfterViewInit{
   setButtonId(id: number, offCisNumber: number) {
     this.buttonId = id;
     this.selectedcomCisNumber = offCisNumber;
-    console.log(offCisNumber);
-    console.log(id);
+    // console.log(offCisNumber);
+    // console.log(id);
 
     this.dataService.setboCIS(offCisNumber);
     this.dataService.setButtonId(id);
@@ -244,7 +244,7 @@ export class BankofficerComponent implements AfterViewInit{
   
   openEditForm(data: any, event: any) {
     event.stopPropagation();
-    console.log(data);
+    // console.log(data);
     const dialogRef = this._dialog.open(BankofficerModalComponent, {
       data,    
     });
@@ -265,14 +265,14 @@ export class BankofficerComponent implements AfterViewInit{
 
   // Start of Button Click
   onButtonClick() {
-    console.log('Show Modal Form');
+    // console.log('Show Modal Form');
     
   }
 
   delOfficer(element: any, cisNumber: any, offc_CisNumber: any) {
-    console.log(element);
-    console.log('CIS Number:', cisNumber);
-    console.log('Off_related:', offc_CisNumber);
+    // console.log(element);
+    // console.log('CIS Number:', cisNumber);
+    // console.log('Off_related:', offc_CisNumber);
     // delete Officer
     deleteDOSRIOfficer((dosriId) => {
 
@@ -281,9 +281,9 @@ export class BankofficerComponent implements AfterViewInit{
 
   delRelationship(element: any, cisNumber: any, officer_related: any): void {
     // deleteRelationship
-    console.log(element);
-    console.log('CIS Number:', cisNumber);
-    console.log('Off_related:', officer_related);
+    // console.log(element);
+    // console.log('CIS Number:', cisNumber);
+    // console.log('Off_related:', officer_related);
     // console.log('CIS Number:', cis_number);
     // console.log('dir_related:', dir_related);
     console.log("Are you sure you want to delete?")
@@ -322,7 +322,7 @@ openEditRIForm(data: any, event: any) {
     next: (val) => {
       if (val) {
         // this.getEmployeeList();
-        console.log("Successs");
+        // console.log("Successs");
       }
     },
   });

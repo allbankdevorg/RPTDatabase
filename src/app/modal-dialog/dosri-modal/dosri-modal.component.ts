@@ -51,14 +51,14 @@ export class DosriModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Data received in DosriModalComponent:', this.data);
+    // console.log('Data received in DosriModalComponent:', this.data);
     this.foodCtrl = new FormControl({value: '', disabled: this.disabled})
 
   // Attempt to patch the form
   this.dosriForm.patchValue(this.data);
 
   // Log the form control values
-  console.log('Form controls after patching:', this.dosriForm.value);
+  // console.log('Form controls after patching:', this.dosriForm.value);
 
   }
 
@@ -72,7 +72,7 @@ export class DosriModalComponent implements OnInit {
       const formData = this.dosriForm.value;
 
       
-      console.log(formData);
+      // console.log(formData);
       // Call the JavaScript function with form data
       createDosri(formData)
       .then((response) => {
@@ -83,7 +83,7 @@ export class DosriModalComponent implements OnInit {
       })
       .catch((error) => {
         // Handle errors when the promise is rejected
-        console.error(error.result[0].status);
+        // console.error(error.result[0].status);
         this._dialogRef.close(true);
         this.logAction('Add', 'Adding Company Failed', false, 'DRI');
         // Swal.fire('Error occurred', '', 'error');
@@ -107,7 +107,7 @@ export class DosriModalComponent implements OnInit {
               this._dialogRef.close(true);
             },
             error: (err: any) => {
-              console.error(err);
+              // console.error(err);
             },
           });
       } else {
@@ -117,7 +117,7 @@ export class DosriModalComponent implements OnInit {
             this._dialogRef.close(true);
           },
           error: (err: any) => {
-            console.error(err);
+            // console.error(err);
           },
         });
       }
@@ -132,12 +132,12 @@ export class DosriModalComponent implements OnInit {
   CISlookup() {
     const dataLookup = this.dosriForm.value;
   
-    console.log(dataLookup.com_cis_number);
+    // console.log(dataLookup.com_cis_number);
     if (dataLookup.com_cis_number) {
       let cis = dataLookup.com_cis_number;
       cisLookUP(cis)
         .then((response) => {
-          console.log(response[0].name);
+          // console.log(response[0].name);
           let accName = response[0].name;
   
           // Update form controls with new values
@@ -148,7 +148,7 @@ export class DosriModalComponent implements OnInit {
           });
   
           // Log the form control values
-          console.log('Form controls after patching:', this.dosriForm.value);
+          // console.log('Form controls after patching:', this.dosriForm.value);
         })
         .catch((error) => {
           Swal.fire({
@@ -187,7 +187,7 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    console.log('Audit trail entry logged successfully.');
+    // console.log('Audit trail entry logged successfully.');
   });
   // console.log('Audit trail entry logged successfully.');
 }

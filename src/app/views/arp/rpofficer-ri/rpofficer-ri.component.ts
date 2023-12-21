@@ -91,9 +91,9 @@ export class RPOfficerRIComponent implements AfterViewInit {
                 this.Company = Company;
                 
               }
-              console.log(mngComp);
-              console.log(filteredCompany);
-              console.log(this.Company);
+              // console.log(mngComp);
+              // console.log(filteredCompany);
+              // console.log(this.Company);
                 // Set the data source for your MatTable
             });
         });
@@ -164,14 +164,14 @@ export class RPOfficerRIComponent implements AfterViewInit {
         this.OffdataSource.data = OfftableData;
 
         
-        console.log(OfftableData);
-        console.log(this.Company);
+        // console.log(OfftableData);
+        // console.log(this.Company);
 
           // Trigger change detection
           this.changeDetectorRef.detectChanges();
       }else {
         // Handle the case where affilOffData is null or undefined
-        console.error('No Officers');
+        // console.error('No Officers');
       }
     });
   }
@@ -189,7 +189,7 @@ export class RPOfficerRIComponent implements AfterViewInit {
       createAffilOff(offData, this.compId); // Pass the entire formData object
       this.ngOnInit();
 
-      console.log(offData);
+      // console.log(offData);
     }
 
     this.ngZone.run(() => {
@@ -224,20 +224,20 @@ export class RPOfficerRIComponent implements AfterViewInit {
     
       // Trigger change detection
     this.changeDetectorRef.detectChanges();
-    console.log(this.changeDetectorRef.detectChanges);
-    console.log(this.OffdataSource);
+    // console.log(this.changeDetectorRef.detectChanges);
+    // console.log(this.OffdataSource);
   }
 
   setAffilCompOff() {
     this.selectedAffilCompCISNumber = this.compId;
-    console.log(this.selectedAffilCompCISNumber)
+    // console.log(this.selectedAffilCompCISNumber)
   }
 
   setButtonId(id: number, off_cisnumber: number) {
      this.buttonId = id;
      this.selectedOffCisNumber = off_cisnumber;
-    console.log(off_cisnumber);
-    console.log(id);
+    // console.log(off_cisnumber);
+    // console.log(id);
     
   }
 
@@ -249,9 +249,9 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
   // Delete Functions
   delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
-    console.log(element);
-    console.log(dirAffilCIS);
-    console.log(offRelatComCIS);
+    // console.log(element);
+    // console.log(dirAffilCIS);
+    // console.log(offRelatComCIS);
     deleteAffilOff((dosriId) => {
   
     })
@@ -260,11 +260,11 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   
   delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
-    console.log(element);
-    console.log(cisNum);
-    console.log(offRelated);
+    // console.log(element);
+    // console.log(cisNum);
+    // console.log(offRelated);
     // deleteRelationship()
-    console.log("Are you sure you want to delete?")
+    // console.log("Are you sure you want to delete?")
     deleteAffilOffRI((dosriId) => {
   
     })

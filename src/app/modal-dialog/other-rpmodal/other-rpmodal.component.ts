@@ -53,13 +53,13 @@ export class OtherRPModalComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('Data received in DosriModalComponent:', this.data);
+    // console.log('Data received in DosriModalComponent:', this.data);
     this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
 
   // Log the form control values
-  console.log('Form controls after patching:', this.affForm.value);
+  // console.log('Form controls after patching:', this.affForm.value);
 
   }
 
@@ -69,7 +69,7 @@ export class OtherRPModalComponent implements OnInit {
 
     if (this.affForm.valid) {
       const formData = this.affForm.value;
-      console.log(formData);
+      // console.log(formData);
       // Call the JavaScript function with form data
       createAffil(formData, moduleV) // Pass the entire formData object
       .then((response) => {
@@ -80,7 +80,7 @@ export class OtherRPModalComponent implements OnInit {
       })
       .catch((error) => {
         // Handle errors when the promise is rejected
-        console.error(error.result[0].status);
+        // console.error(error.result[0].status);
         // Swal.fire('Error occurred', '', 'error');
       });
       
@@ -106,7 +106,7 @@ export class OtherRPModalComponent implements OnInit {
               this._dialogRef.close(true);
             },
             error: (err: any) => {
-              console.error(err);
+              // console.error(err);
             },
           });
       } else {
@@ -116,7 +116,7 @@ export class OtherRPModalComponent implements OnInit {
             this._dialogRef.close(true);
           },
           error: (err: any) => {
-            console.error(err);
+            // console.error(err);
           },
         });
       }
@@ -132,14 +132,14 @@ export class OtherRPModalComponent implements OnInit {
   CISlookup() {
     const dataLookup = this.affForm.value;
   
-    console.log(dataLookup.aff_com_cis_number);
+    // console.log(dataLookup.aff_com_cis_number);
     if (dataLookup.aff_com_cis_number) {
       let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
         .then((response) => {
           
           // if (response.length < 1) {
-            console.log(response[0].name);
+            // console.log(response[0].name);
           let accName = response[0].name;
             this.affForm.patchValue({
               aff_com_account_name: accName,
@@ -148,7 +148,7 @@ export class OtherRPModalComponent implements OnInit {
             });
     
             // Log the form control values
-            console.log('Form controls after patching:', this.affForm.value);
+            // console.log('Form controls after patching:', this.affForm.value);
           
           })
         .catch((error) => {
@@ -217,7 +217,7 @@ return {
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
 this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  console.log('Audit trail entry logged successfully.');
+  // console.log('Audit trail entry logged successfully.');
 });
 // console.log('Audit trail entry logged successfully.');
 }

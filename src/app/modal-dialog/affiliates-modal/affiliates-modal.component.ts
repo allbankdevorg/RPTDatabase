@@ -49,13 +49,13 @@ export class AffiliatesModalComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('Data received in DosriModalComponent:', this.data);
+    // console.log('Data received in DosriModalComponent:', this.data);
 
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
 
   // Log the form control values
-  console.log('Form controls after patching:', this.affForm.value);
+  // console.log('Form controls after patching:', this.affForm.value);
 
   }
 
@@ -74,7 +74,7 @@ export class AffiliatesModalComponent implements OnInit {
       })
       .catch((error) => {
         // Handle errors when the promise is rejected
-        console.error(error.result[0].status);
+        // console.error(error.result[0].status);
         this.logAction('Add', 'Adding Affiliates Failed', false, 'Affiliates');
        
       })
@@ -95,7 +95,7 @@ export class AffiliatesModalComponent implements OnInit {
                 this._dialogRef.close(true);
               },
               error: (err: any) => {
-                console.error(err);
+                // console.error(err);
               },
             });
         } else {
@@ -105,7 +105,7 @@ export class AffiliatesModalComponent implements OnInit {
               this._dialogRef.close(true);
             },
             error: (err: any) => {
-              console.error(err);
+              // console.error(err);
             },
           });
         }
@@ -121,12 +121,12 @@ export class AffiliatesModalComponent implements OnInit {
     CISlookup() {
       const dataLookup = this.affForm.value;
     
-      console.log(dataLookup.aff_com_cis_number);
+      // console.log(dataLookup.aff_com_cis_number);
       if (dataLookup.aff_com_cis_number) {
         let cis = dataLookup.aff_com_cis_number;
         cisLookUP(cis)
           .then((response) => {
-            console.log(response[0].name);
+            // console.log(response[0].name);
             let accName = response[0].name;
     
             // Update form controls with new values
@@ -137,7 +137,7 @@ export class AffiliatesModalComponent implements OnInit {
             });
     
             // Log the form control values
-            console.log('Form controls after patching:', this.affForm.value);
+            // console.log('Form controls after patching:', this.affForm.value);
           })
           .catch((error) => {
             Swal.fire({
@@ -177,7 +177,7 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    console.log('Audit trail entry logged successfully.');
+    // console.log('Audit trail entry logged successfully.');
   });
   // console.log('Audit trail entry logged successfully.');
 }

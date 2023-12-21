@@ -171,7 +171,7 @@ this.initializeCommandGroups();
 
 ngOnInit() {
 this.updateTableData();
-console.log(this.displayedData)
+// console.log(this.displayedData)
 }
 
 
@@ -331,7 +331,7 @@ updateTableData() {
 
       // Set the data source for your MatTable
       this.affDataSource.data = companiesWithOfficers;
-      console.log(companiesWithOfficers);
+      // console.log(companiesWithOfficers);
     }
   });
 
@@ -357,8 +357,8 @@ updateTableData() {
 
 
 onButtonClick(module: any) {
-console.log('Add Data');
-console.log(module);
+// console.log('Add Data');
+// console.log(module);
 this.moduleV = module;
 
 this.dataService.setmoduleV(module);
@@ -374,12 +374,12 @@ const companyName = row.aff_com_company_name;
 this.sharedService.setCompName(companyName);
 this.sharedService.setDirectorId(directorId);
 this.sharedService.setCompanyCis(companyName);
-console.log(directorId);
-console.log(companyName);
-console.log('row has been clicked');
-// 
-console.log('row has been clicked');
-console.log('Clicked row data:', row);
+// console.log(directorId);
+// console.log(companyName);
+// console.log('row has been clicked');
+// // 
+// console.log('row has been clicked');
+// console.log('Clicked row data:', row);
 this.router.navigate(['/arp/pac', directorId]);
 }
 
@@ -390,9 +390,9 @@ initializeCommandGroups() {
 }
 
 editaffiliates(row: any) {
-console.log(row);
-console.log('Show Modal');
-console.log("success: Login Successfully");
+// console.log(row);
+// console.log('Show Modal');
+// console.log("success: Login Successfully");
 const modal = this.editAffilModal.nativeElement;
 
 if (modal) {
@@ -402,8 +402,8 @@ this.renderer.setStyle(modal, 'display', 'block');
 }
 
 onModalClose() {
-console.log('Show Modal');
-console.log("success: Login Successfully");
+// console.log('Show Modal');
+// console.log("success: Login Successfully");
 const modal = this.editAffilModal.nativeElement;
 
 if (modal) {
@@ -415,8 +415,8 @@ this.renderer.setStyle(modal, 'display', 'none');
 delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
 event.stopPropagation();
 // deleteRelationship()
-console.log(row);
-console.log(aff_com_cis_number);
+// console.log(row);
+// console.log(aff_com_cis_number);
 // console.log(comCIS);
 deleteAffiliates((dosriId) => {
 
@@ -428,17 +428,17 @@ deleteAffiliates((dosriId) => {
 editAffil(row: any, event: Event) {
 event.stopPropagation();
 this.editAffilvisible = !this.editAffilvisible;
-console.log(row);
-console.log(this.commandGroups);
+// console.log(row);
+// console.log(this.commandGroups);
 const selectedManager = row.managing_company;
-console.log('Selected Manager:', selectedManager);
+// console.log('Selected Manager:', selectedManager);
 // Check if the selectedManager exists in the commandGroups
 const isValidManager = this.commandGroups.some(group => {
-console.log('Group Value:', group.value);
+// console.log('Group Value:', group.value);
 return group.value === selectedManager;
 });
 
-console.log('IsValidManager:', isValidManager);
+// console.log('IsValidManager:', isValidManager);
 
 
 
@@ -513,7 +513,7 @@ openAddEditEmpForm() {
 
 openEditForm(data: any, event: any) {
   event.stopPropagation();
-  console.log(data);
+  // console.log(data);
   const dialogRef = this._dialog.open(AffiliatesModalComponent, {
     data,    
   });
@@ -522,7 +522,7 @@ openEditForm(data: any, event: any) {
     next: (val) => {
       if (val) {
         // this.getEmployeeList();
-        console.log("Successs");
+        // console.log("Successs");
       }
     },
   });
@@ -558,7 +558,7 @@ openEditForm(data: any, event: any) {
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      console.log('Audit trail entry logged successfully.');
+      // console.log('Audit trail entry logged successfully.');
     });
     // console.log('Audit trail entry logged successfully.');
   }
