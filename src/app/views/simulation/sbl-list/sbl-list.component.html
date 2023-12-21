@@ -1,0 +1,138 @@
+<!-- Main Container -->
+<c-container fluid class="mb-3 p-0 position-relative">
+    <!-- Button to open a modal -->
+    <c-row>
+      <c-col xs>
+        <c-card class="mb-4">
+          <c-card-header class="d-flex justify-content-between align-items-center"><h2>SBL List</h2>
+            
+          </c-card-header>
+          <c-card-body>
+  
+            
+              <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
+                <!-- <c-row> -->
+                    <div></div>
+                    <mat-form-field  class="mx-2 mt-3">
+                        <input matInput #filterInput (keyup.enter)="scrollToUser(filterInput.value)" placeholder="Search">
+                                      <mat-icon matSuffix>search</mat-icon>
+                      </mat-form-field>
+                <!-- </c-row> -->
+              </c-container>
+            <c-container fluid>
+                <c-row>
+                    <!-- Loop through each user in the users array -->
+                    <ng-container xs *ngFor="let user of users; index as i">
+                      <c-card class="mb-4">
+                        <c-card-header id="{{ user.name }}">{{ user.name }}</c-card-header>
+                        <c-card-body>
+                          <table
+                            [hover]="true"
+                            [responsive]="true"
+                            [striped]="true"
+                            align="middle"
+                            cTable
+                            class="mb-0 border"
+                          >
+                            <thead cTableColor="danger">
+                              <tr>
+                                <!-- Add your table headers here based on your data structure -->
+                                <th>PN No</th>
+                                <th>Branch Name</th>
+                                <th>Loan Type</th>
+                                <th>Collateral</th>
+                                <th>Amount Granted</th>
+                                <th>Date Booked</th>
+                                <th>Outstanding Balance</th>
+                                <th>Hold-Out</th>
+                                <th>Net of Hold-Out</th>
+                                <th>Payment Status</th>
+                                <!-- Add more headers as needed -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- Loop through each item in the user's list -->
+                              <tr *ngFor="let item of user.list; let j = index">
+                                <!-- Display item-related information -->
+                                <td>{{ item.pn_No }}</td>
+                                <td>{{ item.br_name }}</td>
+                                <td>{{ item.L_type }}</td>
+                                <td>{{ item.collateral }}</td>
+                                <td>{{ item.amt_granted }}</td>
+                                <td>{{ item.date_booked }}</td>
+                                <td>{{ item.O_blnc }}</td>
+                                <td>{{ item.hold_out }}</td>
+                                <td>{{ item.net_holdout }}</td>
+                                <td>{{ item.payment_status }}</td>
+                                <!-- Add more columns for other properties -->
+                  
+                                <!-- Add more rows for additional items if needed -->
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
+                            <!-- <c-row> -->
+                                <div></div>
+                                <div>
+                                  <c-card class="mb-4">
+                                      <c-card-body>
+                                        <table cTable [responsive]="true">
+                                          <tbody>
+                                             <tr>
+                                              <th>Total {{user.name}} GRP</th>
+                                              <td> 30,334,239.77 </td>
+                                             </tr>
+                                             
+                                             <tr>
+                                              <th>Single Borrower's Limit (25% of NW)</th>
+                                              <td> 303,691,046.54 </td>
+                                             </tr>
+                                             
+                                             <tr cTableColor="info">
+                                              <th>AVAILABLE</th>
+                                              <td> 273,356,806.77 </td>
+                                             </tr>
+                                             <tr>
+                                              <td></td>
+                                              <td></td>
+                                             </tr>
+                                             <tr>
+                                              <th>TOTAL FINE PROPERTIES GRP</th>
+                                              <td> 30,334,239.77 </td>
+                                             </tr>
+                                             
+                                             <tr>
+                                              <th>Internal SBL (20% of NW)</th>
+                                              <td> 242,952,837.23 </td>
+                                             </tr>
+                                             
+                                             <tr cTableColor="info">
+                                              <th>AVAILABLE</th>
+                                              <td>212,618,597.46</td>
+                                             </tr>
+                                             
+                                             
+                                          </tbody>
+                                        </table>
+                                      </c-card-body>
+                                  </c-card>
+                                  
+                                </div>
+                                
+                            <!-- </c-row> -->
+                          </c-container>
+                        </c-card-body>
+                      </c-card>
+                    </ng-container>
+                </c-row>
+            </c-container>
+         </c-card-body>
+        </c-card>
+     </c-col>
+    </c-row>
+</c-container>
+
+
+
+  
