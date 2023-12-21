@@ -7,8 +7,6 @@ import {animate,state,style,transition,trigger} from '@angular/animations';
 import { NgFor, NgIf } from '@angular/common';
 
 
-// Functions Import
-import {getManagingCompany} from '../../../functions-files/getFunctions';
 import {createAffil} from '../../../functions-files/add/postAPI';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,14 +15,26 @@ import { Router } from '@angular/router';
 
 import { Injectable } from '@angular/core';
 import axios, { AxiosRequestConfig } from 'axios';
+
+import { AffiliatesRPModalComponent } from 'src/app/modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+
+// Service
+import { OrgsDataServicesService } from '../../../services/orgs-data-services.service'
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
+import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
+
+
+// Audit Trail
+import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
+import {AuditTrail} from '../../../model/audit-trail.model';
+
+
 declare var google: any;
 export interface Child {
   name: string;
 }
 
-// Service
-import { OrgsDataServicesService } from '../../../services/orgs-data-services.service'
-import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 export interface Data {
   cis: number;
@@ -107,29 +117,22 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   private chart: any;
   // private lastClickTime = 0;
   // orgsData: any = [];
-  affForm: FormGroup;
-  compData: any = [];
-  moduleV: any;
   private isNodeDetailsVisible: boolean = false
-  commandGroups: any[] = [];
+  
 
 
   // private orgData:any;
   constructor(
     private router: Router,
+    public _dialog: MatDialog,
+    private dataService: AffiliatesService,
     private formBuilder: FormBuilder,
     private renderer: Renderer2,
     private el: ElementRef,
     private orgsDataService: OrgsDataServicesService,
-    private get: FetchDataService
-  ) {
-    this.affForm = this.formBuilder.group({
-      affilCisNumberM: ['', [Validators.required]],
-      accountName: ['', [Validators.required]],
-      companyName: ['', [Validators.required]],
-      commandControl: ['']
-      });
-    
+    private get: FetchDataService,
+    private auditTrailService: AuditTrailService
+  ) { 
       this.fetchAssocCompany();
   }
 
@@ -143,7 +146,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
       // Now you can safely use this.orgsData
     });
     
-    this.getParentCompany();//load dropdown Company list
+    
     //this.drawChart();
     
   }
@@ -236,30 +239,32 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   }
 
 
-  getParentCompany() {
-    this.get.getManagingCompany((mngComp) => {
-      this.compData = mngComp;
-    this.commandGroups = []; // Clear the existing commandGroups
-    // console.log(this.compData);
+  // getParentCompany() {
+  //   this.get.getManagingCompany((mngComp) => {
+  //     this.compData = mngComp;
+  //   this.commandGroups = []; // Clear the existing commandGroups
+  //   // console.log(this.compData);
 
-      // if (mngComp) {
-        const data = mngComp;
-        // console.log(data);
-        data.forEach(item => {
-          // Create a commandGroup item with value and viewValue
-          const commandGroup = {
-            value: item.aff_com_cis_number,
-            viewValue: item.aff_com_company_name,
-          };
+  //     // if (mngComp) {
+  //       const data = mngComp;
+  //       // console.log(data);
+  //       data.forEach(item => {
+  //         // Create a commandGroup item with value and viewValue
+  //         const commandGroup = {
+  //           value: item.aff_com_cis_number,
+  //           viewValue: item.aff_com_company_name,
+  //         };
 
-          // Add the command group to the array
-          this.commandGroups.push(commandGroup);
-        });
-      // }
-      // const data = this.compData.result[0].Data;
-      // console.log(mngComp);
-    })
-  }
+  //         // Add the command group to the array
+  //         this.commandGroups.push(commandGroup);
+  //       });
+  //     // }
+  //     // const data = this.compData.result[0].Data;
+  //     // console.log(mngComp);
+  //   })
+  // }
+
+
 
   
 
@@ -291,31 +296,14 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
 
 
-  onSubmit() {
-    if (this.affForm.valid) {
-      const formData = this.affForm.value;
-      console.log(formData);
-      // Call the JavaScript function with form data
-      createAffil(formData, this.moduleV) // Pass the entire formData object
-      .then((response) => {
-        // Log the response when the promise is resolved
-          this.ngOnInit();
-      })
-      .catch((error) => {
-        // Handle errors when the promise is rejected
-        console.error(error.result[0].status);
-        // Swal.fire('Error occurred', '', 'error');
-      });
-      
-      // console.log(createAffil());
-    }
-  }
-
+  
 
   onButtonClick(module: any) {
     console.log('Add Data');
     console.log(module);
-    this.moduleV = module;
+    // this.moduleV = module;
+
+    this.dataService.setmoduleV(module);
   }
 
   showModal(): void {
@@ -351,5 +339,71 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
     // Set 'display' to 'none' to hide it
     this.renderer.setStyle(modal, 'display', 'none');
+  }
+
+
+
+  // Show Modal Form
+openAddEditEmpForm() {
+  const dialogRef = this._dialog.open(AffiliatesRPModalComponent);
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+      }
+    },
+  });
+}
+
+openEditForm(data: any, event: any) {
+  event.stopPropagation();
+  console.log(data);
+  const dialogRef = this._dialog.open(AffiliatesRPModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        console.log("Successs");
+      }
+    },
+  });
+}
+
+
+
+
+
+
+
+  // Start of Functions for Audit Trail
+  logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+    const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+    this.logAuditTrail(auditTrailEntry);
+  }
+  
+  
+  
+  private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+    return {
+      userId: 'current_user_id',
+      userName: 'Current_user',
+      timestamp: new Date(),
+      actionType,
+      details,
+      success,
+      page, // Include the page information
+      errorMessage: errorMessage || '', // Optional: Include error message if available
+    };
+  }
+  
+  
+  private logAuditTrail(auditTrailEntry: AuditTrail) {
+    this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+      console.log('Audit trail entry logged successfully.');
+    });
+    // console.log('Audit trail entry logged successfully.');
   }
 }
