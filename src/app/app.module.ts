@@ -11,6 +11,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 
 
 import { MatSortModule } from '@angular/material/sort';
+import {MatCardModule} from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator'
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -122,6 +123,10 @@ import { BankofficerRIModalComponent } from './modal-dialog/bankofficer-rimodal/
 import { AffiliatesRPModalComponent } from './modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
 import { OtherRPModalComponent } from './modal-dialog/other-rpmodal/other-rpmodal.component';
 
+// Simulation
+import { RptListComponent } from './views/simulation/rpt-list/rpt-list.component';
+import { SBLListComponent } from './views/simulation/sbl-list/sbl-list.component';
+
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -141,7 +146,7 @@ const APP_CONTAINERS = [
     AffiliatesModalComponent,
     BankofficerRIModalComponent,
     AffiliatesRPModalComponent,
-    OtherRPModalComponent],
+    OtherRPModalComponent, RptListComponent, SBLListComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -198,6 +203,7 @@ const APP_CONTAINERS = [
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCardModule
     
     
   ],
