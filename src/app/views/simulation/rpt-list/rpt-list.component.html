@@ -1,0 +1,135 @@
+<!-- Main Container -->
+<c-container fluid class="mb-3 p-0">
+    <c-row>
+      <c-col xs>
+        <c-card class="mb-4">
+          <c-card-header class="d-flex justify-content-between align-items-center"><h2>RPT List</h2>
+          </c-card-header>
+          <c-card-body>
+                <c-container fluid class="my-3">
+
+                    
+                    <c-container fluid class="px-0 my-2" >
+                        <c-row>
+                            <c-col [md]="5">
+                                <c-card>
+                                    <c-card-body>
+                                        <table [responsive]="true" [cBorder]="1" cTable bordered >
+                                            <thead cTableColor="success">
+                                            <tr>
+                                            <th scope="col">Unimpaired Capital (as of November 30, 2023)</th>
+                                            <th scope="col"> RPT Balance (Net of Hold-out) </th>
+                                            <th scope="col"> RPT Ratio </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td> 1,214,764,186.16 </td>
+                                                    <td>Php512,833,738.74 </td>
+                                                    <td>42.22%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><p class="color-red">Board Approved RPT Limit</p> </td>
+                                                    <td><p class="color-red">607,382,093.08</p>  </td>
+                                                    <td><p class="color-red">50%</p></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </c-card-body>
+                                  </c-card>
+                            </c-col>
+                        </c-row>
+                    </c-container>
+                    
+
+                    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="loantype">
+                    <mat-header-cell *matHeaderCellDef> Loan Type </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.loantype}} </mat-cell>
+                    </ng-container>
+                
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="cis_no">
+                    <mat-header-cell *matHeaderCellDef> CIS Number </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.cis_no}} </mat-cell>
+                    </ng-container>
+                
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="pn_no">
+                    <mat-header-cell *matHeaderCellDef> PN Number </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.pn_no}} </mat-cell>
+                    </ng-container>
+                
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="borrower">
+                    <mat-header-cell *matHeaderCellDef> Borrower </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.borrower}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="orig_loan">
+                        <mat-header-cell *matHeaderCellDef> Original Loan </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.orig_loan}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="O_blnc">
+                        <mat-header-cell *matHeaderCellDef> Outstanding Balance </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.O_blnc}} </mat-cell>
+                    </ng-container>
+
+                
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+
+
+                    <c-container fluid class="px-0 my-2" >
+                        <c-row>
+                            <c-col [sm]="7"></c-col>
+                            <c-col [sm]="5">
+                                <c-card>
+                                    <c-card-body>
+                                        <table [responsive]="true" [cBorder]="1" cTable bordered >
+                                            <thead cTableColor="success">
+                                            <tr>
+                                            <!-- <th scope="col">Unimpaired Capital (as of November 30, 2023)</th>
+                                            <th scope="col"> RPT Balance (Net of Hold-out) </th>
+                                            <th scope="col"> RPT Ratio </th> -->
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td> <strong>SUB-TOTAL</strong> </td>
+                                                    <td>47,929,080.00</td>
+                                                    <td>31,020,692.30</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td> <strong>TOTAL RPT</strong> </td>
+                                                    <td>Php761,444,680.00</td>
+                                                    <td>Php572,833,738.74</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </c-card-body>
+                                  </c-card>
+                            </c-col>
+                        </c-row>
+                    </c-container>
+                </c-container>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+</c-container>
