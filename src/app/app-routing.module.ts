@@ -39,6 +39,11 @@ const routes: Routes = [
           import('./views/arp/arp.module').then((m) => m.ARPModule)
       },
       {
+        path: 'simulation',
+        loadChildren: () =>
+          import('./views/simulation/simulation.module').then((m) => m.SimulationModule)
+      },
+      {
         path: 'dir2nd-deg-relatives',
         loadChildren: () =>
           import('./views/dir2nd-deg-relatives/dir2nd-deg-relatives.module').then((m) => m.DIR2ndDegRelativesModule)
