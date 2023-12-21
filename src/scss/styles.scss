@@ -65,10 +65,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   z-index: 10000 !important; 
 }
 
+::ng-deep .cdk-overlay-connected-position-bounding-box {
+  z-index: 10999 !important;
+}
 
-.cdk-global-overlay-wrapper, .cdk-overlay-container { z-index: 9999 !important; } 
-
-
+.cdk-overlay-connected-position-bounding-box,
+.cdk-global-overlay-wrapper,
+.cdk-overlay-container{
+z-index: 8888 !important;
+}
 .sidebar-nav .nav-group.show .nav-group-toggle {
   background-color: #947972;
 }
