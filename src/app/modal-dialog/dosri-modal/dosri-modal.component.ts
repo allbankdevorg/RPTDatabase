@@ -44,7 +44,7 @@ export class DosriModalComponent implements OnInit {
   ) {
     this.dosriForm = this._fb.group({
       com_cis_number: ['', [Validators.required]],
-      com_account_name: [''],
+      com_account_name: ['', [Validators.required]],
       com_company_name: ['', [Validators.required]]
       });
     _dialogRef.disableClose = true;
@@ -60,6 +60,10 @@ export class DosriModalComponent implements OnInit {
   // Log the form control values
   console.log('Form controls after patching:', this.dosriForm.value);
 
+  }
+
+  isFieldDisabled(): boolean {
+    return true;
   }
 
   onSubmit() {
@@ -80,6 +84,7 @@ export class DosriModalComponent implements OnInit {
       .catch((error) => {
         // Handle errors when the promise is rejected
         console.error(error.result[0].status);
+        this._dialogRef.close(true);
         this.logAction('Add', 'Adding Company Failed', false, 'DRI');
         // Swal.fire('Error occurred', '', 'error');
       }); // Pass the entire formData object
