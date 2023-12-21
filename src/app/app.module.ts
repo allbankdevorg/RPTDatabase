@@ -119,7 +119,9 @@ import { DirectorsRIModalComponent } from './modal-dialog/directors-ri-modal/dir
 import { DirectorsModalComponent } from './modal-dialog/directors-modal/directors-modal.component';
 import { AffiliatesModalComponent } from './modal-dialog/affiliates-modal/affiliates-modal.component';
 import { BankofficerRIModalComponent } from './modal-dialog/bankofficer-rimodal/bankofficer-rimodal.component';
- 
+import { AffiliatesRPModalComponent } from './modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
+import { OtherRPModalComponent } from './modal-dialog/other-rpmodal/other-rpmodal.component';
+
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -137,7 +139,9 @@ const APP_CONTAINERS = [
     DirectorsRIModalComponent,
     DirectorsModalComponent,
     AffiliatesModalComponent,
-    BankofficerRIModalComponent],
+    BankofficerRIModalComponent,
+    AffiliatesRPModalComponent,
+    OtherRPModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
