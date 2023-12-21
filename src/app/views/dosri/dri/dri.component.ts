@@ -18,14 +18,15 @@ import { DataTransferService } from '../../../services/data-transfer.service';
 import { SessionTimeoutService } from '../../../services/useridle/session-timeout.service';
 import { SharedService } from '../dataintegration/shared.service';
 import {AuthSessionService} from '../../../services/authentication/auth-session.service'
-
+import { DeleteService } from '../../../services/delete/delete.service';
 // Functions Imports
 
 import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
 import {callJSFun} from '../../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../../services/fetch/fetch-data.service';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createDosri} from '../../../functions-files/add/postAPI.js'
+import {createDosri} from '../../../functions-files/add/postAPI.js';
+import {delDosri} from '../../../functions-files/delete/deleteAPI.js';
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
 
 
@@ -117,6 +118,7 @@ export class DriComponent {
 
   constructor(private router: Router,
     public _dialog: MatDialog,
+    private _delService: DeleteService,
     private authService: AuthSessionService,
     private idleService: SessionTimeoutService,
     private formBuilder: FormBuilder, 
@@ -148,37 +150,6 @@ export class DriComponent {
   
 
   // All Functions below
-  // updateTableData(): void {
-  //   // Assuming `getCompany` and `getDirectors` return Observables
-  //   forkJoin([this.get.getCompany(), this.get.getDirectors()]).subscribe({
-  //     next: ([compData, DData]) => {
-
-  //       if (compData) {
-  //         // Process the data to count directors related to each company
-  //       const companiesWithDirectors = compData.map(company => {
-  //         const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
-  //         return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
-  //       });
-  
-  //       // Update the data source for companies
-  //       this.compDataSource.data = companiesWithDirectors;
-  //       console.log(this.compDataSource.data);
-  
-  //       // Update the data source for directors
-  //       this.dDataSource.data = companiesWithDirectors;
-  //       console.log(this.dDataSource.data);
-  
-  //       // Trigger change detection
-  //       this.changeDetectorRef.detectChanges();
-  //       }
-  //       else{
-
-  //       }
-  //     },
-  //     error: console.log,
-  //   });
-  // }
-
   updateTableData(): void {
     // Assuming `getCompany` and `getDirectors` return Observables
     this.get.getCompany().subscribe((compData) => {
@@ -209,117 +180,6 @@ export class DriComponent {
 
 
   }
-
-
-    // forkJoin([this.get.getCompany(), this.get.getDirectors()]).subscribe({
-    //   next: ([compData, DData]) => {
-
-    //     if (compData) {
-    //       // Process the data to count directors related to each company
-    //     const companiesWithDirectors = compData.map(company => {
-    //       const relatedDirectors = DData.filter(director => director.com_related === company.com_cis_number);
-    //       return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
-    //     });
-  
-    //     // Update the data source for companies
-    //     this.compDataSource.data = companiesWithDirectors;
-    //     console.log(this.compDataSource.data);
-  
-    //     // Update the data source for directors
-    //     this.dDataSource.data = companiesWithDirectors;
-    //     console.log(this.dDataSource.data);
-  
-    //     // Trigger change detection
-    //     this.changeDetectorRef.detectChanges();
-    //     }
-    //     else{
-
-    //     }
-    //   },
-    //   error: console.log,
-    // });
-  
-
-
-    
-
-  // updateTableData(): void {
-  //   // Assuming getCompany and getDirectors are asynchronous functions
-  //   getCompany((compData) => {
-  //     if (compData) {
-  //       // Process the data to count directors related to each company
-  //       const companiesWithDirectors = compData.map(company => {
-  //         const directors = company.directors || []; // Ensure there is a directors array
-  //         const directorCount = directors.length || 0;
-  //         return { ...company, directorCount, directors };
-  //       });
-  
-  //       // Set the data source for your MatTable
-  //       this.compDataSource.data = companiesWithDirectors;
-  //     } else {
-  //       console.error('Error: Empty or undefined compData');
-  //       // Handle the case where compData is empty or undefined, e.g., show an error message to the user
-  //     }
-  //   });
-  
-  //   getCompany((compData) => {
-  //     // Fetch director data
-  //     getDirectors((DData) => {
-  //       // Process the data to count directors related to each company
-  //       const companiesWithDirectors: DData[] = compData?.map(company => {
-  //         const relatedDirectors = DData?.filter(director => director.com_related === company.com_cis_number) || [];
-  //         return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
-  //       }) || [];
-  
-  //       // Set the data source for your MatTable
-  //       // console.log(companiesWithDirectors);
-  //       this.dDataSource.data = companiesWithDirectors;
-  //       // console.log(this.dDataSource.data);
-  
-  //       // Trigger change detection
-  //       this.changeDetectorRef.detectChanges();
-  //     });
-  //   });
-  // }
-
-  // // *****
-  // updateTableData() {
-  //   // Fetching data for Affiliates with Officers
-  //   this.get.getCompany((CompData) => {
-  //     if (CompData) {
-  //       // Process the data to count officers related to each company
-  //       const companiesWithDirectors = CompData.map(company => {
-  //       const directors = company.directors || []; // Ensure there is a directors array
-  //       const directorCount = directors.length || 0;
-  //       return { ...company, directorCount, directors };
-  //     });
-  
-  //       // Set the data source for your MatTable
-  //       this.compDataSource.data = companiesWithDirectors;
-  //       // console.log(companiesWithDirectors);
-  //     }
-  //   });
-  
-  //   // Fetching managing companies
-  //   this.get.getCompany((CompData) => {
-  //     if (CompData) {
-  //       // Fetch director data
-  //       this.get.getDirectors((DData) => {
-  //         // Process the data to count directors related to each company
-  //         const companiesWithDirectors: DData[] = CompData?.map(company => {
-  //           const relatedDirectors = DData?.filter(director => director.com_related === company.com_cis_number) || [];
-  //           return { ...company, directorCount: relatedDirectors.length, directors: relatedDirectors };
-  //       });
-          
-  //         // Set the data source for your MatTable
-  //         console.log(companiesWithDirectors)
-  //         this.dDataSource.data = companiesWithDirectors;
-  //         // Trigger change detection
-  //         this.changeDetectorRef.detectChanges();
-  //       });
-  //     }
-  //   });
-  // }
 
 
    
@@ -419,14 +279,31 @@ export class DriComponent {
       }
     }
 
-    delDosri(row: any, comCIS: any, event: Event): void {
+
+    deleteEmployee(id: number, event: Event) {
       event.stopPropagation();
-      // deleteRelationship()
-      // console.log(row);
-      // console.log(comCIS);
-      deleteDosri((dosriId) => {
+      
+      delDosri()
+    }
+
+
+
+    delDosri(row: any, comCIS: any, event: Event): void {
+      const cis_id = row.com_cis_number
+      event.stopPropagation();
+
+        delDosri(cis_id)
+        .then((response) => {
+          this.ngOnInit();
+        })
+        .catch((error) => {
+          // Swal.fire({
+          //   icon: 'error',
+          //   title: 'No CIS Found!',
+          //   // text: 'Invalid username or password',
+          // });
+        })
     
-      })
     }
 
 
