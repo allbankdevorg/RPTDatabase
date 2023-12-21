@@ -13,7 +13,19 @@ import { Router } from '@angular/router';
 
 import { Injectable } from '@angular/core';
 import axios, { AxiosRequestConfig } from 'axios';
+// Service
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
+import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
+
+
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+
+// Audit Trail
+import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
+import {AuditTrail} from '../../../model/audit-trail.model';
+import { OtherRPModalComponent } from 'src/app/modal-dialog/other-rpmodal/other-rpmodal.component';
+
+
 
 declare var google: any;
 export interface Child {
@@ -75,7 +87,6 @@ export class OtherRelatedPartiesComponent {
   private chart: any;
   private lastClickTime = 0;
   orgsData: any = [];
-  affForm: FormGroup;
   compData: any = [];
   moduleV: any;
   private isNodeDetailsVisible: boolean = false
@@ -85,22 +96,13 @@ export class OtherRelatedPartiesComponent {
 
 
   constructor(private router: Router,
+    public _dialog: MatDialog,
+    private dataService: AffiliatesService,
     private formBuilder: FormBuilder, 
-    // private http: HttpClient,
-    // private changeDetectorRef: ChangeDetectorRef,
-    // private ngZone: NgZone,
-    // private sharedService: SharedservicesService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private get: FetchDataService) {
-this.affForm = this.formBuilder.group({
-affilCisNumberM: ['', [Validators.required]],
-accountName: ['', [Validators.required]],
-companyName: ['', [Validators.required]],
-commandControl: ['']
-});
-// Initialize the commandGroups array based on your data
-// this.initializeCommandGroups();
+    private get: FetchDataService,
+    private auditTrailService: AuditTrailService) {
 }
 
 
@@ -119,8 +121,7 @@ commandControl: ['']
   
   drawChart(): void {
       
-    
-    console.log(this.orgsData);
+  
     var chart;
     
     var data = new google.visualization.DataTable();
@@ -193,7 +194,7 @@ commandControl: ['']
           this.orgsData = dataArr;
           google.charts.load('current', { packages: ['orgchart'] });
           google.charts.setOnLoadCallback(() => this.drawChart());
-          console.log(this.orgsData);
+          
           return dataArr;
           });
         }else {
@@ -206,14 +207,14 @@ commandControl: ['']
 
 
   getParentCompany() {
-    this.get.getOtherCompany((mngComp) => {
-      this.compData = mngComp;
+    this.get.getOtherCompany((OtherComp) => {
+      this.compData = OtherComp;
     this.commandGroups = []; // Clear the existing commandGroups
-    console.log(this.compData);
+    
 
-      if (mngComp) {
-        const data = mngComp;
-        console.log(data);
+      if (OtherComp) {
+        const data = OtherComp;
+        
         data.forEach(item => {
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
@@ -258,28 +259,30 @@ commandControl: ['']
     }
   }
 
-  onSubmit() {
-    if (this.affForm.valid) {
-      const formData = this.affForm.value;
-      console.log(formData);
-      // Call the JavaScript function with form data
-      createAffil(formData, this.moduleV) // Pass the entire formData object
-      .then((response) => {
-        // Log the response when the promise is resolved
-          this.ngOnInit();
-      })
-      .catch((error) => {
-        // Handle errors when the promise is rejected
-        console.error(error.result[0].status);
-        // Swal.fire('Error occurred', '', 'error');
-      });
-    }
-  }
+  // onSubmit() {
+  //   if (this.affForm.valid) {
+  //     const formData = this.affForm.value;
+  //     console.log(formData);
+  //     // Call the JavaScript function with form data
+  //     createAffil(formData, this.moduleV) // Pass the entire formData object
+  //     .then((response) => {
+  //       // Log the response when the promise is resolved
+  //         this.ngOnInit();
+  //     })
+  //     .catch((error) => {
+  //       // Handle errors when the promise is rejected
+  //       console.error(error.result[0].status);
+  //       // Swal.fire('Error occurred', '', 'error');
+  //     });
+  //   }
+  // }
 
   onButtonClick(module: any) {
     console.log('Add Data');
     console.log(module);
-    this.moduleV = module;
+    // this.moduleV = module;
+
+    this.dataService.setmoduleV(module);
   }
 
   showModal(): void {
@@ -315,5 +318,73 @@ commandControl: ['']
 
     // Set 'display' to 'none' to hide it
     this.renderer.setStyle(modal, 'display', 'none');
+  }
+
+
+
+
+
+    // Show Modal Form
+openAddEditEmpForm() {
+  const dialogRef = this._dialog.open(OtherRPModalComponent);
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+      }
+    },
+  });
+}
+
+openEditForm(data: any, event: any) {
+  event.stopPropagation();
+  console.log(data);
+  const dialogRef = this._dialog.open(OtherRPModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        console.log("Successs");
+      }
+    },
+  });
+}
+
+
+
+
+
+
+
+  // Start of Functions for Audit Trail
+  logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+    const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+    this.logAuditTrail(auditTrailEntry);
+  }
+  
+  
+  
+  private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+    return {
+      userId: 'current_user_id',
+      userName: 'Current_user',
+      timestamp: new Date(),
+      actionType,
+      details,
+      success,
+      page, // Include the page information
+      errorMessage: errorMessage || '', // Optional: Include error message if available
+    };
+  }
+  
+  
+  private logAuditTrail(auditTrailEntry: AuditTrail) {
+    this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+      console.log('Audit trail entry logged successfully.');
+    });
+    // console.log('Audit trail entry logged successfully.');
   }
 }
