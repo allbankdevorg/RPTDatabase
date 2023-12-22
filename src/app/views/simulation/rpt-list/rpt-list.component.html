@@ -8,43 +8,62 @@
           <c-card-body>
                 <c-container fluid class="my-3">
 
-                    
-                    <c-container fluid class="px-0 my-2" >
-                        <c-row>
-                            <c-col [md]="5">
-                                <c-card>
-                                    <c-card-body>
-                                        <table [responsive]="true" [cBorder]="1" cTable bordered >
-                                            <thead cTableColor="success">
-                                            <tr>
-                                            <th scope="col">Unimpaired Capital (as of November 30, 2023)</th>
-                                            <th scope="col"> RPT Balance (Net of Hold-out) </th>
-                                            <th scope="col"> RPT Ratio </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td> 1,214,764,186.16 </td>
-                                                    <td>Php512,833,738.74 </td>
-                                                    <td>42.22%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><p class="color-red">Board Approved RPT Limit</p> </td>
-                                                    <td><p class="color-red">607,382,093.08</p>  </td>
-                                                    <td><p class="color-red">50%</p></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </c-card-body>
-                                  </c-card>
+                    <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
+                        <!-- <c-row> -->
+                            <button (click)="openSimulation()" mat-fab extended color="primary" *appHasPermission="'add'">
+                              <!-- <mat-icon>add</mat-icon> -->
+                              Simulate
+                            </button>
+                        <!-- </c-row> -->
+                    </c-container>
+
+                    <c-container fluid class="px-0">
+                        <c-row class="my-1 d-flex justify-content-between align-items-end">
+                          <c-col>
+                            <c-card>
+                              <c-card-body>
+                                <table [responsive]="true" [cBorder]="1" cTable bordered>
+                                  <thead cTableColor="success">
+                                    <tr>
+                                      <th scope="col">Unimpaired Capital (as of November 30, 2023)</th>
+                                      <th scope="col">RPT Balance (Net of Hold-out)</th>
+                                      <th scope="col">RPT Ratio</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>1,214,764,186.16</td>
+                                      <td>Php512,833,738.74</td>
+                                      <td>42.22%</td>
+                                    </tr>
+                                    <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td><p class="color-red">Board Approved RPT Limit</p></td>
+                                      <td><p class="color-red">607,382,093.08</p></td>
+                                      <td><p class="color-red">50%</p></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </c-card-body>
+                            </c-card>
+                          </c-col>
+                          <c-col>
+                            <mat-form-field [style.width.%]=100>
+                              <input matInput #filterInput placeholder="Search">
+                              <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
                             </c-col>
                         </c-row>
-                    </c-container>
+                        <!-- </c-col> -->
+                        <!-- </c-row> -->
+                      
+                       
+                      </c-container>
+                      
                     
 
                     <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
