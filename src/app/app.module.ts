@@ -126,6 +126,8 @@ import { OtherRPModalComponent } from './modal-dialog/other-rpmodal/other-rpmoda
 // Simulation
 import { RptListComponent } from './views/simulation/rpt-list/rpt-list.component';
 import { SBLListComponent } from './views/simulation/sbl-list/sbl-list.component';
+import { SBLSimulationModalComponent } from './modal-dialog/sbl-simulation-modal/sbl-simulation-modal.component';
+import { RPTSimulationModalComponent } from './modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
 
 
 const APP_CONTAINERS = [
@@ -146,6 +148,8 @@ const APP_CONTAINERS = [
     AffiliatesModalComponent,
     BankofficerRIModalComponent,
     AffiliatesRPModalComponent,
+    SBLSimulationModalComponent, 
+    RPTSimulationModalComponent,
     OtherRPModalComponent, RptListComponent, SBLListComponent],
   imports: [
     BrowserModule,
