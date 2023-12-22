@@ -14,7 +14,9 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 })
 export class DefaultLayoutComponent {
 
-  public navItems = [];
+  public navItems = []; //Dynamic
+
+  // public navItems = navItems; //Static
 
   constructor(private nI: NavItemsService,
     private get: FetchDataService) {
