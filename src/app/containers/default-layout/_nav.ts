@@ -61,13 +61,26 @@ import { INavData } from '@coreui/angular';
 //           {
 //                "name": "Manuals",
 //                "url": "/maintenance/manuals"
-//           }
+//           },
 //           {
 //                "name": "Audit-Logs",
 //                "url": "/maintenance/audit-logs"
 //           }
 //       ]
+//     },
+//     {
+//         "name": "Reports/Simulation",
+//         "url": "/",
+//         "children": [
+//             {
+//                 "name": "RPT List Report",
+//                 "url": "/simulation/rpt-list"
+//             },
+//             {
+//                 "name": "SBL List Report",
+//                 "url": "/simulation/sbl-list"
+//             }
+//         ]
 //     }
+
 // ]
-
-
