@@ -15,7 +15,8 @@ import {BoRIService} from '../../../services/bankOfficerRI/bo-ri.service'; //Ser
 
 // Functions Import
 import {getOfficers, getCompany, getOfficersRI} from '../../../functions-files/getFunctions'
-import {deleteDOSRIOfficer, deleteDOSRIOfficerRI} from '../../../functions-files/delFunctions'
+// import {deleteDOSRIOfficer, deleteDOSRIOfficerRI} from '../../../functions-files/delFunctions'
+import {delBankOff, delBankOffRI} from '../../../functions-files/delete/deleteAPI.js';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 
@@ -269,26 +270,25 @@ export class BankofficerComponent implements AfterViewInit{
     
   }
 
-  delOfficer(element: any, cisNumber: any, offc_CisNumber: any) {
-    // console.log(element);
-    // console.log('CIS Number:', cisNumber);
-    // console.log('Off_related:', offc_CisNumber);
-    // delete Officer
-    deleteDOSRIOfficer((dosriId) => {
-
+  delOfficer(row: any, cisNumber: any, offc_CisNumber: any): void {
+    const cis_id = row.offc_CisNumber;
+    delBankOff(cis_id)
+    .then((response) => {
+      this.ngOnInit();
+    })
+    .catch((error) => {
+     
     })
   }
 
-  delRelationship(element: any, cisNumber: any, officer_related: any): void {
-    // deleteRelationship
-    // console.log(element);
-    // console.log('CIS Number:', cisNumber);
-    // console.log('Off_related:', officer_related);
-    // console.log('CIS Number:', cis_number);
-    // console.log('dir_related:', dir_related);
-    console.log("Are you sure you want to delete?")
-    deleteDOSRIOfficerRI((dosriId) => {
-
+  delRelationship(row: any, cisNumber: any, officer_related: any): void {
+    const cis_id = cisNumber;
+    delBankOffRI(cis_id)
+    .then((response) => {
+      this.ngOnInit();
+    })
+    .catch((error) => {
+     
     })
   }
 
