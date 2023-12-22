@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 
+// Import for Simulation Modal
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { SBLSimulationModalComponent } from 'src/app/modal-dialog/sbl-simulation-modal/sbl-simulation-modal.component';
+
+
 interface account {
   name: string;
   list: any[];
@@ -225,6 +230,11 @@ export class SBLListComponent implements OnInit{
   ]
 
 
+  constructor(
+    public _dialog: MatDialog,) {
+
+    }
+
   ngOnInit() {
     // Additional initialization logic if needed
   }
@@ -236,5 +246,20 @@ export class SBLListComponent implements OnInit{
       element.scrollIntoView({ behavior: 'smooth', block: 'center'});
     }
   }
+
+
+  // Function to Show the simulation Modal
+  openSimulation() {
+    const dialogRef = this._dialog.open(SBLSimulationModalComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          // this.updateTableData();
+        }
+      },
+    });
+  }
+  
+  
 
 }

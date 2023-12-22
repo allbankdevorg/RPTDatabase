@@ -16,7 +16,7 @@
                     <mat-form-field  class="mx-2 mt-3">
                         <input matInput #filterInput (keyup.enter)="scrollToUser(filterInput.value)" placeholder="Search">
                                       <mat-icon matSuffix>search</mat-icon>
-                      </mat-form-field>
+                    </mat-form-field>
                 <!-- </c-row> -->
               </c-container>
             <c-container fluid>
@@ -24,7 +24,10 @@
                     <!-- Loop through each user in the users array -->
                     <ng-container xs *ngFor="let user of users; index as i">
                       <c-card class="mb-4">
-                        <c-card-header id="{{ user.name }}">{{ user.name }}</c-card-header>
+                        <c-card-header id="{{ user.name }}">{{ user.name }} <button (click)="openSimulation()" mat-fab extended color="primary" class="add-btn-icon">
+                          <!-- <mat-icon>play_arrow</mat-icon> -->
+                          Simulate
+                        </button></c-card-header>
                         <c-card-body>
                           <table
                             [hover]="true"
