@@ -17,7 +17,7 @@
                   <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
                   type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
                   formControlName="aff_com_cis_number" appNum>
-                  <mat-error *ngIf="affForm.get('cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 </mat-form-field>
             </c-col>
     
@@ -26,9 +26,9 @@
                 <mat-form-field appearance="fill" [style.width.%]=100>
                   <!-- <mat-label>Account Name</mat-label> -->
                   <input matInput #accDinput id="accountName"  name="accountName"
-                  type="text" placeholder="Account Name"
+                  type="text" placeholder="Account Name" [readonly]="isReadOnly"
                   formControlName="aff_com_account_name" appCaps>
-                  <mat-error *ngIf="affForm.get('account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
                 </mat-form-field>
                 <!-- <input
                   cFormControl
@@ -43,9 +43,9 @@
                 <mat-form-field appearance="fill" [style.width.%]=100>
                   <!-- <mat-label>Company Name</mat-label> -->
                   <input matInput #accDinput id="companyName" name="companyName"
-                  type="text" placeholder="Company Name"
+                  type="text" placeholder="Company Name" [readonly]="isReadOnly"
                   formControlName="aff_com_company_name" appCaps>
-                  <mat-error *ngIf="affForm.get('company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
                 </mat-form-field>
               </c-col>
           </c-row>
