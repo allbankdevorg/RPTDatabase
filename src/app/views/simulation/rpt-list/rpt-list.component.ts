@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 
 
+// Import for Simulation Modal
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { RPTSimulationModalComponent } from 'src/app/modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
+
+
 export interface RPTlist_model {
   loantype: string;
   cis_no: number;
@@ -21,10 +26,29 @@ export class RptListComponent {
   dataSource = ELEMENT_DATA;
 
 
+  constructor(
+    public _dialog: MatDialog,) {
+
+    }
+
   // Dummy
   longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
   from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
   originally bred for hunting.`;
+
+
+
+    // Function to Show the simulation Modal
+    openSimulation() {
+      const dialogRef = this._dialog.open(RPTSimulationModalComponent);
+      dialogRef.afterClosed().subscribe({
+        next: (val) => {
+          if (val) {
+            // this.updateTableData();
+          }
+        },
+      });
+    }
 }
 
 
