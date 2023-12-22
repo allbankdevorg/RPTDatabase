@@ -241,7 +241,7 @@ export class DirectorsrelatedComponent {
       console.log('Clicked row data:', row);
   }
  
-  delDirector(row: any): void {
+  delDirector(row: any, comp_cis: any, dir_cis: any): void {
     const cis_id = row.dir_CisNumber;
 
     delDosriDIR(cis_id)
@@ -255,7 +255,7 @@ export class DirectorsrelatedComponent {
 
   delRelationship(row: any, cis_number: string, dir_related: any): void {
     const cis_id = cis_number;
-    
+
     delDosriDRI(cis_id)
     .then((response) => {
       this.ngOnInit();
