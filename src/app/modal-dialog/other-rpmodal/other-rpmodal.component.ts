@@ -30,6 +30,7 @@ export class OtherRPModalComponent implements OnInit {
   affForm: FormGroup;
   commandGroups: any[] = [];
   compData: any = [];
+  isReadOnly: boolean = true;
 
 
   constructor(
@@ -137,30 +138,39 @@ export class OtherRPModalComponent implements OnInit {
       let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
         .then((response) => {
-          
-          // if (response.length < 1) {
-            // console.log(response[0].name);
-          let accName = response[0].name;
+          if (response.length > 0) {
+            // If the array is not empty, use the first element
+            let accName = response[0].name;
+  
+            // Update form controls with new values
             this.affForm.patchValue({
-              aff_com_account_name: accName,
-              aff_com_company_name: accName // Assuming you have company_name in the response
-              
+              com_account_name: accName,
+              com_company_name: accName // Assuming you have company_name in the response
+              // Add other form controls if needed
             });
-    
-            // Log the form control values
-            // console.log('Form controls after patching:', this.affForm.value);
-          
-          })
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'No CIS Found!',
+              text: 'Please Enter the Account and Company Name',
+            });
+            this.toggleInputReadOnly();
+          }
+        })
         .catch((error) => {
           Swal.fire({
-                icon: 'error',
-                title: 'No CIS Found!',
-                // text: 'Invalid username or password',
-              });
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while fetching data.',
+          });
+          this.toggleInputReadOnly();
         });
     }
   }
 
+  toggleInputReadOnly() {
+    this.isReadOnly = !this.isReadOnly;
+  }
 
 
   getParentCompany() {
