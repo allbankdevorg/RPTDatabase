@@ -23,9 +23,9 @@ import {DirRIService} from '../../../services/dirRI/dir-ri.service'; //Service t
 import {createDirectors} from '../../../functions-files/add/postAPI';
 import {createRelatedInterest} from '../../../functions-files/add/postAPI';
 import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
-import {deleteDosri, deleteDOSRIDirector, deleteDOSRIDirRelationship} from '../../../functions-files/delFunctions'
+// import {deleteDosri, deleteDOSRIDirector, deleteDOSRIDirRelationship} from '../../../functions-files/delFunctions'
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
-
+import {delDosriDIR, delDosriDRI} from '../../../functions-files/delete/deleteAPI.js';
 
 // Audit Trail
 import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
@@ -241,17 +241,27 @@ export class DirectorsrelatedComponent {
       console.log('Clicked row data:', row);
   }
  
-  delDirector(element: any, cisNumber: any, dirCisNumber: any) {
-    
-    deleteDOSRIDirector((dosriId) => {
+  delDirector(row: any): void {
+    const cis_id = row.dir_CisNumber;
 
+    delDosriDIR(cis_id)
+    .then((response) => {
+      this.ngOnInit();
+    })
+    .catch((error) => {
+     
     })
   }
 
-  delRelationship(element: any, cis_number: string, dir_related: any): void {
+  delRelationship(row: any, cis_number: string, dir_related: any): void {
+    const cis_id = cis_number;
     
-    deleteDOSRIDirRelationship((dosriId) => {
-
+    delDosriDRI(cis_id)
+    .then((response) => {
+      this.ngOnInit();
+    })
+    .catch((error) => {
+     
     })
   }
 
