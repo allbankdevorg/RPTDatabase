@@ -19,8 +19,8 @@ import { SessionTimeoutService } from '../../../services/useridle/session-timeou
 import { SharedService } from '../dataintegration/shared.service';
 import {AuthSessionService} from '../../../services/authentication/auth-session.service'
 import { DeleteService } from '../../../services/delete/delete.service';
-// Functions Imports
 
+// Functions Imports
 import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
 import {callJSFun} from '../../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../../services/fetch/fetch-data.service';
