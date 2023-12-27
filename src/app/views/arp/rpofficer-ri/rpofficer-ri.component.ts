@@ -16,10 +16,19 @@ import { Injectable } from '@angular/core';
 // Services
 import { DataTransferService } from '../../../services/data-transfer.service';
 import { SharedService } from '../../dosri/dataintegration/shared.service';
+import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
+
 // Imports for Functions
 import {createAffilDir, createAffilOff, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getManagingCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilOff, deleteAffilOffRI} from '../../../functions-files/delFunctions'
+
+// For Modals
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { AffiliatesDirModalComponent } from 'src/app/modal-dialog/affiliates-dir-modal/affiliates-dir-modal.component';
+import { DirectorsModalComponent } from 'src/app/modal-dialog/directors-modal/directors-modal.component';
+import {AffiliatesOffModalComponent} from '../../../modal-dialog/affiliates-off-modal/affiliates-off-modal.component'
+import {AffiliatesOffRIModalComponent} from '../../../modal-dialog/affiliates-off-ri-modal/affiliates-off-ri-modal.component'
 
 @Component({
   selector: 'app-rpofficer-ri',
@@ -30,8 +39,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
   positionOptions: TooltipPosition = 'right';
   OfftableData: Record<string, any>[] = [];
-  affilOfficerForm: FormGroup;
-  affilOfficerRIForm: FormGroup;
   compId: any;
   Company: any;
   buttonId: number = 0;
@@ -56,27 +63,18 @@ export class RPOfficerRIComponent implements AfterViewInit {
   }
 
   constructor(private router: Router,
+    public _dialog: MatDialog,
     private formBuilder: FormBuilder, 
     private http: HttpClient,
     private sharedService: SharedService,
+    private dataService: AffiliatesService,
     private dataTransferService: DataTransferService,
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone)
     {
-        this.affilOfficerForm = this.formBuilder.group({
-          affildcisNumber: [''],
-          affildFirstName: [''],
-          affildMiddleName: [''],
-          affildLastName: [''],
-          affildPosition: [''],
-        });
-        this.affilOfficerRIForm = this.formBuilder.group({
-          riCisNumber: [''],
-          riFirstName: [''],
-          riMiddleName: [''],
-          riLastName: [''],
-        });
+       
+       
         this.route.params.subscribe(params => {
           this.compId = params['id'];
           const companyName = this.sharedService.getCompName();
@@ -177,56 +175,66 @@ export class RPOfficerRIComponent implements AfterViewInit {
   }
 
   // Adding Officers
+  openAffilOfficersForm() {
+    const dialogRef = this._dialog.open(AffiliatesOffModalComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.updateTableData();
+        }
+      },
+    });
+  }
   
-  onAffilOffSubmit() {
-    if (this.affilOfficerForm.valid) {
-      const offData = this.affilOfficerForm.value;
-      const directorId = this.sharedService.getDirectorId();
-      const companyName = this.sharedService.getCompName();
-      
-      // console.log(directData);
-      // Call the JavaScript function with form data
-      createAffilOff(offData, this.compId); // Pass the entire formData object
-      this.ngOnInit();
-
-      // console.log(offData);
-    }
-
-    this.ngZone.run(() => {
-      this.OffdataSource.data = this.OfftableData;
+  openEditAffilOfficersForm(data: any, event: any) {
+    event.stopPropagation();
+    console.log(data);
+    const dialogRef = this._dialog.open(AffiliatesOffModalComponent, {
+      data,    
     });
-
-      // Trigger change detection
-    this.changeDetectorRef.detectChanges();
-    // console.log(this.changeDetectorRef.detectChanges);
-    // console.log(this.OffdataSource);
-  }
-
-  //Adding Related Interest 
-  onRISubmit() {
-    const directorId = this.sharedService.getDirectorId();
-    const companyName = this.sharedService.getCompName();
-    
-    if (this.affilOfficerRIForm.valid) {
-      const riData = this.affilOfficerRIForm.value;
-      
-      // Call the JavaScript function with form data
-      createAffilOffRI(riData, this.buttonId, this.selectedOffCisNumber); // Pass the entire formData object
-      
-      this.ngOnInit();
-
-      
-    }
-
-    this.ngZone.run(() => {
-      // this.dataSource.data = this.tableData;
+  
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          // this.getEmployeeList();
+          console.log("Successs");
+        }
+      },
     });
-    
-      // Trigger change detection
-    this.changeDetectorRef.detectChanges();
-    // console.log(this.changeDetectorRef.detectChanges);
-    // console.log(this.OffdataSource);
+  } 
+
+
+
+  openAffilOfficerRIForm() {
+    const dialogRef = this._dialog.open(AffiliatesOffRIModalComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.updateTableData();
+        }
+      },
+    });
   }
+  
+  openEditAffilOfficerRIForm(data: any, event: any) {
+    event.stopPropagation();
+    console.log(data);
+    const dialogRef = this._dialog.open(AffiliatesOffRIModalComponent, {
+      data,    
+    });
+  
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          // this.getEmployeeList();
+          console.log("Successs");
+        }
+      },
+    });
+  }
+  
+
+  
 
   setAffilCompOff() {
     this.selectedAffilCompCISNumber = this.compId;
@@ -236,6 +244,9 @@ export class RPOfficerRIComponent implements AfterViewInit {
   setButtonId(id: number, off_cisnumber: number) {
      this.buttonId = id;
      this.selectedOffCisNumber = off_cisnumber;
+
+     this.dataService.setButtonId(id);
+     this.dataService.setDirCIS(off_cisnumber);
     // console.log(off_cisnumber);
     // console.log(id);
     
