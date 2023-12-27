@@ -72,7 +72,6 @@ export class AffiliatesOffModalComponent implements OnInit {
           // this.updateTableData();
         })
         .catch((error) => {
-          this._dialogRef.close(true);
           this.logAction('Add', 'Failed Adding Related Interest', false, 'directorsrelated');
           // this.updateTableData();
           // console.log(this.dataSource);
