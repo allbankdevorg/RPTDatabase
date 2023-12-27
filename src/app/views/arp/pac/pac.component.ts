@@ -14,9 +14,10 @@ import { Injectable } from '@angular/core';
 // Services
 import { DataTransferService } from '../../../services/data-transfer.service';
 import { SharedService } from '../../dosri/dataintegration/shared.service';
+import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
 // Imports for Functions
-import {createAffilDir, createAffilOff, createRPDIrectorsRelatedInterest, createAffilOffRI} from '../../../functions-files/add/postAPI';
+import { createAffilOff, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilDir, deleteAffilOff, deleteAffilDirRI, deleteAffilOffRI} from '../../../functions-files/delFunctions'
 
@@ -25,6 +26,13 @@ import { CsvExportService } from '../../exportservices/csv-export.service';
 // import Papa from 'papaparse';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
+
+
+// For Modals
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { AffiliatesDirModalComponent } from 'src/app/modal-dialog/affiliates-dir-modal/affiliates-dir-modal.component';
+import { DirectorsModalComponent } from 'src/app/modal-dialog/directors-modal/directors-modal.component';
+import {AffiliatesDirRIModalComponent} from '../../../modal-dialog/affiliates-dir-ri-modal/affiliates-dir-ri-modal.component'
 
 export interface Child {
   name: string;
@@ -131,12 +139,8 @@ interface Person {
 export class PacComponent implements AfterViewInit {
   positionOptions: TooltipPosition = 'right';
   sharedData: string | any;
-  affilDrctrForm: FormGroup;
-  affilDirRiForm: FormGroup;
   affilOfficerForm: FormGroup;
   affilOfficerRIForm: FormGroup;
-  buttonId: number = 0;
-  selectedDirCisNumber: number = 0;
   selectedOffCisNumber: number = 0;
   selectedCompCISNumber: number = 0;
   compId: any;
@@ -170,9 +174,11 @@ export class PacComponent implements AfterViewInit {
 
 
     constructor(private router: Router,
+      public _dialog: MatDialog,
       private formBuilder: FormBuilder, 
       private http: HttpClient,
       private sharedService: SharedService,
+      private dataService: AffiliatesService,
       private dataTransferService: DataTransferService,
       private route: ActivatedRoute,
       private changeDetectorRef: ChangeDetectorRef,
@@ -180,19 +186,6 @@ export class PacComponent implements AfterViewInit {
       private csvExportService: CsvExportService,
       private get: FetchDataService)
       {
-          this.affilDrctrForm = this.formBuilder.group({
-            affildcisNumber: ['',  [Validators.required]],
-            affildFirstName: ['', [Validators.required]],
-            affildMiddleName: [''],
-            affildLastName: ['', [Validators.required]],
-            affildPosition: ['', [Validators.required]],
-          });
-          this.affilDirRiForm = this.formBuilder.group({
-            riCisNumber: [''],
-            riFirstName: ['', [Validators.required]],
-            riMiddleName: [''],
-            riLastName: ['', [Validators.required]],
-          });
           this.affilOfficerForm = this.formBuilder.group({
             affiloffcisNumber: [''],
             affiloffFirstName: [''],
@@ -354,14 +347,76 @@ async  ngOnInit() {
   }
 
 
+
+  openAffilDirectorsForm() {
+    const dialogRef = this._dialog.open(AffiliatesDirModalComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.updateTableData();
+        }
+      },
+    });
+  }
+  
+  openEditAffilDirForm(data: any, event: any) {
+    event.stopPropagation();
+    console.log(data);
+    const dialogRef = this._dialog.open(AffiliatesDirModalComponent, {
+      data,    
+    });
+  
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          // this.getEmployeeList();
+          console.log("Successs");
+        }
+      },
+    });
+  } 
+
+
+
+  openAffilDirectorsRIForm() {
+    const dialogRef = this._dialog.open(AffiliatesDirRIModalComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.updateTableData();
+        }
+      },
+    });
+  }
+  
+  openEditAffilDirRIForm(data: any, event: any) {
+    event.stopPropagation();
+    console.log(data);
+    const dialogRef = this._dialog.open(AffiliatesDirRIModalComponent, {
+      data,    
+    });
+  
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          // this.getEmployeeList();
+          console.log("Successs");
+        }
+      },
+    });
+  }
+
+
   
   setButtonId(id: number, dirCisNumber: number) {
-    this.buttonId = id;
-    this.selectedDirCisNumber = dirCisNumber;
+    // this.buttonId = id;
+    // this.selectedDirCisNumber = dirCisNumber;
+    this.dataService.setButtonId(id);
+    this.dataService.setDirCIS(dirCisNumber);
  }
 
  setButtonIds(id: number, OffCisNumber: number) {
-   this.buttonId = id;
+  //  this.buttonId = id;
    this.selectedOffCisNumber = OffCisNumber;
 }
 
@@ -380,44 +435,22 @@ async  ngOnInit() {
    // console.log(director);
  }
 
- //Adding Related Interest 
- onDirRISubmit() {
-   const directorId = this.sharedService.getDirectorId();
-   const companyName = this.sharedService.getCompName();
-   
-   if (this.affilDirRiForm.valid) {
-     const riData = this.affilDirRiForm.value;
-     
-     // Call the JavaScript function with form data
-     createRPDIrectorsRelatedInterest(riData, this.buttonId, this.selectedDirCisNumber); // Pass the entire formData object
-     
-     this.ngOnInit();
 
-     
-   }
-
-   this.ngZone.run(() => {
-     this.dataSource.data = this.tableData;
-   });
-   
-     // Trigger change detection
-   this.changeDetectorRef.detectChanges();
- }
 
  onOffRISubmit() {
    const directorId = this.sharedService.getDirectorId();
    const companyName = this.sharedService.getCompName();
    
-   if (this.affilDirRiForm.valid) {
-     const OffriData = this.affilOfficerRIForm.value;
+  //  if (this.affilDirRiForm.valid) {
+  //    const OffriData = this.affilOfficerRIForm.value;
      
-     // Call the JavaScript function with form data
-     createAffilOffRI(OffriData, this.buttonId, this.selectedOffCisNumber); // Pass the entire formData object
+  //    // Call the JavaScript function with form data
+  //    createAffilOffRI(OffriData, this.buttonId, this.selectedOffCisNumber); // Pass the entire formData object
      
-     this.ngOnInit();
+  //    this.ngOnInit();
 
      
-   }
+  //  }
 
    this.ngZone.run(() => {
      // this.dataSource.data = this.tableData;
@@ -428,29 +461,12 @@ async  ngOnInit() {
  }
 
 
- // Adding Affiliated Company Directors
- onAffilDSubmit() {
-   if (this.affilDrctrForm.valid) {
-     const directData = this.affilDrctrForm.value;
-     const directorId = this.sharedService.getDirectorId();
-     const companyName = this.sharedService.getCompName();
-     
-     // Call the JavaScript function with form data
-     createAffilDir(directData, this.compId); // Pass the entire formData object
-     this.ngOnInit();
-
-     
-   }
-
-   this.ngZone.run(() => {
-     this.dataSource.data = this.tableData;
-   });
-
-     // Trigger change detection
-   this.changeDetectorRef.detectChanges();
- }
+ 
 
  // Adding Affiliated Company Officers
+ 
+ 
+ 
  onAffilOffSubmit() {
    if (this.affilOfficerForm.valid) {
      const offData = this.affilOfficerForm.value;
