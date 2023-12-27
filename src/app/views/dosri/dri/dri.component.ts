@@ -19,6 +19,8 @@ import { SessionTimeoutService } from '../../../services/useridle/session-timeou
 import { SharedService } from '../dataintegration/shared.service';
 import {AuthSessionService} from '../../../services/authentication/auth-session.service'
 import { DeleteService } from '../../../services/delete/delete.service';
+import {DirRIService} from '../../../services/dirRI/dir-ri.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
+
 
 // Functions Imports
 import {getCompany, getDirectors} from '../../../functions-files/getFunctions';
@@ -124,6 +126,7 @@ export class DriComponent {
     private formBuilder: FormBuilder, 
     private http: HttpClient, 
     private sharedService: SharedService,
+    private dataService: DirRIService, //Setting the company CIS number
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
     private renderer: Renderer2,
@@ -201,6 +204,10 @@ export class DriComponent {
       // this.router.navigate(['/details', row.id]);
       const directorId = element.com_cis_number; // Extract the ID from the clicked row
       const companyName = element.com_company_name;
+      console.log(directorId);
+
+      this.dataService.setCompCIS(directorId);
+    // this.dataService.setButtonId(id);
 
       
       this.logAction('View', 'Viewed ' + companyName + " Directors and It's related interest", true, 'DRI');
