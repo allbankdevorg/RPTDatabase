@@ -115,8 +115,6 @@ export class DraggableDirective {
 export class AffiliatesRelatedCompaniesComponent implements OnInit{
   sharedData: string | any;
   private chart: any;
-  // private lastClickTime = 0;
-  // orgsData: any = [];
   private isNodeDetailsVisible: boolean = false
   
 
@@ -145,10 +143,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     this.fetchAssocCompany().then(() => {//load google tree
       // Now you can safely use this.orgsData
     });
-    
-    
     //this.drawChart();
-    
   }
 
   drawChart(dataArr) {
@@ -238,34 +233,6 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     });
   }
 
-
-  // getParentCompany() {
-  //   this.get.getManagingCompany((mngComp) => {
-  //     this.compData = mngComp;
-  //   this.commandGroups = []; // Clear the existing commandGroups
-  //   // console.log(this.compData);
-
-  //     // if (mngComp) {
-  //       const data = mngComp;
-  //       // console.log(data);
-  //       data.forEach(item => {
-  //         // Create a commandGroup item with value and viewValue
-  //         const commandGroup = {
-  //           value: item.aff_com_cis_number,
-  //           viewValue: item.aff_com_company_name,
-  //         };
-
-  //         // Add the command group to the array
-  //         this.commandGroups.push(commandGroup);
-  //       });
-  //     // }
-  //     // const data = this.compData.result[0].Data;
-  //     // console.log(mngComp);
-  //   })
-  // }
-
-
-
   
 
   updateNodeDetails(selectedItem) {
@@ -299,10 +266,6 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   
 
   onButtonClick(module: any) {
-    // console.log('Add Data');
-    // console.log(module);
-    // this.moduleV = module;
-
     this.dataService.setmoduleV(module);
   }
 
