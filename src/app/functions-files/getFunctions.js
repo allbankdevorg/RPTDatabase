@@ -16,7 +16,7 @@
 
 // Function to make a GET request using jQuery's $.ajax
 function getCompany(callback) {
-    console.log("100");
+    // console.log("100");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -38,7 +38,7 @@ function getCompany(callback) {
               }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Company Data");
+            // console.log("No Company Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -49,7 +49,7 @@ function getCompany(callback) {
 
 
 function getDirectors(callback) {
-  console.log("101");
+  // console.log("101");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -71,7 +71,7 @@ function getDirectors(callback) {
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Directors Data");
+            // console.log("No Directors Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -84,7 +84,7 @@ function getDirectors(callback) {
 
 
 function getOfficers(callback) {
-  console.log("103");
+  // console.log("103");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -100,13 +100,13 @@ function getOfficers(callback) {
       $.ajax(settings).done(function (response) {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           var officers = response.result[0].Data;
-          console.log(officers);
+          // console.log(officers);
           if (callback) {
               callback(officers);
           }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Officers Data");
+            // console.log("No Officers Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -117,7 +117,7 @@ function getOfficers(callback) {
 
 
   function getOfficersRI(callback) {
-    console.log("104");
+    // console.log("104");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -133,13 +133,13 @@ function getOfficers(callback) {
       $.ajax(settings).done(function (response) {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
             var officersRI = response.result[0].Data;
-            console.log(officersRI);
+            // console.log(officersRI);
             if (callback) {
               callback(officersRI);
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Officers Related Interest Data");
+            // console.log("No Officers Related Interest Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -150,7 +150,7 @@ function getOfficers(callback) {
 
 
   function getAffiliatesCompany(callback) {
-    console.log("105");
+    // console.log("105");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -173,7 +173,7 @@ function getOfficers(callback) {
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Affiliates Company Data");
+            // console.log("No Affiliates Company Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -184,7 +184,7 @@ function getOfficers(callback) {
 
 
   function getAffiliatesDirectors(callback) {
-    console.log("106");
+    // console.log("106");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -200,13 +200,13 @@ function getOfficers(callback) {
       $.ajax(settings).done(function (response) {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
             var affilDirData = response.result[0].Data;
-            console.log(affilDirData);
+            // console.log(affilDirData);
             if (callback) {
                 callback(affilDirData);
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Affiliates Directors Data");
+            // console.log("No Affiliates Directors Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -217,7 +217,7 @@ function getOfficers(callback) {
 
     
   function getAffiliatesOfficers(callback) {
-    console.log("107");
+    // console.log("107");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -239,7 +239,7 @@ function getOfficers(callback) {
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Affiliates Officers Data");
+            // console.log("No Affiliates Officers Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -250,7 +250,7 @@ function getOfficers(callback) {
 
 
   function getAffiliatesCompanyOfficers(callback) {
-    console.log("108");
+    // console.log("108");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -272,7 +272,7 @@ function getOfficers(callback) {
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Affiliates Company Officers Data");
+            // console.log("No Affiliates Company Officers Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -283,7 +283,7 @@ function getOfficers(callback) {
 
 
   function getManagingCompany(callback) {
-    console.log("109");
+    // console.log("109");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -305,7 +305,7 @@ function getOfficers(callback) {
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Affiliates Company Officers Data");
+            // console.log("No Affiliates Company Officers Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -316,7 +316,7 @@ function getOfficers(callback) {
 
 
   function getOtherCompany(callback) {
-    console.log("110");
+    // console.log("110");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -338,7 +338,7 @@ function getOfficers(callback) {
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Affiliates Company Officers Data");
+            // console.log("No Affiliates Company Officers Data");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
@@ -349,7 +349,7 @@ function getOfficers(callback) {
 
 
   function getNavi(callback) {
-    console.log("110");
+    // console.log("110");
     var settings = {
         "url": "http://10.232.236.15:8092/api/dataTables",
         "method": "POST",
@@ -371,7 +371,7 @@ function getOfficers(callback) {
             }
         } else {
             // Handle the case where there is no data or it doesn't have the expected structure
-            console.log("No Navigation Menu");
+            // console.log("No Navigation Menu");
             if (callback) {
                 // You can choose to call the callback with some default value or handle it as needed
                 callback(null);
