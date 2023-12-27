@@ -16,8 +16,6 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { AffiliatesRPModalComponent } from 'src/app/modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 // Service
 import { OrgsDataServicesService } from '../../../services/orgs-data-services.service'
@@ -28,6 +26,10 @@ import {AffiliatesService} from '../../../services/affiliates/affiliates.service
 // Audit Trail
 import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../../model/audit-trail.model';
+
+// For Modals
+import { AffiliatesRPModalComponent } from 'src/app/modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 
 declare var google: any;
