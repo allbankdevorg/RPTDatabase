@@ -38,7 +38,7 @@ export class FetchDataService {
 
   // Private method to make HTTP requests based on a command
   private makeRequest(cmd: number): Observable<any> {
-    console.log(cmd);
+    // console.log(cmd);
 
     // Set headers for the HTTP request
     const headers = new HttpHeaders({
@@ -89,14 +89,14 @@ export class FetchDataService {
             callback(data);
           }
         } else {
-          console.log(`No Data for cmd ${cmd}`);
+          // console.log(`No Data for cmd ${cmd}`);
           if (callback) {
             callback([]);
           }
         }
       },
       error: (error) => {
-        console.error(`Error fetching data for cmd ${cmd}:`, error);
+        // console.error(`Error fetching data for cmd ${cmd}:`, error);
         if (callback) {
           callback([]);
         }
@@ -113,12 +113,12 @@ export class FetchDataService {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           return response.result[0].Data;
         } else {
-          console.log(`No Data for cmd 100`);
+          // console.log(`No Data for cmd 100`);
           return [];
         }
       }),
       catchError(error => {
-        console.error(`Error fetching data for cmd 100:`, error);
+        // console.error(`Error fetching data for cmd 100:`, error);
         return of([]);
       })
     );
@@ -133,12 +133,12 @@ export class FetchDataService {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           return response.result[0].Data;
         } else {
-          console.log(`No Data for cmd 101`);
+          // console.log(`No Data for cmd 101`);
           return [];
         }
       }),
       catchError(error => {
-        console.error(`Error fetching data for cmd 101:`, error);
+        // console.error(`Error fetching data for cmd 101:`, error);
         return of([]);
       })
     );
@@ -151,12 +151,12 @@ export class FetchDataService {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           return response.result[0].Data;
         } else {
-          console.log(`No Data for cmd 103`);
+          // console.log(`No Data for cmd 103`);
           return [];
         }
       }),
       catchError(error => {
-        console.error(`Error fetching data for cmd 103:`, error);
+        // console.error(`Error fetching data for cmd 103:`, error);
         return of([]);
       })
     );
@@ -171,12 +171,12 @@ export class FetchDataService {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           return response.result[0].Data;
         } else {
-          console.log(`No Data for cmd 103`);
+          // console.log(`No Data for cmd 103`);
           return [];
         }
       }),
       catchError(error => {
-        console.error(`Error fetching data for cmd 103:`, error);
+        // console.error(`Error fetching data for cmd 103:`, error);
         return of([]);
       })
     );
@@ -190,12 +190,12 @@ export class FetchDataService {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           return response.result[0].Data;
         } else {
-          console.log(`No Data for cmd 107`);
+          // console.log(`No Data for cmd 107`);
           return [];
         }
       }),
       catchError(error => {
-        console.error(`Error fetching data for cmd 107:`, error);
+        // console.error(`Error fetching data for cmd 107:`, error);
         return of([]);
       })
     );
