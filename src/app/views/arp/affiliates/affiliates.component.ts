@@ -260,7 +260,6 @@ this.renderer.setStyle(modal, 'display', 'none');
 
 delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
 event.stopPropagation();
-console.log(row);
 const cis_id = row.aff_com_cis_number
 event.stopPropagation();
 
