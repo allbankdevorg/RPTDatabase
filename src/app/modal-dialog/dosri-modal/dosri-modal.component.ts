@@ -67,33 +67,38 @@ export class DosriModalComponent implements OnInit {
   }
 
   onSubmit() {
-
     if (this.dosriForm.valid) {
       const formData = this.dosriForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
-      // console.log(userID);
-      // console.log(session);
-      
-      // console.log(formData);
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+  
       // Call the JavaScript function with form data
       createDosri(formData, session, userID)
-      .then((response) => {
-        // Log the response when the promise is resolved
+        .then((response) => {
+          // Log the response when the promise is resolved
           this.ngOnInit();
           this.logAction('Add', 'Added Company', true, 'DRI');
           this.close();
-      })
-      .catch((error) => {
-        // Handle errors when the promise is rejected
-        // console.error(error.result[0].status);
-        this._dialogRef.close(true);
-        this.logAction('Add', 'Adding Company Failed', false, 'DRI');
-        // Swal.fire('Error occurred', '', 'error');
-      }); // Pass the entire formData object
+        })
+        .catch((error) => {
+          // Handle errors when the promise is rejected
+  
+          // Check if the error message is "CISNumber already define"
+          if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+              error.result[0].message === "CISNumber already define") {
+            this._dialogRef.close(true);
+          } else {
+            // Handle other error conditions 
+            this.logAction('Add', 'Adding Company Failed', false, 'DRI');
+            // this._dialogRef.close(false);
+          }
+  
+         
+          // Swal.fire('Error occurred', '', 'error');
+        });
     }
-
   }
+  
     
 
 
