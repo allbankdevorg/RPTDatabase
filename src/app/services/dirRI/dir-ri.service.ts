@@ -20,7 +20,7 @@ export class DirRIService {
   }
 
   setCompCIS(value: number): void {
-    this.dirCIS = value;
+    this.compCIS = value;
     // console.log('DataService - compCIS set to:', value);
   }
 
