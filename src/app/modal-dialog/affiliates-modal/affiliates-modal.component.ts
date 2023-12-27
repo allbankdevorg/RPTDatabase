@@ -62,11 +62,14 @@ export class AffiliatesModalComponent implements OnInit {
 
   onSubmit() {
     const moduleV = this.dataService.getmoduleV();
+    
 
     if (this.affForm.valid) {
       const formData = this.affForm.value;
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
 
-      createAffil(formData, moduleV)
+      createAffil(formData, moduleV, session, userID)
       .then((response) => {
         this.ngOnInit();
         this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
@@ -102,7 +105,6 @@ export class AffiliatesModalComponent implements OnInit {
           this._dosriService.createDosri(formData).subscribe({
             next: (val: any) => {
               this._coreService.openSnackBar('Employee added successfully');
-              this._dialogRef.close(true);
             },
             error: (err: any) => {
               // console.error(err);
