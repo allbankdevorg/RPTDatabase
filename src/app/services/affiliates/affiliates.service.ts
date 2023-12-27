@@ -32,7 +32,7 @@ export class AffiliatesService {
 
   setCompCIS(value: number): void {
     this.compCIS = value;
-    console.log('DataService - compCIS set to:', value);
+    // console.log('DataService - compCIS set to:', value);
   }
 
   getDirCIS(): number {
