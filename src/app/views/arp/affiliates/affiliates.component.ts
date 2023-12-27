@@ -19,7 +19,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 // Services
 import { SharedservicesService } from './../dataintegration/sharedservices.service';
 import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
-import {AffilDIRService} from '../../../services/affilDIR/affil-dir.service'
+import {delAffilComp} from '../../../functions-files/delete/deleteAPI.js';
 // Functions Import
 import {getAffiliatesCompany, getAffiliatesDirectors, getManagingCompany} from '../../../functions-files/getFunctions';
 import {createAffil} from '../../../functions-files/add/postAPI';
@@ -260,13 +260,21 @@ this.renderer.setStyle(modal, 'display', 'none');
 
 delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
 event.stopPropagation();
-// deleteRelationship()
-// console.log(row);
-// console.log(aff_com_cis_number);
-// console.log(comCIS);
-deleteAffiliates((dosriId) => {
+console.log(row);
+const cis_id = row.aff_com_cis_number
+event.stopPropagation();
 
-})
+delAffilComp(cis_id)
+  .then((response) => {
+    this.ngOnInit();
+  })
+  .catch((error) => {
+    // Swal.fire({
+    //   icon: 'error',
+    //   title: 'No CIS Found!',
+    //   // text: 'Invalid username or password',
+    // });
+  })
 }
 
 
