@@ -46,7 +46,7 @@ export class DirectorsRIModalComponent implements OnInit {
       private auditTrailService: AuditTrailService)
   {
       this.riForm = this.formBuilder.group({
-        riCisNumber: ['', [Validators.required]],
+        riCisNumber: [''],
         riFirstName: ['', [Validators.required]],
         riMiddleName: [''],
         riLastName: ['', [Validators.required]],
