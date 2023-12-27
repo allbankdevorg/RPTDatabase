@@ -20,6 +20,7 @@ import {AffiliatesService} from '../../../services/affiliates/affiliates.service
 import { createAffilOff, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilDir, deleteAffilOff, deleteAffilDirRI, deleteAffilOffRI} from '../../../functions-files/delFunctions'
+import {delAffilComDIR} from '../../../functions-files/delete/deleteAPI.js';
 
 //For export
 import { CsvExportService } from '../../exportservices/csv-export.service';
@@ -490,11 +491,25 @@ async  ngOnInit() {
  
 
 //Delete Functions
-delAffilDirector(element: any, dirAffilCIS: any, dirRelatComCIS: any): void {
- deleteAffilDir((dosriId) => {
 
- })
+// Unlink Directors of the Affiliates Company
+delAffilDirector(row: any, dirAffilCIS: any, dirRelatComCIS: any): void {
+  console.log(row);
+  const cis_id = row.dir_CisNumber;
+
+  delAffilComDIR(cis_id)
+    .then((response) => {
+      this.ngOnInit();
+    })
+    .catch((error) => {
+      // Swal.fire({
+      //   icon: 'error',
+      //   title: 'No CIS Found!',
+      //   // text: 'Invalid username or password',
+      // });
+    })
 }
+
 
 delAffilDirRI(element: any, cisNum: any, dirRelated: any): void {
  deleteAffilDirRI((dosriId) => {
