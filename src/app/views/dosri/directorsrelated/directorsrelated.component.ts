@@ -208,8 +208,8 @@ export class DirectorsrelatedComponent {
   
   setButtonId(id: number, dirCisNumber: number) {
     // Set values in the service
-    console.log(id);
-    console.log(dirCisNumber);
+    // console.log(id);
+    // console.log(dirCisNumber);
     
     this.dataService.setDirCIS(dirCisNumber);
     this.dataService.setButtonId(id);
