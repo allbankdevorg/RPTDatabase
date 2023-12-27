@@ -77,10 +77,20 @@ export class AffiliatesModalComponent implements OnInit {
       })
       .catch((error) => {
         // Handle errors when the promise is rejected
-        // console.error(error.result[0].status);
-        this.logAction('Add', 'Adding Affiliates Failed', false, 'Affiliates');
+
+        // Check if the error message is "CISNumber already define"
+        if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+            error.result[0].message === "CISNumber already define") {
+          this._dialogRef.close(true);
+        } else {
+          // Handle other error conditions 
+          this.logAction('Add', 'Adding Affiliates Failed', false, 'Affiliates');
+          // this._dialogRef.close(false);
+        }
+
        
-      })
+        // Swal.fire('Error occurred', '', 'error');
+      });
     }
   }
   
