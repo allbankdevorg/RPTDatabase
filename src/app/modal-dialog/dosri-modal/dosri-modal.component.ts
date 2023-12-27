@@ -87,6 +87,7 @@ export class DosriModalComponent implements OnInit {
       .catch((error) => {
         // Handle errors when the promise is rejected
         // console.error(error.result[0].status);
+        this._dialogRef.close(true);
         this.logAction('Add', 'Adding Company Failed', false, 'DRI');
         // Swal.fire('Error occurred', '', 'error');
       }); // Pass the entire formData object
@@ -116,7 +117,8 @@ export class DosriModalComponent implements OnInit {
         this._dosriService.createDosri(formData).subscribe({
           next: (val: any) => {
             this._coreService.openSnackBar('Employee added successfully');
-            },
+            this._dialogRef.close(true);
+          },
           error: (err: any) => {
             // console.error(err);
           },
