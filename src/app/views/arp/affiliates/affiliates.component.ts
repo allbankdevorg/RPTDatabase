@@ -142,14 +142,6 @@ export class AffiliatesComponent implements AfterViewInit {
     this.affDataSource.filter = filterValue;
   }
 
-  
-  // updateDisplayedData() {
-  //   // Implement logic to update displayed data based on current page
-  //   // For example, slice your data array to display only the relevant items for the current page
-  //   const startIndex = this.currentPage * this.pageSize;
-  //   const endIndex = startIndex + this.pageSize;
-  //   this.displayedData = this.affDataSource.data.slice(startIndex, endIndex);
-  // }
 
   constructor(private router: Router,
     public _dialog: MatDialog,
@@ -175,148 +167,8 @@ this.updateTableData();
 }
 
 
+
 //All functions are below
-// updateTableData() {
-//     this.get.getAffiliatesCompany((affilComp) => {
-//     if (affilComp) {
-//     // Process the data to count directors related to each company
-//     const companiesWithDirectors = affilComp.map(company => {
-//     const directors = company.directors || []; // Ensure there is a directors array
-//     const directorCount = directors.length;
-//     // console.log(directorCount);
-//     return { ...company, directorCount, directors };
-//     });
-
-//     // Set the data source for your MatTable
-//     this.affDataSource.data = companiesWithDirectors;
-//     // console.log(this.affDataSource)
-//     }
-//     });
-
-//     this.get.getAffiliatesCompany((affilComp) => {
-//     if (affilComp) {
-//     // Fetch director data
-//     this.get.getAffiliatesDirectors((affilDirData) => {
-//     // Process the data to count directors related to each company
-//     const affiliatesWithDirectors: DData[] = affilComp.map(company => {
-//       const affiliatesDirectors = affilDirData.filter(director => director.com_related === company.aff_com_account_name);
-//       return { ...company, directorCount: affiliatesDirectors.length, directors: affiliatesDirectors };
-//     });
-
-//     // Set the data source for your MatTable
-//     console.log(affiliatesWithDirectors)
-//     this.affilDdataSource.data = affiliatesWithDirectors;
-//     // Trigger change detection
-//     this.changeDetectorRef.detectChanges();
-//     });
-//     }
-//     });
-
-//     this.get.getManagingCompany((mngComp) => {
-//     this.compData = mngComp;
-//     this.commandGroups = []; // Clear the existing commandGroups
-//     console.log(this.compData);
-
-//     if (mngComp) {
-//     const data = mngComp;
-//     console.log(data);
-//     data.forEach(item => {
-//     // Create a commandGroup item with value and viewValue
-//     const commandGroup = {
-//       value: item.aff_com_cis_number,
-//       viewValue: item.aff_com_company_name,
-//     };
-
-//     // Add the command group to the array
-//     this.commandGroups.push(commandGroup);
-//     });
-//     }
-//     // const data = this.compData.result[0].Data;
-//     // console.log(mngComp);
-//     })
-
-
-//     // Fetching of Directors and Related Interest
-
-// }
-
-
-// updateTableData() {
-//   getAffiliatesCompany((affilComp) => {
-//   if (affilComp) {
-//   // Process the data to count directors related to each company
-//   const companiesWithDirectors = affilComp.map(company => {
-//   const directors = company.directors || []; // Ensure there is a directors array
-//   const directorCount = directors.length;
-//   // console.log(directorCount);
-//   return { ...company, directorCount, directors };
-//   });
-  
-//   // Set the data source for your MatTable
-//   this.affDataSource.data = companiesWithDirectors;
-//   // console.log(this.affDataSource)
-//   }
-//   });
-  
-//   getAffiliatesCompany((affilComp) => {
-//   if (affilComp) {
-//   // Fetch director data
-//   getAffiliatesDirectors((affilDirData) => {
-//   // Process the data to count directors related to each company
-//   const affiliatesWithDirectors: DData[] = affilComp.map(company => {
-//     const affiliatesDirectors = affilDirData.filter(director => director.com_related === company.aff_com_account_name);
-//     return { ...company, directorCount: affiliatesDirectors.length, directors: affiliatesDirectors };
-//   });
-  
-//   // Set the data source for your MatTable
-//   console.log(affiliatesWithDirectors)
-//   this.affilDdataSource.data = affiliatesWithDirectors;
-//   // Trigger change detection
-//   this.changeDetectorRef.detectChanges();
-//   });
-//   }
-//   });
-  
-//   getManagingCompany((mngComp) => {
-//   this.compData = mngComp;
-//   this.commandGroups = []; // Clear the existing commandGroups
-//   console.log(this.compData);
-  
-//   if (mngComp) {
-//   const data = mngComp;
-//   console.log(data);
-//   data.forEach(item => {
-//   // Create a commandGroup item with value and viewValue
-//   const commandGroup = {
-//     value: item.aff_com_cis_number,
-//     viewValue: item.aff_com_company_name,
-//   };
-  
-//   // Add the command group to the array
-//   this.commandGroups.push(commandGroup);
-//   });
-//   }
-//   // const data = this.compData.result[0].Data;
-//   // console.log(mngComp);
-//   })
-  
-  
-//   // Fetching of Directors and Related Interest
-  
-//   }
-
-// updateTableData() {
-//   this.get.getAffiliatesCompany((affilComp) => {
-//     if (affilComp) {
-//       const companiesWithDirectors = affilComp.map(company => {
-//           const directors = company.directors || []; // Ensure there is a directors array
-//           const directorCount = directors.length;
-//           // console.log(directorCount);
-//           return { ...company, directorCount, directors };
-//         })
-//     }
-//   })
-// }
 
 updateTableData() {
   // Fetching data for Affiliates with Officers
@@ -374,12 +226,6 @@ const companyName = row.aff_com_company_name;
 this.sharedService.setCompName(companyName);
 this.sharedService.setDirectorId(directorId);
 this.sharedService.setCompanyCis(companyName);
-// console.log(directorId);
-// console.log(companyName);
-// console.log('row has been clicked');
-// // 
-// console.log('row has been clicked');
-// console.log('Clicked row data:', row);
 this.router.navigate(['/arp/pac', directorId]);
 }
 
@@ -390,9 +236,6 @@ initializeCommandGroups() {
 }
 
 editaffiliates(row: any) {
-// console.log(row);
-// console.log('Show Modal');
-// console.log("success: Login Successfully");
 const modal = this.editAffilModal.nativeElement;
 
 if (modal) {
@@ -438,18 +281,7 @@ const isValidManager = this.commandGroups.some(group => {
 return group.value === selectedManager;
 });
 
-// console.log('IsValidManager:', isValidManager);
 
-
-
-// Set the value only if it's a valid manager
-// if (isValidManager) {
-// this.affForm.get('commandControl')?.setValue(selectedManager);
-// console.log(this.affForm);
-// } else {
-// // Optionally, handle the case where the manager is not valid
-// console.error('Invalid manager:', selectedManager);
-// }
 
 this.editAffilData = {
 com_cis_number: row.aff_com_cis_number,
