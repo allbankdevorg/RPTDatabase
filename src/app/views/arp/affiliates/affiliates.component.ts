@@ -19,7 +19,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 // Services
 import { SharedservicesService } from './../dataintegration/sharedservices.service';
 import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
-
+import {AffilDIRService} from '../../../services/affilDIR/affil-dir.service'
 // Functions Import
 import {getAffiliatesCompany, getAffiliatesDirectors, getManagingCompany} from '../../../functions-files/getFunctions';
 import {createAffil} from '../../../functions-files/add/postAPI';
@@ -222,6 +222,9 @@ event.stopPropagation();
 // Capture the selected data and navigate to another component with it
 const directorId = row.aff_com_cis_number; // Extract the ID from the clicked row
 const companyName = row.aff_com_company_name;
+
+
+this.dataService.setCompCIS(directorId);
 
 this.sharedService.setCompName(companyName);
 this.sharedService.setDirectorId(directorId);
