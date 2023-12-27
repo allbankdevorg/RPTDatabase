@@ -21,6 +21,12 @@ import {deleteAffiliates} from '../../../functions-files/delFunctions'
 import {delAffilComp} from '../../../functions-files/delete/deleteAPI.js';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
+
+// For Modals
+import { AffiliatesRPModalComponent } from 'src/app/modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+
+
 export interface Child {
   name: string;
 }
@@ -142,6 +148,7 @@ export class RpOfficerComponent implements AfterViewInit {
 
 
   constructor(private router: Router,
+          public _dialog: MatDialog,
           private formBuilder: FormBuilder, 
           private http: HttpClient, 
           private dataTransferService: DataTransferService,
@@ -323,8 +330,34 @@ export class RpOfficerComponent implements AfterViewInit {
   }
 
 
-  setoffcRelated() {
-  }
+  // Show Modal Form
+openAddEditEmpForm() {
+  const dialogRef = this._dialog.open(AffiliatesRPModalComponent);
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+      }
+    },
+  });
+}
+
+openEditForm(data: any, event: any) {
+  event.stopPropagation();
+  // console.log(data);
+  const dialogRef = this._dialog.open(AffiliatesRPModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        // console.log("Successs");
+      }
+    },
+  });
+}
 
 
   editAffil(row: any, event: Event) {
