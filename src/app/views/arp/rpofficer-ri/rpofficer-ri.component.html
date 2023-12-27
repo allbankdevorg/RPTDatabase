@@ -12,7 +12,7 @@
 
                 <c-container fluid class=" my-1 d-flex justify-content-between align-items-center">
                     <div></div>
-                    <button [cModalToggle]="officerModal.id" mat-fab extended color="primary"  (click)="setAffilCompOff()" *appHasPermission="'add'">
+                    <button (click)="openAffilOfficersForm()" mat-fab extended color="primary"  (click)="setAffilCompOff()" *appHasPermission="'add'">
                         <mat-icon>add</mat-icon>
                         ADD
                     </button>
@@ -53,7 +53,7 @@
                                     </div>
                                     <br>
                                 </ng-container>
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(1, element.off_CisNumber)" 
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>
@@ -73,7 +73,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(2, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>
@@ -91,7 +91,7 @@
                                     </div>
                                     <br>
                                 </ng-container>
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(3, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon> 
                             </td>
@@ -110,7 +110,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(4, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>
@@ -129,7 +129,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(5, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>
@@ -148,7 +148,7 @@
                                     </div>
                                     <br>
                                 </ng-container>
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(6, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon> 
                             </td>        
@@ -167,7 +167,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(7, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>    
@@ -186,7 +186,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(8, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>    
@@ -205,7 +205,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(9, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>    
@@ -224,7 +224,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(10, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>        
@@ -243,7 +243,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(11, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>
@@ -262,7 +262,7 @@
                                     </div>
                                     <br>
                                 </ng-container>
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(12, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>    
@@ -281,7 +281,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(13, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>      
@@ -300,7 +300,7 @@
                                     </div>
                                     <br>
                                 </ng-container> 
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(14, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon>
                             </td>  
@@ -319,7 +319,7 @@
                                     </div>
                                     <br>
                                 </ng-container>
-                                <mat-icon *appHasPermission="'add'" [cModalToggle]="relationShipModal.id" class="add-icon"  color="primary" 
+                                <mat-icon *appHasPermission="'add'" (click)="openAffilOfficerRIForm()" class="add-icon"  color="primary" 
                                 (click)="setButtonId(15, element.off_CisNumber)"
                                 (click)="setdirRelated()">add_circle</mat-icon> 
                             </td>      
@@ -356,13 +356,13 @@
 
 
 <!-- Add Officers Modal -->
-<c-modal #officerModal backdrop="static" id="officerModal" size="lg">
+<!-- <c-modal #officerModal backdrop="static" id="officerModal" size="lg">
     <c-modal-header>
       <h3 cModalTitle>Affiliates Officer</h3>
       <button [cModalToggle]="officerModal.id" cButtonClose></button>
     </c-modal-header>
   
-    <form cForm class="mb-2" [formGroup]="affilOfficerForm" (ngSubmit)="onAffilOffSubmit()">
+    <form cForm class="mb-2" >
       <c-modal-body>
         <c-row class="align-items-center">
 
@@ -421,17 +421,17 @@
       </c-modal-footer>
     </form>
         
-</c-modal>
+</c-modal> -->
 
 
 <!-- Start of Modal for Related Interest -->
-<c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
+<!-- <c-modal #relationShipModal backdrop="static" id="relationShipModal" size="lg">
     <c-modal-header>
       <h3 cModalTitle>Affiliates Relationship </h3>
       <button [cModalToggle]="relationShipModal.id" cButtonClose></button>
     </c-modal-header>
   
-    <form cForm class="mb-2" [formGroup]="affilOfficerRIForm" (ngSubmit)="onRISubmit()">
+    <form cForm class="mb-2" >
       <c-modal-body>
         <c-row class="align-items-center">
           
@@ -448,7 +448,7 @@
                   aria-describedby="passwordHelpInline-3"cFormControl
                   id="riCisNumber" name="riCisNumber"
                   placeholder="CIS Number"
-                  type="text" formControlName="riCisNumber" appNum>
+                  type="text" formControlName="" appNum>
               </c-col>
           
                 <c-col [sm]="6">
@@ -491,4 +491,4 @@
       </c-modal-footer>
     </form>
         
-</c-modal>
+</c-modal> -->
