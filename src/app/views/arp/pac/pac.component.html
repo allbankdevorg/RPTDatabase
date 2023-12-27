@@ -13,7 +13,7 @@
                     <!-- <c-row> -->
                         <c-container fluid class=" my-1 d-flex justify-content-between align-items-center">
                             <div></div>
-                            <button [cModalToggle]="staticBackdropModal.id" mat-fab extended color="primary" (click)="setAffilComp()" *appHasPermission="'add'">
+                            <button  (click)="openAffilDirectorsForm()" mat-fab extended color="primary" (click)="setAffilComp()" *appHasPermission="'add'">
                                 <mat-icon>add</mat-icon>
                                 ADD
                             </button>
@@ -54,7 +54,7 @@
                                         </div>
                                         <br>
                                     </ng-container>
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" class="add-icon"  color="primary" 
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
                                     (click)="setButtonId(1, element.dir_CisNumber)" 
                                     (click)="setdirRelated()">add_circle</mat-icon>
                                 </td>
@@ -74,7 +74,7 @@
                                         </div>  
                                         <br>
                                     </ng-container>
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" class="add-icon"  color="primary" 
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
                                     (click)="setButtonId(2, element.dir_CisNumber)" 
                                     (click)="setdirRelated()">add_circle</mat-icon>
                                 </td>
@@ -92,7 +92,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" class="add-icon"  color="primary" 
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
                                     (click)="setButtonId(3, element.dir_CisNumber)" 
                                     (click)="setdirRelated()">add_circle</mat-icon>
                                 </td>
@@ -111,7 +111,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(4, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(4, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>
                             </ng-container>
                         
@@ -128,7 +128,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(5, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(5, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>
                             </ng-container>
                         
@@ -145,7 +145,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(6, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(6, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>        
                             </ng-container>
                         
@@ -162,7 +162,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(7, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(7, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -179,7 +179,7 @@
                                         </div>mat-icon
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -196,7 +196,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -213,7 +213,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(10, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(10, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>        
                             </ng-container>
                         
@@ -230,7 +230,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(11, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(11, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>
                             </ng-container>
                         
@@ -247,7 +247,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(12, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(12, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -264,7 +264,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(13, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(13, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>      
                             </ng-container>
                             
@@ -281,7 +281,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(14, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(14, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>  
                             </ng-container>
                         
@@ -298,7 +298,7 @@
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" [cModalToggle]="DirrelationShipModal.id" (click)="setButtonId(15, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(15, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>      
                             </ng-container>
                         
@@ -326,170 +326,6 @@
   
 <!-- Modals -->
 <!-- Add Directors Modal -->
-<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal" size="lg">
-    <!-- ... (modal content) -->
-    <c-modal-header>
-      <h3 cModalTitle>Affiliates Directors</h3>
-      <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
-    </c-modal-header>
-  
-    <form cForm class="mb-2" [formGroup]="affilDrctrForm" (ngSubmit)="onAffilDSubmit()">
-      <c-modal-body>
-        <c-row class="align-items-center">
-
-
-            <c-col [sm]="4">
-              <label cLabel="col" for="affildcisNumber">CIS Number</label>
-              <mat-form-field appearance="fill" [style.width.%]=100>
-              <input
-                aria-describedby="passwordHelpInline-3" matInput
-                id="affildcisNumber" name="affildcisNumber"
-                placeholder="CIS Number"
-                type="text" formControlName="affildcisNumber" appNum>
-                <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-              </mat-form-field>
-            </c-col>  
-          
-            <c-col [sm]="4">
-                <label cLabel="col" for="affildFirstName">First Name</label>
-                <mat-form-field appearance="fill" [style.width.%]=100>
-                <input
-                  aria-describedby="passwordHelpInline-3" matInput
-                  id="affildFirstName" name="affildFirstName"
-                  placeholder="First Name"
-                  type="text" formControlName="affildFirstName" appTitleCase>
-                  <mat-error *ngIf="affilDrctrForm.get('affildFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
-                </mat-form-field>
-            </c-col>
-    
-            <c-col [sm]="4">
-                <label cLabel="col" for="affildMiddleName">Middle Name</label>
-                <mat-form-field appearance="fill" [style.width.%]=100>
-                <input
-                  aria-describedby="passwordHelpInline-3" matInput
-                  id="affildMiddleName" name="affildMiddleName"
-                  placeholder="Middle Name"
-                  type="text" formControlName="affildMiddleName" appTitleCase>
-                </mat-form-field>
-            </c-col>
-
-            
-    
-    
-        </c-row>
-
-        <c-row class="align-items-center">
-          
-          <c-col [sm]="6">
-            <label cLabel="col" for="affildLastName">Last Name</label>
-            <mat-form-field appearance="fill" [style.width.%]=100>
-            <input
-              aria-describedby="passwordHelpInline-3" matInput
-              id="affildLastName" name="affildLastName"
-              placeholder="Last Name"
-              type="text" formControlName="affildLastName" appTitleCase>
-              <mat-error *ngIf="affilDrctrForm.get('affildLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-            </mat-form-field>
-        </c-col>
-          
-          <c-col [sm]="6">
-            <label cLabel="col" for="affildPosition">Position</label>
-            <mat-form-field appearance="fill" [style.width.%]=100>
-            <input
-              matInput
-              id="affildPosition" name="affildPosition"
-              placeholder="Position"
-              type="text" formControlName="affildPosition" appTitleCase>
-              <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
-            </mat-form-field>
-          </c-col>
-        </c-row>
-      </c-modal-body>
-      <c-modal-footer>
-        <button type="submit" cButton color="success" class="proceed" [disabled]="!affilDrctrForm.valid">Proceed</button>
-      </c-modal-footer>
-    </form>
-        
-</c-modal>
-
-
-
-
-<!-- Start of Modal for Dir Related Interest -->
-<c-modal #DirrelationShipModal backdrop="static" id="DirrelationShipModal" size="lg">
-    <!-- ... (modal content) -->
-    <c-modal-header>
-      <h3 cModalTitle> Relationship </h3>
-      <button [cModalToggle]="DirrelationShipModal.id" cButtonClose></button>
-    </c-modal-header>
-  
-    <form cForm class="mb-2" [formGroup]="affilDirRiForm" (ngSubmit)="onDirRISubmit()">
-      <c-modal-body>
-        <c-row class="align-items-center">
-          
-            <c-row class="align-items-center">
-
-              <c-col [sm]="6">
-                <label cLabel="col" for="riCisNumber">CIS Number</label>
-                <mat-form-field appearance="fill" [style.width.%]=100>
-                <input
-                aria-describedby="passwordHelpInline-3"cFormControl
-                id="dir_CIS" name="dir_CIS"
-                placeholder="dir_CIS"
-                type="text" [value]="selectedOffCisNumber || ''" hidden>
-                <input
-                  aria-describedby="passwordHelpInline-3" matInput
-                  id="riCisNumber" name="riCisNumber"
-                  placeholder="CIS Number"
-                  type="text" formControlName="riCisNumber" appNum>
-                </mat-form-field>
-              </c-col>
-          
-                <c-col [sm]="6">
-                    <label cLabel="col" for="riFirstName">First Name</label>
-                    <mat-form-field appearance="fill" [style.width.%]=100>
-                    <input
-                      aria-describedby="passwordHelpInline-3" matInput
-                      id="riFirstName" name="riFirstName"
-                      placeholder="First Name"
-                      type="text" formControlName="riFirstName" appTitleCase>
-                      <mat-error *ngIf="affilDirRiForm.get('riFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
-                    </mat-form-field>
-                </c-col>
-            </c-row>
-            
-            <c-row class="align-items-center">
-                <c-col [sm]="6">
-                    <label cLabel="col" for="riMiddleName">Middle Name</label>
-                    <mat-form-field appearance="fill" [style.width.%]=100>
-                    <input
-                      aria-describedby="passwordHelpInline-3" matInput
-                      id="riMiddleName" name="riMiddleName"
-                      placeholder="Middle Name"
-                      type="text" formControlName="riMiddleName" appTitleCase>
-                    </mat-form-field>
-                </c-col>
-    
-                <c-col [sm]="6">
-                    <label cLabel="col" for="riLastName">Last Name</label>
-                    <mat-form-field appearance="fill" [style.width.%]=100>
-                    <input
-                      aria-describedby="passwordHelpInline-3" matInput
-                      id="riLastName" name="riLastName"
-                      placeholder="Last Name"
-                      type="text" formControlName="riLastName" appTitleCase>
-                      <mat-error *ngIf="affilDirRiForm.get('riLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-                    </mat-form-field>
-                </c-col>
-            </c-row>
-        </c-row>
-      </c-modal-body>
-      <c-modal-footer>
-        <button type="submit" cButton color="success" class="proceed" [disabled]="!affilDirRiForm.valid">Proceed</button>
-      </c-modal-footer>
-    </form>
-        
-</c-modal>
 
 
 
