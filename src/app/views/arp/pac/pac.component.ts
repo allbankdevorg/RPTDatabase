@@ -495,7 +495,6 @@ async  ngOnInit() {
 // Unlink Directors of the Affiliates Company
 delAffilDirector(row: any, dirAffilCIS: any, dirRelatComCIS: any): void {
   const cis_id = row.dir_CisNumber;
-
   delAffilComDIR(cis_id)
     .then((response) => {
       this.ngOnInit();

@@ -243,7 +243,6 @@ export class DirectorsrelatedComponent {
  
   delDirector(row: any, comp_cis: any, dir_cis: any): void {
     const cis_id = row.dir_CisNumber;
-
     delDosriDIR(cis_id)
     .then((response) => {
       this.ngOnInit();
