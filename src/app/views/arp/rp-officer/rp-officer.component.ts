@@ -12,6 +12,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations'
 // Services
 import { DataTransferService } from '../../../services/data-transfer.service';
 import { SharedservicesService } from './Services/sharedservices.service';
+import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
 // Functions Import
 import {createBankOfficer, createBankOfficerRelationship, createAffil} from '../../../functions-files/add/postAPI';
@@ -143,6 +144,7 @@ export class RpOfficerComponent implements AfterViewInit {
           private formBuilder: FormBuilder, 
           private http: HttpClient, 
           private dataTransferService: DataTransferService,
+          private dataService: AffiliatesService,
           private cdr: ChangeDetectorRef,
           private ngZone: NgZone,
           private sharedService: SharedservicesService,
@@ -291,6 +293,8 @@ export class RpOfficerComponent implements AfterViewInit {
     // Capture the selected data and navigate to another component with it
       const directorId = row.aff_com_cis_number; // Extract the ID from the clicked row
       const companyName = row.aff_com_company_name;
+
+      this.dataService.setCompCIS(directorId);
 
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
