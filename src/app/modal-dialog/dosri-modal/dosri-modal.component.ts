@@ -70,11 +70,14 @@ export class DosriModalComponent implements OnInit {
 
     if (this.dosriForm.valid) {
       const formData = this.dosriForm.value;
-
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      // console.log(userID);
+      // console.log(session);
       
       // console.log(formData);
       // Call the JavaScript function with form data
-      createDosri(formData)
+      createDosri(formData, session, userID)
       .then((response) => {
         // Log the response when the promise is resolved
           this.ngOnInit();
@@ -84,7 +87,6 @@ export class DosriModalComponent implements OnInit {
       .catch((error) => {
         // Handle errors when the promise is rejected
         // console.error(error.result[0].status);
-        this._dialogRef.close(true);
         this.logAction('Add', 'Adding Company Failed', false, 'DRI');
         // Swal.fire('Error occurred', '', 'error');
       }); // Pass the entire formData object
@@ -114,8 +116,7 @@ export class DosriModalComponent implements OnInit {
         this._dosriService.createDosri(formData).subscribe({
           next: (val: any) => {
             this._coreService.openSnackBar('Employee added successfully');
-            this._dialogRef.close(true);
-          },
+            },
           error: (err: any) => {
             // console.error(err);
           },

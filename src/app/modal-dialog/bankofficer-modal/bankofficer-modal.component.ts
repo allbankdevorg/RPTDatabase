@@ -61,9 +61,12 @@ export class BankofficerModalComponent implements OnInit{
  
     if (this.boForm.valid) {
       const boData = this.boForm.value;
+      
+      
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
       // Call the JavaScript function with form data
-      console.log(boData);
-      createBankOfficer(boData)
+      createBankOfficer(boData, session, userID)
       .then((response) => {
         // this.updateTableData();
         this.logAction('Add Bank Officer', 'Successfuly Added Bank Officer', true, 'bankofficer');

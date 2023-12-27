@@ -64,10 +64,12 @@ export class BankofficerRIModalComponent implements OnInit{
       const selectedBOCisNumber = this.dataService.getboCIS();
 
       if (this.boRIForm.valid) {
-        const boRIData = this.boRIForm.value;
+        const boRIData = this.boRIForm.value; 
+        const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+        const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
     
         // Call the JavaScript function with form data
-        createBankOfficerRelationship(boRIData, buttonId, selectedBOCisNumber)
+        createBankOfficerRelationship(boRIData, buttonId, selectedBOCisNumber, session, userID)
         .then((response) => {
           // this.logAction('Add Bank Officer Related Interest', 'Successfuly Added Related Interest', true, 'bankofficer');
           this.logAction('Add', 'Successfuly Added Related Interest', true, 'Bank Officer');

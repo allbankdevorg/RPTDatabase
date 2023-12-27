@@ -84,8 +84,10 @@ export class DirectorsRIModalComponent implements OnInit {
     if (this.riForm.valid) {
       const riData = this.riForm.value;
       console.log(riData, buttonId, selectedDirCisNumber);
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
       // Call the JavaScript function with form data
-      createRelatedInterest(riData, buttonId, selectedDirCisNumber) // Pass the entire formData object
+      createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) // Pass the entire formData object
       .then((response) => {
         
         this.logAction('Add', 'Successfuly Added Related Interest', true, 'directorsrelated');

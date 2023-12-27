@@ -29,7 +29,7 @@ export class DirectorsModalComponent implements OnInit{
   
   drctrForm: FormGroup;
   selectedDirCisNumber: number = 0;
-  selectedCompCISNumber: number = 0;
+  // selectedCompCISNumber: number = 0;
 
   // / Subscription variables
    private buttonIdSubscription: Subscription = new Subscription();
@@ -73,12 +73,20 @@ export class DirectorsModalComponent implements OnInit{
       const directData = this.drctrForm.value;
       const directorId = this.sharedService.getDirectorId();
       const companyName = this.sharedService.getCompName();
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      const comp_CIS = this.dataService.getCompCIS();
+
+      console.log(comp_CIS);
     
       // Call the JavaScript function with form data
-      createDirectors(directData, this.selectedCompCISNumber)
+      createDirectors(directData, comp_CIS, session, userID)
       .then((response) => {
+
+        this.ngOnInit();
         this.logAction('Add', 'Successfuly Added Director', true, 'directorsrelated');
-   
+        this.close();
+
       })
       .catch((error) => {
         this.logAction('Add', 'Failed Adding Director', false, 'directorsrelated');
@@ -94,7 +102,7 @@ export class DirectorsModalComponent implements OnInit{
 
       // Trigger change detection
     this.changeDetectorRef.detectChanges();
-    console.log(this.changeDetectorRef.detectChanges);
+    // console.log(this.changeDetectorRef.detectChanges);
     // console.log(this.dataSource);
   }
 
