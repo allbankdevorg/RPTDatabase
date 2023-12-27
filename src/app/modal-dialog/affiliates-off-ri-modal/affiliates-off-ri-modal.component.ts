@@ -41,7 +41,7 @@ export class AffiliatesOffRIModalComponent implements OnInit{
     private auditTrailService: AuditTrailService)
     {
       this.affilOfficerRIForm = this.formBuilder.group({
-        riCisNumber: ['', [Validators.required]],
+        riCisNumber: [''],
         riFirstName: ['', [Validators.required]],
         riMiddleName: [''],
         riLastName: ['', [Validators.required]],
