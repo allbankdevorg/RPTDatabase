@@ -8,7 +8,7 @@
  *  - createAffilDir
  *  - createAffilOff
  *  - createAffilOffRI
- *  - createRPDirectorsRelatedInterest
+ *  - createAffilDirectorsRelatedInterest
  */
  
 
@@ -17,7 +17,7 @@
  * Creates a DOSRI (Directors, Officers, Stockholders, and their Related Interests).
  * @param {any} formData - The form data containing cisNumber, accountName, and companyName.
  */
-function createDosri(formData) {
+function createDosri(formData, session, userID) {
   return new Promise((resolve, reject) => {
     // console.log(formData)
     var settings = {
@@ -29,6 +29,8 @@ function createDosri(formData) {
       },
       "data": JSON.stringify({
         "cmd": 1,
+        "session": session,
+        "userid": userID,
         "request": {
               "cis_number": formData.com_cis_number,       // Use form data
               "account_name": formData.com_account_name,   // Use form data
@@ -61,9 +63,9 @@ function createDosri(formData) {
  * @param {any} directData - The data for the DOSRI director.
  * @param {any} selectedCompCISNumber - The selected company's CIS number.
  */
- function createDirectors(directData, selectedCompCISNumber) {
+ function createDirectors(directData, comp_CIS, session, userID) {
   return new Promise((resolve, reject) => {
-    // console.log(selectedCompCISNumber);
+    console.log(comp_CIS);
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -73,13 +75,15 @@ function createDosri(formData) {
       },
       "data": JSON.stringify({
         "cmd": 2,
+        "session": session,
+        "userid": userID,
         "request": {
           "cis_number": directData.cisNumber,
           "fname": directData.dFirstName,
           "mname": directData.dMiddleName,
           "lname": directData.dLastName,
           "position": directData.dPosition,
-          "com_cisnumber": selectedCompCISNumber
+          "com_cisnumber": comp_CIS
         }
       }),
     };
@@ -106,7 +110,7 @@ function createDosri(formData) {
  * @param {any} buttonId - The button ID.
  * @param {any} selectedDirCisNumber - The selected director's CIS number.
 */
-function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
+function createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
   return new Promise((resolve, reject) => {
     // console.log(buttonId)
     // console.log(selectedDirCisNumber)
@@ -120,6 +124,8 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
       },
       "data": JSON.stringify({
         "cmd": 3,
+        "session": session,
+        "userid": userID,
         "request": {
           "cis_number": riData.riCisNumber,
           "fname": riData.riFirstName,
@@ -153,7 +159,7 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber) {
  * Creates a bank officer.
  * @param {any} boData - The data for the bank officer.
  */
-function createBankOfficer(boData) {
+function createBankOfficer(boData, session, userID) {
   return new Promise((resolve, reject) => {
     // console.log(boData)
     // Implement code to insert a new director into the database
@@ -166,6 +172,8 @@ function createBankOfficer(boData) {
       },
       "data": JSON.stringify({
         "cmd": 4,
+        "session": session,
+        "userid": userID,
         "request": {
           "cis_number": boData.boCisNumber,
           "fname": boData.boFirstName,
@@ -200,12 +208,9 @@ function createBankOfficer(boData) {
  * @param {any} buttonId - The button ID.
  * @param {any} selectedcomCisNumber - The selected company's CIS number.
 */
-function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber) {
+function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber, session, userID) {
   return new Promise((resolve, reject) => {
     
-    // console.log(boRIData)
-    // console.log(buttonId)
-    // console.log(selectedcomCisNumber)
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -216,6 +221,8 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber)
       },
       "data": JSON.stringify({
         "cmd": 5,
+        "session": session,
+        "userid": userID,
         "request": {
           "cis_number": boRIData.boRICisNumber,
           "fname": boRIData.boRIFirstName,
@@ -249,7 +256,7 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber)
  * @param {any} formData - The form data containing affiliate information.
  * @param {any} moduleV - The module information.
 */
-function createAffil(formData, moduleV) {
+function createAffil(formData, moduleV, session, userID) {
     return new Promise((resolve, reject) => {
       // console.log(formData)
       // console.log(moduleV);
@@ -263,6 +270,8 @@ function createAffil(formData, moduleV) {
         },
         "data": JSON.stringify({
           "cmd": 6,
+          "session": session,
+          "userid": userID,
           "request": {
             "cis_number": formData.aff_com_cis_number,
             "account_name": formData.aff_com_account_name,
@@ -291,37 +300,50 @@ function createAffil(formData, moduleV) {
 
 /**
  * Creates an affiliate director.
- * @param {any} dirData - The data for the affiliate director.
+ * @param {any} directData - The data for the affiliate director.
  * @param {any} compId - The company ID.
 */
-function createAffilDir(dirData, compId) {
-    // console.log(dirData)
-    // console.log(compId)
-   var settings = {
-     "url": "http://10.232.236.15:8092/api/addData",
-     "method": "POST",
-     "timeout": 0,
-     "headers": {
-       "Content-Type": "application/json"
-     },
-     "data": JSON.stringify({
-       "cmd": 7,
-       "request": {
-             "cis_number": dirData.affildcisNumber,       // Use form data
-             "fname": dirData.affildFirstName, 
-             "mname": dirData.affildMiddleName, 
-             "lname": dirData.affildLastName,
-             "position": dirData.affildPosition,    // Use form data
-             "com_cisnumber": compId    // Use form data
-           }
-     }),
-   };
+function createAffilDir(directData, comp_CIS, session, userID) {
+    return new Promise((resolve, reject) => {
+      console.log(comp_CIS)
+      console.log(session);
+      console.log(userID);
 
-   
-   $.ajax(settings).done(function (response) {
-     Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-   });
-
+      var settings = {
+        "url": "http://10.232.236.15:8092/api/addData",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cmd": 7,
+          "session": session,
+          "userid": userID,
+          "request": {
+                "cis_number": directData.affildcisNumber,       // Use form data
+                "fname": directData.affildFirstName, 
+                "mname": directData.affildMiddleName, 
+                "lname": directData.affildLastName,
+                "position": directData.affildPosition,    // Use form data
+                "com_cisnumber": comp_CIS    // Use form data
+              }
+        }),
+      };
+  
+      $.ajax(settings).done(function (response) {
+        // Log the response
+        // console.log(response.result[0].status);
+        
+        // Check the status and resolve/reject the promise accordingly
+        Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+        if (response.result[0].status === 'success') {
+          resolve(response);
+        } else {
+          reject(response);
+        }
+      });
+    });
 }
 
 
@@ -330,33 +352,45 @@ function createAffilDir(dirData, compId) {
  * @param {any} offData - The data for the affiliate officer.
  * @param {any} compId - The company ID.
 */
-function createAffilOff(offData, compId) {
-    // console.log(offData)
-    // console.log(compId)
-   var settings = {
-     "url": "http://10.232.236.15:8092/api/addData",
-     "method": "POST",
-     "timeout": 0,
-     "headers": {
-       "Content-Type": "application/json"
-     },
-     "data": JSON.stringify({
-       "cmd": 8,
-       "request": {
-             "cis_number": dirData.affildcisNumber,       // Use form data
-             "fname": dirData.affildFirstName, 
-             "mname": dirData.affildMiddleName, 
-             "lname": dirData.affildLastName,
-             "position": dirData.affildPosition,    // Use form data
-             "com_cisnumber": compId    // Use form data
-           }
-     }),
-   };
+function createAffilOff(offData, comp_CIS, session, userID) {
+  return new Promise((resolve, reject) => {
+    // Implement code to insert a new director into the database
+    var settings = {
+      "url": "http://10.232.236.15:8092/api/addData",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "cmd": 8,
+        "session": session,
+        "userid": userID,
+        "request": {
+              "cis_number": offData.affildcisNumber,       // Use form data
+              "fname": offData.affildFirstName, 
+              "mname": offData.affildMiddleName, 
+              "lname": offData.affildLastName,
+              "position": offData.affildPosition,    // Use form data
+              "com_cisnumber": comp_CIS    // Use form data
+            }
+      }),
+    };
+    
 
-   
-   $.ajax(settings).done(function (response) {
-     Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-   });
+    $.ajax(settings).done(function (response) {
+      // Log the response
+      // console.log(response.result[0].status);
+      
+      // Check the status and resolve/reject the promise accordingly
+      Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+      if (response.result[0].status === 'success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
+    });
+  });
 
 }
 
@@ -367,10 +401,9 @@ function createAffilOff(offData, compId) {
  * @param {any} buttonId - The button ID.
  * @param {any} selectedOffCisNumber - The selected officer's CIS number.
 */
-function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber) {
-    // console.log(OffriData)
-    // console.log(buttonId)
-    // console.log(selectedOffCisNumber)
+function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber, session, userID) {
+  return new Promise((resolve, reject) => {
+    // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -380,6 +413,8 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber) {
       },
       "data": JSON.stringify({
         "cmd": 9,
+        "session": session,
+        "userid": userID,
         "request": {
           "cis_number": OffriData.riCisNumber,
           "fname": OffriData.riFirstName,
@@ -390,11 +425,20 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber) {
         }
       }),
     };
-    
-    $.ajax(settings).done(function (response) {
-      Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-    });
 
+    $.ajax(settings).done(function (response) {
+      // Log the response
+      // console.log(response.result[0].status);
+      
+      // Check the status and resolve/reject the promise accordingly
+      Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+      if (response.result[0].status === 'success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
+    });
+  });
  }
 
 /**
@@ -403,36 +447,44 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber) {
  * @param {any} buttonId - The button ID.
  * @param {any} selectedDirCisNumber - The selected director's CIS number.
 */
-function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber) {
-
-    // console.log(buttonId)
-    // console.log(selectedDirCisNumber)
-    // console.log(riData)
-    var settings = {
-      "url": "http://10.232.236.15:8092/api/addData",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        "cmd": 10,
-        "request": {
-          "cis_number": riData.riCisNumber,
-          "fname": riData.riFirstName,
-          "mname": riData.riMiddleName,
-          "lname": riData.riLastName,
-          "dir_related": selectedDirCisNumber,
-          "relation": buttonId
-        }
-      }),
-    };
+function createAffilDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
     
-    $.ajax(settings).done(function (response) {
-      Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-      // console.log(response);
+    return new Promise((resolve, reject) => {
+     console.log(buttonId);
+    console.log(selectedDirCisNumber);
+    console.log(riData);
+
+      var settings = {
+        "url": "http://10.232.236.15:8092/api/addData",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cmd": 10,
+          "session": session,
+          "userid": userID,
+          "request": {
+            "cis_number": riData.riCisNumber,
+            "fname": riData.riFirstName,
+            "mname": riData.riMiddleName,
+            "lname": riData.riLastName,
+            "dir_related": selectedDirCisNumber,
+            "relation": buttonId
+          }
+        }),
+      };
+  
+      $.ajax(settings).done(function (response) {
+        Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+        if (response.result[0].status === 'success') {
+          resolve(response);
+        } else {
+          reject(response);
+        }
+      });
     });
-    // Implement code to insert a new director into the database
 }
 
 
@@ -442,10 +494,12 @@ function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber
  * @param {any} password - The password of the user.
  * @param {any} sessionID - The session ID of the user when the login process is successful.
 */
-function Loginuser(username, password, sessionId, otpGen) {
+function Loginuser(username, password, sessionId, otpGen, userID) {
     return new Promise((resolve, reject) => {
         // console.log(username);
         // console.log(password);
+        console.log(otpGen)
+        console.log(userID);
         var settings = {
           "url": "http://10.232.236.15:8092/api/userManagement",
           "method": "POST",
@@ -455,12 +509,14 @@ function Loginuser(username, password, sessionId, otpGen) {
           },
           "data": JSON.stringify({
             "cmd": 2,
+            "session": sessionId,
+            "userid": userID,
             "request": {
                 "username": username,
                 "password": password,
                 // "role": 1,
                 "session": sessionId,
-                "otp": otpGen
+                "otp": otpGen,
             }
           }),
         };
@@ -488,10 +544,10 @@ function Loginuser(username, password, sessionId, otpGen) {
  * @param {any} mobile - The mobile number of the user.
  * @param {any} otpGen - The otp generated.
 */
-function sendOTP(mobile, otpGen) {
+function sendOTP(mobile, otpGen, userID, session) {
   return new Promise((resolve, reject) => {
-      // console.log(mobile);
-      // console.log(otpGen);
+      // console.log(userID);
+      // console.log(session);
       var settings = {
         "url": "http://10.232.236.15:8092/api/OTP",
         "method": "POST",
@@ -501,7 +557,9 @@ function sendOTP(mobile, otpGen) {
         },
         "data": JSON.stringify({
           "mobile": mobile,
-          "otp": otpGen
+          "otp": otpGen,
+          "session": session,
+          "userid": userID
         }),
       };
   
@@ -528,10 +586,12 @@ function sendOTP(mobile, otpGen) {
  * @param {any} user - The mobile number of the user.
  * @param {any} enteredOTP - The otp generated.
 */
-function checkOTP(user, enteredOTP) {
+function checkOTP(user, enteredOTP, userID, session) {
   return new Promise((resolve, reject) => {
-      // console.log(mobile);
-      // console.log(otpGen);
+      console.log(userID);
+      console.log(session);
+      console.log(enteredOTP);
+      console.log(user);
       var settings = {
         "url": "http://10.232.236.15:8092/api/userManagement",
         "method": "POST",
@@ -541,6 +601,8 @@ function checkOTP(user, enteredOTP) {
         },
         "data": JSON.stringify({
           "cmd": 21,
+          "session": session,
+          "userid": userID,
           "request": {
             "username": user,
             "otp": enteredOTP,
@@ -609,7 +671,7 @@ function cisLookUP(cis) {
     createAffilDir,
     createAffilOff,
     createAffilOffRI,
-    createRPDIrectorsRelatedInterest,
+    createAffilDIrectorsRelatedInterest,
     Loginuser,
     sendOTP,
     checkOTP,
