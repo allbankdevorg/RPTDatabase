@@ -74,7 +74,6 @@ export class AffiliatesOffRIModalComponent implements OnInit{
         // this.updateTableData();
       })
       .catch((error) => {
-        // this._dialogRef.close(true);
         this.logAction('Add', 'Failed Adding Related Interest', false, 'directorsrelated');
    
       });
