@@ -240,9 +240,6 @@ export class RpOfficerComponent implements AfterViewInit {
   setButtonId(id: number, comCisNumber: number) {
     this.buttonId = id;
     this.selectedcomCisNumber = comCisNumber;
-    // console.log(comCisNumber);
-    // console.log(id);
-    
   }
 
 
@@ -262,8 +259,6 @@ export class RpOfficerComponent implements AfterViewInit {
 
       // Trigger change detection
     this.cdr.detectChanges();
-    // console.log(this.cdr.detectChanges);
-    // console.log(this.dataSource);
   }
 
   onBORISubmit() {
@@ -279,7 +274,6 @@ export class RpOfficerComponent implements AfterViewInit {
   onSubmit() {
     if (this.affForm.valid) {
       const formData = this.affForm.value;
-      // console.log(formData);
       // Call the JavaScript function with form data
       createAffil(formData); // Pass the entire formData object
     }
@@ -301,22 +295,12 @@ export class RpOfficerComponent implements AfterViewInit {
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       this.sharedService.setCompanyCis(companyName);
-    //   console.log(directorId);
-    //   console.log(companyName);
-    //   console.log('row has been clicked');
-    // // 
-    // console.log('row has been clicked');
-    // console.log('Clicked row data:', row);
     this.router.navigate(['/arp/rpofficer-ri', directorId]);
   }
 
 
   delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
     event.stopPropagation();
-    // deleteRelationship()
-    // console.log(row);
-    // console.log(aff_com_cis_number);
-    // console.log(comCIS);
     deleteAffiliates((dosriId) => {
   
     })
@@ -324,27 +308,20 @@ export class RpOfficerComponent implements AfterViewInit {
 
 
   setoffcRelated() {
-    // director = director.dir_related;
-    // console.log(director);
   }
 
 
   editAffil(row: any, event: Event) {
     event.stopPropagation();
     this.editAffilvisible = !this.editAffilvisible;
-    // console.log(row);
-    // console.log(this.commandGroups);
     const selectedManager = row.managing_company;
-    // console.log('Selected Manager:', selectedManager);
+
      // Check if the selectedManager exists in the commandGroups
      const isValidManager = this.commandGroups.some(group => {
       // console.log('Group Value:', group.value);
       return group.value === selectedManager;
     });
   
-    // console.log('IsValidManager:', isValidManager);
-  
-
 
   // Set the value only if it's a valid manager
   if (isValidManager) {
@@ -352,7 +329,6 @@ export class RpOfficerComponent implements AfterViewInit {
     // console.log(this.affForm);
   } else {
     // Optionally, handle the case where the manager is not valid
-    // console.error('Invalid manager:', selectedManager);
   }
 
     this.editAffilData = {

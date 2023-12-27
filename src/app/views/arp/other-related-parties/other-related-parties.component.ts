@@ -201,8 +201,6 @@ export class OtherRelatedPartiesComponent {
           
         } 
     }) 
-    
-    // console.log(orgsData);
   }
 
 
@@ -226,8 +224,6 @@ export class OtherRelatedPartiesComponent {
           this.commandGroups.push(commandGroup);
         });
       }
-      // const data = this.compData.result[0].Data;
-      // console.log(mngComp);
     })
   }
 
@@ -259,29 +255,8 @@ export class OtherRelatedPartiesComponent {
     }
   }
 
-  // onSubmit() {
-  //   if (this.affForm.valid) {
-  //     const formData = this.affForm.value;
-  //     console.log(formData);
-  //     // Call the JavaScript function with form data
-  //     createAffil(formData, this.moduleV) // Pass the entire formData object
-  //     .then((response) => {
-  //       // Log the response when the promise is resolved
-  //         this.ngOnInit();
-  //     })
-  //     .catch((error) => {
-  //       // Handle errors when the promise is rejected
-  //       console.error(error.result[0].status);
-  //       // Swal.fire('Error occurred', '', 'error');
-  //     });
-  //   }
-  // }
 
   onButtonClick(module: any) {
-    // console.log('Add Data');
-    // console.log(module);
-    // this.moduleV = module;
-
     this.dataService.setmoduleV(module);
   }
 
@@ -352,10 +327,6 @@ openEditForm(data: any, event: any) {
     },
   });
 }
-
-
-
-
 
 
 
