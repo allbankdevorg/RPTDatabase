@@ -41,6 +41,7 @@
                               <tr>
                                 <!-- Add your table headers here based on your data structure -->
                                 <th>PN No</th>
+                                <th>Account Name</th>
                                 <th>Branch Name</th>
                                 <th>Loan Type</th>
                                 <th>Collateral</th>
@@ -58,6 +59,7 @@
                               <tr *ngFor="let item of user.list; let j = index">
                                 <!-- Display item-related information -->
                                 <td>{{ item.pn_No }}</td>
+                                <td>{{ item.br_name }}</td>
                                 <td>{{ item.br_name }}</td>
                                 <td>{{ item.L_type }}</td>
                                 <td>{{ item.collateral }}</td>
