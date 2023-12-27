@@ -114,7 +114,6 @@ export class OtherRPModalComponent implements OnInit {
         this._dosriService.createDosri(formData).subscribe({
           next: (val: any) => {
             this._coreService.openSnackBar('Employee added successfully');
-            this._dialogRef.close(true);
           },
           error: (err: any) => {
             // console.error(err);
