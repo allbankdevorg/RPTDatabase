@@ -28,7 +28,7 @@ function delDosri(cis_id) {
       if (result.isConfirmed) {
         // Returning the promise here
         return new Promise((resolve, reject) => {
-          console.log(cis_id);
+          // console.log(cis_id);
           var settings = {
             "url": "http://10.232.236.15:8092/api/updateData",
             "method": "POST",
@@ -46,7 +46,7 @@ function delDosri(cis_id) {
           
   
           $.ajax(settings).done(function (response) {
-            console.log(response.result[0].status);
+            // console.log(response.result[0].status);
   
             Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
             if (response.result[0].status === 'success') {
@@ -78,7 +78,7 @@ function delDosriDIR(cis_id) {
     if (result.isConfirmed) {
       // Returning the promise here
       return new Promise((resolve, reject) => {
-        console.log(cis_id);
+        // console.log(cis_id);
         var settings = {
           "url": "http://10.232.236.15:8092/api/updateData",
           "method": "POST",
@@ -96,7 +96,7 @@ function delDosriDIR(cis_id) {
         
 
         $.ajax(settings).done(function (response) {
-          console.log(response.result[0].status);
+          // console.log(response.result[0].status);
 
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
           if (response.result[0].status === 'success') {
@@ -128,7 +128,7 @@ function delDosriDRI(cis_id) {
     if (result.isConfirmed) {
       // Returning the promise here
       return new Promise((resolve, reject) => {
-        console.log(cis_id);
+        // console.log(cis_id);
         var settings = {
           "url": "http://10.232.236.15:8092/api/updateData",
           "method": "POST",
@@ -146,7 +146,7 @@ function delDosriDRI(cis_id) {
         
 
         $.ajax(settings).done(function (response) {
-          console.log(response.result[0].status);
+          // console.log(response.result[0].status);
 
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
           if (response.result[0].status === 'success') {
@@ -178,7 +178,7 @@ function delBankOff(cis_id) {
     if (result.isConfirmed) {
       // Returning the promise here
       return new Promise((resolve, reject) => {
-        console.log(cis_id);
+        // console.log(cis_id);
         var settings = {
           "url": "http://10.232.236.15:8092/api/updateData",
           "method": "POST",
@@ -196,7 +196,7 @@ function delBankOff(cis_id) {
         
 
         $.ajax(settings).done(function (response) {
-          console.log(response.result[0].status);
+          // console.log(response.result[0].status);
 
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
           if (response.result[0].status === 'success') {
@@ -278,7 +278,7 @@ function delBankOffRI(cis_id) {
     if (result.isConfirmed) {
       // Returning the promise here
       return new Promise((resolve, reject) => {
-        console.log(cis_id);
+        // console.log(cis_id);
         var settings = {
           "url": "http://10.232.236.15:8092/api/updateData",
           "method": "POST",
@@ -296,7 +296,7 @@ function delBankOffRI(cis_id) {
         
 
         $.ajax(settings).done(function (response) {
-          console.log(response.result[0].status);
+          // console.log(response.result[0].status);
 
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
           if (response.result[0].status === 'success') {
@@ -331,7 +331,7 @@ function delAffilComp(cis_id) {
     if (result.isConfirmed) {
       // Returning the promise here
       return new Promise((resolve, reject) => {
-        console.log(cis_id);
+        // console.log(cis_id);
         var settings = {
           "url": "http://10.232.236.15:8092/api/updateData",
           "method": "POST",
@@ -349,7 +349,7 @@ function delAffilComp(cis_id) {
         
 
         $.ajax(settings).done(function (response) {
-          console.log(response.result[0].status);
+          // console.log(response.result[0].status);
 
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
           if (response.result[0].status === 'success') {
@@ -381,7 +381,7 @@ function delAffilComDIR(cis_id) {
     if (result.isConfirmed) {
       // Returning the promise here
       return new Promise((resolve, reject) => {
-        console.log(cis_id);
+        // console.log(cis_id);
         var settings = {
           "url": "http://10.232.236.15:8092/api/updateData",
           "method": "POST",
@@ -399,7 +399,7 @@ function delAffilComDIR(cis_id) {
         
 
         $.ajax(settings).done(function (response) {
-          console.log(response.result[0].status);
+          // console.log(response.result[0].status);
 
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
           if (response.result[0].status === 'success') {
