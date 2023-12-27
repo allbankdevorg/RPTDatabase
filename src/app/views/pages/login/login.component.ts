@@ -40,15 +40,21 @@ export class LoginComponent implements OnInit {
   canResend = false;
 
   user_details: any;
-  userName = '';
+  userName: any;
 
   username = '';
   password = '';
+  mobileNum: any;
+  otpGene: any;
+
+
 
   uD: any = [];
   sID: any = [];
   uA: any = [];
   uT: any = [];
+
+
   // otp = '';
 
 
@@ -144,80 +150,37 @@ export class LoginComponent implements OnInit {
     }
   }
   
-// login(): void {
-//   // Simulate login with username and password
-//   if (this.loginForm.valid) {
-//     const username = this.loginForm.get('username')?.value;
-//     const password = this.loginForm.get('password')?.value;
 
-//     const sessionId = uuidv4()
-
-//     Loginuser(username, password, sessionId)
-//     .then((response) => {
-//       this.uD = response.result[0].user_details;
-//       this.sID = sessionId;
-//       this.uA = response.result[0].user_access
-        
-//         this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
-  
-//            console.log(response.result[0]);
-
-//             const modal = this.otpModal.nativeElement;
-//                 // console.log(modal);
-
-//         if (response.result[0].message == 'success') {
-//           const generatedOtp = this.authService.generateAndSaveOtp();
-//           console.log(`Simulated OTP: ${generatedOtp}`);
-
-//           if (modal) {
-//             this.renderer.addClass(modal, 'show');
-//             this.renderer.setStyle(modal, 'display', 'block');
-//           }
-//         } else {
-//           Swal.fire({
-//             icon: 'error',
-//             title: 'Login Failed',
-//             // text: 'Invalid username or password',
-//           });
-//         }
-//     })
-//     .catch((error) => {
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Login Failed',
-//         text: 'Invalid username or password',
-//       });
-//     });
-//   }
-// }
 
 async login() {
   // Simulate login with username and password
   if (this.loginForm.valid) {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
-
+    const userID = this.uD;
     const sessionId = uuidv4();
     const otpGen = this.authService.generateAndSaveOtp()
+    // this.otpGene = otpGen;
+
 
     try {
-      const response = await Loginuser(username, password, sessionId, otpGen);
-      this.uD = response.result[0].user_details;
+      const response = await Loginuser(username, password, sessionId, otpGen, userID);
+      this.uD = response.result[0].user_details[0].id;
+      this.userName = response.result[0].user_details[0].username;
       this.sID = sessionId;
       this.uA = response.result[0].user_access;
 
-      this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
 
-      // console.log(response.result[0]);
+      this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
 
       const modal = this.otpModal.nativeElement;
 
       if (response.result[0].message === 'success') {
-        // const generatedOtp = this.authService.generateAndSaveOtp();
-        // console.log(`Simulated OTP: ${generatedOtp}`);
-        // console.log(response.result[0].user_details[0].mobile_no);
         const mobile = response.result[0].user_details[0].mobile_no;
+        this.mobileNum = mobile;
         this.userName = response.result[0].user_details[0].username;
+        const userID = this.uD;
+        const session = this.sID;
 
         if (modal) {
           
@@ -225,7 +188,7 @@ async login() {
           this.renderer.setStyle(modal, 'display', 'block');  
 
           try {
-            const sendotp = await sendOTP(mobile, otpGen);
+            const sendotp = await sendOTP(mobile, otpGen, userID, session);
           } catch (error: any) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
           }          
@@ -257,62 +220,12 @@ async login() {
 }
 
 
-
-// async verifyOtp() {
-//   if (this.otp !== '') {
-//     // Verify OTP 
-//     const isVerified = await this.authService.verifyOtp(this.otp);
-
-//     if (isVerified) {
-//       // Log successful OTP verification
-//       this.logAction('otpVerification', 'Entered valid OTP', true, 'Login');
-
-//       // Continue with the rest of your logic
-//       sessionStorage.setItem('user', JSON.stringify(this.uD));
-//       sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
-//       sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
-
-//       // Show loading modal 
-//       Swal.fire({
-//         title: 'Verifying...',
-//         allowOutsideClick: false,
-//         didOpen: () => {
-//           Swal.showLoading() 
-//         }
-//       });
-
-//       // Navigate dashboard
-//       await this.router.navigate(['/dashboard']);
-
-//       // Hide loading modal  
-//       Swal.close();
-//     } else {
-//       // Log unsuccessful OTP verification
-//       this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
-
-//       // Invalid OTP, show error 
-//       Swal.fire({        
-//         icon: 'error',
-//         title: 'Invalid OTP'
-//       });
-//     }
-//   } else {
-//     // Log OTP verification with empty OTP
-//     this.logAction('otpVerification', 'OTP is Empty', false, 'Login');
-
-//     Swal.fire({
-//       icon: 'error',
-//       title: 'OTP is Empty!',
-//       text: 'OTP is required',
-//     });
-//   }
-// }
-
-
 async verifyOtp() {
   if (this.otp !== '') {
     const enteredOTP = this.otp;
     const user = this.userName;
+    const userID = this.uD;
+    const session = this.sID;
     const loadingModal = Swal.fire({
       title: 'Verifying...',
       allowOutsideClick: false,
@@ -323,17 +236,17 @@ async verifyOtp() {
 
     try {
       // Perform OTP verification asynchronously
-      const verificationPromise = await checkOTP(user, enteredOTP);
+      const verificationPromise = await checkOTP(user, enteredOTP, userID, session);
 
       if (verificationPromise.result[0].message === 'success') {
-       
+      
       
       // OTP verification completed successfully
 
       sessionStorage.setItem('user', JSON.stringify(this.uD));
       sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
       sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
-
+      sessionStorage.setItem('userID', JSON.stringify(this.userName));
       // Navigate to the dashboard
       await this.router.navigate(['/dashboard']);
 
@@ -381,13 +294,20 @@ async verifyOtp() {
 
 
 
-  resendOTP() {
-    this.authService.generateAndSaveOtp 
+  async resendOTP() {
+     
+    const userID = this.uD;
+    const session = this.sID;
+    const mobile = this.mobileNum;
+    const otpGen = this.authService.generateAndSaveOtp();
       // Implement OTP resend logic here
       alert('OTP Resent');
       // Simulate OTP generation and saving
-      const generatedOtp = this.authService.generateAndSaveOtp();
-      console.log(generatedOtp);
+      try {
+        const sendotp = await sendOTP(mobile, otpGen, userID, session);
+      } catch (error: any) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      }
   
       this.startResendTimer();
     
