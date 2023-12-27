@@ -122,7 +122,7 @@ export class AffiliatesModalComponent implements OnInit {
 
     CISlookup() {
       const dataLookup = this.affForm.value;
-    
+      
       // console.log(dataLookup.aff_com_cis_number);
       if (dataLookup.aff_com_cis_number) {
         let cis = dataLookup.aff_com_cis_number;
@@ -134,8 +134,8 @@ export class AffiliatesModalComponent implements OnInit {
     
               // Update form controls with new values
               this.affForm.patchValue({
-                com_account_name: accName,
-                com_company_name: accName // Assuming you have company_name in the response
+                aff_com_account_name: accName,
+                aff_com_company_name: accName // Assuming you have company_name in the response
                 // Add other form controls if needed
               });
             } else {
