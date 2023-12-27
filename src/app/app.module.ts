@@ -128,6 +128,10 @@ import { RptListComponent } from './views/simulation/rpt-list/rpt-list.component
 import { SBLListComponent } from './views/simulation/sbl-list/sbl-list.component';
 import { SBLSimulationModalComponent } from './modal-dialog/sbl-simulation-modal/sbl-simulation-modal.component';
 import { RPTSimulationModalComponent } from './modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
+import { AffiliatesDirModalComponent } from './modal-dialog/affiliates-dir-modal/affiliates-dir-modal.component';
+import { AffiliatesDirRIModalComponent } from './modal-dialog/affiliates-dir-ri-modal/affiliates-dir-ri-modal.component';
+import { AffiliatesOffModalComponent } from './modal-dialog/affiliates-off-modal/affiliates-off-modal.component';
+import { AffiliatesOffRIModalComponent } from './modal-dialog/affiliates-off-ri-modal/affiliates-off-ri-modal.component';
 
 
 const APP_CONTAINERS = [
@@ -150,7 +154,7 @@ const APP_CONTAINERS = [
     AffiliatesRPModalComponent,
     SBLSimulationModalComponent, 
     RPTSimulationModalComponent,
-    OtherRPModalComponent, RptListComponent, SBLListComponent],
+    OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
