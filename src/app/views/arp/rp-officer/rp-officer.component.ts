@@ -18,6 +18,7 @@ import {AffiliatesService} from '../../../services/affiliates/affiliates.service
 import {createBankOfficer, createBankOfficerRelationship, createAffil} from '../../../functions-files/add/postAPI';
 import {getAffiliatesCompanyOfficers, getManagingCompany} from '../../../functions-files/getFunctions';
 import {deleteAffiliates} from '../../../functions-files/delFunctions'
+import {delAffilComp} from '../../../functions-files/delete/deleteAPI.js';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 export interface Child {
@@ -305,9 +306,20 @@ export class RpOfficerComponent implements AfterViewInit {
 
   delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
     event.stopPropagation();
-    deleteAffiliates((dosriId) => {
-  
-    })
+    const cis_id = row.aff_com_cis_number
+    event.stopPropagation();
+    
+    delAffilComp(cis_id)
+      .then((response) => {
+        this.ngOnInit();
+      })
+      .catch((error) => {
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'No CIS Found!',
+        //   // text: 'Invalid username or password',
+        // });
+      })
   }
 
 
