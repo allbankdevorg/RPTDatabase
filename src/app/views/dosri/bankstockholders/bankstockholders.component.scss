@@ -3,52 +3,43 @@
 }
 
 .cTableCol{
-     text-align: center;
-     background-color: #FDE49B;
-     font-size: 24px;
-     color: #000;
+  text-align: center;
+  background-color: #ffc0ad;
+  font-size: 22px;
+  color: #271c19;
 }
 
-.cTableCols{
-    text-align: center;
-    // background-color: #F7B4AE;
-    font-size: 24px;
-    color: #000;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    border: none; 
+.cTableRow{
+  text-align: center !important;
+  background-color: #f3d2c1;
+  font-size: 18px;
+  color: #271c19;
 }
 
-.cTableColsC{
-    text-align: center;
-    font-size: 16px;
-    color: #000;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    border: none; 
+.cTableCol2{
+  text-align: left;
+  background-color: #947972;
+  font-size: 18px;
+  color: #fffffe;
 }
 
-.mat-column-fullname, .mat-column-position, .mat-column-shares, .mat-column-action {
-  border-left: 1px solid #d3d3d3;
+.cTableRow2{
+  text-align: left;
+  background-color: #bea8a1;
+  font-size: 16px;
+  color: #fffffe;
+  border-bottom: 2px solid #fffffe;
 }
 
-.mat-column-fullname {
-    width: 35%;
-    padding: 10px 24px;
-    text-align: center;
-  }
-  
-  .mat-column-position {
-    width: 40%px;
-    padding: 10px 4px;
-    text-align: center;
-  }
-  
-  .mat-column-shares {
-    width: 30%;
-    padding: 10px 4px;
-    text-align: center;
-  }
   
   .mat-mdc-row .mat-mdc-cell {
     cursor: pointer;
   }
+
+
+
+
+
+
+
   
