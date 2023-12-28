@@ -144,9 +144,6 @@ export class DriComponent {
     });
 
     }
-
-
-
     ngOnInit(): void {
     this.updateTableData();
   }
@@ -180,34 +177,15 @@ export class DriComponent {
         this.changeDetectorRef.detectChanges();
       });
     });
-
-
   }
-
-
-   
-   
-    addData() {
-      
-    }
-
-    onButtonClick() {
-      // console.log('Show Modal');
-      
-    }
-    
+ 
 
     onRowClick(element: any, event: Event) {
       event.stopPropagation();
-      // console.log(element);
-      // Capture the selected data and navigate to another component with it
-      // this.router.navigate(['/details', row.id]);
       const directorId = element.com_cis_number; // Extract the ID from the clicked row
       const companyName = element.com_company_name;
-      console.log(directorId);
 
       this.dataService.setCompCIS(directorId);
-    // this.dataService.setButtonId(id);
 
       
       this.logAction('View', 'Viewed ' + companyName + " Directors and It's related interest", true, 'DRI');
@@ -215,77 +193,21 @@ export class DriComponent {
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       this.sharedService.setCompanyCis(companyName);
-      // console.log(directorId);
-      // console.log(companyName);
-      // console.log('row has been clicked');
-      // console.log('Clicked row data:', element);
       this.router.navigate(['/dosri/directorsrelated', directorId]);
     }
 
 
     onAccRowClick(element: any) {
-      // console.log(element);
-      // Capture the selected data and navigate to another component with it
-      // this.router.navigate(['/details', row.id]);
       const directorId = element.com_cis_number; // Extract the ID from the clicked row
       const companyName = element.com_company_name;
 
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
       this.sharedService.setCompanyCis(companyName);
-      // console.log(directorId);
-      // console.log(companyName);
-      // console.log('row has been clicked');
-      // console.log('Clicked row data:', element);
       this.logAction('View', 'Viewed ' + companyName + " Directors and It's related interest", true, 'DRI');
       this.router.navigate(['/dosri/directorsrelated', directorId]);
     }
     
-
-    editDosri(element: any, event: Event): void {
-      event.stopPropagation();
-      this.visible = !this.visible;
-      // console.log(element);
-      this.selectedItem = element;
-
-      this.editData = {
-        com_cis_number: element.com_cis_number,
-        com_account_name: element.com_account_name,
-        com_company_name: element.com_company_name,
-        // Add other properties as needed
-      };
-    }
-
-    closeEditDosri() {
-      this.visible = !this.visible;
-    }
-  
-    handleChange(event: any) {
-      this.visible = event;
-    }
-
-    edit(){
-      // console.log('Show Modal');
-      // console.log("success: Login Successfully");
-      const modal = this.editModal.nativeElement;
-
-      if (modal) {
-        this.renderer.addClass(modal, 'show');
-        this.renderer.setStyle(modal, 'display', 'block');
-      }
-    }
-
-    onModalClose() {
-      // console.log('Show Modal');
-      // console.log("success: Login Successfully");
-      const modal = this.editModal.nativeElement;
-  
-      if (modal) {
-        this.renderer.addClass(modal, 'hide');
-        this.renderer.setStyle(modal, 'display', 'none');
-      }
-    }
-
 
     deleteEmployee(id: number, event: Event) {
       event.stopPropagation();
