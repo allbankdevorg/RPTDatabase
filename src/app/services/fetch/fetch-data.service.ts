@@ -24,6 +24,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 
+
 // Injectable decorator to allow dependency injection
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,8 @@ export class FetchDataService {
    // Define the API URL as a private member variable
   private apiUrl = 'http://10.232.236.15:8092/api/dataTables';
 
+  userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+  
   // Constructor to inject the HttpClient dependency
   constructor(private httpClient: HttpClient) { }
 
@@ -52,6 +55,30 @@ export class FetchDataService {
 
     // Make a POST request to the specified API URL
     return this.httpClient.post<any>(this.apiUrl, requestData, { headers });
+  }
+
+  getData(cmd: number, callback: (data: any) => void): Subscription {
+    return this.makeRequest(cmd).subscribe({
+      next: (response) => {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          const data = response.result[0].Data;
+          if (callback) {
+            callback(data);
+          }
+        } else {
+          // console.log(`No Data for cmd ${cmd}`);
+          if (callback) {
+            callback([]);
+          }
+        }
+      },
+      error: (error) => {
+        // console.error(`Error fetching data for cmd ${cmd}:`, error);
+        if (callback) {
+          callback([]);
+        }
+      },
+    });
   }
 
   // Public method to fetch data based on a command and invoke a callback
@@ -79,9 +106,26 @@ export class FetchDataService {
   //   );
   // }
 
+  private makeLogRequest(cmd: number, userid: any): Observable<any> {
+    // console.log(cmd);
 
-  getData(cmd: number, callback: (data: any) => void): Subscription {
-    return this.makeRequest(cmd).subscribe({
+    // Set headers for the HTTP request
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    // Prepare request data
+    const requestData = {
+      cmd: cmd
+    };
+
+    // Make a POST request to the specified API URL
+    return this.httpClient.post<any>(this.apiUrl, requestData, { headers });
+  }
+
+
+  getDataLogs(cmd: number, userid:any, callback: (data: any) => void): Subscription {
+    return this.makeLogRequest(cmd, userid).subscribe({
       next: (response) => {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
           const data = response.result[0].Data;
@@ -207,7 +251,63 @@ export class FetchDataService {
 
 
 
+  // getAuditLogs(): Observable<any> {
+  //   const userid = this.userID
+  //   return this.makeLogRequest(901, "Admin").pipe(
+  //     map(response => {
+  //       if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+  //         console.log(response);
+  //         return response.result[0].Data;
+  //       } else {
+  //         // console.log(`No Data for cmd 100`);
+  //         return [];
+  //       }
+  //     }),
+  //     catchError(error => {
+  //       // console.error(`Error fetching data for cmd 100:`, error);
+  //       return of([]);
+  //     })
+  //   );
+  // }
 
+  getAuditLogs(callback: (data: any) => void): void {
+    const settings = {
+      url: 'http://10.232.236.15:8092/api/dataTables',
+      method: 'POST',
+      timeout: 0,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      data: {
+        cmd: 901,
+        userid: 'Admin',
+      },
+    };
+
+    this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+      next: (response: any) => {
+  
+        if (response && response.result && response.result.length > 0 && response.result[0].audit_logs) {
+          const auditLogs = response.result[0].audit_logs;
+        
+          if (callback) {
+            callback(auditLogs);
+          }
+        } else {
+        
+          if (callback) {
+            callback(null);
+          }
+        }
+      },
+      error: (error) => {
+  
+        if (callback) {
+          callback(null);
+        }
+      },
+    });
+  }
 
 
   // getOfficersRI(): Observable<any> {

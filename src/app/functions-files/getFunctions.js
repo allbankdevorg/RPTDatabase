@@ -10,6 +10,7 @@
  * - 109 Start of getManagingCompany              => Fetch Feth Companies with Module = ORP
  * - 110 Start of getOtherCompany      
  * - 111 Start of getNav                          => Fetch Navigation Menu
+ * - 901 Start of getAuditLogs                    => Fetch Audit Logs Data
  */
 
 
@@ -380,6 +381,44 @@ function getOfficers(callback) {
       });
   }
 
+
+
+
+  // Start of getAuditLogs
+  function getAuditLogs(callback) {
+    // console.log("104");
+    var settings = {
+        "url": "http://10.232.236.15:8092/api/dataTables",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cmd": 901,
+          "userid": "Admin"
+        }),
+      };
+      
+      $.ajax(settings).done(function (response) {
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+            console.log(response.result[0].Data);
+            // console.log(officersRI);
+            if (callback) {
+              console.log(callback);
+            }
+        } else {
+            // Handle the case where there is no data or it doesn't have the expected structure
+            // console.log("No Officers Related Interest Data");
+            if (callback) {
+                // You can choose to call the callback with some default value or handle it as needed
+                callback(null);
+            }
+        }
+      });
+  }
+
+
     
     
   
@@ -394,5 +433,6 @@ function getOfficers(callback) {
         getAffiliatesCompanyOfficers,
         getManagingCompany,
         getOtherCompany,
-        getNavi };
+        getNavi,
+        getAuditLogs };
   
