@@ -28,7 +28,7 @@ export class SessionTimeoutService {
 
   public setIdleConfig(): void {
     this.idle.setIdle(10); // 10 seconds
-    this.idle.setTimeout(300); // 5 minutes
+    this.idle.setTimeout(3000); // 5 minutes
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
     this.keepalive.interval(5); // 5 seconds
     
@@ -38,11 +38,11 @@ export class SessionTimeoutService {
     // });
   
     this.idle.onIdleStart.subscribe(() => {
-      console.log('Entered idle mode');  
+      // console.log('Entered idle mode');  
     });
   
     this.idle.onIdleEnd.subscribe(() => {
-      console.log('Exited idle mode');
+      // console.log('Exited idle mode');
       this.resetIdleTimer();
     });
     
@@ -50,12 +50,12 @@ export class SessionTimeoutService {
     this.idle.watch();
 
     this.idle.onIdleEnd.subscribe(() => {
-      console.log('No longer idle.');
+      // console.log('No longer idle.');
       this.resetIdleTimer();
     });
 
     this.idle.onTimeout.subscribe(() => {
-      console.log('Session expired!');
+      // console.log('Session expired!');
       // Implement your logout logic here
       this.timedOut();
     });
@@ -69,7 +69,7 @@ export class SessionTimeoutService {
 
   public timedOut(): void {
     // Implement your logout logic here
-    console.log('Logging out...');
+    // console.log('Logging out...');
     // Calling the Logout Function
     this.authService.simulateLogout();
   }
