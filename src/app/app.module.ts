@@ -132,6 +132,8 @@ import { AffiliatesDirModalComponent } from './modal-dialog/affiliates-dir-modal
 import { AffiliatesDirRIModalComponent } from './modal-dialog/affiliates-dir-ri-modal/affiliates-dir-ri-modal.component';
 import { AffiliatesOffModalComponent } from './modal-dialog/affiliates-off-modal/affiliates-off-modal.component';
 import { AffiliatesOffRIModalComponent } from './modal-dialog/affiliates-off-ri-modal/affiliates-off-ri-modal.component';
+import { UsersModalComponent } from './modal-dialog/users-modal/users-modal.component';
+import { StockholdersModalComponent } from './modal-dialog/stockholders-modal/stockholders-modal.component';
 
 
 const APP_CONTAINERS = [
@@ -154,7 +156,7 @@ const APP_CONTAINERS = [
     AffiliatesRPModalComponent,
     SBLSimulationModalComponent, 
     RPTSimulationModalComponent,
-    OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent],
+    OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent, UsersModalComponent, StockholdersModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
