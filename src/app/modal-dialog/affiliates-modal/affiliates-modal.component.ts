@@ -141,7 +141,7 @@ export class AffiliatesModalComponent implements OnInit {
             if (response.length > 0) {
               // If the array is not empty, use the first element
               let accName = response[0].name;
-    
+              this.toggleInputReadOnly();
               // Update form controls with new values
               this.affForm.patchValue({
                 aff_com_account_name: accName,
