@@ -8,8 +8,6 @@ import { Subscription } from 'rxjs';
 
 // Imports for Functions
 import {createAffilDirectorsRelatedInterest} from '../../functions-files/add/postAPI';
-import {createRelatedInterest} from '../../functions-files/add/postAPI';
-
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../model/audit-trail.model';
