@@ -1,5 +1,6 @@
 /**
  *  - createDosri
+ *  - createStockHolders
  *  - createDirectors
  *  - createRelatedInterest
  *  - createBankOfficer
@@ -457,6 +458,50 @@ function createAffilDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNum
 }
 
 
+
+/**
+ * Creates RP directors related interest.
+ * @param {any} formData - The data for the DOSRI director related interest.
+ * @param {any} session - The Sesison ID.
+ * @param {any} userID - The Username of the user.
+*/
+function createStockHolders(formData, session, userID) {
+    
+  return new Promise((resolve, reject) => {
+    // console.log(formData)
+    var settings = {
+      "url": "http://10.232.236.15:8092/api/addData",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "cmd": 11,
+        "session": session,
+        "userid": userID,
+        "request": {
+          "cis_number": formData.cis_number,
+          "name": formData.name,
+          "shares": formData.shares,
+          "amount": formData.amount,
+          "percentage": formData.percentage
+        }
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+      if (response.result[0].status === 'success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
+    });
+  });
+}
+
+
 /**
  * Login.
  * @param {any} username - The username of the user.
@@ -623,5 +668,6 @@ function cisLookUP(cis) {
     Loginuser,
     sendOTP,
     checkOTP,
-    cisLookUP
+    cisLookUP,
+    createStockHolders
  }
