@@ -10,10 +10,11 @@
           <c-card-body>
             
               <c-container fluid class="mb-1 d-flex justify-content-between align-items-center">
-                <button (click)="downloadCSV()" mat-fab extended color="primary">
+                <!-- <button (click)="downloadCSV()" mat-fab extended color="primary">
                   <mat-icon>download</mat-icon>
                   CSV
-                </button>
+                </button> -->
+                <div></div>
                 <div class="d-flex justify-content-between align-items-center">  
                   <mat-form-field  class="mx-2 mt-3">
                     <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Search">
@@ -30,36 +31,34 @@
                 <tbody>
                    
                     <!-- Time Stamp -->
-                    <ng-container matColumnDef="date_inserted">
-                        <th mat-header-cell *matHeaderCellDef> Date </th>
-                        <td mat-cell *matCellDef="let element"> {{ element.date_inserted | date: 'yyyy-MM-dd HH:mm:ss'  }} </td>
+                    <ng-container matColumnDef="user_id">
+                        <th mat-header-cell *matHeaderCellDef> User </th>
+                        <td mat-cell *matCellDef="let element"> {{ element.user_id }} </td>
                     </ng-container>
 
                      <!-- Activity Name -->
-                     <ng-container matColumnDef="action_name">
+                     <ng-container matColumnDef="activity">
                         <th mat-header-cell *matHeaderCellDef> Activity </th>
-                        <td mat-cell *matCellDef="let element"> {{ element.action_name }} </td>
+                        <td mat-cell *matCellDef="let element"> {{ element.activity }} </td>
                       </ng-container>
 
                     <!-- User -->
-                    <ng-container matColumnDef="user_name">
-                      <th mat-header-cell *matHeaderCellDef > User </th>
-                      <td mat-cell *matCellDef="let element"> {{ element.user_name }} </td>
+                    <ng-container matColumnDef="datetime_inserted">
+                      <th mat-header-cell *matHeaderCellDef> Date Added </th>
+                      <td mat-cell *matCellDef="let element"> {{ element.datetime_inserted | date: 'yyyy-MM-dd HH:mm:ss'  }} </td>
                     </ng-container>
                     
   
                     <tr mat-header-row  *matHeaderRowDef="columnsToDisplay" class="cTableCol2"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columnsToDisplay" class="example-detail-row"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsToDisplay" class="example-detail-row cTableRow"></tr>
   
                     <tr class="mat-row" *matNoDataRow class="cTableRow">
                       <td class="mat-cell text-center" colspan="5">No Data Available</td>
                     </tr>
                 </tbody>
               </table>
-          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
-          showFirstLastButtons
-          aria-label="Select page of data">
-         </mat-paginator>
+              <!-- Add matPaginator directive for pagination if needed -->
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
             </c-container>
           </c-card-body>
         </c-card>
