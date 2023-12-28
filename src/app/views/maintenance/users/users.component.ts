@@ -10,7 +10,12 @@ import {AuthSessionService} from '../../../services/authentication/auth-session.
 
 // Imports for Functions
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
-import {addUsers} from '../../../functions-files/addUser';
+
+//For Modals
+import { UsersModalComponent } from 'src/app/modal-dialog/users-modal/users-modal.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+
+
 
 interface Users {
   id: number;
@@ -69,7 +74,7 @@ export interface Permissions {
 })
 export class UsersComponent {
   
-  userForm: FormGroup;
+
 
   buttonConfigurations = {
     maker: ['add', 'edit', 'delete'],
@@ -116,22 +121,14 @@ export class UsersComponent {
   @ViewChild('paginator') paginator!: MatPaginator;
 
   constructor(private formBuilder: FormBuilder,
+    public _dialog: MatDialog,
     private authService: AuthSessionService,
     private renderer: Renderer2,
     private el: ElementRef,
     // private idleService: SessionTimeoutService,
     private zone: NgZone,
     private cdr: ChangeDetectorRef) {
-      this.userForm = this.formBuilder.group({
-        fName: ['', [Validators.required]],
-        mName: ['', [Validators.required]],
-        lName: ['', [Validators.required]],
-        uEmail: ['', [Validators.required]],
-        uMobile: ['', [Validators.required]],
-        commandControl: [''],
-        userName: ['', [Validators.required]],
-        uPass: ['', [Validators.required]]
-      });
+      
       this.eUserForm = this.formBuilder.group({
         fName: [''],
         mName: [''],
@@ -158,17 +155,7 @@ export class UsersComponent {
 
 
   ngOnInit() {
-    this.otpForm = this.formBuilder.group({
-      otp1: [''],
-      otp2: [''],
-      otp3: [''],
-      otp4: [''],
-      otp5: [''],
-      otp6: [''],
-      otp7: [''],
-      commandControl: ['']
-      // Add more form controls as needed
-    });
+    
     this.updateTableData();
     // console.log(this.userDataSource.data);
     // this.dataSource.data = SAMPLE_DATA;
@@ -184,16 +171,7 @@ export class UsersComponent {
 
 
 
-  // Functions
-
-  onUserSubmit() {
-    if (this.userForm.valid) {
-      const formData = this.userForm.value;
-      // console.log(formData);
-      // Call the JavaScript function with form data
-      addUsers(formData); // Pass the entire formData object
-      }
-  }
+ 
 
 
   
@@ -265,9 +243,35 @@ updateDatabase(permission: Permissions, propertyName: any) {
   // );
 }
 
-  addUsers() {
-    this.addvisible = !this.addvisible;
-  }
+  // Show Modal Form
+  openAddEditUserForm() {
+  const dialogRef = this._dialog.open(UsersModalComponent);
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.updateTableData();
+      }
+    },
+  });
+}
+
+openEditForm(data: any, event: any) {
+  event.stopPropagation();
+  // console.log(data);
+  const dialogRef = this._dialog.open(UsersModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        // console.log("Successs");
+      }
+    },
+  });
+}
+
 
   // editUsers(user: any): void {
   //   this.editvisible = !this.editvisible;
@@ -283,46 +287,46 @@ updateDatabase(permission: Permissions, propertyName: any) {
   //   };
   // }
 
-  editUsers(row: any): void {
-    this.editvisible = !this.editvisible;
-    // console.log(row);
-    // console.log(this.commandGroups);
-    const selectedDept = row.Dept;
-    // console.log('Selected Department:', selectedDept);
-     // Check if the selectedManager exists in the commandGroups
-     const isValidDept = this.commandGroups.some(group => {
-      // console.log('Group Value:', group.value);
-      return group.value === selectedDept;
-    });
+  // editUsers(row: any): void {
+  //   this.editvisible = !this.editvisible;
+  //   // console.log(row);
+  //   // console.log(this.commandGroups);
+  //   const selectedDept = row.Dept;
+  //   // console.log('Selected Department:', selectedDept);
+  //    // Check if the selectedManager exists in the commandGroups
+  //    const isValidDept = this.commandGroups.some(group => {
+  //     // console.log('Group Value:', group.value);
+  //     return group.value === selectedDept;
+  //   });
   
-    // console.log('IsValidDepartment:', isValidDept);
+  //   // console.log('IsValidDepartment:', isValidDept);
   
 
 
-  // Set the value only if it's a valid manager
-  if (isValidDept) {
-    this.userForm.get('commandControl')?.setValue(selectedDept);
+  // // Set the value only if it's a valid manager
+  // if (isValidDept) {
+  //   this.userForm.get('commandControl')?.setValue(selectedDept);
     
-  } else {
-    // Optionally, handle the case where the manager is not valid
-    // console.error('Invalid Department:', isValidDept);
-    // console.log(this.userForm);
-  }
+  // } else {
+  //   // Optionally, handle the case where the manager is not valid
+  //   // console.error('Invalid Department:', isValidDept);
+  //   // console.log(this.userForm);
+  // }
 
-    this.editUserData = {
-      fName: row.Fname,
-      mName: row.Mname,
-      lName: row.Lname,
-      email: row.Email,
-      dept: row.Dept,
-      mobile: row.Mobile,
-      userName: row.Uname,
-      // Add other properties as needed
-    };
+  //   this.editUserData = {
+  //     fName: row.Fname,
+  //     mName: row.Mname,
+  //     lName: row.Lname,
+  //     email: row.Email,
+  //     dept: row.Dept,
+  //     mobile: row.Mobile,
+  //     userName: row.Uname,
+  //     // Add other properties as needed
+  //   };
 
-    // console.log(this.editUserData);
+  //   // console.log(this.editUserData);
     
-  }
+  // }
 
   closeUsersModal() {
     this.editvisible = !this.editvisible;
