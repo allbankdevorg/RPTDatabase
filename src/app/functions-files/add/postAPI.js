@@ -420,7 +420,7 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber, session, us
  * @param {any} buttonId - The button ID.
  * @param {any} selectedDirCisNumber - The selected director's CIS number.
 */
-function createAffilDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
+function createAffilDirectorsRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
     
     return new Promise((resolve, reject) => {
 
@@ -664,7 +664,7 @@ function cisLookUP(cis) {
     createAffilDir,
     createAffilOff,
     createAffilOffRI,
-    createAffilDIrectorsRelatedInterest,
+    createAffilDirectorsRelatedInterest,
     Loginuser,
     sendOTP,
     checkOTP,
