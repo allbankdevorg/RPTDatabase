@@ -19,7 +19,7 @@
  */
 function createDosri(formData, session, userID) {
   return new Promise((resolve, reject) => {
-    // console.log(formData)
+
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -41,8 +41,6 @@ function createDosri(formData, session, userID) {
  
 
     $.ajax(settings).done(function (response) {
-      // Log the response
-      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -65,7 +63,6 @@ function createDosri(formData, session, userID) {
  */
  function createDirectors(directData, comp_CIS, session, userID) {
   return new Promise((resolve, reject) => {
-    console.log(comp_CIS);
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -89,8 +86,6 @@ function createDosri(formData, session, userID) {
     };
 
     $.ajax(settings).done(function (response) {
-      // Log the response
-      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -112,9 +107,6 @@ function createDosri(formData, session, userID) {
 */
 function createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
   return new Promise((resolve, reject) => {
-    // console.log(buttonId)
-    // console.log(selectedDirCisNumber)
-    // console.log(riData)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -140,8 +132,6 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, 
 
     $.ajax(settings).done(function (response) {
       // Log the response
-      // console.log(response.result[0].status);
-      // console.log(response.result[0].message);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -161,7 +151,6 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, 
  */
 function createBankOfficer(boData, session, userID) {
   return new Promise((resolve, reject) => {
-    // console.log(boData)
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -186,8 +175,6 @@ function createBankOfficer(boData, session, userID) {
     };
 
     $.ajax(settings).done(function (response) {
-      // Log the response
-      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -236,8 +223,6 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber,
     
 
     $.ajax(settings).done(function (response) {
-      // Log the response
-      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -258,8 +243,6 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber,
 */
 function createAffil(formData, moduleV, session, userID) {
     return new Promise((resolve, reject) => {
-      // console.log(formData)
-      // console.log(moduleV);
 
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
@@ -283,8 +266,6 @@ function createAffil(formData, moduleV, session, userID) {
       };
   
       $.ajax(settings).done(function (response) {
-        // Log the response
-        // console.log(response.result[0].status);
         
         // Check the status and resolve/reject the promise accordingly
         Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -305,9 +286,6 @@ function createAffil(formData, moduleV, session, userID) {
 */
 function createAffilDir(directData, comp_CIS, session, userID) {
     return new Promise((resolve, reject) => {
-      console.log(comp_CIS)
-      console.log(session);
-      console.log(userID);
 
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
@@ -332,8 +310,6 @@ function createAffilDir(directData, comp_CIS, session, userID) {
       };
   
       $.ajax(settings).done(function (response) {
-        // Log the response
-        // console.log(response.result[0].status);
         
         // Check the status and resolve/reject the promise accordingly
         Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -379,8 +355,6 @@ function createAffilOff(offData, comp_CIS, session, userID) {
     
 
     $.ajax(settings).done(function (response) {
-      // Log the response
-      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -427,8 +401,6 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber, session, us
     };
 
     $.ajax(settings).done(function (response) {
-      // Log the response
-      // console.log(response.result[0].status);
       
       // Check the status and resolve/reject the promise accordingly
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -450,9 +422,6 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber, session, us
 function createAffilDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
     
     return new Promise((resolve, reject) => {
-     console.log(buttonId);
-    console.log(selectedDirCisNumber);
-    console.log(riData);
 
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
@@ -496,10 +465,7 @@ function createAffilDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNum
 */
 function Loginuser(username, password, sessionId, otpGen, userID) {
     return new Promise((resolve, reject) => {
-        // console.log(username);
-        // console.log(password);
-        console.log(otpGen)
-        console.log(userID);
+        
         var settings = {
           "url": "http://10.232.236.15:8092/api/userManagement",
           "method": "POST",
@@ -522,9 +488,6 @@ function Loginuser(username, password, sessionId, otpGen, userID) {
         };
     
         $.ajax(settings).done(function (response) {
-            // Log the response
-            // console.log(response.result[0].message);
-            // console.log(response.result[0].status);
             
             // Check the status and resolve/reject the promise accordingly
             Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -546,8 +509,6 @@ function Loginuser(username, password, sessionId, otpGen, userID) {
 */
 function sendOTP(mobile, otpGen, userID, session) {
   return new Promise((resolve, reject) => {
-      // console.log(userID);
-      // console.log(session);
       var settings = {
         "url": "http://10.232.236.15:8092/api/OTP",
         "method": "POST",
@@ -564,9 +525,6 @@ function sendOTP(mobile, otpGen, userID, session) {
       };
   
       $.ajax(settings).done(function (response) {
-          // Log the response
-          // console.log(response.result[0].message);
-          // console.log(response.result[0].status);
           
           // Check the status and resolve/reject the promise accordingly
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -588,10 +546,6 @@ function sendOTP(mobile, otpGen, userID, session) {
 */
 function checkOTP(user, enteredOTP, userID, session) {
   return new Promise((resolve, reject) => {
-      console.log(userID);
-      console.log(session);
-      console.log(enteredOTP);
-      console.log(user);
       var settings = {
         "url": "http://10.232.236.15:8092/api/userManagement",
         "method": "POST",
@@ -611,9 +565,6 @@ function checkOTP(user, enteredOTP, userID, session) {
       };
   
       $.ajax(settings).done(function (response) {
-          // Log the response
-          // console.log(response.result[0].message);
-          // console.log(response.result[0].status);
           
           // Check the status and resolve/reject the promise accordingly
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -642,9 +593,6 @@ function cisLookUP(cis) {
       };
       
       $.ajax(settings).done(function (response) {
-        // Log the response
-        // console.log(response);
-        // console.log(response.result[0].status);
         
         // Check the status and resolve/reject the promise accordingly
         // Swal.fire(`${response}`, ``, `${response}`);
