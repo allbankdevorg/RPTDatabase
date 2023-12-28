@@ -1,0 +1,87 @@
+<!-- ADD DOSRI FORM -->
+<div mat-dialog-title>
+    <c-modal-header>
+        <h3 cModalTitle>Stockholders Form</h3>
+    </c-modal-header>
+</div>
+<form cForm class="mb-2" [formGroup]="stockHoldersForm" (ngSubmit)="onSubmit()">    
+    <div mat-dialog-content class="content">
+        <!-- Modal Form -->
+        <c-modal-body>
+          <c-row class="align-items-center">
+             <!-- CIS Number Input -->
+            <c-col [sm]="12">
+              <label cLabel="col" for="cisNumber">CIS Number</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
+                <!-- <mat-label>First Name</mat-label> -->
+                <input matInput id="cisNumber" name="cisNumber" 
+                type="text" placeholder="CIS Number" formControlName="cis_number" appNum>
+                 <mat-error *ngIf="stockHoldersForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+              </mat-form-field>
+            </c-col>
+          </c-row>
+
+
+          
+          <c-row class="align-items-center">
+            <c-col [sm]="6">
+              <label cLabel="col" for="name">Name</label>
+              <mat-form-field appearance="fill" [style.width.%]=100>
+                <!-- <mat-label>Middle Name</mat-label> -->
+                <input matInput id="name"  name="name"
+                type="text" placeholder="Name" formControlName="name" appCaps >
+                <mat-error *ngIf="stockHoldersForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
+              </mat-form-field>
+            </c-col>
+
+            <c-col [sm]="6">
+                <label cLabel="col" for="shares">Shares</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                  <!-- <mat-label>Last Name</mat-label> -->
+                  <input matInput #accDinput id="shares"  name="shares"
+                  type="text" placeholder="Shares" formControlName="shares" appNum>
+                  <mat-error *ngIf="stockHoldersForm.get('shares')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                  
+                </mat-form-field>
+              </c-col>
+          </c-row>
+  
+           
+            <!-- Company Name Input -->
+        <c-row class="align-items-center">
+            <c-col [sm]="6">
+                <label cLabel="col" for="amount">Amount</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                  <!-- <mat-label>Last Name</mat-label> -->
+                  <input matInput #accDinput id="amount"  name="amount"
+                  type="text" placeholder="Amount" formControlName="amount" appNum>
+                  <mat-error *ngIf="stockHoldersForm.get('amount')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                  
+                </mat-form-field>
+            </c-col>
+
+            <c-col [sm]="6">
+                <label cLabel="col" for="percentage">Percentage</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                  <!-- <mat-label>Last Name</mat-label> -->
+                  <input matInput #accDinput id="percentage"  name="percentage"
+                  type="text" placeholder="Percentage" formControlName="percentage">
+                  <mat-error *ngIf="stockHoldersForm.get('com_company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                  
+                </mat-form-field>
+            </c-col>
+
+
+          </c-row>
+        </c-modal-body>
+        <c-modal-footer>
+          </c-modal-footer>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+        <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+        
+        <button mat-raised-button color="primary" type="submit" [disabled]="!stockHoldersForm.valid">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form>
+
