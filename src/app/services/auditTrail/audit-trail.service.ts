@@ -16,30 +16,9 @@ export class AuditTrailService {
 
   constructor(private http: HttpClient) {}
 
-  // logAuditTrail(auditTrail: AuditTrail): Observable<AuditTrail> {
-  //   return this.http.post<AuditTrail>(this.apiUrl, auditTrail);
-  // }
-
-  // logAuditTrail(auditTrailEntry: AuditTrail): Observable<AuditTrail> {
-  //   // Simulate logging the result in the console
-  //   console.log('Audit trail entry logged:', auditTrailEntry);
-
-  //   // Return a mock Observable to simulate the API response
-  //   return this.http.post<AuditTrail>(this.apiUrl, auditTrailEntry).pipe(
-  //     map(response => {
-  //       console.log('API response:', response);
-  //       return response;
-  //     }),
-  //     catchError((error: any) => {
-  //       console.error('Error logging audit trail:', error);
-  //       return throwError('Failed to log audit trail');
-  //     })
-  //   );
-  // }
-
   logAuditTrail(auditTrailEntry: AuditTrail): Observable<AuditTrail> {
     // Log specific messages regardless of the success or error status
-    console.log('Audit trail entry logged:', auditTrailEntry);
+    // console.log('Audit trail entry logged:', auditTrailEntry);
 
     // Simulate the asynchronous behavior of an HTTP request
     return of(auditTrailEntry).pipe(
