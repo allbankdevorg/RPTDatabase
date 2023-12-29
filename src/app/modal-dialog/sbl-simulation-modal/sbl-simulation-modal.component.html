@@ -5,69 +5,89 @@
     <!-- </c-modal-header> -->
 </div>
 
-<div mat-dialog-content class="content">
-    <c-row class="align-items-center">
-        <!-- CIS Number Input -->
 
-        <c-col [md]="6">
-           <label cLabel="col" for="affilCisNumberM"></label>
-           <mat-form-field appearance="fill" [style.width.%]=100>
-             <!-- <mat-label>CIS Number</mat-label> -->
-             <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
-             type="text" placeholder="CIS" 
-              appNum>
-             <!-- <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
-           </mat-form-field>
-       </c-col>
+<form cForm class="mb-2"> 
+    <div mat-dialog-content class="content">
+            <c-row class="align-items-center">
+                <!-- CIS Number Input -->
 
-       <c-col [md]="6">
-           <label cLabel="col" for="accountName"></label>
-           <mat-form-field appearance="fill" [style.width.%]=100>
-             <!-- <mat-label>Account Name</mat-label> -->
-             <input matInput #accDinput id="accountName"  name="accountName"
-             type="text" placeholder="Account Name"
-              appCaps>
-             <!-- <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
-           </mat-form-field>
-       </c-col>
-     </c-row>
-
-     <c-container fluid class="px-0 my-2" >
-        <c-row>
-            <c-col [sm]="5"></c-col>
-            <c-col [sm]="7">
-                <c-card>
-                    <c-card-body>
-                        <table [responsive]="true" [cBorder]="1" cTable bordered >
-                            <thead cTableColor="success">
-                            <tr>
-                            <!-- <th scope="col">Unimpaired Capital (as of November 30, 2023)</th>
-                            <th scope="col"> RPT Balance (Net of Hold-out) </th>
-                            <th scope="col"> RPT Ratio </th> -->
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td> <strong>SUB-TOTAL</strong> </td>
-                                    <td>47,929,080.00</td>
-                                    <!-- <td>31,020,692.30</td> -->
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <!-- <td></td> -->
-                                </tr>
-                                <tr>
-                                    <td> <strong>TOTAL RPT</strong> </td>
-                                    <td>Php761,444,680.00</td>
-                                    <!-- <td>Php572,833,738.74</td> -->
-                                </tr>
-                            </tbody>
-                        </table>
-                    </c-card-body>
-                  </c-card>
+                <c-col [md]="6">
+                <label cLabel="col" for="affilCisNumberM"></label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                    <!-- <mat-label>CIS Number</mat-label> -->
+                    <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
+                    type="text" placeholder="CIS" 
+                    appNum>
+                    <!-- <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
+                </mat-form-field>
             </c-col>
-        </c-row>
-    </c-container>
-</div>
+
+            <c-col [md]="6">
+                <label cLabel="col" for="accountName"></label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                    <!-- <mat-label>Account Name</mat-label> -->
+                    <input matInput #accDinput id="accountName"  name="accountName"
+                    type="text" placeholder="Account Name"
+                    appCaps>
+                    <!-- <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
+                </mat-form-field>
+            </c-col>
+            </c-row>
+
+            <c-row class="align-items-center">
+                <!-- CIS Number Input -->
+    
+                <c-col [md]="12">
+                <label cLabel="col" for="amount"></label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                    <!-- <mat-label>CIS Number</mat-label> -->
+                    <input matInput #accDinput id="amount" name="amount"
+                    type="text" placeholder="Amount" 
+                    appNum>
+                    <!-- <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
+                </mat-form-field>
+            </c-col>
+            </c-row>
+
+            <c-container fluid class="px-0 my-2" >
+                <c-row>
+                    <c-col [sm]="5"></c-col>
+                    <c-col [sm]="7">
+                        <c-card>
+                            <c-card-body>
+                                <div class="container">
+                                    <c-row class="align-items-stretch h-100">
+                                        <c-col [sm]="6" class="border p-2">
+                                            <div><strong>SUB-TOTAL</strong></div>
+                                        </c-col>
+                                        <c-col [sm]="6" class="border p-2">
+                                            <div></div>
+                                        </c-col>
+                                    </c-row>
+
+
+                                    <c-row class="align-items-stretch h-100">
+                                        <c-col [sm]="6" class="border p-2">
+                                            <div><strong>TOTAL SBL</strong></div>
+                                        </c-col>
+                                        <c-col [sm]="6" class="border p-2">
+                                            <div></div>
+                                        </c-col>
+                                    </c-row>
+                                </div>
+                            </c-card-body>
+                        </c-card>
+                    </c-col>
+                </c-row>
+            </c-container>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+        <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+        
+        <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!affForm.valid">{{data ? 'Update': 'Save'}}</button> -->
+    
+        <button mat-raised-button color="primary" type="submit" >Simulate</button>
+    </div>
+</form>
 
