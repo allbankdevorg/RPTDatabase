@@ -181,11 +181,14 @@ export class AffiliatesRPModalComponent implements OnInit{
         const data = mngComp;
         // console.log(data);
         data.forEach(item => {
+          
+          console.log(item);
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
             value: item.aff_com_cis_number,
             viewValue: item.aff_com_company_name,
           };
+          console.log(commandGroup);
 
           // Add the command group to the array
           this.commandGroups.push(commandGroup);
