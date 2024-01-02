@@ -10,6 +10,14 @@
  *  - createAffilOff
  *  - createAffilOffRI
  *  - createAffilDirectorsRelatedInterest
+ *  - Loginuser
+ *  - sendOTP
+ *  - checkOTP
+ *  - cisLookUP
+ *  - createStockHolders
+ *  - createUser
+ *  - userAccess
+ *  - addPNData
  */
  
 
@@ -650,6 +658,125 @@ function cisLookUP(cis) {
   });
 }
 
+/**
+ * Creates User
+ * @param {any} formData - The data of the User.
+ * @param {any} session - The Sesison ID.
+ * @param {any} userID - The Username of the user.
+*/
+
+function createUser(formData, userID, session) {
+  return new Promise((resolve, reject) => {
+      var settings = {
+        "url": "http://10.232.236.15:8092/api/userManagement",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "cmd": 1,
+          "session": session,
+          "userid": userID,
+          "request": {
+            "username": formData.userName,
+            "password": formData.uPass,
+            "mobile_no": formData.mobile,
+            "role": formData.role,
+            "inserted_by": userID
+          }
+        }),
+      };
+      
+      $.ajax(settings).done(function (response) {
+        Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+          if (response.result[0].status === 'success') {
+            resolve(response);
+          } else {
+            reject(response);
+          }
+      });
+  });
+}
+
+/**
+ * UserAccess
+ * @param {any} userID - The Username of the user.
+*/
+function userAccess(userid) {
+  return new Promise((resolve, reject) => {
+    var settings = {
+      "url": "http://10.232.236.15:8092/api/dataTables",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "cmd": 903,
+        "userid": userid,
+      }),
+    };
+    
+    $.ajax(settings).done(function (response) {
+      console.log(response.result[0].message);
+      if (response.result[0].message === 'Success') {
+        console.log(response);
+        resolve(response);
+      } else {
+        reject(response);
+      }
+    });
+});
+}
+
+
+/**
+ * Creates RP directors related interest.
+ * @param {any} formData - The data for the DOSRI director related interest.
+ * @param {any} session - The Sesison ID.
+ * @param {any} userID - The Username of the user.
+*/
+function addPNData(resultData, session, userID) {
+    
+  return new Promise((resolve, reject) => {
+    // console.log(formData)
+    console.log(resultData);
+    // var settings = {
+    //   "url": "http://10.232.236.15:8092/api/addData",
+    //   "method": "POST",
+    //   "timeout": 0,
+    //   "headers": {
+    //     "Content-Type": "application/json"
+    //   },
+    //   "data": JSON.stringify({
+    //     "cmd": 20,
+    //     "session": session,
+    //     "userid": userID,
+    //     "request": {
+    //       "cis_no": formData.cis_no,
+    //       "name": formData.name,
+    //       "loan_no": formData.loan_no,
+    //       "principal": formData.principal,
+    //       "principal_bal": formData.principal_bal,
+    //       "date_granted": formData.date_granted,
+    //       "created_by": formData.created_by,
+    //       "date_created": formData.date_created,
+    //       "loan_security": formData.loan_security
+    //     }
+    //   }),
+    // };
+
+    // $.ajax(settings).done(function (response) {
+    //   Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+    //   if (response.result[0].status === 'success') {
+    //     resolve(response);
+    //   } else {
+    //     reject(response);
+    //   }
+    // });
+  });
+}
 
 
 
@@ -669,5 +796,8 @@ function cisLookUP(cis) {
     sendOTP,
     checkOTP,
     cisLookUP,
-    createStockHolders
+    createStockHolders,
+    createUser,
+    userAccess,
+    addPNData
  }
