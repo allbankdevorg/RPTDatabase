@@ -134,6 +134,9 @@ import { AffiliatesOffModalComponent } from './modal-dialog/affiliates-off-modal
 import { AffiliatesOffRIModalComponent } from './modal-dialog/affiliates-off-ri-modal/affiliates-off-ri-modal.component';
 import { UsersModalComponent } from './modal-dialog/users-modal/users-modal.component';
 import { StockholdersModalComponent } from './modal-dialog/stockholders-modal/stockholders-modal.component';
+import { LowerCaseDirective } from './directives/lower-case.directive';
+import { UsersAddModalComponent } from './modal-dialog/users-add-modal/users-add-modal.component';
+import { ViewUsersModalComponent } from './modal-dialog/view-users-modal/view-users-modal.component';
 
 
 const APP_CONTAINERS = [
@@ -156,7 +159,7 @@ const APP_CONTAINERS = [
     AffiliatesRPModalComponent,
     SBLSimulationModalComponent, 
     RPTSimulationModalComponent,
-    OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent, UsersModalComponent, StockholdersModalComponent],
+    OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent, UsersModalComponent, StockholdersModalComponent, LowerCaseDirective, UsersAddModalComponent, ViewUsersModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
