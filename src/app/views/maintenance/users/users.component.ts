@@ -14,19 +14,18 @@ import {deleteDosri, deleteDirector, deleteRelationship} from '../../../function
 //For Modals
 import { UsersModalComponent } from 'src/app/modal-dialog/users-modal/users-modal.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-
-
+import {UsersAddModalComponent} from '../../../modal-dialog/users-add-modal/users-add-modal.component';
+import { ViewUsersModalComponent } from 'src/app/modal-dialog/view-users-modal/view-users-modal.component';
+//Import for Function
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
+import { userAccess} from '../../../functions-files/add/postAPI';
 
 interface Users {
-  id: number;
-  fName: string;
-  mName: string;
-  lName: string;
-  userName: string;
-  email: string;
-  mobile: number;
-  department: string;
-  role: string;
+  username: string;
+  role: number;
+  status: number;
+  date_inserted: any;
+  mobile_no: number;
   authority: Permissions[];
 }
 
@@ -94,15 +93,14 @@ export class UsersComponent {
 
 
 
-  userDataSource = new MatTableDataSource<Users>(SAMPLE_DATA);
+  userDataSource = new MatTableDataSource<Users>();
   ToDisplay: string[] = [];
-  columnsToDisplay: string[] = ['expand', 'fName', 'mName', 'lName', 'userName', 'email', 'mobile', 'department', 'role', 'view'];
+  columnsToDisplay: string[] = ['expand', 'username', 'role', 'status', 'date_inserted', 'mobile_no', 'action'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: Users | null = null;
 
-  DdisplayedColumns: string[] = ['access', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
-  // permissionDataSource = new MatTableDataSource<Permissions>(ACCESS_DATA);
-
+  DdisplayedColumns: string[] = ['nav_id', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
+  permissionDataSource = new MatTableDataSource<Permissions>();
 
   // userDataSource = new MatTableDataSource();
   // displayedColumns: string[] =['view', 'access', 'add'];
@@ -112,20 +110,20 @@ export class UsersComponent {
 
   // Use the sample data in your component
   // dataSource = new MatTableDataSource<permissions>();
-  private originalData: Users;
-  userData: Users;
+  // private originalData: Users;
+  // userData: Users;
   
 
   @ViewChild('usersModal') usersModal!: ElementRef;
-  // @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild('paginator') paginator!: MatPaginator;
+  @ViewChild('paginator1') paginator1!: MatPaginator;
+  @ViewChild('paginator2') paginator2!: MatPaginator;
 
   constructor(private formBuilder: FormBuilder,
     public _dialog: MatDialog,
     private authService: AuthSessionService,
     private renderer: Renderer2,
     private el: ElementRef,
-    // private idleService: SessionTimeoutService,
+    private get: FetchDataService,
     private zone: NgZone,
     private cdr: ChangeDetectorRef) {
       
@@ -139,13 +137,13 @@ export class UsersComponent {
         userName: [''],
         uPass: ['']
       });
-      this.userData = { ...SAMPLE_DATA[0] }; // Shallow copy for initial rendering
-    this.originalData = JSON.parse(JSON.stringify(this.userData)); // Deep copy
+      // this.userData = { ...SAMPLE_DATA[0] }; // Shallow copy for initial rendering
+    // this.originalData = JSON.parse(JSON.stringify(this.userData)); // Deep copy
   }
 
   ngAfterViewInit() {
-    // this.users.paginator = this.paginator;
-    // this.Users = this.paginator;
+    this.userDataSource.paginator = this.paginator2;
+    this.permissionDataSource.paginator = this.paginator1;
   }
 
   // Call this method whenever there is user activity
@@ -165,46 +163,69 @@ export class UsersComponent {
 
 
 
-  // updateTableData(): void {
-  //   this.userDataSource.data = this.users
-  // }
+  updateTableData(): void {
+    this.get.getUserList((usersList) => {
+      if (usersList) {
+        this.userDataSource.data = usersList;
+        console.log(usersList);
+      } else {
+        console.error('No Users received');
+      }
+    });
+  }
 
+
+  getUserAccess(row): void {
+    const userid = row.username
+    console.log(userid);
+    userAccess(userid) // Pass the entire formData object
+      .then((response) => {
+        console.log(response);
+        this.permissionDataSource.data = response.result[0].user_access;
+        console.log(this.permissionDataSource.data);
+        const userPerm = response.result[0].user_access
+      })
+      .catch((error) => {
+       
+      });
+  }
+  
 
 
  
 
 
   
-updateTableData(): void {
-  // const User = this.users
-  const UsersData = SAMPLE_DATA.map(user => {
-    const permissions: Permissions = {
-      access: user.authority[0].access,
-      view: user.authority[0].view,
-      add: user.authority[0].add,
-      edit: user.authority[0].edit,
-      delete: user.authority[0].delete,
-      maker: user.authority[0].maker,
-      approver: user.authority[0].approver,
-      reviewer: user.authority[0].reviewer,
-    };
-    return { ...user, permissions };
-  });
+// updateTableData(): void {
+//   // const User = this.users
+//   const UsersData = SAMPLE_DATA.map(user => {
+//     // const permissions: Permissions = {
+//     //   access: user.authority[0].access,
+//     //   view: user.authority[0].view,
+//     //   add: user.authority[0].add,
+//     //   edit: user.authority[0].edit,
+//     //   delete: user.authority[0].delete,
+//     //   maker: user.authority[0].maker,
+//     //   approver: user.authority[0].approver,
+//     //   reviewer: user.authority[0].reviewer,
+//     // };
+//     // return { ...user };
+//   });
 
-  // Set the data source for your MatTable for users
-  this.userDataSource.data = UsersData;
-  // console.log('Users Data:', this.userDataSource.data);
+//   // Set the data source for your MatTable for users
+//   this.userDataSource.data = UsersData;
+//   // console.log('Users Data:', this.userDataSource.data);
 
 
 
-  // Update permissions data
-  // Set the data source for your MatTable for permissions
-  // this.permissionDataSource.data = ACCESS_DATA;
-  // console.log('Permissions Data:', this.permissionDataSource.data);
+//   // Update permissions data
+//   // Set the data source for your MatTable for permissions
+//   // this.permissionDataSource.data = ACCESS_DATA;
+//   // console.log('Permissions Data:', this.permissionDataSource.data);
 
 
   
-}
+// }
 
 
 
@@ -219,33 +240,55 @@ updateTableData(): void {
 //   console.log(this.authority[0][permission]);
 // }
 
-updateDatabase(permission: Permissions, propertyName: any) {
-  // Convert the checkbox state to 0 or 1 for the specified property
-  permission[propertyName] = permission[propertyName] === 1 ? 0 : 1;
-    permission = JSON.parse(JSON.stringify(this.originalData)); // Reset the userData with a deep copy
+// updateDatabase(permission: Permissions, propertyName: any) {
+//   // Convert the checkbox state to 0 or 1 for the specified property
+//   permission[propertyName] = permission[propertyName] === 1 ? 0 : 1;
+//     permission = JSON.parse(JSON.stringify(this.originalData)); // Reset the userData with a deep copy
     
-    this.userData = JSON.parse(JSON.stringify(this.originalData)); // Reset userData with a deep copy
+//     this.userData = JSON.parse(JSON.stringify(this.originalData)); // Reset userData with a deep copy
 
-    // Manually trigger change detection
-    this.cdr.detectChanges();
+//     // Manually trigger change detection
+//     this.cdr.detectChanges();
 
-    // console.log(this.userData);
+//     // console.log(this.userData);
   
-  // Assuming you have a service for handling database interactions
-  // Replace 'yourService' with the actual service name
-  // this.yourService.updatePermissions(permission).subscribe(
-  //   response => {
-  //     console.log('Database updated successfully', response);
-  //   },
-  //   error => {
-  //     console.error('Error updating database', error);
-  //   }
-  // );
+//   // Assuming you have a service for handling database interactions
+//   // Replace 'yourService' with the actual service name
+//   // this.yourService.updatePermissions(permission).subscribe(
+//   //   response => {
+//   //     console.log('Database updated successfully', response);
+//   //   },
+//   //   error => {
+//   //     console.error('Error updating database', error);
+//   //   }
+//   // );
+// }
+
+updateDatabase(permission: Permissions, propertyName: any) {}
+
+// Show Modal Form
+openViewUserModal(data: any, event: any) {
+  event.stopPropagation();
+  // console.log(data);
+  const dialogRef = this._dialog.open(ViewUsersModalComponent, {
+    data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        // this.getEmployeeList();
+        // console.log("Successs");
+      }
+    },
+  });
 }
+
+
 
   // Show Modal Form
   openAddEditUserForm() {
-  const dialogRef = this._dialog.open(UsersModalComponent);
+  const dialogRef = this._dialog.open(UsersAddModalComponent);
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
@@ -256,6 +299,7 @@ updateDatabase(permission: Permissions, propertyName: any) {
 }
 
 openEditForm(data: any, event: any) {
+  console.log(data);
   event.stopPropagation();
   // console.log(data);
   const dialogRef = this._dialog.open(UsersModalComponent, {
@@ -390,46 +434,46 @@ openEditForm(data: any, event: any) {
 }
 
 
-let SAMPLE_DATA: Users[] = [
-  {
-    id: 1,
-    fName: 'Yiorgos Avraamu',
-    mName: 'New',
-    lName: 'Avraamu',
-    userName: 'User1',
-    email: 'test@email.com',
-    mobile: 1231244,
-    department: 'ITG',
-    role: 'Maker',
-    authority: [
-      { access: 'Affiliates',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
-      { access: 'users',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
-      { access: 'dri',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
-      { access: 'bankofficer',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
-      { access: 'directorsrelated/:id',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
-    ]
+// let SAMPLE_DATA: Users[] = [
+//   {
+//     id: 1,
+//     fName: 'Yiorgos Avraamu',
+//     mName: 'New',
+//     lName: 'Avraamu',
+//     userName: 'User1',
+//     email: 'test@email.com',
+//     mobile: 1231244,
+//     department: 'ITG',
+//     role: '1',
+//     authority: [
+//       { access: 'Affiliates',  view: 1, add: 1, edit: 1, delete: 1, maker: 1, approver:1, reviewer: 1 },
+//       { access: 'users',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+//       { access: 'dri',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+//       { access: 'bankofficer',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+//       { access: 'directorsrelated/:id',  view: 1, add: 1, edit: 1, delete: 0, maker: 1, approver: 0, reviewer: 1 },
+//     ]
 
     
-  },
-  {
-    id: 2,
-    fName: 'Avraamu',
-    mName: 'New',
-    lName: 'Yiorgos',
-    userName: 'User2',
-    email: 'test@email.com',
-    mobile: 123124124,
-    department: 'ITG',
-    role: 'Maker',
-    authority: [
-      { access: 'Affiliates', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 1, reviewer: 0 },
-    ]
-  },
+//   },
+//   {
+//     id: 2,
+//     fName: 'Avraamu',
+//     mName: 'New',
+//     lName: 'Yiorgos',
+//     userName: 'User2',
+//     email: 'test@email.com',
+//     mobile: 123124124,
+//     department: 'ITG',
+//     role: '5',
+//     authority: [
+//       { access: 'Affiliates', view: 1, add: 0, edit: 0, delete: 0, maker: 0, approver: 1, reviewer: 0 },
+//     ]
+//   },
 
 
 
-  // Add more rows as needed
-];
+//   // Add more rows as needed
+// ];
 
 
 // const ACCESS_DATA: Permissions[] = [

@@ -26,59 +26,43 @@
                 <ng-container matColumnDef="expand">
                   <th mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
                   <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <button mat-icon-button aria-label="expand row" (click)="getUserAccess(element)" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
                       <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
                       <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
                     </button>
                   </td>
                 </ng-container>
             
-                <ng-container matColumnDef="fName">
-                  <th mat-header-cell *matHeaderCellDef> First Name </th>
-                  <td mat-cell *matCellDef="let element">{{ element.fName }}</td>
+                <ng-container matColumnDef="username">
+                  <th mat-header-cell *matHeaderCellDef>User Name </th>
+                  <td mat-cell *matCellDef="let element">{{ element.username }}</td>
                 </ng-container>
             
-                <ng-container matColumnDef="mName">
-                  <th mat-header-cell *matHeaderCellDef> Middle Name </th>
-                  <td mat-cell *matCellDef="let element">{{ element.mName }}</td>
-                </ng-container>
-            
-                <ng-container matColumnDef="lName">
-                  <th mat-header-cell *matHeaderCellDef> Last Name </th>
-                  <td mat-cell *matCellDef="let element">{{ element.lName }}</td>
-                </ng-container>
-            
-                <ng-container matColumnDef="userName">
-                  <th mat-header-cell *matHeaderCellDef> Username </th>
-                  <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
-                </ng-container>
-            
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef> Email</th>
-                  <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-                </ng-container>
-            
-                <ng-container matColumnDef="mobile">
-                  <th mat-header-cell *matHeaderCellDef> Mobile #</th>
-                  <td mat-cell *matCellDef="let element">{{ element.mobile }}</td>
-                </ng-container>
-            
-                <ng-container matColumnDef="department">
-                  <th mat-header-cell *matHeaderCellDef> Department</th>
-                  <td mat-cell *matCellDef="let element">{{ element.department }}</td>
-                </ng-container>
-
-                
                 <ng-container matColumnDef="role">
-                  <th mat-header-cell *matHeaderCellDef> Role</th>
+                  <th mat-header-cell *matHeaderCellDef>Role </th>
                   <td mat-cell *matCellDef="let element">{{ element.role }}</td>
                 </ng-container>
             
-                <ng-container matColumnDef="view">
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="date_inserted">
+                  <th mat-header-cell *matHeaderCellDef> Date Added </th>
+                  <td mat-cell *matCellDef="let element">{{ element.date_inserted | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="mobile_no">
+                  <th mat-header-cell *matHeaderCellDef> Mobile #</th>
+                  <td mat-cell *matCellDef="let element">{{ element.mobile_no }}</td>
+                </ng-container>
+            
+                <ng-container matColumnDef="action">
                   <th mat-header-cell *matHeaderCellDef> Action </th>
                   <td mat-cell *matCellDef="let row">
                     <div class="d-flex justify-content-center">
-                      <button mat-icon-button aria-label="View Users Info" *appHasPermission="'view'">
+                      <button mat-icon-button (click)="openViewUserModal(row, $event)" aria-label="View Users Info" *appHasPermission="'view'">
                         <mat-icon>visibility</mat-icon>
                       </button>
                       <button mat-icon-button (click)="openEditForm(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
@@ -94,11 +78,11 @@
                 <ng-container matColumnDef="expandedDetail">
                   <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
                     <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                      <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="element.authority">
+                      <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="permissionDataSource">
                         
-                        <ng-container matColumnDef="access">
-                          <th mat-header-cell *matHeaderCellDef></th>
-                          <td mat-cell *matCellDef="let element"> {{ element.access }} </td>
+                        <ng-container matColumnDef="nav_id">
+                          <th mat-header-cell *matHeaderCellDef>Nav ID</th>
+                          <td mat-cell *matCellDef="let element"> {{ element.nav_id }} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="view">
@@ -161,6 +145,9 @@
                         <tr mat-header-row *matHeaderRowDef="DdisplayedColumns" class="cTableCol2"></tr>
                         <tr mat-row *matRowDef="let row; columns: DdisplayedColumns" class="cTableRow2"></tr>
                       </table>
+
+                      
+              <mat-paginator #MatPaginator1 [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of data"></mat-paginator>
                     </div>
                   </td>
                 </ng-container>
@@ -177,7 +164,7 @@
               </tbody>
               </table>
             
-              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of data"></mat-paginator>
+              <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of data"></mat-paginator>
             </c-container>
             
         </c-card-body>
