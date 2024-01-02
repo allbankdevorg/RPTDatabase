@@ -182,6 +182,7 @@ export class OtherRPModalComponent implements OnInit {
         const data = OtherComp;
         
         data.forEach(item => {
+          console.log(item);
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
             value: item.aff_com_cis_number,
