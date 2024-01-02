@@ -1,7 +1,10 @@
-import { Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit, NgZone, Renderer2} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
+import { ChangeDetectorRef } from '@angular/core';
+import { FormArray } from '@angular/forms';
+
 
 
 // Functions Imports
@@ -20,7 +23,7 @@ import {AddServicesService} from '../../services/add/add-services.service';
 import { AffiliatesService } from 'src/app/services/affiliates/affiliates.service';
 import Swal from 'sweetalert2';
 
-import {addUsers} from '../../functions-files/addUser';
+import {createUser} from '../../functions-files/add/postAPI';
 
 
 @Component({
@@ -31,6 +34,14 @@ import {addUsers} from '../../functions-files/addUser';
 export class UsersModalComponent {
 
   userForm: FormGroup;
+
+  userrole = [
+    {value: 1, viewValue: "Maker"},
+    {value: 2, viewValue: "Reviewer"},
+    {value: 3, viewValue: "Approver"},
+    {value: 4, viewValue: "Admin"},
+    {value: 5, viewValue: "IT"}
+  ];
 
   buttonConfigurations = {
     maker: ['add', 'edit', 'delete'],
@@ -46,21 +57,39 @@ export class UsersModalComponent {
   commandGroups: any[] = [];
   editUserData: any = [];
   eUserForm: any = [];
+  matSelect: any;
 
   constructor(private formBuilder: FormBuilder,
     private _dialogRef: MatDialogRef<UsersModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private auditTrailService: AuditTrailService) 
+    private auditTrailService: AuditTrailService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private renderer: Renderer2) 
   {
     this.userForm = this.formBuilder.group({
       fName: ['', [Validators.required]],
       mName: ['', [Validators.required]],
       lName: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      mobile: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      mobile_no: ['', [Validators.required]],
+      role: ['', [Validators.required]],
       commandControl: [''],
-      userName: ['', [Validators.required]],
-      uPass: ['', [Validators.required]]
+      username: ['', [Validators.required]],
+      // uPass: ['', [Validators.required]],
+      // authority: this.formBuilder.group({
+      //   view: [false],
+      //   add: [false],
+      //   update: [false],
+      //   delete: [false],
+      //   maker: [false],
+      //   approver: [false],
+      //   reviewer: [false],
+      //   // Add more authority checkboxes as needed
+      //   // ...
+      // })
+        // Add more authority checkboxes as needed
+        // ...
     });
     _dialogRef.disableClose = true;
   }
@@ -70,7 +99,15 @@ export class UsersModalComponent {
   // Attempt to patch the form
   this.userForm.patchValue(this.data);
 
+  this.renderer.listen('document', 'click', (event: MouseEvent) => {
+    const targetElement = event.target as HTMLElement;
+    const matSelectElement = document.querySelector('.mat-select-panel');
 
+    if (matSelectElement && !matSelectElement.contains(targetElement)) {
+      // Close the mat-select when clicking outside
+      this.matSelect.close();
+    }
+  });
   }
 
    // Functions
@@ -78,10 +115,26 @@ export class UsersModalComponent {
    onUserSubmit() {
     if (this.userForm.valid) {
       const formData = this.userForm.value;
-      // console.log(formData);
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+
       // Call the JavaScript function with form data
-      addUsers(formData); // Pass the entire formData object
+      createUser(formData, userID, session) // Pass the entire formData object
+      .then((response) => {
+        this.logAction('Add', 'Successfuly Added User', true, 'users');
+        this.close();
+      })
+      .catch((error) => {
+        this.logAction('Add', 'Failed Adding User', false, 'users');
+      });
       }
+
+      this.ngZone.run(() => {
+        // this.dataSource.data = this.tableData;
+      });
+    
+        // Trigger change detection
+      this.changeDetectorRef.detectChanges();
   }
 
 
