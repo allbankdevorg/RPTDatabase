@@ -99,6 +99,15 @@ export class DosriModalComponent implements OnInit {
           if (error && error.result && error.result[0] && error.result[0].status === "error" &&
               error.result[0].message === "CISNumber already define") {
             this._dialogRef.close(true);
+
+            const resultData = this.cisLookUpResult;
+            addPNData(resultData, session, userID)
+            .then((response) => {
+  
+            })
+            .catch((error) => {
+  
+            });
           } else {
             // Handle other error conditions 
             this.logAction('Add', 'Adding Company Failed', false, 'DRI');
