@@ -250,7 +250,10 @@ export class SBLListComponent implements OnInit{
 
   // Function to Show the simulation Modal
   openSimulation() {
-    const dialogRef = this._dialog.open(SBLSimulationModalComponent);
+    const dialogRef = this._dialog.open(SBLSimulationModalComponent, {
+      width: '50%', // Set the width as per your requirement
+      // Other MatDialog options can be specified here
+    });
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {

@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
-
+import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, QueryList, ElementRef, Renderer2 } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 // Import for Simulation Modal
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { RPTSimulationModalComponent } from 'src/app/modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
 
+//Import for API Function
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 export interface RPTlist_model {
   loantype: string;
@@ -22,25 +26,89 @@ export interface RPTlist_model {
   styleUrls: ['./rpt-list.component.scss']
 })
 export class RptListComponent {
-  displayedColumns: string[] = ['loantype', 'cis_no', 'pn_no', 'borrower', 'orig_loan', 'O_blnc'];
-  dataSource = ELEMENT_DATA;
+  rptBal: any;      // => RPT Balance (Net of Hold-out)
+  rptRatio: any;    // => RPT Ratio
+  subtlOL: any;     // => SUB-TOTAL Original Loan
+  subtlOB: any;     // => SUB-TOTAL Outstanding Balance
+  ttlRPTOL: any;    // => TOTAL RPT Original Loan
+  ttlRPTOB: any;    // => TOTAL RPT Outstanding Loan
+  availBal: any;    // => Remaining Balance of Possible Loan Amount
+  unimpairedCap: number = 1214764186.16;   //Unimpaired Capital
+  definedRptRatio: number = 50;     //Pre defined Percentage
+  availRptRatio: any;
+  approvedCapital: any;        // => the Loan approved Limit
+  
+  displayedColumns: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security'];
+  dataSource = new MatTableDataSource<any>([]);
+  ToDisplay: string[] = [];
 
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  
+    // Calculate sums and ratios based on the filtered data
+    const filteredData = this.dataSource.filteredData;
+    const sumPrincipal = filteredData.reduce((acc, obj) => {
+      acc.principal += parseFloat(obj.principal) || 0;
+      acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+      return acc;
+    }, { principal: 0, principal_bal: 0 });
+  
+    this.rptBal = sumPrincipal.principal;
+    const percentage = parseFloat(((sumPrincipal.principal / 1214764186.16) * 100).toFixed(2));
+    this.rptRatio = percentage;
+    this.subtlOL = sumPrincipal.principal;
+    this.subtlOB = sumPrincipal.principal_bal;
+    this.ttlRPTOL = sumPrincipal.principal;
+    this.ttlRPTOB = sumPrincipal.principal_bal;
+  }
 
   constructor(
+    private get: FetchDataService,
     public _dialog: MatDialog,) {
 
     }
 
-  // Dummy
-  longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
-  from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
-  originally bred for hunting.`;
+  
+  ngOnInit() {
+    this.updateTableData();
+  }
 
+  updateTableData(): void {
+    this.get.getPNData((PNData) => {
+      if (PNData) {
+        // Use reduce to calculate the sum of "principal" values
+        const sumPrincipal = PNData.reduce((acc, obj) => {
+          acc.principal += parseFloat(obj.principal) || 0;
+          acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+          return acc;
+        }, { principal: 0, principal_bal: 0 });
+
+        this.rptBal = sumPrincipal.principal;
+        const percentage = Math.round((sumPrincipal.principal / 1214764186.16) * 100);
+        this.rptRatio = percentage;
+        this.subtlOL = sumPrincipal.principal;
+        this.subtlOB = sumPrincipal.principal_bal;
+        this.ttlRPTOL = sumPrincipal.principal;
+        this.ttlRPTOB = sumPrincipal.principal_bal;
+        this.dataSource.data = PNData;
+        this.availRptRatio = this.definedRptRatio - percentage;
+        this.approvedCapital = this.unimpairedCap * .5;
+        
+        this.availBal = this.approvedCapital - sumPrincipal.principal;
+      } else {
+
+      }
+    });
+  }
 
 
     // Function to Show the simulation Modal
     openSimulation() {
-      const dialogRef = this._dialog.open(RPTSimulationModalComponent);
+      const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
+        width: '50%', // Set the width as per your requirement
+        // Other MatDialog options can be specified here
+      });
       dialogRef.afterClosed().subscribe({
         next: (val) => {
           if (val) {
@@ -52,28 +120,3 @@ export class RptListComponent {
 }
 
 
-const ELEMENT_DATA: RPTlist_model[] = [
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-  {loantype: 'Long Term', cis_no: 123123, pn_no: 89767, borrower: 'test', orig_loan: 1000000, O_blnc: 2344234},
-];
