@@ -741,40 +741,57 @@ function addPNData(resultData, session, userID) {
     
   return new Promise((resolve, reject) => {
     // console.log(formData)
-    console.log(resultData);
-    // var settings = {
-    //   "url": "http://10.232.236.15:8092/api/addData",
-    //   "method": "POST",
-    //   "timeout": 0,
-    //   "headers": {
-    //     "Content-Type": "application/json"
-    //   },
-    //   "data": JSON.stringify({
-    //     "cmd": 20,
-    //     "session": session,
-    //     "userid": userID,
-    //     "request": {
-    //       "cis_no": formData.cis_no,
-    //       "name": formData.name,
-    //       "loan_no": formData.loan_no,
-    //       "principal": formData.principal,
-    //       "principal_bal": formData.principal_bal,
-    //       "date_granted": formData.date_granted,
-    //       "created_by": formData.created_by,
-    //       "date_created": formData.date_created,
-    //       "loan_security": formData.loan_security
-    //     }
-    //   }),
-    // };
 
-    // $.ajax(settings).done(function (response) {
-    //   Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-    //   if (response.result[0].status === 'success') {
-    //     resolve(response);
-    //   } else {
-    //     reject(response);
-    //   }
-    // });
+    if (Array.isArray(resultData)) {
+      const totalItems = resultData.length;
+      let successfulInsertions = 0;
+      
+      resultData.forEach((item) => {
+        console.log(item.loan_no);
+        var settings = {
+            "url": "http://10.232.236.15:8092/api/addData",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+              "cmd": 20,
+              "session": session,
+              "userid": userID,
+              "request": {
+                "cis_no": item.cis_no,
+                "name": item.name,
+                "loan_no": item.loan_no,
+                "principal": item.principal,
+                "principal_bal": item.principal_bal,
+                "date_granted": item.date_granted,
+                "created_by": item.created_by,
+                "date_created": item.date_created,
+                "loan_security": item.loan_security
+              }
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+          if (response.result[0].status === 'success') {
+            successfulInsertions++;
+
+            if (successfulInsertions === totalItems) {
+              // All items inserted successfully, show the modal
+              Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+              resolve(response);
+            }
+          } else {
+            reject(response);
+          }
+        });
+      });
+    } else {
+      // If resultData is not an array, log an error or handle accordingly
+      console.error("Invalid resultData format");
+      reject("Invalid resultData format");
+    }
   });
 }
 
