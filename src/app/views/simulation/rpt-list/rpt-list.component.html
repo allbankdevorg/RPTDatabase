@@ -33,8 +33,8 @@
                                   <tbody>
                                     <tr>
                                       <td>1,214,764,186.16</td>
-                                      <td>Php512,833,738.74</td>
-                                      <td>42.22%</td>
+                                      <td>Php {{rptBal | number: '1.2-2'}}</td>
+                                      <td>{{rptRatio}}%</td>
                                     </tr>
                                     <tr>
                                       <td></td>
@@ -43,8 +43,13 @@
                                     </tr>
                                     <tr>
                                       <td><p class="color-red">Board Approved RPT Limit</p></td>
-                                      <td><p class="color-red">607,382,093.08</p></td>
+                                      <td><p class="color-red">Php {{approvedCapital | number: '1.2-2'}}</p></td>
                                       <td><p class="color-red">50%</p></td>
+                                    </tr>
+                                    <tr>
+                                      <td><p class="color-blue">Available Balance</p></td>
+                                      <td><p class="color-blue">Php {{availBal | number: '1.2-2'}}</p></td>
+                                      <td><p class="color-blue">{{availRptRatio}}%</p></td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -53,8 +58,8 @@
                           </c-col>
                           <c-col>
                             <mat-form-field [style.width.%]=100>
-                              <input matInput #filterInput placeholder="Search">
-                              <mat-icon matSuffix>search</mat-icon>
+                              <input matInput #filterInput (input)="applyFilter(filterInput.value)" placeholder="Search">
+                                  <mat-icon matSuffix>search</mat-icon>
                             </mat-form-field>
                             </c-col>
                         </c-row>
@@ -67,41 +72,42 @@
                     
 
                     <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="loantype">
-                    <mat-header-cell *matHeaderCellDef> Loan Type </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.loantype}} </mat-cell>
-                    </ng-container>
                 
-                    <!-- Name Column -->
+                    <!-- CIS Column -->
                     <ng-container matColumnDef="cis_no">
                     <mat-header-cell *matHeaderCellDef> CIS Number </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.cis_no}} </mat-cell>
                     </ng-container>
                 
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="pn_no">
-                    <mat-header-cell *matHeaderCellDef> PN Number </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.pn_no}} </mat-cell>
+                    <!-- Loan/PN Column -->
+                    <ng-container matColumnDef="loan_no">
+                    <mat-header-cell *matHeaderCellDef>Loan/PN Number </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.loan_no}} </mat-cell>
                     </ng-container>
                 
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="borrower">
+                    <!-- Borrower Column -->
+                    <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef> Borrower </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.borrower}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                     </ng-container>
 
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="orig_loan">
+                    <!-- Original Loan Column -->
+                    <ng-container matColumnDef="principal">
                         <mat-header-cell *matHeaderCellDef> Original Loan </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.orig_loan}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.principal | number: '1.2-2'}} </mat-cell>
                     </ng-container>
 
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="O_blnc">
+                    <!-- Outstanding Balance Column -->
+                    <ng-container matColumnDef="principal_bal">
                         <mat-header-cell *matHeaderCellDef> Outstanding Balance </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.O_blnc}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
                     </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="loan_security">
+                      <mat-header-cell *matHeaderCellDef> Loan Security </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
+                      </ng-container>
 
                 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -125,19 +131,9 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td> <strong>SUB-TOTAL</strong> </td>
-                                                    <td>47,929,080.00</td>
-                                                    <td>31,020,692.30</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
                                                     <td> <strong>TOTAL RPT</strong> </td>
-                                                    <td>Php761,444,680.00</td>
-                                                    <td>Php572,833,738.74</td>
+                                                    <td>Php {{ttlRPTOL | number: '1.2-2'}}</td>
+                                                    <td>Php {{ttlRPTOB | number: '1.2-2'}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
