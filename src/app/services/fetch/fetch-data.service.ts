@@ -13,6 +13,7 @@
  * 901 - getAuditLogs                    => fetch Audit Logs Data
  * 112 - getStckHolders                  => fetch Stockholders
  * 902 - getUserList                     => fetch Users List
+ * 113 - getPNData                       => fetch PN Data
  */
 
 
@@ -344,7 +345,48 @@ getUserList(callback: (data: any) => void): void {
     },
   });
   }
+
+
+
   
+  getPNData(callback: (data: any) => void): void {
+    const settings = {
+      url: 'http://10.232.236.15:8092/api/dataTables',
+      method: 'POST',
+      timeout: 0,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      data: {
+        cmd: 113,
+        // userid: userid,
+      },
+    };
+    
+    this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+      next: (response: any) => {
+    
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          const PNData = response.result[0].Data;
+          
+          if (callback) {
+            callback(PNData);
+          }
+        } else {
+        
+          if (callback) {
+            callback(null);
+          }
+        }
+      },
+      error: (error) => {
+    
+        if (callback) {
+          callback(null);
+        }
+      },
+    });
+    }
 
 
   
