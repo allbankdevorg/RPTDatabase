@@ -29,6 +29,12 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 export class RPTSimulationModalComponent implements OnInit{
   rptSimulateForm: FormGroup;
   isReadOnly: boolean = true;
+  currentSttl: any;                 // => Current Sub total 
+  currentRptTTL: any;               // => Current Rpt Total
+  simulatedSttl: any;               // => Simulated Sub total
+  simulatedRptTTL: any;             // => Simulated Rpt Total
+  unimpairedCap: number = 1214764186.16;   //Unimpaired Capital
+  availBal: any;    // => Remaining Balance of Possible Loan Amount
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,45 +47,31 @@ export class RPTSimulationModalComponent implements OnInit{
     private get: FetchDataService) {
     this.rptSimulateForm = this.formBuilder.group({
       com_cis_number: ['', [Validators.required]],
-      com_account_name: ['', [Validators.required]],
+      com_account_name: [{value: '', disabled: true}, [Validators.required]],
       amount: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;
   }
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
-    // this.getParentCompany();//load dropdown Company list
-  // Attempt to patch the form
   this.rptSimulateForm.patchValue(this.data);
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.affForm.value);
-
+  this.updateTableData();
   }
 
 
   onSubmit() {
-    const moduleV = this.dataService.getmoduleV();
-
     if (this.rptSimulateForm.valid) {
-      const formData = this.rptSimulateForm.value;
-      // console.log(formData);
-      // Call the JavaScript function with form data
-      createAffil(formData, moduleV) // Pass the entire formData object
-      .then((response) => {
-        // Log the response when the promise is resolved
-          this.ngOnInit();
-          this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
-          this.close();
-      })
-      .catch((error) => {
-        // Handle errors when the promise is rejected
-        // console.error(error.result[0].status);
-        // Swal.fire('Error occurred', '', 'error');
-      });
-      
-      // console.log(createAffil());
+      this.ngOnInit();
+      const dataLookup = this.rptSimulateForm.value;
+  
+      // Convert the values to numbers using parseFloat or the unary + operator
+      const currentSttlValue = parseFloat(this.currentSttl) || 0;
+      const amountValue = parseFloat(dataLookup.amount) || 0;
+  
+      // Perform the addition
+      this.simulatedSttl = currentSttlValue + amountValue;
+      this.simulatedRptTTL = amountValue;
+      this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
   }
 
@@ -89,24 +81,48 @@ export class RPTSimulationModalComponent implements OnInit{
   }
 
 
+  get amountControl() {
+    return this.rptSimulateForm.get('amount');
+  }
+
   CISlookup() {
     const dataLookup = this.rptSimulateForm.value;
   
-    // console.log(dataLookup.aff_com_cis_number);
+    // Check if com_cis_number is present and not empty
     if (dataLookup.com_cis_number) {
-      let cis = dataLookup.aff_com_cis_number;
+      let cis = dataLookup.com_cis_number;
+  
       cisLookUP(cis)
         .then((response) => {
+  
           if (response.length > 0) {
-            // If the array is not empty, use the first element
+            // Use the first element of the response array
             let accName = response[0].name;
-            console.log("success")
+  
             // Update form controls with new values
             this.rptSimulateForm.patchValue({
-              com_account_name: accName,// Assuming you have company_name in the response
+              com_account_name: accName,
               // Add other form controls if needed
             });
+  
+            if (Array.isArray(response)) {
+              // Initialize sumPrincipal outside the loop
+              let sumPrincipal = { principal: 0, principal_bal: 0 };
+  
+              response.forEach((item) => {
+                // Calculate the sum for each item
+                sumPrincipal.principal += parseFloat(item.principal) || 0;
+                sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+              });
+  
+              // Assign the sum to the class variables
+              this.currentSttl = sumPrincipal.principal;
+              this.currentRptTTL = sumPrincipal.principal_bal;
+            } else {
+              console.error("Invalid resultData format");
+            }
           } else {
+            // Display an error message if no CIS is found
             Swal.fire({
               icon: 'error',
               title: 'No CIS Found!',
@@ -116,6 +132,7 @@ export class RPTSimulationModalComponent implements OnInit{
           }
         })
         .catch((error) => {
+          // Display an error message if an error occurs
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -125,6 +142,26 @@ export class RPTSimulationModalComponent implements OnInit{
         });
     }
   }
+
+
+  updateTableData(): void {
+    this.get.getPNData((PNData) => {
+      if (PNData) {
+        // Use reduce to calculate the sum of "principal" values
+        const sumPrincipal = PNData.reduce((acc, obj) => {
+          acc.principal += parseFloat(obj.principal) || 0;
+          acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+          return acc;
+        }, { principal: 0, principal_bal: 0 });
+
+        this.availBal = this.unimpairedCap - sumPrincipal.principal;
+        console.log(this.availBal);
+      } else {
+
+      }
+    });
+  }
+  
 
   toggleInputReadOnly() {
     this.isReadOnly = !this.isReadOnly;
