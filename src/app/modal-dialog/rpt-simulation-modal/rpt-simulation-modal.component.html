@@ -17,7 +17,7 @@
                 <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
                 type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
                 formControlName="com_cis_number" appNum>
-                <!-- <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
+                <mat-error *ngIf="rptSimulateForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             </mat-form-field>
         </c-col>
 
@@ -27,8 +27,8 @@
                 <!-- <mat-label>Account Name</mat-label> -->
                 <input matInput #accDinput id="accountName"  name="accountName"
                 type="text" placeholder="Account Name"
-                formControlName="com_account_name" appCaps>
-                <!-- <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
+                formControlName="com_account_name" appCaps [readonly]="isReadOnly">
+                <mat-error *ngIf="rptSimulateForm.get('com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>
@@ -43,34 +43,45 @@
                 <input matInput #accDinput id="amount" name="amount"
                 type="text" placeholder="Amount" 
                 formControlName="amount" appNum>
-                <!-- <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
+                <mat-error *ngIf="rptSimulateForm.get('amount')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>
 
         <c-container fluid class="px-0 my-2" >
             <c-row>
-                <c-col [sm]="5"></c-col>
-                <c-col [sm]="7">
+                <c-col [sm]="6">
                     <c-card>
+                        <c-card-header><h5>Current</h5>
+                        </c-card-header>
                         <c-card-body>
                             <div class="container">
-                                <c-row class="align-items-stretch h-100">
-                                    <c-col [sm]="6" class="border p-2">
-                                        <div><strong>SUB-TOTAL</strong></div>
-                                    </c-col>
-                                    <c-col [sm]="6" class="border p-2">
-                                        <div></div>
-                                    </c-col>
-                                </c-row>
-
-
                                 <c-row class="align-items-stretch h-100">
                                     <c-col [sm]="6" class="border p-2">
                                         <div><strong>TOTAL RPT</strong></div>
                                     </c-col>
                                     <c-col [sm]="6" class="border p-2">
-                                        <div></div>
+                                        <div>Php {{currentSttl | number: '1.2-2'}}</div>
+                                    </c-col>
+                                </c-row>
+                            </div>
+                        </c-card-body>
+                    </c-card>
+                </c-col>
+                <c-col [sm]="6">
+                    <c-card>
+                        <c-card-header><h5>Simulated</h5>
+                        </c-card-header>
+                        <c-card-body>
+                            <div class="container">
+                                <c-row class="align-items-stretch h-100">
+                                    <c-col [sm]="6" class="border p-2">
+                                        <div><strong>TOTAL RPT</strong></div>
+                                    </c-col>
+                                    <c-col [sm]="6" class="border p-2">
+                                        <div [ngClass]="{'green-text': simulatedRptTTL < availBal, 'red-text': simulatedRptTTL >= availBal}">
+                                            Php {{simulatedSttl | number: '1.2-2'}}
+                                        </div>
                                     </c-col>
                                 </c-row>
                             </div>
@@ -86,7 +97,11 @@
         
         <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!affForm.valid">{{data ? 'Update': 'Save'}}</button> -->
     
-        <button mat-raised-button color="primary" type="submit" >Simulate</button>
+        
+        <button mat-raised-button color="primary" *ngIf="simulatedRptTTL < availBal" [disabled]="!rptSimulateForm.valid">Submit</button>
+        <!-- Show the Simulate button if simulatedRptTTL is not greater than currentSttl -->
+        <button mat-raised-button color="accent" *ngIf="!(simulatedRptTTL < availBal)" type="submit" [disabled]="!rptSimulateForm.valid">Simulate</button>
+    
     </div>
 </form>
 
