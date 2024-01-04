@@ -8,9 +8,9 @@ import Swal from 'sweetalert2';
 // Functions Imports
 import {getManagingCompany} from '../../functions-files/getFunctions';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createAffil, cisLookUP} from '../../functions-files/add/postAPI.js'
+import {createAffil, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
-
+import {updateManagingCompany} from '../../functions-files/update/updateAPI'
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../model/audit-trail.model';
@@ -30,8 +30,10 @@ export class AffiliatesRPModalComponent implements OnInit{
 
   affForm: FormGroup;
   commandGroups: any[] = [];
+  cisLookUpResult: [] = [];
   compData: any = [];
   isReadOnly: boolean = true;
+
   
 
   constructor(
@@ -47,7 +49,9 @@ export class AffiliatesRPModalComponent implements OnInit{
       aff_com_cis_number: ['', [Validators.required]],
       aff_com_account_name: ['', [Validators.required]],
       aff_com_company_name: ['', [Validators.required]],
-      commandControl: ['']
+      managing_company: [''],
+      // commandControl: [''],
+      depoHoldOut: ['']
       });
       _dialogRef.disableClose = true;
   }
@@ -58,6 +62,8 @@ export class AffiliatesRPModalComponent implements OnInit{
     this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
+  
+  // console.log(commandGroup)
 
   // Log the form control values
   // console.log('Form controls after patching:', this.affForm.value);
@@ -69,28 +75,67 @@ export class AffiliatesRPModalComponent implements OnInit{
     const moduleV = this.dataService.getmoduleV();
 
     if (this.affForm.valid) {
-      const formData = this.affForm.value;
-      // console.log(formData);
-      // Call the JavaScript function with form data
-      createAffil(formData, moduleV) // Pass the entire formData object
-      .then((response) => {
-        // Log the response when the promise is resolved
-          this.ngOnInit();
-          this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
-          this.close();
-      })
-      .catch((error) => {
-        // Handle errors when the promise is rejected
-        // console.error(error.result[0].status);
-        // Swal.fire('Error occurred', '', 'error');
-      });
+      const formData = this.affForm.value; 
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
       
-      // console.log(createAffil());
+      if (this.data) {
+        
+        updateManagingCompany(formData)
+          .then((response) => {
+            this.ngOnInit();
+            this.logAction('Update', 'Updated Affiliates', true, 'Affiliates');
+            this.close();
+          })
+          .catch((error) => {
+
+          })
+      } else {
+      // Call the JavaScript function with form data
+          createAffil(formData, moduleV) // Pass the entire formData object
+          .then((response) => {
+            // Log the response when the promise is resolved
+              this.ngOnInit();
+              this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
+              this.close();
+
+
+              const resultData = this.cisLookUpResult;
+              console.log(resultData);
+              addPNData(resultData, session, userID)
+              .then((response) => {
+
+              })
+              .catch((error) => {
+
+              });
+          })
+          .catch((error) => {
+            if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+                  error.result[0].message === "CISNumber already define") {
+                this._dialogRef.close(true);
+                    // Handle other error conditions 
+                this.logAction('Add', 'Adding Company Failed. CIS Number is already Define', false, 'DRI');
+                
+              //   const resultData = this.cisLookUpResult;
+                
+              //   console.log(resultData);
+              //   addPNData(resultData, session, userID)
+              //   .then((response) => {
+
+              //   })
+              //   .catch((error) => {
+
+              //   });
+              } else {
+                // Handle other error conditions 
+                this.logAction('Add', 'Adding Company Failed', false, 'affiliates-related-companies');
+                // this._dialogRef.close(false);
+              }
+          });
+      }
     }
   }
-
-
-
 
 
 
@@ -139,12 +184,14 @@ export class AffiliatesRPModalComponent implements OnInit{
         .then((response) => {
           if (response.length > 0) {
             // If the array is not empty, use the first element
+            this.cisLookUpResult = response;
             let accName = response[0].name;
-  
+            console.log(response)
+            this.toggleInputReadOnly();
             // Update form controls with new values
             this.affForm.patchValue({
               aff_com_account_name: accName,
-              aff_com_company_name: accName // Assuming you have company_name in the response
+              aff_com_company_name: accName, // Assuming you have company_name in the response
               // Add other form controls if needed
             });
           } else {
@@ -174,7 +221,7 @@ export class AffiliatesRPModalComponent implements OnInit{
   getParentCompany() {
     this.get.getManagingCompany((mngComp) => {
       this.compData = mngComp;
-    this.commandGroups = []; // Clear the existing commandGroups
+      this.commandGroups = []; // Clear the existing commandGroups
     // console.log(this.compData);
 
       // if (mngComp) {
@@ -182,14 +229,15 @@ export class AffiliatesRPModalComponent implements OnInit{
         // console.log(data);
         data.forEach(item => {
           
-          console.log(item);
+          // console.log(item);
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
             value: item.aff_com_cis_number,
             viewValue: item.aff_com_company_name,
           };
-          console.log(commandGroup);
-
+          
+          
+          // this.manager = commandGroup;
           // Add the command group to the array
           this.commandGroups.push(commandGroup);
         });
