@@ -343,6 +343,8 @@ openAddEditEmpForm() {
 }
 
 openEditForm(data: any, event: any) {
+  
+  console.log(data);
   event.stopPropagation();
   // console.log(data);
   const dialogRef = this._dialog.open(AffiliatesRPModalComponent, {
@@ -352,8 +354,7 @@ openEditForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
-        // console.log("Successs");
+        this.ngOnInit();
       }
     },
   });
