@@ -1,11 +1,14 @@
 .mat-mdc-table {
-    width: 100%;
+    
+    min-width: 2000px;
+    max-width:max-content;
     max-height: 500px;
     overflow: auto;
   }
+
   
   .mat-column-name {
-    height: 50px;
+    height: 100px;
   }
 
 
