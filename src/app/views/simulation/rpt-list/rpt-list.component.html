@@ -49,7 +49,7 @@
                                     <tr>
                                       <td><p class="color-blue">Available Balance</p></td>
                                       <td><p class="color-blue">Php {{availBal | number: '1.2-2'}}</p></td>
-                                      <td><p class="color-blue">{{availRptRatio}}%</p></td>
+                                      <td><p class="color-blue">{{availRptRatio}}</p></td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -71,7 +71,7 @@
                       
                     
 
-                    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <mat-table cTable [responsive]="true" [dataSource]="dataSource" class="mat-elevation-z8 pnTable">
                 
                     <!-- CIS Column -->
                     <ng-container matColumnDef="cis_no">
@@ -107,7 +107,44 @@
                     <ng-container matColumnDef="loan_security">
                       <mat-header-cell *matHeaderCellDef> Loan Security </mat-header-cell>
                       <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
-                      </ng-container>
+                    </ng-container>
+
+
+                     <!-- Position Column -->
+                     <ng-container matColumnDef="DepositHO">
+                      <mat-header-cell *matHeaderCellDef> Deposit Hold-out </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.DepositHO}} </mat-cell>
+                    </ng-container>
+
+                     <!-- Position Column -->
+                     <ng-container matColumnDef="netBal">
+                      <mat-header-cell *matHeaderCellDef> Net Balance </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.netBal}} </mat-cell>
+                    </ng-container>
+
+                     <!-- Position Column -->
+                     <ng-container matColumnDef="tran_date">
+                      <mat-header-cell *matHeaderCellDef> Transaction Date </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.tran_date}} </mat-cell>
+                    </ng-container>
+
+                     <!-- Position Column -->
+                     <ng-container matColumnDef="terms">
+                      <mat-header-cell *matHeaderCellDef> Term(mos) </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.terms}} </mat-cell>
+                    </ng-container>
+
+                     <!-- Position Column -->
+                     <ng-container matColumnDef="purpose">
+                      <mat-header-cell *matHeaderCellDef> Purpose </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.purpose}} </mat-cell>
+                    </ng-container>
+
+                     <!-- Position Column -->
+                     <ng-container matColumnDef="intRate">
+                      <mat-header-cell *matHeaderCellDef> Int. Rate </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.intRate}} </mat-cell>
+                    </ng-container>
 
                 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
