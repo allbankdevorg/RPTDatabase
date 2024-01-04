@@ -5,7 +5,7 @@ import { CoreService } from '../../services/core/core.service';
 // import { EmployeeService } from '../services/employee.service';
 
 // Functions Imports
-import {createDosri, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
+import {createDosri, cisLookUP} from '../../functions-files/add/postAPI.js'
 
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
@@ -83,37 +83,14 @@ export class DosriModalComponent implements OnInit {
 
           const resultData = this.cisLookUpResult;
 
-          addPNData(resultData, session, userID)
-          .then((response) => {
-
-          })
-          .catch((error) => {
-
-          });
-
+          
         })
         .catch((error) => {
           // Handle errors when the promise is rejected
           
           // Check if the error message is "CISNumber already define"
-          if (error && error.result && error.result[0] && error.result[0].status === "error" &&
-              error.result[0].message === "CISNumber already define") {
-            this._dialogRef.close(true);
-
-            const resultData = this.cisLookUpResult;
-            addPNData(resultData, session, userID)
-            .then((response) => {
-  
-            })
-            .catch((error) => {
-  
-            });
-          } else {
-            // Handle other error conditions 
-            this.logAction('Add', 'Adding Company Failed', false, 'DRI');
-            // this._dialogRef.close(false);
-          }
-  
+         
+          this.logAction('Add', 'Adding Company Failed', false, 'DRI');
          
           // Swal.fire('Error occurred', '', 'error');
         });
