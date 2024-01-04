@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 // Functions Imports
 import {getManagingCompany} from '../../functions-files/getFunctions';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createAffil, cisLookUP} from '../../functions-files/add/postAPI.js'
+import {createAffil, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
@@ -31,7 +31,7 @@ export class OtherRPModalComponent implements OnInit {
   commandGroups: any[] = [];
   compData: any = [];
   isReadOnly: boolean = true;
-
+  cisLookUpResult: [] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,7 +46,8 @@ export class OtherRPModalComponent implements OnInit {
       aff_com_cis_number: ['', [Validators.required]],
       aff_com_account_name: ['', [Validators.required]],
       aff_com_company_name: ['', [Validators.required]],
-      commandControl: ['']
+      commandControl: [''],
+      depoHoldOut: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;
   }
@@ -70,21 +71,55 @@ export class OtherRPModalComponent implements OnInit {
 
     if (this.affForm.valid) {
       const formData = this.affForm.value;
-      // console.log(formData);
-      // Call the JavaScript function with form data
-      createAffil(formData, moduleV) // Pass the entire formData object
-      .then((response) => {
-        // Log the response when the promise is resolved
-          this.ngOnInit();
-          this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
-          this.close();
-      })
-      .catch((error) => {
-        // Handle errors when the promise is rejected
-        // console.error(error.result[0].status);
-        // Swal.fire('Error occurred', '', 'error');
-      });
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
       
+      if (this.data) {
+        console.log(this.data);
+      } else {
+            createAffil(formData, moduleV) // Pass the entire formData object
+            .then((response) => {
+              // Log the response when the promise is resolved
+                this.ngOnInit();
+                this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
+                this.close();
+      
+                const resultData = this.cisLookUpResult;
+                
+                addPNData(resultData, session, userID)
+                .then((response) => {
+      
+                })
+                .catch((error) => {
+      
+                });
+            })
+            .catch((error) => {
+              if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+                    error.result[0].message === "CISNumber already define") {
+                  this._dialogRef.close(true);
+                      // Handle other error conditions 
+                  this.logAction('Add', 'Adding Company Failed. CIS Number is already Define', false, 'DRI');
+                  
+                //   const resultData = this.cisLookUpResult;
+                  
+                // console.log(resultData);
+                //   addPNData(resultData, session, userID)
+                //   .then((response) => {
+      
+                //   })
+                //   .catch((error) => {
+      
+                //   });
+                } else {
+                  // Handle other error conditions 
+                  this.logAction('Add', 'Adding Company Failed', false, 'affiliates-related-companies');
+                  // this._dialogRef.close(false);
+                }
+            });
+      }
+      // Call the JavaScript function with form data
+     
       // console.log(createAffil());
     }
   }
@@ -97,6 +132,7 @@ export class OtherRPModalComponent implements OnInit {
   onFormSubmit() {
     if (this.affForm.valid) {
       const formData = this.affForm.value;
+
 
       if (this.data) {
         this._dosriService
@@ -139,6 +175,7 @@ export class OtherRPModalComponent implements OnInit {
         .then((response) => {
           if (response.length > 0) {
             // If the array is not empty, use the first element
+            this.cisLookUpResult = response;
             let accName = response[0].name;
   
             // Update form controls with new values
@@ -182,7 +219,6 @@ export class OtherRPModalComponent implements OnInit {
         const data = OtherComp;
         
         data.forEach(item => {
-          console.log(item);
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
             value: item.aff_com_cis_number,
