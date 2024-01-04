@@ -24,7 +24,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../../model/audit-trail.model';
 import { OtherRPModalComponent } from 'src/app/modal-dialog/other-rpmodal/other-rpmodal.component';
-
+import {UpdateJMNComponent} from '../../../modal-dialog/update-jmn/update-jmn.component'
 
 
 declare var google: any;
@@ -95,6 +95,8 @@ export class OtherRelatedPartiesComponent {
   // private orgData:any;
 
 
+  selectedData: any
+
   constructor(private router: Router,
     public _dialog: MatDialog,
     private dataService: AffiliatesService,
@@ -127,6 +129,8 @@ export class OtherRelatedPartiesComponent {
     var data = new google.visualization.DataTable();
       data.addColumn('string', 'Name');
       data.addColumn('string', 'Manager');
+      data.addColumn('string', 'Name_cis');
+      data.addColumn('string', 'managerCIS');
 
       data.addRows(this.orgsData);
       var options = {
@@ -188,9 +192,12 @@ export class OtherRelatedPartiesComponent {
         if (OtherComp) {
           OtherComp.forEach((item) => {
             // Create a new object with the desired structure and add it to dataArr
-            dataArr.push([ item.aff_com_account_name,
-              item.manager,]
-            );
+            dataArr.push([ 
+              item.aff_com_account_name, 
+              item.manager, 
+              item.aff_com_cis_number, 
+              item.managing_company]);
+
           this.orgsData = dataArr;
           google.charts.load('current', { packages: ['orgchart'] });
           google.charts.setOnLoadCallback(() => this.drawChart());
@@ -230,6 +237,14 @@ export class OtherRelatedPartiesComponent {
   
 
   updateNodeDetails(selectedItem) {
+    const transformedData = {
+      aff_com_comp_name: selectedItem[0],
+      manager: selectedItem[1],
+      aff_com_cis_number: selectedItem[2],
+      managing_company: selectedItem[3] 
+  };
+    
+    this.selectedData = transformedData;
     if (event instanceof MouseEvent) {
       const nodeName = selectedItem[0];
       const nodeManager = selectedItem[1];
@@ -311,18 +326,18 @@ openAddEditEmpForm() {
   });
 }
 
-openEditForm(data: any, event: any) {
+openEditForm(event: any) {
+  const data = this.selectedData
   event.stopPropagation();
-  // console.log(data);
-  const dialogRef = this._dialog.open(OtherRPModalComponent, {
+  console.log(data);
+  const dialogRef = this._dialog.open(UpdateJMNComponent, {
     data,    
   });
 
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
-        // console.log("Successs");
+        this.ngOnInit();
       }
     },
   });
