@@ -30,7 +30,7 @@ import {AuditTrail} from '../../../model/audit-trail.model';
 // For Modals
 import { AffiliatesRPModalComponent } from 'src/app/modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-
+import {UpdateManagingCompanyModalComponent} from 'src/app/modal-dialog/update-managing-company-modal/update-managing-company-modal.component'
 
 declare var google: any;
 export interface Child {
@@ -119,6 +119,8 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   private chart: any;
   private isNodeDetailsVisible: boolean = false
   
+  
+  selectedData: any
 
 
   // private orgData:any;
@@ -155,6 +157,8 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     var data = new google.visualization.DataTable();
       data.addColumn('string', 'Name');
       data.addColumn('string', 'Manager');
+      data.addColumn('string', 'Name_cis');
+      data.addColumn('string', 'managerCIS');
 
       data.addRows(dataArr);
       var options = {
@@ -174,6 +178,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
         // Check if the time since the last click is less than 300 milliseconds (double-click)
         if (Date.now() - lastClickTime < 300) {
           this.showModal();
+
           // $('#actionModal').modal('show'); // Show the modal dialog on double-click
         } else {
           const selectedItem = this.orgsDataService.orgsData[chart.getSelection()[0].row];
@@ -216,7 +221,12 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
         // if (mngComp) {
           try {
             // Assuming getManagingCompany returns an array
-            this.orgsDataService.orgsData = mngComp.map(item => [item.aff_com_account_name, item.manager]);
+            
+            this.orgsDataService.orgsData = mngComp.map(item => [
+              item.aff_com_account_name, 
+              item.manager, 
+              item.aff_com_cis_number, 
+              item.managing_company]);
     
             // Update the orgsData in the orgsDataService
             google.charts.load('current', { packages: ['orgchart'] });
@@ -238,6 +248,14 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   
 
   updateNodeDetails(selectedItem) {
+    const transformedData = {
+      aff_com_comp_name: selectedItem[0],
+      manager: selectedItem[1],
+      aff_com_cis_number: selectedItem[2],
+      managing_company: selectedItem[3] 
+  };
+    
+    this.selectedData = transformedData;
     if (event instanceof MouseEvent) {
       const nodeName = selectedItem[0];
       const nodeManager = selectedItem[1];
@@ -320,18 +338,18 @@ openAddEditEmpForm() {
   });
 }
 
-openEditForm(data: any, event: any) {
+openEditForm(event: any) {
+  const data = this.selectedData
   event.stopPropagation();
   // console.log(data);
-  const dialogRef = this._dialog.open(AffiliatesRPModalComponent, {
+  const dialogRef = this._dialog.open(UpdateManagingCompanyModalComponent, {
     data,    
   });
 
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
-        // console.log("Successs");
+        this.ngOnInit();
       }
     },
   });
