@@ -269,6 +269,7 @@ function createAffil(formData, moduleV, session, userID) {
             "account_name": formData.aff_com_account_name,
             "company_name": formData.aff_com_company_name,
             "manager": formData.commandControl,
+            "depositholdout": formData.depoHoldOut,
             "module": moduleV,
           }
         }),
@@ -740,7 +741,7 @@ function userAccess(userid) {
 function addPNData(resultData, session, userID) {
     
   return new Promise((resolve, reject) => {
-    // console.log(formData)
+    // console.log(resultData)
 
     if (Array.isArray(resultData)) {
       const totalItems = resultData.length;
