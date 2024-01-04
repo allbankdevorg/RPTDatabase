@@ -50,7 +50,7 @@
               <c-col [sm]="6">
                 <label cLabel="col" for="MngComp">Parent Company</label>
                 <mat-form-field appearance="fill" [style.width.%]="100">
-                  <mat-select formControlName="commandControl" placeholder="Managing Company" >
+                  <mat-select formControlName="managing_company" placeholder="Managing Company" id="MngComp" name="MngComp">
                     <mat-option id="MngComp">-- None --</mat-option>
                     <mat-option *ngFor="let group of commandGroups" [value]="group.value">
                       {{ group.viewValue }}
@@ -58,6 +58,21 @@
                   </mat-select>
                 </mat-form-field>
               </c-col>
+          </c-row>
+
+
+          <c-row class="align-items-center">
+            <c-col [sm]="12">
+                <label cLabel="col" for="depoHoldOut">Deposit Hold-Out</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                  <!-- <mat-label>Company Name</mat-label> -->
+                  <input matInput #accDinput id="depoHoldOut" name="depoHoldOut"
+                  type="text" placeholder="Deposit Hold-Out" 
+                  formControlName="depoHoldOut" appNum>
+                  <mat-error *ngIf="affForm.get('depoHoldOut')?.hasError('required')" class="error-msg">Deposit Hold-Out Amount is required</mat-error>
+                </mat-form-field>
+              </c-col>
+      
           </c-row>
         </c-modal-body>
     </div>
