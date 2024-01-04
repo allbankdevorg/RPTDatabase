@@ -69,9 +69,9 @@
                 <button mat-icon-button (click)="onRowClick(row, $event)" aria-label="View Users Info" *appHasPermission="'view'">
                   <mat-icon>visibility</mat-icon>
                 </button>
-                <button mat-icon-button (click)="openEditForm(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
+                <!-- <button mat-icon-button (click)="openEditForm(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
                   <mat-icon>create</mat-icon>
-                </button>
+                </button> -->
                 <button mat-icon-button color="warn" (click)="delAffiliates(row, row.aff_com_cis_number, $event)" aria-label="Delete Users" *appHasPermission="'delete'">
                   <mat-icon>delete</mat-icon>
                 </button>
