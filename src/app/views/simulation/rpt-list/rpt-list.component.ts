@@ -38,7 +38,8 @@ export class RptListComponent {
   availRptRatio: any;
   approvedCapital: any;        // => the Loan approved Limit
   
-  displayedColumns: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security'];
+  displayedColumns: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security', 
+  'DepositHO', 'netBal', 'tran_date', 'terms', 'purpose', 'intRate'];
   dataSource = new MatTableDataSource<any>([]);
   ToDisplay: string[] = [];
 
@@ -55,7 +56,7 @@ export class RptListComponent {
     }, { principal: 0, principal_bal: 0 });
   
     this.rptBal = sumPrincipal.principal;
-    const percentage = parseFloat(((sumPrincipal.principal / 1214764186.16) * 100).toFixed(2));
+    const percentage = `${(sumPrincipal.principal / 1214764186.16 * 100).toFixed(2)}%`;
     this.rptRatio = percentage;
     this.subtlOL = sumPrincipal.principal;
     this.subtlOB = sumPrincipal.principal_bal;
@@ -85,15 +86,16 @@ export class RptListComponent {
         }, { principal: 0, principal_bal: 0 });
 
         this.rptBal = sumPrincipal.principal;
-        const percentage = Math.round((sumPrincipal.principal / 1214764186.16) * 100);
+        const percentage = `${((sumPrincipal.principal / 1214764186.16) * 100).toFixed(2)}`;
         this.rptRatio = percentage;
         this.subtlOL = sumPrincipal.principal;
         this.subtlOB = sumPrincipal.principal_bal;
         this.ttlRPTOL = sumPrincipal.principal;
         this.ttlRPTOB = sumPrincipal.principal_bal;
         this.dataSource.data = PNData;
-        this.availRptRatio = this.definedRptRatio - percentage;
-        this.approvedCapital = this.unimpairedCap * .5;
+        this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+        this.approvedCapital = this.unimpairedCap * 0.5;
+        
         
         this.availBal = this.approvedCapital - sumPrincipal.principal;
       } else {
