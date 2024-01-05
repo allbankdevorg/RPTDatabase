@@ -25,7 +25,7 @@
                                 <table [responsive]="true" [cBorder]="1" cTable bordered>
                                   <thead cTableColor="success">
                                     <tr>
-                                      <th scope="col">Unimpaired Capital (as of November 30, 2023)</th>
+                                      <th scope="col">Unimpaired Capital</th>
                                       <th scope="col">RPT Balance (Net of Hold-out)</th>
                                       <th scope="col">RPT Ratio</th>
                                     </tr>
@@ -34,7 +34,7 @@
                                     <tr>
                                       <td>1,214,764,186.16</td>
                                       <td>Php {{rptBal | number: '1.2-2'}}</td>
-                                      <td>{{rptRatio}}%</td>
+                                      <td>{{rptRatio}}</td>
                                     </tr>
                                     <tr>
                                       <td></td>
@@ -61,7 +61,7 @@
                               <input matInput #filterInput (input)="applyFilter(filterInput.value)" placeholder="Search">
                                   <mat-icon matSuffix>search</mat-icon>
                             </mat-form-field>
-                            </c-col>
+                          </c-col>
                         </c-row>
                         <!-- </c-col> -->
                         <!-- </c-row> -->
