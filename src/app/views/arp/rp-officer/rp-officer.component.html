@@ -7,10 +7,18 @@
             <h2>Other Related Party Officers</h2>
           </c-card-header>
           <c-card-body>
-            <c-container fluid class="mt-3">
+
+            <c-container class="mt-2">
+              <mat-form-field [style.width.%]=100>
+                <input matInput #filterInput (input)="applyFilter(['aff_com_cis_number', 'aff_com_company_name'], filterInput.value)" placeholder="Search">
+                    <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </c-container>
+
+            <c-container fluid>
               <table cTable [responsive]="true" mat-table
               [dataSource]="dataSource" multiTemplateDataRows
-              class="mat-elevation-z8 DRI-table">
+              class="mat-elevation-z8 DRI-table" matSort>
   
               <ng-container matColumnDef="expand">
                 <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
@@ -105,7 +113,7 @@
                       </ng-container>
   
                       <tr class="mat-row" *matNoDataRow class="cTableRow2">
-                        <td class="mat-cell text-center" colspan="7">No Data Available</td>
+                        <td class="mat-cell text-center" colspan="8">No Data Available</td>
                       </tr>
                       
                       <tr mat-header-row  *matHeaderRowDef="DdisplayedColumns" class="cTableCol2"></tr>

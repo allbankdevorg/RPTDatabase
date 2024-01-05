@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { MatSort } from '@angular/material/sort';
 
 import { Injectable } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations'
@@ -141,11 +142,41 @@ export class RpOfficerComponent implements AfterViewInit {
 
   @ViewChild('editAffilModal') editAffilModal!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+
+    this.dataSource.sort = this.sort;
+
+    this.sort.sort({
+      id: 'date_inserted',
+      start: 'desc',
+      disableClear: false
+    });
   }
 
+
+  applyFilter(column: string[], filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+  
+    // Define a custom filter predicate
+  const customFilter = (data: any): boolean => {
+    for (const column of this.columnsToDisplay) {
+      const columnValue = data[column]?.toString().toLowerCase();
+      if (columnValue && columnValue.includes(filterValue)) {
+        return true; // If any of the specified columns match, return true
+      }
+    }
+    return false; // If no match is found in any column, return false
+  };
+
+  // Set the custom filter predicate for the specified columns
+  this.dataSource.filterPredicate = customFilter;
+
+  // Apply the filter
+  this.dataSource.filter = filterValue;
+  }
 
   constructor(private router: Router,
           public _dialog: MatDialog,
