@@ -6,8 +6,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations'
 
 // service
 // import { SessionTimeoutService } from '../../../services/useridle/session-timeout.service';
-import {AuthSessionService} from '../../../services/authentication/auth-session.service'
-
+import {AuthSessionService} from '../../../services/authentication/auth-session.service';
+import {EditUserAccessService} from '../../../services/editUserAccess/edit-user-access.service';
 // Imports for Functions
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../../functions-files/delFunctions'
 
@@ -99,7 +99,7 @@ export class UsersComponent {
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: Users | null = null;
 
-  DdisplayedColumns: string[] = ['nav_id', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
+  DdisplayedColumns: string[] = ['navigation_name', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
   permissionDataSource = new MatTableDataSource<Permissions>();
 
   // userDataSource = new MatTableDataSource();
@@ -121,6 +121,7 @@ export class UsersComponent {
   constructor(private formBuilder: FormBuilder,
     public _dialog: MatDialog,
     private authService: AuthSessionService,
+    private userAccessService: EditUserAccessService,
     private renderer: Renderer2,
     private el: ElementRef,
     private get: FetchDataService,
@@ -167,7 +168,6 @@ export class UsersComponent {
     this.get.getUserList((usersList) => {
       if (usersList) {
         this.userDataSource.data = usersList;
-        console.log(usersList);
       } else {
         console.error('No Users received');
       }
@@ -177,12 +177,9 @@ export class UsersComponent {
 
   getUserAccess(row): void {
     const userid = row.username
-    console.log(userid);
     userAccess(userid) // Pass the entire formData object
       .then((response) => {
-        console.log(response);
         this.permissionDataSource.data = response.result[0].user_access;
-        console.log(this.permissionDataSource.data);
         const userPerm = response.result[0].user_access
       })
       .catch((error) => {
@@ -191,6 +188,10 @@ export class UsersComponent {
   }
   
 
+  setUserID(row) {
+    let userID = row.username
+    this.userAccessService.setUserID(userID);
+  }
 
  
 
@@ -299,7 +300,6 @@ openViewUserModal(data: any, event: any) {
 }
 
 openEditForm(data: any, event: any) {
-  console.log(data);
   event.stopPropagation();
   // console.log(data);
   const dialogRef = this._dialog.open(UsersModalComponent, {
