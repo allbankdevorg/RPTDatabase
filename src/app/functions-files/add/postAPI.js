@@ -268,7 +268,7 @@ function createAffil(formData, moduleV, session, userID) {
             "cis_number": formData.aff_com_cis_number,
             "account_name": formData.aff_com_account_name,
             "company_name": formData.aff_com_company_name,
-            "manager": formData.commandControl,
+            "manager": formData.managing_company,
             "depositholdout": formData.depoHoldOut,
             "module": moduleV,
           }
@@ -340,6 +340,7 @@ function createAffilDir(directData, comp_CIS, session, userID) {
 */
 function createAffilOff(offData, comp_CIS, session, userID) {
   return new Promise((resolve, reject) => {
+    console.log(offData);
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -720,9 +721,7 @@ function userAccess(userid) {
     };
     
     $.ajax(settings).done(function (response) {
-      console.log(response.result[0].message);
       if (response.result[0].message === 'Success') {
-        console.log(response);
         resolve(response);
       } else {
         reject(response);
