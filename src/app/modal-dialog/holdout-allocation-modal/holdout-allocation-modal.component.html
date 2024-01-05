@@ -1,0 +1,33 @@
+<!-- ADD Affiliates FORM -->
+<div mat-dialog-title>
+    <c-modal-header>
+        <h3 cModalTitle>Allocate Hold-Out</h3>
+    </c-modal-header>
+</div>
+<form cForm class="mb-2" [formGroup]="hldOTForm" (ngSubmit)="onSubmit()">    
+    <div mat-dialog-content class="content">
+        <!-- Modal Form -->
+        <c-modal-body>
+          <c-row class="align-items-center">
+             <!-- CIS Number Input -->
+             <c-col [sm]="12">
+                <label cLabel="col" for="holdOutVal">Hold-Out Amount</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                  <!-- <mat-label>CIS Number</mat-label> -->
+                  <input matInput #accDinput id="holdOutVal" name="holdOutVal"
+                  type="text" placeholder="Amount" 
+                  formControlName="holdOut_Val" appNum>
+                  <mat-error *ngIf="hldOTForm.get('hldOTForm')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                </mat-form-field>
+            </c-col>
+          </c-row>
+        </c-modal-body>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+        <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+        
+        <button mat-raised-button color="primary" type="submit" [disabled]="!hldOTForm.valid">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form>
+
