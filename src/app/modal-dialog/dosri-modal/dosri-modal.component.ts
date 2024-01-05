@@ -80,17 +80,22 @@ export class DosriModalComponent implements OnInit {
           this.ngOnInit();
           this.logAction('Add', 'Added Company', true, 'DRI');
           this.close();
-
-          const resultData = this.cisLookUpResult;
-
           
         })
         .catch((error) => {
-          // Handle errors when the promise is rejected
-          
-          // Check if the error message is "CISNumber already define"
+          if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+                  error.result[0].message === "CISNumber already define") {
+                this._dialogRef.close(true);
+                    // Handle other error conditions 
+                this.logAction('Add', 'Adding DOSRI Company Failed. CIS Number is already Define', false, 'DRI');
+             
+              } else {
+                // Handle other error conditions 
+                this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
+                // this._dialogRef.close(false);
+              }
          
-          this.logAction('Add', 'Adding Company Failed', false, 'DRI');
+          this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
          
           // Swal.fire('Error occurred', '', 'error');
         });
