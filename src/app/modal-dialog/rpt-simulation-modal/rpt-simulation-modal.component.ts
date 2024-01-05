@@ -154,7 +154,7 @@ export class RPTSimulationModalComponent implements OnInit{
           return acc;
         }, { principal: 0, principal_bal: 0 });
 
-        this.availBal = this.unimpairedCap - sumPrincipal.principal;
+        this.availBal = this.unimpairedCap - sumPrincipal.principal_bal;
         console.log(this.availBal);
       } else {
 
