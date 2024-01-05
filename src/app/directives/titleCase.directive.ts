@@ -48,6 +48,11 @@ export class TitleCaseDirective implements ControlValueAccessor {
   }
 
   private toTitleCase(input: string): string {
-    return input.toLowerCase().replace(/\b\w/g, (word) => word.toUpperCase());
+    return input.replace(/\b\w/gu, (char, index) => {
+      // Check if the current character is preceded by a space
+      const isAfterSpace = index === 0 || /\s/.test(input[index - 1]);
+      return isAfterSpace ? char.toUpperCase() : char;
+    });
   }
+  
 }
