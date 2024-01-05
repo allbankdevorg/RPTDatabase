@@ -15,7 +15,7 @@
                 aria-describedby="passwordHelpInline-3" matInput
                 id="affildcisNumber" name="affildcisNumber"
                 placeholder="CIS Number"
-                type="text" formControlName="affildcisNumber" appNum>
+                type="text" formControlName="affildcisNumber" (keyup.enter)="CISlookup()" appNum>
                 <mat-error *ngIf="affilOfficerForm.get('affildcisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               </mat-form-field>
 
@@ -32,7 +32,7 @@
           aria-describedby="passwordHelpInline-3" matInput
           id="affildFirstName" name="affildFirstName"
           placeholder="First Name"
-          type="text" formControlName="affildFirstName" appTitleCase>
+          type="text" formControlName="affildFirstName" [readonly]="isReadOnly" appTitleCase>
           <mat-error *ngIf="affilOfficerForm.get('affildFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
         </mat-form-field>
       </c-col>
@@ -44,7 +44,7 @@
                 aria-describedby="passwordHelpInline-3" matInput
                 id="affildMiddleName" name="affildMiddleName"
                 placeholder="Middle Name"
-                type="text" formControlName="affildMiddleName" appTitleCase>
+                type="text" formControlName="affildMiddleName" [readonly]="isReadOnly" appTitleCase>
             </mat-form-field>
         </c-col>
     </c-row>
@@ -58,7 +58,7 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="affildLastName" name="affildLastName"
               placeholder="Last Name"
-              type="text" formControlName="affildLastName" appTitleCase>
+              type="text" formControlName="affildLastName" [readonly]="isReadOnly" appTitleCase>
               <mat-error *ngIf="affilOfficerForm.get('affildLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
             </mat-form-field>
         </c-col>
@@ -70,7 +70,7 @@
               matInput
               id="affildPosition" name="affildPosition"
               placeholder="Position"
-              type="text" formControlName="affildPosition" appTitleCase>
+              type="text" formControlName="affildPosition" [readonly]="isReadOnly" appTitleCase>
               <mat-error *ngIf="affilOfficerForm.get('affildPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
             </mat-form-field>
           </c-col>
