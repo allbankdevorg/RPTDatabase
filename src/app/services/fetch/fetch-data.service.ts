@@ -14,6 +14,7 @@
  * 112 - getStckHolders                  => fetch Stockholders
  * 902 - getUserList                     => fetch Users List
  * 113 - getPNData                       => fetch PN Data
+ * 113 - getSBL                          => fetch PN Data
  */
 
 
@@ -389,6 +390,45 @@ getUserList(callback: (data: any) => void): void {
     }
 
 
+  
+    getSBL(callback: (data: any) => void): void {
+      const settings = {
+        url: 'http://10.232.236.15:8092/api/dataTables',
+        method: 'POST',
+        timeout: 0,
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        data: {
+          cmd: 114,
+          // userid: userid,
+        },
+      };
+      
+      this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+        next: (response: any) => {
+      
+          if (response && response.result && response.result.length > 0 && response.result) {
+            const sblData = response.result;
+            
+            if (callback) {
+              callback(sblData);
+            }
+          } else {
+          
+            if (callback) {
+              callback(null);
+            }
+          }
+        },
+        error: (error) => {
+      
+          if (callback) {
+            callback(null);
+          }
+        },
+      });
+      }
   
 
 
