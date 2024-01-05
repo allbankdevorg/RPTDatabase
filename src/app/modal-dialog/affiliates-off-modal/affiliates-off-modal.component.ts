@@ -5,9 +5,11 @@ import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilde
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+
 
 // Imports for Functions
-import {createAffilOff} from '../../functions-files/add/postAPI';
+import {createAffilOff, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 import {createRelatedInterest} from '../../functions-files/add/postAPI';
 
 // Audit Trail
@@ -27,6 +29,8 @@ import {AffiliatesService} from '../../services/affiliates/affiliates.service'; 
 export class AffiliatesOffModalComponent implements OnInit {
   
   affilOfficerForm: FormGroup;
+  cisLookUpResult: [] = [];
+  isReadOnly: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -62,19 +66,39 @@ export class AffiliatesOffModalComponent implements OnInit {
         const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
         const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
         const comp_CIS = this.dataService.getCompCIS();
-    
+        
+        console.log(comp_CIS);
         // Call the JavaScript function with form data
         createAffilOff(offData, comp_CIS, session, userID) // Pass the entire formData object
         .then((response) => {
-        
+          console.log(response);
           this.logAction('Add', 'Successfuly Added Affiliates Officers', true, 'rpofficer-ri');
           this.close();
+
+          const resultData = this.cisLookUpResult;
+          addPNData(resultData, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
           // this.updateTableData();
         })
         .catch((error) => {
-          this.logAction('Add', 'Failed Adding Related Interest', false, 'directorsrelated');
-          // this.updateTableData();
-          // console.log(this.dataSource);
+          console.log(error)
+          if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+                  error.result[0].message === "Officer CISNumber already defined") {
+                this._dialogRef.close(true);
+                    // Handle other error conditions 
+                  this.logAction('Add', 'Failed Adding Related Interest', false, 'rpofficer-ri/:id');
+         
+               
+              } else {
+                // Handle other error conditions 
+                this.logAction('Add', 'Failed Adding Related Interest', false, 'rpofficer-ri/:id');
+                 // this._dialogRef.close(false);
+              }
         });
   
       }
@@ -94,6 +118,55 @@ export class AffiliatesOffModalComponent implements OnInit {
     }
     
     
+    CISlookup() {
+      const dataLookup = this.affilOfficerForm.value;
+      console.log(dataLookup);
+      // console.log(dataLookup.aff_com_cis_number);
+      if (dataLookup.affildcisNumber) {
+        let cis = dataLookup.affildcisNumber;
+        cisLookUP(cis)
+          .then((response) => {
+            if (response.length > 0) {
+              // If the array is not empty, use the first element
+              console.log(response);
+              this.cisLookUpResult = response;
+              let accName = response[0].name;
+              Swal.fire({
+                icon: 'success',
+                title: 'CIS Found!',
+                text: 'CIS has Related Loan Found',
+              });
+              this.toggleInputReadOnly();
+              // Update form controls with new values
+              this.affilOfficerForm.patchValue({
+                aff_com_account_name: accName,
+                aff_com_company_name: accName, // Assuming you have company_name in the response
+                // Add other form controls if needed
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'No CIS Found!',
+                text: 'Please Enter the Account and Company Name',
+              });
+              this.toggleInputReadOnly();
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'An error occurred while fetching data.',
+            });
+            this.toggleInputReadOnly();
+          });
+      }
+    }
+
+
+    toggleInputReadOnly() {
+      this.isReadOnly = !this.isReadOnly;
+    }
     
      // Start of Functions for Audit Trail
     logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
