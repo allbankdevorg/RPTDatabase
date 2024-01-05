@@ -50,7 +50,7 @@
               <c-col [sm]="6">
                 <label cLabel="col" for="MngComp">Parent Company</label>
                 <mat-form-field appearance="fill" [style.width.%]="100">
-                  <mat-select formControlName="commandControl" placeholder="Managing Company">
+                  <mat-select formControlName="managing_company" placeholder="Managing Company">
                     <mat-option id="MngComp">-- None --</mat-option>
                     <mat-option *ngFor="let group of commandGroups" [value]="group.value">
                       {{ group.viewValue }}

@@ -46,8 +46,8 @@ export class OtherRPModalComponent implements OnInit {
       aff_com_cis_number: ['', [Validators.required]],
       aff_com_account_name: ['', [Validators.required]],
       aff_com_company_name: ['', [Validators.required]],
-      commandControl: [''],
-      depoHoldOut: ['', [Validators.required]]
+      managing_company: [''],
+      depoHoldOut: ['']
       });
       _dialogRef.disableClose = true;
   }
@@ -100,17 +100,7 @@ export class OtherRPModalComponent implements OnInit {
                   this._dialogRef.close(true);
                       // Handle other error conditions 
                   this.logAction('Add', 'Adding Company Failed. CIS Number is already Define', false, 'DRI');
-                  
-                //   const resultData = this.cisLookUpResult;
-                  
-                // console.log(resultData);
-                //   addPNData(resultData, session, userID)
-                //   .then((response) => {
-      
-                //   })
-                //   .catch((error) => {
-      
-                //   });
+                 
                 } else {
                   // Handle other error conditions 
                   this.logAction('Add', 'Adding Company Failed', false, 'affiliates-related-companies');
@@ -118,9 +108,6 @@ export class OtherRPModalComponent implements OnInit {
                 }
             });
       }
-      // Call the JavaScript function with form data
-     
-      // console.log(createAffil());
     }
   }
 
