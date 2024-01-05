@@ -19,8 +19,69 @@
                     </mat-form-field>
                 <!-- </c-row> -->
               </c-container>
+
+
+
+
             <c-container fluid>
                 <c-row>
+                  <ng-container xs *ngFor="let account of SBL; index as i">
+                    <c-card class="mb-4">
+                      <c-card-header id="{{ account.aff_com_account_name }}">{{ account.aff_com_account_name }} <button (click)="openSimulation()" mat-fab extended color="primary" class="add-btn-icon">
+                       </button>
+                       </c-card-header>
+                       <c-card-body>
+                        <table
+                          [hover]="true"
+                          [responsive]="true"
+                          [striped]="true"
+                          align="middle"
+                          cTable
+                          class="mb-0 border"
+                        >
+                          <thead cTableColor="danger">
+                            <tr>
+                              <!-- Add your table headers here based on your data structure -->
+                              <th>PN No</th>
+                              <th>Account Name</th>
+                              <th>Branch Name</th>
+                              <th>Loan Type</th>
+                              <th>Collateral</th>
+                              <th>Amount Granted</th>
+                              <th>Date Booked</th>
+                              <th>Outstanding Balance</th>
+                              <th>Hold-Out</th>
+                              <th>Net of Hold-Out</th>
+                              <th>Payment Status</th>
+                              <!-- Add more headers as needed -->
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <!-- Loop through each item in the user's list -->
+                            <tr *ngFor="let item of account.loan_list; let j = index">
+                              <!-- Display item-related information -->
+                              <td>{{ item.loan_no }}</td>
+                              <td>{{ item.name }}</td>
+                              <td>{{ item.name }}</td>
+                              <td>{{ item.loan_security }}</td>
+                              <td>{{ item.collateral }}</td>
+                              <td>{{ item.principal }}</td>
+                              <td>{{ item.date_created }}</td>
+                              <td>{{ item.principal_bal }}</td>
+                              <td>{{ item.hold_out }}</td>
+                              <td>{{ item.net_holdout }}</td>
+                              <td>{{ item.status }}</td>
+                              <!-- Add more columns for other properties -->
+                
+                              <!-- Add more rows for additional items if needed -->
+                            </tr>
+                          </tbody>
+                        </table>
+                        </c-card-body>
+                       </c-card>
+                       </ng-container>
+
+
                     <!-- Loop through each user in the users array -->
                     <ng-container xs *ngFor="let user of users; index as i">
                       <c-card class="mb-4">
