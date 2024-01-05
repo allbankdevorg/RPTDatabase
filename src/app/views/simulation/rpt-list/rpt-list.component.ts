@@ -55,13 +55,13 @@ export class RptListComponent {
       return acc;
     }, { principal: 0, principal_bal: 0 });
   
-    this.rptBal = sumPrincipal.principal;
-    const percentage = `${(sumPrincipal.principal / 1214764186.16 * 100).toFixed(2)}%`;
+    this.rptBal = sumPrincipal.principal_bal;
+    const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
     this.rptRatio = percentage;
     this.subtlOL = sumPrincipal.principal;
-    this.subtlOB = sumPrincipal.principal_bal;
+    this.subtlOB = this.rptBal
     this.ttlRPTOL = sumPrincipal.principal;
-    this.ttlRPTOB = sumPrincipal.principal_bal;
+    this.ttlRPTOB = this.rptBal;
   }
 
   constructor(
@@ -85,19 +85,18 @@ export class RptListComponent {
           return acc;
         }, { principal: 0, principal_bal: 0 });
 
-        this.rptBal = sumPrincipal.principal;
-        const percentage = `${((sumPrincipal.principal / 1214764186.16) * 100).toFixed(2)}`;
+        this.rptBal = sumPrincipal.principal_bal;
+        const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
         this.rptRatio = percentage;
-        this.subtlOL = sumPrincipal.principal;
-        this.subtlOB = sumPrincipal.principal_bal;
+        // this.subtlOL = sumPrincipal.principal;
+        // this.subtlOB = this.rptBal;
         this.ttlRPTOL = sumPrincipal.principal;
-        this.ttlRPTOB = sumPrincipal.principal_bal;
+        this.ttlRPTOB = this.rptBal;
         this.dataSource.data = PNData;
         this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
         this.approvedCapital = this.unimpairedCap * 0.5;
         
-        
-        this.availBal = this.approvedCapital - sumPrincipal.principal;
+        this.availBal = this.approvedCapital - this.rptBal;
       } else {
 
       }
