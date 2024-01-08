@@ -22,9 +22,7 @@ export class HoldoutAllocationModalComponent implements OnInit {
     // private _coreService: CoreService,
     private auditTrailService: AuditTrailService) {
     this.hldOTForm = this.formBuilder.group({
-      aff_com_cis_number: ['', [Validators.required]],
-      aff_com_account_name: ['', [Validators.required]],
-      aff_com_company_name: ['', [Validators.required]],
+        holdOut_Val: ['']
       // commandControl: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;
