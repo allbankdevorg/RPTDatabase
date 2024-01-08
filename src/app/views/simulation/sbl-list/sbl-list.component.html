@@ -87,9 +87,9 @@
                             <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="hold_out">
+                          <ng-container matColumnDef="hold_out" >
                             <mat-header-cell *matHeaderCellDef> Hold-Out </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.hold_out | number: '1.2-2'}} </mat-cell>
+                            <mat-cell *matCellDef="let element" (click)="allocateHoldOut()"> {{element.hold_out | number: '1.2-2'}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="net_holdout">
@@ -120,35 +120,37 @@
                                         <tbody>
                                            <tr>
                                             <th>Total {{account.company_name}} GRP</th>
-                                            <td> 30,334,239.77 </td>
+                                            <td> {{ calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2' }} </td>
                                            </tr>
                                            
                                            <tr>
                                             <th>Single Borrower's Limit (25% of NW)</th>
-                                            <td> 303,691,046.54 </td>
+                                            <td>  {{sbl | number: '1.2-2'}} </td>
                                            </tr>
                                            
-                                           <tr cTableColor="info">
+                                           <tr cTableColor="info" [ngClass]="{'green-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
-                                            <td> 273,356,806.77 </td>
-                                           </tr>
+                                            <td> 
+                                              {{ sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2' }} 
+                                            </td>
+                                          </tr>                                          
                                            <tr>
                                             <td></td>
                                             <td></td>
                                            </tr>
                                            <tr>
                                             <th>TOTAL {{account.company_name}} GRP</th>
-                                            <td> 30,334,239.77 </td>
+                                            <td> {{calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2'}} </td>
                                            </tr>
                                            
                                            <tr>
                                             <th>Internal SBL (20% of NW)</th>
-                                            <td> 242,952,837.23 </td>
+                                            <td> {{internalSBL | number: '1.2-2'}} </td>
                                            </tr>
                                            
-                                           <tr cTableColor="info">
+                                           <tr cTableColor="info" [ngClass]="{'green-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
-                                            <td>212,618,597.46</td>
+                                            <td>{{internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2'}}</td>
                                            </tr>
                                            
                                            
