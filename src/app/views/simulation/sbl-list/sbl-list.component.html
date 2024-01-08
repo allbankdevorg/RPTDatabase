@@ -69,12 +69,12 @@
 
                           <ng-container matColumnDef="collateral">
                             <mat-header-cell *matHeaderCellDef> Collateral </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.collateral}} </mat-cell>
+                            <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="amount_granted">
                             <mat-header-cell *matHeaderCellDef> Amount Granted </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.amount_granted}} </mat-cell>
+                            <mat-cell *matCellDef="let element"> {{element.principal | number: '1.2-2'}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="date_granted">
