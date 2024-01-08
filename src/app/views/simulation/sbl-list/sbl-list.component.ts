@@ -8,20 +8,34 @@ import {HoldoutAllocationModalComponent} from '../../../modal-dialog/holdout-all
 
 //Import for API Function
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
+import { MatTableDataSource } from '@angular/material/table';
 
+import { FilterPipe } from 'src/app/pipe/filterPipe/filter.pipe';
+import { FormControl } from '@angular/forms';
 interface account {
   name: string;
   list: any[];
 }
 
+interface LoanIndividual {
+  id: number;
+  com_related: string;
+  off_cisnumber: string;
+  fname: string;
+  mname: string;
+  lname: string;
+  position: string;
+  status: number;
+}
+
 interface sblAccount {
-  aff_com_account_name: string;
-  loan_list: any[];
+  company_name: string;
+  loan_list: MatTableDataSource<sblList>; // Specify the type here
 }
 
 interface sblList {
-  pn_No: string;
-  br_name: string;
+  name: string;
+  loan_no: string;
   L_type: string;
   collateral: string;
   amt_granted: string;
@@ -30,13 +44,72 @@ interface sblList {
   hold_out: string;
   net_holdout: number;
   payment_status: string;
+  loan_list: [];
 }
 
+interface Data {
+  aff_com_cis_number: string;
+  aff_com_account_name: string;
+  loan_list_company: any[];
+  loan_individual: any[];
+}
+
+
+
+// ///////
+
+export interface loanData {
+  loan_no: number;
+  name: string;
+  principal: number;
+  principal_bal: number;
+  loan_security: string;
+}
+
+interface companylistData {
+  company_name: string;
+  account_name: string;
+  company_list: [];
+}
+
+
+
+
+interface Loan {
+  id: number;
+  cis_no: string;
+  name: string;
+  loan_no: string;
+  principal: number;
+  principal_bal: number;
+  date_granted: string;
+  created_by: string;
+  date_created: string;
+  loan_security: string;
+  status: number;
+  manager: string;
+  group: string;
+}
+
+interface Result {
+  id: number;
+  aff_com_cis_number: string;
+  account_name: string;
+  company_name: string;
+  date_inserted: string;
+  status: number;
+  managing_company: string;
+  module: string;
+  LEVEL: number;
+  loan_list: Loan[];
+}
 
 @Component({
   selector: 'app-sbl-list',
   templateUrl: './sbl-list.component.html',
-  styleUrls: ['./sbl-list.component.scss']
+  styleUrls: ['./sbl-list.component.scss'],
+  providers: [FilterPipe],
+
 })
 export class SBLListComponent implements OnInit{
 
@@ -53,222 +126,58 @@ export class SBLListComponent implements OnInit{
   definedRptRatio: number = 50;     //Pre defined Percentage
   availRptRatio: any;
   approvedCapital: any;        // => the Loan approved Limit
-  // Add a property for the search input
-  public searchName: string = '';
+  filterValue: string = '';
 
-  public SBL: sblAccount[] = [];
+  // account: any = {};
 
-  public users: account[] = [
-    {
-     name: 'Fine',
-     list: [
-      { pn_No: '2021-01-002331',
-        br_name: 'Cmstar Management Inc.',
-        L_type: 'Term Loan',
-        collateral: 'CLEAN',
-        amt_granted: '30,000,000.00',
-        date_booked: '01/13/2021',
-        O_blnc: '2,698,633.09',
-        hold_out: '',
-        net_holdout:  2698633.09,
-        payment_status: 'current',
-      },
-      { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-     ]
-    },
-    {
-      name: 'All Value',
-      list: [ 
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-      ]
-    },
-    {
-      name: 'All Day',
-      list: [ 
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-      ]
-    },
-    {
-      name: 'All Home',
-      list: [ 
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-      ]
-    },
-    {
-      name: 'All Holdings',
-      list: [ 
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-        { pn_No: '2021-01-002331',
-          br_name: 'Cmstar Management Inc.',
-          L_type: 'Term Loan',
-          collateral: 'CLEAN',
-          amt_granted: '30,000,000.00',
-          date_booked: '01/13/2021',
-          O_blnc: '2,698,633.09',
-          hold_out: '',
-          net_holdout:  2698633.09,
-          payment_status: 'current',
-        },
-      ]
-    }
+  dataSource = new MatTableDataSource<sblAccount>
+  displayedColumns: string[] = ['loan_no', 'account_name', 'branch_name', 'loan_security', 'collateral', 'amount_granted', 'date_granted'
+  , 'principal_bal', 'hold_out', 'net_holdout', 'payment_status'];
 
-  ]
 
+  
 
   constructor(
     private get: FetchDataService,
-    public _dialog: MatDialog,) {
+    public _dialog: MatDialog,
+    private filterPipe: FilterPipe) {
 
+    }
+
+    searchTextLoanList = new FormControl<string | null>('');
+    account: { loan_list: sblList[] } = { loan_list: [] };
+  
+  
+    applyFilterLoanList(): void {
+      const searchText = (this.searchTextLoanList.value || '').toLowerCase();
+      this.account.loan_list = this.filterData(this.account.loan_list, searchText);
+      console.log(this.account.loan_list);
+    }
+  
+    private filterData(data: sblList[], searchText: string): sblList[] {
+      return data.filter(
+        item => item.name.toLowerCase().includes(searchText) || 
+                item.loan_no.toLowerCase().includes(searchText) ||
+                // Add other properties as needed for filtering
+                true
+      );
     }
 
   ngOnInit() {
     // Additional initialization logic if needed
     this.updateTableData();
+    // this.updateTableDatas();
+    // this.data = this.getFlattenedData(this.data); 
   }
 
   updateTableData(): void {
     this.get.getSBL((sblData) => {
       console.log(sblData)
       if (sblData) {
-        this.SBL = sblData;
+        // this.SBL = sblData;
+        // console.log(this.SBL);
+        this.dataSource.data = sblData;
+        console.log(this.dataSource.data);
         // if (Array.isArray(sblData)) {
         //   sblData.forEach((item) => {
 
@@ -343,6 +252,13 @@ export class SBLListComponent implements OnInit{
       },
     });
   }
+  
+
+
+
+
+
+
   
   
 

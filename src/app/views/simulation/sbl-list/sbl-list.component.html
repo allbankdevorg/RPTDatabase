@@ -20,18 +20,25 @@
                 <!-- </c-row> -->
               </c-container>
 
-
-
-
-            <c-container fluid>
+              <c-container fluid>
                 <c-row>
-                  <ng-container xs *ngFor="let account of SBL; index as i">
+                  <ng-container xs *ngFor="let account of dataSource.data; index as i">
                     <c-card class="mb-4">
-                      <c-card-header id="{{ account.aff_com_account_name }}">{{ account.aff_com_account_name }} <button (click)="openSimulation()" mat-fab extended color="primary" class="add-btn-icon">
-                       </button>
-                       </c-card-header>
+                      <c-card-header class="d-flex justify-content-between align-items-center" id="{{ account.company_name }}">
+                        <div>  
+                          {{ account.company_name }} <button (click)="openSimulation()" mat-fab extended color="primary" class="add-btn-icon">Simulate</button>
+                        </div>
+                        <div class="mt-1">
+                          <mat-form-field [style.width.%]=100>
+                            <input matInput #accountFilterInput [formControl]="searchTextLoanList" (input)="applyFilterLoanList()"
+                             placeholder="Search">
+                                <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                        </div>
+                      </c-card-header>
                        <c-card-body>
-                        <table
+                        <mat-table
+                          [dataSource]="account.loan_list"
                           [hover]="true"
                           [responsive]="true"
                           [striped]="true"
@@ -39,164 +46,136 @@
                           cTable
                           class="mb-0 border"
                         >
-                          <thead cTableColor="danger">
-                            <tr>
-                              <!-- Add your table headers here based on your data structure -->
-                              <th>PN No</th>
-                              <th>Account Name</th>
-                              <th>Branch Name</th>
-                              <th>Loan Type</th>
-                              <th>Collateral</th>
-                              <th>Amount Granted</th>
-                              <th>Date Booked</th>
-                              <th>Outstanding Balance</th>
-                              <th>Hold-Out</th>
-                              <th>Net of Hold-Out</th>
-                              <th>Payment Status</th>
-                              <!-- Add more headers as needed -->
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <!-- Loop through each item in the user's list -->
-                            <tr *ngFor="let item of account.loan_list; let j = index">
-                              <!-- Display item-related information -->
-                              <td>{{ item.loan_no }}</td>
-                              <td>{{ item.name }}</td>
-                              <td>{{ item.name }}</td>
-                              <td>{{ item.loan_security }}</td>
-                              <td>{{ item.collateral }}</td>
-                              <td>{{ item.principal }}</td>
-                              <td>{{ item.date_created }}</td>
-                              <td>{{ item.principal_bal }}</td>
-                              <td>{{ item.hold_out }}</td>
-                              <td>{{ item.net_holdout }}</td>
-                              <td>{{ item.status }}</td>
-                              <!-- Add more columns for other properties -->
-                
-                              <!-- Add more rows for additional items if needed -->
-                            </tr>
-                          </tbody>
-                        </table>
+                          
+                          <ng-container matColumnDef="loan_no">
+                          <mat-header-cell *matHeaderCellDef> PN/Loan Number </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.loan_no}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="account_name">
+                            <mat-header-cell *matHeaderCellDef> Account Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="branch_name">
+                            <mat-header-cell *matHeaderCellDef> Branch Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="loan_security">
+                            <mat-header-cell *matHeaderCellDef> Loan Secuity </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="collateral">
+                            <mat-header-cell *matHeaderCellDef> Collateral </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.collateral}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="amount_granted">
+                            <mat-header-cell *matHeaderCellDef> Amount Granted </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.amount_granted}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="date_granted">
+                            <mat-header-cell *matHeaderCellDef> Date Booked </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.date_granted | date: 'yyyy-MM-dd HH:mm:ss'}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="principal_bal">
+                            <mat-header-cell *matHeaderCellDef> Outstanding Balance </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="hold_out">
+                            <mat-header-cell *matHeaderCellDef> Hold-Out </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.hold_out | number: '1.2-2'}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="net_holdout">
+                            <mat-header-cell *matHeaderCellDef> Net of Hold-Out </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> 
+                              {{ (+element.principal_bal || 0 - +element.hold_out || 0) | number: '1.2-2' }}
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="payment_status">
+                            <mat-header-cell *matHeaderCellDef> Payment Status </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.payment_status}} </mat-cell>
+                          </ng-container>
+
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      
+
+                        </mat-table>
+
+                        <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
+                          <!-- <c-row> -->
+                              <div></div>
+                              <div>
+                                <c-card class="mb-4">
+                                    <c-card-body>
+                                      <table cTable [responsive]="true">
+                                        <tbody>
+                                           <tr>
+                                            <th>Total {{account.company_name}} GRP</th>
+                                            <td> 30,334,239.77 </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                            <th>Single Borrower's Limit (25% of NW)</th>
+                                            <td> 303,691,046.54 </td>
+                                           </tr>
+                                           
+                                           <tr cTableColor="info">
+                                            <th>AVAILABLE</th>
+                                            <td> 273,356,806.77 </td>
+                                           </tr>
+                                           <tr>
+                                            <td></td>
+                                            <td></td>
+                                           </tr>
+                                           <tr>
+                                            <th>TOTAL {{account.company_name}} GRP</th>
+                                            <td> 30,334,239.77 </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                            <th>Internal SBL (20% of NW)</th>
+                                            <td> 242,952,837.23 </td>
+                                           </tr>
+                                           
+                                           <tr cTableColor="info">
+                                            <th>AVAILABLE</th>
+                                            <td>212,618,597.46</td>
+                                           </tr>
+                                           
+                                           
+                                        </tbody>
+                                      </table>
+                                    </c-card-body>
+                                </c-card>
+                                
+                              </div>
+                              
+                          <!-- </c-row> -->
+                        </c-container>
                         </c-card-body>
                        </c-card>
                        </ng-container>
 
-
-                    <!-- Loop through each user in the users array -->
-                    <ng-container xs *ngFor="let user of users; index as i">
-                      <c-card class="mb-4">
-                        <c-card-header id="{{ user.name }}">{{ user.name }} <button (click)="openSimulation()" mat-fab extended color="primary" class="add-btn-icon">
-                          <!-- <mat-icon>play_arrow</mat-icon> -->
-                          Simulate
-                        </button></c-card-header>
-                        <c-card-body>
-                          <table
-                            [hover]="true"
-                            [responsive]="true"
-                            [striped]="true"
-                            align="middle"
-                            cTable
-                            class="mb-0 border"
-                          >
-                            <thead cTableColor="danger">
-                              <tr>
-                                <!-- Add your table headers here based on your data structure -->
-                                <th>PN No</th>
-                                <th>Account Name</th>
-                                <th>Branch Name</th>
-                                <th>Loan Type</th>
-                                <th>Collateral</th>
-                                <th>Amount Granted</th>
-                                <th>Date Booked</th>
-                                <th>Outstanding Balance</th>
-                                <th>Hold-Out</th>
-                                <th>Net of Hold-Out</th>
-                                <th>Payment Status</th>
-                                <!-- Add more headers as needed -->
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <!-- Loop through each item in the user's list -->
-                              <tr *ngFor="let item of user.list; let j = index">
-                                <!-- Display item-related information -->
-                                <td>{{ item.pn_No }}</td>
-                                <td>{{ item.br_name }}</td>
-                                <td>{{ item.br_name }}</td>
-                                <td>{{ item.L_type }}</td>
-                                <td>{{ item.collateral }}</td>
-                                <td>{{ item.amt_granted }}</td>
-                                <td>{{ item.date_booked }}</td>
-                                <td>{{ item.O_blnc }}</td>
-                                <td>{{ item.hold_out }}</td>
-                                <td>{{ item.net_holdout }}</td>
-                                <td>{{ item.payment_status }}</td>
-                                <!-- Add more columns for other properties -->
-                  
-                                <!-- Add more rows for additional items if needed -->
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
-                            <!-- <c-row> -->
-                                <div></div>
-                                <div>
-                                  <c-card class="mb-4">
-                                      <c-card-body>
-                                        <table cTable [responsive]="true">
-                                          <tbody>
-                                             <tr>
-                                              <th>Total {{user.name}} GRP</th>
-                                              <td> 30,334,239.77 </td>
-                                             </tr>
-                                             
-                                             <tr>
-                                              <th>Single Borrower's Limit (25% of NW)</th>
-                                              <td> 303,691,046.54 </td>
-                                             </tr>
-                                             
-                                             <tr cTableColor="info">
-                                              <th>AVAILABLE</th>
-                                              <td> 273,356,806.77 </td>
-                                             </tr>
-                                             <tr>
-                                              <td></td>
-                                              <td></td>
-                                             </tr>
-                                             <tr>
-                                              <th>TOTAL FINE PROPERTIES GRP</th>
-                                              <td> 30,334,239.77 </td>
-                                             </tr>
-                                             
-                                             <tr>
-                                              <th>Internal SBL (20% of NW)</th>
-                                              <td> 242,952,837.23 </td>
-                                             </tr>
-                                             
-                                             <tr cTableColor="info">
-                                              <th>AVAILABLE</th>
-                                              <td>212,618,597.46</td>
-                                             </tr>
-                                             
-                                             
-                                          </tbody>
-                                        </table>
-                                      </c-card-body>
-                                  </c-card>
-                                  
-                                </div>
-                                
-                            <!-- </c-row> -->
-                          </c-container>
-                        </c-card-body>
-                      </c-card>
-                    </ng-container>
                 </c-row>
             </c-container>
+
+
          </c-card-body>
         </c-card>
      </c-col>
     </c-row>
+
+
+ 
 </c-container>
 
 
