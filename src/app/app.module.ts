@@ -140,6 +140,7 @@ import { ViewUsersModalComponent } from './modal-dialog/view-users-modal/view-us
 import { UpdateManagingCompanyModalComponent } from './modal-dialog/update-managing-company-modal/update-managing-company-modal.component';
 import { UpdateJMNComponent } from './modal-dialog/update-jmn/update-jmn.component';
 import { HoldoutAllocationModalComponent } from './modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component';
+import { FilterPipe } from './pipe/filterPipe/filter.pipe';
 
 
 const APP_CONTAINERS = [
@@ -161,7 +162,7 @@ const APP_CONTAINERS = [
     BankofficerRIModalComponent,
     AffiliatesRPModalComponent,
     SBLSimulationModalComponent, 
-    RPTSimulationModalComponent,OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent, UsersModalComponent, StockholdersModalComponent, LowerCaseDirective, UsersAddModalComponent, ViewUsersModalComponent, UpdateManagingCompanyModalComponent, UpdateJMNComponent, HoldoutAllocationModalComponent],
+    RPTSimulationModalComponent,OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent, UsersModalComponent, StockholdersModalComponent, LowerCaseDirective, UsersAddModalComponent, ViewUsersModalComponent, UpdateManagingCompanyModalComponent, UpdateJMNComponent, HoldoutAllocationModalComponent, FilterPipe],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
