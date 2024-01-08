@@ -11,7 +11,7 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { FilterPipe } from 'src/app/pipe/filterPipe/filter.pipe';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 interface account {
   name: string;
   list: any[];
@@ -91,7 +91,7 @@ interface Loan {
   group: string;
 }
 
-interface Result {
+export interface ResultItem {
   id: number;
   aff_com_cis_number: string;
   account_name: string;
@@ -114,7 +114,6 @@ interface Result {
 export class SBLListComponent implements OnInit{
 
 
-
   rptBal: any;      // => RPT Balance (Net of Hold-out)
   rptRatio: any;    // => RPT Ratio
   subtlOL: any;     // => SUB-TOTAL Original Loan
@@ -127,20 +126,33 @@ export class SBLListComponent implements OnInit{
   availRptRatio: any;
   approvedCapital: any;        // => the Loan approved Limit
   filterValue: string = '';
+  sbl: any;
+  internalSBL: any;
+  net: any;
+  available_net: any;
+  available_bal: any;
+
+  sblIsPositive: boolean = false;
+sblIsNegative: boolean = false;
+
+// Inside the method where you calculate the summary
+
 
   // account: any = {};
 
-  dataSource = new MatTableDataSource<sblAccount>
+  dataSource = new MatTableDataSource<ResultItem>
   displayedColumns: string[] = ['loan_no', 'account_name', 'branch_name', 'loan_security', 'collateral', 'amount_granted', 'date_granted'
   , 'principal_bal', 'hold_out', 'net_holdout', 'payment_status'];
 
 
   
+  result: ResultItem[] = [];
 
   constructor(
     private get: FetchDataService,
     public _dialog: MatDialog,
-    private filterPipe: FilterPipe) {
+    private filterPipe: FilterPipe,) {
+      
 
     }
 
@@ -151,7 +163,7 @@ export class SBLListComponent implements OnInit{
     applyFilterLoanList(): void {
       const searchText = (this.searchTextLoanList.value || '').toLowerCase();
       this.account.loan_list = this.filterData(this.account.loan_list, searchText);
-      console.log(this.account.loan_list);
+      
     }
   
     private filterData(data: sblList[], searchText: string): sblList[] {
@@ -166,6 +178,10 @@ export class SBLListComponent implements OnInit{
   ngOnInit() {
     // Additional initialization logic if needed
     this.updateTableData();
+    this.sbl = (this.unimpairedCap * .25);
+    this.internalSBL = (this.unimpairedCap * .20);
+    this.availBal = this.internalSBL 
+    console.log(this.availBal);
     // this.updateTableDatas();
     // this.data = this.getFlattenedData(this.data); 
   }
@@ -177,6 +193,7 @@ export class SBLListComponent implements OnInit{
         // this.SBL = sblData;
         // console.log(this.SBL);
         this.dataSource.data = sblData;
+
         console.log(this.dataSource.data);
         // if (Array.isArray(sblData)) {
         //   sblData.forEach((item) => {
@@ -213,6 +230,24 @@ export class SBLListComponent implements OnInit{
       }
     });
   }
+
+
+  calculateLoanListSummary(loanList: Loan[]): any {
+    const totalPrincipalBal = loanList.reduce((acc, loan) => acc + loan.principal_bal, 0);
+    return {
+      totalPrincipalBal,
+      singleBorrowersLimit: 0, // Replace with the actual property for single borrower's limit
+      availableLimit: 0
+    };
+  }
+
+  // Sample
+
+
+
+
+
+  // endof Sample
 
   // Function to scroll to the card with the specified name
   scrollToUser(name: string) {
