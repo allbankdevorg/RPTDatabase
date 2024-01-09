@@ -43,6 +43,30 @@ export class RptListComponent {
   dataSource = new MatTableDataSource<any>([]);
   ToDisplay: string[] = [];
 
+  
+  @ViewChild(MatSort) sort!: MatSort;
+
+
+  constructor(
+    private get: FetchDataService,
+    public _dialog: MatDialog,) {
+
+    }
+
+
+  
+    ngAfterViewInit() {
+  
+      this.dataSource.sort = this.sort;
+  
+      this.sort.sort({
+        id: 'cis_no',
+        start: 'desc',
+        disableClear: false
+      });
+    }
+
+
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
@@ -64,11 +88,7 @@ export class RptListComponent {
     this.ttlRPTOB = this.rptBal;
   }
 
-  constructor(
-    private get: FetchDataService,
-    public _dialog: MatDialog,) {
-
-    }
+  
 
   
   ngOnInit() {
