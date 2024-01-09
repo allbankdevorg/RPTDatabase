@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 // Functions Imports
 import {getManagingCompany} from '../../functions-files/getFunctions';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createAffil, cisLookUP} from '../../functions-files/add/postAPI.js'
+import {addSimulatedPNData, cisLookUP} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
@@ -47,7 +47,7 @@ export class RPTSimulationModalComponent implements OnInit{
     private get: FetchDataService) {
     this.rptSimulateForm = this.formBuilder.group({
       com_cis_number: ['', [Validators.required]],
-      com_account_name: [{value: '', disabled: true}, [Validators.required]],
+      com_account_name: ['', [Validators.required]],
       amount: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;
@@ -60,6 +60,23 @@ export class RPTSimulationModalComponent implements OnInit{
 
 
   onSubmit() {
+    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+
+    if (this.rptSimulateForm.valid) {
+      const sPNData = this.rptSimulateForm.value;
+      addSimulatedPNData(sPNData, session, userID)
+          .then((response) => {
+            this.logAction('Add', 'Successfuly Added RPT PN Data', true, 'rpofficer-ri');
+            this.close();
+          })
+          .catch((error) => {
+
+          });
+    }
+  }
+
+  simulateRPT() {
     if (this.rptSimulateForm.valid) {
       this.ngOnInit();
       const dataLookup = this.rptSimulateForm.value;
@@ -155,7 +172,6 @@ export class RPTSimulationModalComponent implements OnInit{
         }, { principal: 0, principal_bal: 0 });
 
         this.availBal = this.unimpairedCap - sumPrincipal.principal_bal;
-        console.log(this.availBal);
       } else {
 
       }
