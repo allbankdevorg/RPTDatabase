@@ -27,7 +27,7 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns1;" ></tr>
           </table> -->
 
-          <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
+          <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" matSort >
             <!-- Position Column -->
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Company Name </th>
