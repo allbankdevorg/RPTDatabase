@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 
 
 // Import for Simulation Modal
@@ -12,6 +12,10 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { FilterPipe } from 'src/app/pipe/filterPipe/filter.pipe';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+
+// Service
+import {SblLoanSimulateService} from '../../../services/sblLoanSimulate/sbl-loan-simulate.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
+
 interface account {
   name: string;
   list: any[];
@@ -113,7 +117,7 @@ export interface ResultItem {
 })
 export class SBLListComponent implements OnInit{
 
-
+  available_balance: any;    // => Calculated Balance for simulation
   rptBal: any;      // => RPT Balance (Net of Hold-out)
   rptRatio: any;    // => RPT Ratio
   subtlOL: any;     // => SUB-TOTAL Original Loan
@@ -151,7 +155,11 @@ sblIsNegative: boolean = false;
   constructor(
     private get: FetchDataService,
     public _dialog: MatDialog,
-    private filterPipe: FilterPipe,) {
+    private filterPipe: FilterPipe,
+    private dataService: SblLoanSimulateService,      // => For SBL Simulation
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    ) {
       
 
     }
@@ -181,7 +189,7 @@ sblIsNegative: boolean = false;
     this.sbl = (this.unimpairedCap * .25);
     this.internalSBL = (this.unimpairedCap * .20);
     this.availBal = this.internalSBL 
-    console.log(this.availBal);
+    // console.log(this.availBal);
     // this.updateTableDatas();
     // this.data = this.getFlattenedData(this.data); 
   }
@@ -194,7 +202,8 @@ sblIsNegative: boolean = false;
         // console.log(this.SBL);
         this.dataSource.data = sblData;
 
-        console.log(this.dataSource.data);
+        // console.log(this.dataSource.data);
+        this.cdr.detectChanges();
         // if (Array.isArray(sblData)) {
         //   sblData.forEach((item) => {
 
@@ -267,6 +276,7 @@ sblIsNegative: boolean = false;
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
+          this.ngOnInit();
           // this.updateTableData();
         }
       },
@@ -282,10 +292,19 @@ sblIsNegative: boolean = false;
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
+          this.ngOnInit();
           // this.updateTableData();
         }
       },
     });
+  }
+
+  // Setting the Available Balance
+  calculateAvailable(Avail: any) {
+    // this.available_balance = Avail;
+
+    this.dataService.setAvailBal(Avail);
+    
   }
   
 
