@@ -796,6 +796,55 @@ function addPNData(resultData, session, userID) {
 }
 
 
+/**
+ * Creates RP directors related interest.
+ * @param {any} sblData - The data for the SBL PN Data.
+ * @param {any} session - The Sesison ID.
+ * @param {any} userID - The Username of the user.
+*/
+function addSimulatedPNData(sPNData, session, userID) {
+    
+  return new Promise((resolve, reject) => {
+    console.log(sPNData);
+    console.log(sPNData.com_account_name);
+    console.log(sPNData.com_cis_number);
+    console.log(sPNData.amount);
+        var settings = {
+            "url": "http://10.232.236.15:8092/api/addData",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+              "cmd": 20,
+              "session": session,
+              "userid": userID,
+              "request": {
+                "cis_no": sPNData.com_cis_number,
+                "name": sPNData.com_account_name,
+                "loan_no": "",
+                "principal": sPNData.amount,
+                "principal_bal": sPNData.amount,
+                "date_granted": "",
+                "created_by": "",
+                "date_created": "",
+                "loan_security": ""
+              }
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+          if (response.result[0].status === 'success') {
+              // All items inserted successfully, show the modal
+              Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+              resolve(response);
+          } else {
+              reject(response);
+          }
+        });
+      });
+}
 
 
  module.exports = {
@@ -816,5 +865,6 @@ function addPNData(resultData, session, userID) {
     createStockHolders,
     createUser,
     userAccess,
-    addPNData
+    addPNData,
+    addSimulatedPNData
  }
