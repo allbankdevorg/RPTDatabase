@@ -98,9 +98,9 @@
         <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!affForm.valid">{{data ? 'Update': 'Save'}}</button> -->
     
         
-        <button mat-raised-button color="primary" *ngIf="simulatedRptTTL < availBal" [disabled]="!rptSimulateForm.valid">Submit</button>
+        <button mat-raised-button color="primary" *ngIf="simulatedRptTTL < availBal" type="submit" [disabled]="!rptSimulateForm.valid">Submit</button>
         <!-- Show the Simulate button if simulatedRptTTL is not greater than currentSttl -->
-        <button mat-raised-button color="accent" *ngIf="!(simulatedRptTTL < availBal)" type="submit" [disabled]="!rptSimulateForm.valid">Simulate</button>
+        <button mat-raised-button color="accent" *ngIf="!(simulatedRptTTL < availBal)"  (click)="simulateRPT()" [disabled]="!rptSimulateForm.valid">Simulate</button>
     
     </div>
 </form>
