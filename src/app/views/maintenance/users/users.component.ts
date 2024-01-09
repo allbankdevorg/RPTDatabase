@@ -2,7 +2,8 @@ import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy, C
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {animate, state, style, transition, trigger} from '@angular/animations'
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import { MatSort } from '@angular/material/sort';
 
 // service
 // import { SessionTimeoutService } from '../../../services/useridle/session-timeout.service';
@@ -117,6 +118,7 @@ export class UsersComponent {
   @ViewChild('usersModal') usersModal!: ElementRef;
   @ViewChild('paginator1') paginator1!: MatPaginator;
   @ViewChild('paginator2') paginator2!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private formBuilder: FormBuilder,
     public _dialog: MatDialog,
@@ -145,6 +147,13 @@ export class UsersComponent {
   ngAfterViewInit() {
     this.userDataSource.paginator = this.paginator2;
     this.permissionDataSource.paginator = this.paginator1;
+
+    this.userDataSource.sort = this.sort;
+    this.sort.sort({
+      id: 'date_inserted',
+      start: 'desc',
+      disableClear: false
+    });
   }
 
   // Call this method whenever there is user activity
