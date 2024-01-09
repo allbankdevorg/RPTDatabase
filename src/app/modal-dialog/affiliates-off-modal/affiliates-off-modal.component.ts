@@ -71,7 +71,7 @@ export class AffiliatesOffModalComponent implements OnInit {
         // Call the JavaScript function with form data
         createAffilOff(offData, comp_CIS, session, userID) // Pass the entire formData object
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           this.logAction('Add', 'Successfuly Added Affiliates Officers', true, 'rpofficer-ri');
           this.close();
 
