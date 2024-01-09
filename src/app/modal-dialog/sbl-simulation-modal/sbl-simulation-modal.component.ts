@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 // Functions Imports
 import {getManagingCompany} from '../../functions-files/getFunctions';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createAffil, cisLookUP} from '../../functions-files/add/postAPI.js'
+import {addSimulatedPNData, cisLookUP} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
@@ -19,7 +19,7 @@ import {AuditTrail} from '../../model/audit-trail.model';
 import {AddServicesService} from '../../services/add/add-services.service';
 import { AffiliatesService } from 'src/app/services/affiliates/affiliates.service';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
-
+import {SblLoanSimulateService} from '../../services/sblLoanSimulate/sbl-loan-simulate.service';
 
 @Component({
   selector: 'app-sbl-simulation-modal',
@@ -35,11 +35,14 @@ export class SBLSimulationModalComponent implements OnInit{
   simulatedSttl: any;               // => Simulated Sub total
   simulatedRptTTL: any;             // => Simulated Rpt Total
 
+  sblTotalRPT: any;                 // => Avail Balance of SBL
+  amount_Val: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private _dosriService: AddServicesService,
     private dataService: AffiliatesService,
+    private sblSimulateService: SblLoanSimulateService,
     private _dialogRef: MatDialogRef<SBLSimulationModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService,
@@ -58,7 +61,7 @@ export class SBLSimulationModalComponent implements OnInit{
     // this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.sblSimulateForm.patchValue(this.data);
-
+  
   // Log the form control values
   // console.log('Form controls after patching:', this.affForm.value);
 
@@ -66,15 +69,38 @@ export class SBLSimulationModalComponent implements OnInit{
 
 
   onSubmit() {
+    
+    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+
+    if (this.sblSimulateForm.valid) {
+      const sPNData = this.sblSimulateForm.value;
+      
+      
+      addSimulatedPNData(sPNData, session, userID)
+          .then((response) => {
+            this.logAction('Add', 'Successfuly Added SBL PN Data', true, 'rpofficer-ri');
+            this.close();
+          })
+          .catch((error) => {
+
+          });
+    }
+
+  }
+
+
+  simulateSBL() {
     if (this.sblSimulateForm.valid) {
       this.ngOnInit();
       const dataLookup = this.sblSimulateForm.value;
       // Convert the values to numbers using parseFloat or the unary + operator
       const currentSttlValue = parseFloat(this.currentSttl) || 0;
       const amountValue = parseFloat(dataLookup.amount) || 0;
-  
+
+      this.amount_Val = amountValue;
       // Perform the addition
-      this.simulatedSttl = currentSttlValue + amountValue;
+      this.simulatedSttl = this.sblTotalRPT + amountValue;
       this.simulatedRptTTL = amountValue;
       this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
@@ -88,7 +114,9 @@ export class SBLSimulationModalComponent implements OnInit{
 
   CISlookup() {
     const dataLookup = this.sblSimulateForm.value;
-  
+    
+    this.sblTotalRPT = this.sblSimulateService.getAvailBal();
+    console.log(this.sblTotalRPT);
     // console.log(dataLookup.aff_com_cis_number);
     if (dataLookup.com_cis_number) {
       let cis = dataLookup.com_cis_number;
