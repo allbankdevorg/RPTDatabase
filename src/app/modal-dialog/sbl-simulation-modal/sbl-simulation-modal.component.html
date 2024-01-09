@@ -28,7 +28,7 @@
                 <!-- <mat-label>Account Name</mat-label> -->
                 <input matInput #accDinput id="accountName"  name="accountName"
                 type="text" placeholder="Account Name"
-                formControlName="com_account_name" appCaps [readonly]="isReadOnly">
+                formControlName="com_account_name" [readonly]="isReadOnly">
                 <mat-error *ngIf="sblSimulateForm.get('com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
             </mat-form-field>
         </c-col>
