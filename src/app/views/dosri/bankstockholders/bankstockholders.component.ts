@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatSort } from '@angular/material/sort';
 
 // Functions Import
 import {updateShares} from '../../../functions-files/updateFunctions'
@@ -44,6 +45,7 @@ export class BankstockholdersComponent {
   dataSource = new MatTableDataSource<Data>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   constructor(private router: Router,
@@ -61,6 +63,13 @@ export class BankstockholdersComponent {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    this.sort.sort({
+      id: 'date_insert',
+      start: 'desc',
+      disableClear: false
+    });
   }
 
 
