@@ -144,6 +144,46 @@ export class RpOfficerComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+
+  constructor(private router: Router,
+    public _dialog: MatDialog,
+    private formBuilder: FormBuilder, 
+    private http: HttpClient, 
+    private dataTransferService: DataTransferService,
+    private dataService: AffiliatesService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private sharedService: SharedservicesService,
+    private get: FetchDataService )
+    {
+      this.boForm = this.formBuilder.group({
+        boCisNumber: [''],
+        boFirstName: [''],
+        boMiddleName: [''],
+        boLastName: [''],
+        boPosition: [''],
+    });
+    this.boRIForm = this.formBuilder.group({
+      boRICisNumber: [''],
+      boRIFirstName: [''],
+      boRIMiddleName: [''],
+      boRILastName: [''],
+  });
+  this.affForm = this.formBuilder.group({
+    affilCisNumberM: [''],
+    accountName: [''],
+    companyName: [''],
+    commandControl: ['']
+  });
+}
+
+ngOnInit(): void {
+this.updateTableData();
+}
+
+  
+
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
 
@@ -178,41 +218,7 @@ export class RpOfficerComponent implements AfterViewInit {
   this.dataSource.filter = filterValue;
   }
 
-  constructor(private router: Router,
-          public _dialog: MatDialog,
-          private formBuilder: FormBuilder, 
-          private http: HttpClient, 
-          private dataTransferService: DataTransferService,
-          private dataService: AffiliatesService,
-          private cdr: ChangeDetectorRef,
-          private ngZone: NgZone,
-          private sharedService: SharedservicesService,
-          private get: FetchDataService )
-          {
-            this.boForm = this.formBuilder.group({
-              boCisNumber: [''],
-              boFirstName: [''],
-              boMiddleName: [''],
-              boLastName: [''],
-              boPosition: [''],
-          });
-          this.boRIForm = this.formBuilder.group({
-            boRICisNumber: [''],
-            boRIFirstName: [''],
-            boRIMiddleName: [''],
-            boRILastName: [''],
-        });
-        this.affForm = this.formBuilder.group({
-          affilCisNumberM: [''],
-          accountName: [''],
-          companyName: [''],
-          commandControl: ['']
-        });
-    }
-
-  ngOnInit(): void {
-    this.updateTableData();
-   }
+  
 
 
 
@@ -374,7 +380,6 @@ openAddEditEmpForm() {
 }
 
 openEditForm(data: any, event: any) {
-  
   console.log(data);
   event.stopPropagation();
   // console.log(data);
