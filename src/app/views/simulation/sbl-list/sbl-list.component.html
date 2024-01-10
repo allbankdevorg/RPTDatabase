@@ -26,11 +26,11 @@
                     <c-card class="mb-4">
                       <c-card-header class="d-flex justify-content-between align-items-center" id="{{ account.company_name }}">
                         <div>  
-                          {{ account.company_name }} <button (click)="openSimulation()" (click)="openSimulation(); calculateAvailable(sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal)" mat-fab extended color="primary" class="add-btn-icon">Simulate</button>
+                          {{ account.company_name }} <button (click)="openSimulation(); calculateAvailable(sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal)" mat-fab extended color="primary" class="add-btn-icon">Simulate</button>
                         </div>
                         <div class="mt-1">
                           <mat-form-field [style.width.%]=100>
-                            <input matInput #accountFilterInput [formControl]="searchTextLoanList" (input)="applyFilterLoanList()"
+                            <input matInput #accountFilterInput (input)="applyFilterLoanList(accountFilterInput)"
                              placeholder="Search">
                                 <mat-icon matSuffix>search</mat-icon>
                         </mat-form-field>
@@ -38,7 +38,7 @@
                       </c-card-header>
                        <c-card-body>
                         <mat-table
-                          [dataSource]="account.loan_list"
+                          [dataSource]="account.loan_list | filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']"
                           [hover]="true"
                           [responsive]="true"
                           [striped]="true"
