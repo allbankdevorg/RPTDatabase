@@ -1,25 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filter'
+  name: 'filterLoanList'
 })
 export class FilterPipe implements PipeTransform {
-  transform(items: any[], searchText: string): any[] {
-    if (!items || !searchText) {
+  transform(items: any[], filter: any, columns: string[]): any {
+    if (!items || !filter || !columns || columns.length === 0) {
       return items;
     }
 
-    searchText = searchText.toLowerCase();
-
-    return items.filter(item => {
-      // Modify this condition based on your data structure
-      return (
-        item.loan_no.toLowerCase().includes(searchText) ||
-        item.name.toLowerCase().includes(searchText) ||
-        // Add more conditions for other properties
-        // ...
-        true // placeholder condition; modify or remove as needed
-      );
-    });
+    return items.filter(item =>
+      columns.some(
+        key => item[key] && item[key].toLowerCase().includes(filter[key].toLowerCase())
+      )
+    );
   }
 }
