@@ -25,7 +25,7 @@ export class AuthSessionService {
 
   // Returns true when the user is logged in and email is verified
   get isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('user');
+    return !!sessionStorage.getItem('sessionID');
   }
 
   setAuthToken(token: string): void {

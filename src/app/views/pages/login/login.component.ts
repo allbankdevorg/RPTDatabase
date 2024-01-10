@@ -175,7 +175,7 @@ async login() {
       this.userName = username;
       this.password = password;
 
-      this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
+      // this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
 
       const modal = this.otpModal.nativeElement;
 
