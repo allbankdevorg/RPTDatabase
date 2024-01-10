@@ -473,9 +473,11 @@ async  ngOnInit() {
      const offData = this.affilOfficerForm.value;
      const directorId = this.sharedService.getDirectorId();
      const companyName = this.sharedService.getCompName();
-     
+     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+     const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      
      // Call the JavaScript function with form data
-     createAffilOff(offData, this.compId); // Pass the entire formData object
+     createAffilOff(offData, this.compId, session, userID); // Pass the entire formData object
      this.ngOnInit();
 
     //  console.log(offData);

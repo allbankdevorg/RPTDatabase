@@ -321,8 +321,11 @@ this.updateTableData();
   onSubmit() {
     if (this.affForm.valid) {
       const formData = this.affForm.value;
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+     const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      
       // Call the JavaScript function with form data
-      createAffil(formData); // Pass the entire formData object
+      createAffil(formData, session, userID); // Pass the entire formData object
     }
   }
 

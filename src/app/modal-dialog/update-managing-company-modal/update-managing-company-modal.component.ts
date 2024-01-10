@@ -89,7 +89,7 @@ export class UpdateManagingCompanyModalComponent {
           })
       } else {
       // Call the JavaScript function with form data
-          createAffil(formData, moduleV) // Pass the entire formData object
+          createAffil(formData, moduleV, session, userID) // Pass the entire formData object
           .then((response) => {
             // Log the response when the promise is resolved
               this.ngOnInit();
