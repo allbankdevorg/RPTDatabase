@@ -116,8 +116,12 @@
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
-                        
-                      <mat-error *ngIf="userForm.get('uPass')?.hasError('required')" class="error-msg">Password is Required</mat-error>
+                        <mat-error *ngIf="userForm.get('uPass')?.hasError('required')" class="error-msg">Password is Required</mat-error>
+                        <mat-error *ngIf="userForm.get('uPass')?.hasError('capitalLetter')" class="error-msg">Password must contain at least one capital letter!</mat-error>
+                        <mat-error *ngIf="userForm.get('uPass')?.hasError('number')" class="error-msg">Password must contain at least one number!</mat-error>
+                        <mat-error *ngIf="userForm.get('uPass')?.hasError('specialCharacter')" class="error-msg">Password must contain at least one special character.</mat-error>
+                        <mat-error *ngIf="userForm.get('uPass')?.hasError('minLength')" class="error-msg">Password must be at least 8 characters long.</mat-error>
+                      
                       </mat-form-field>
                   </c-col>
               </c-row>

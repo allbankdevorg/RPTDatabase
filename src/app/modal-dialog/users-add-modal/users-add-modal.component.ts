@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, NgZone, Renderer2} from '@angular/core';
-import { FormBuilder, FormGroup, MaxLengthValidator, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, MaxLengthValidator, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
 import { ChangeDetectorRef } from '@angular/core';
@@ -77,7 +77,7 @@ export class UsersAddModalComponent {
       role: ['', [Validators.required]],
       commandControl: [''],
       userName: ['', [Validators.required]],
-      uPass: ['', [Validators.required]],
+      uPass: ['', [Validators.required, this.passwordValidator()]],
       
     });
     _dialogRef.disableClose = true;
@@ -167,7 +167,37 @@ private logAuditTrail(auditTrailEntry: AuditTrail) {
 }
 
 
+passwordValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value: string = control.value;
 
+    // Check for at least one capital letter
+    const capitalLetterRegex = /[A-Z]/;
+    if (!capitalLetterRegex.test(value)) {
+      return { 'capitalLetter': true };
+    }
+
+    // Check for at least one number
+    const numberRegex = /\d/;
+    if (!numberRegex.test(value)) {
+      return { 'number': true };
+    }
+
+    // Check for at least one special character
+    const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    if (!specialCharacterRegex.test(value)) {
+      return { 'specialCharacter': true };
+    }
+
+    // Check for the minimum length (8 characters)
+    if (value.length < 8) {
+      return { 'minLength': true };
+    }
+
+    // Password is valid
+    return null;
+  };
+}
 
 
 
