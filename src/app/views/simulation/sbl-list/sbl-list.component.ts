@@ -139,6 +139,8 @@ export class SBLListComponent implements OnInit{
   sblIsPositive: boolean = false;
 sblIsNegative: boolean = false;
 
+searchTextLoanList: any;
+
 // Inside the method where you calculate the summary
 
 
@@ -164,24 +166,25 @@ sblIsNegative: boolean = false;
 
     }
 
-    searchTextLoanList = new FormControl<string | null>('');
-    account: { loan_list: sblList[] } = { loan_list: [] };
-  
-  
-    applyFilterLoanList(): void {
-      const searchText = (this.searchTextLoanList.value || '').toLowerCase();
-      this.account.loan_list = this.filterData(this.account.loan_list, searchText);
+    
+
+    applyFilterLoanList(account: any): any[] | undefined {
+      if (this.searchTextLoanList && this.searchTextLoanList.value) {
+        const filterValue = this.searchTextLoanList.value.toLowerCase();
       
+        // Adjust the following logic based on your data structure and filter requirements
+        return account.loan_list.filter((item: any) =>
+          item.loan_no.toLowerCase().includes(filterValue) ||
+          item.name.toLowerCase().includes(filterValue) ||
+          item.loan_security.toLowerCase().includes(filterValue)
+          // Add more fields as needed for your use case
+          // ...
+        );
+      }
+      return undefined;
     }
-  
-    private filterData(data: sblList[], searchText: string): sblList[] {
-      return data.filter(
-        item => item.name.toLowerCase().includes(searchText) || 
-                item.loan_no.toLowerCase().includes(searchText) ||
-                // Add other properties as needed for filtering
-                true
-      );
-    }
+
+
 
   ngOnInit() {
     // Additional initialization logic if needed
@@ -189,6 +192,7 @@ sblIsNegative: boolean = false;
     this.sbl = (this.unimpairedCap * .25);
     this.internalSBL = (this.unimpairedCap * .20);
     this.availBal = this.internalSBL 
+    this.searchTextLoanList = new FormControl();
     // console.log(this.availBal);
     // this.updateTableDatas();
     // this.data = this.getFlattenedData(this.data); 
@@ -196,7 +200,6 @@ sblIsNegative: boolean = false;
 
   updateTableData(): void {
     this.get.getSBL((sblData) => {
-      console.log(sblData)
       if (sblData) {
         // this.SBL = sblData;
         // console.log(this.SBL);
@@ -260,11 +263,20 @@ sblIsNegative: boolean = false;
 
   // Function to scroll to the card with the specified name
   scrollToUser(name: string) {
-    const element = document.getElementById(name);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center'});
+    const lowerCaseName = name.toLowerCase();
+    const elements = document.querySelectorAll('[id]');
+  
+    for (const element of Array.from(elements)) {
+      const elementId = element.id.toLowerCase();
+  
+      if (elementId.includes(lowerCaseName)) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break; // Stop searching after the first match
+      }
     }
   }
+  
+  
 
 
   // Function to Show the simulation Modal
