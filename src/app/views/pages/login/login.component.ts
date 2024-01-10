@@ -162,6 +162,8 @@ async login() {
     const otpGen = this.authService.generateAndSaveOtp()
     // this.otpGene = otpGen;
 
+    
+
 
     try {
       const response = await Loginuser(username, password, sessionId, otpGen, userID);
@@ -170,6 +172,8 @@ async login() {
       this.sID = sessionId;
       this.uA = response.result[0].user_access;
 
+      this.userName = username;
+      this.password = password;
 
       this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
 
@@ -301,13 +305,70 @@ async verifyOtp() {
     const mobile = this.mobileNum;
     const otpGen = this.authService.generateAndSaveOtp();
       // Implement OTP resend logic here
-      alert('OTP Resent');
-      // Simulate OTP generation and saving
+      // alert('OTP Resent');
+
       try {
-        const sendotp = await sendOTP(mobile, otpGen, userID, session);
+
+        const username = this.userName;
+        const password = this.password;
+        const sessionId = this.sID
+        const response = await Loginuser(username, password, sessionId, otpGen, userID);
+        this.uD = response.result[0].user_details[0].id;
+        this.userName = response.result[0].user_details[0].username;
+        this.sID = sessionId;
+        this.uA = response.result[0].user_access;
+  
+        this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
+  
+        const modal = this.otpModal.nativeElement;
+  
+        if (response.result[0].message === 'success') {
+          const mobile = response.result[0].user_details[0].mobile_no;
+          this.mobileNum = mobile;
+          this.userName = response.result[0].user_details[0].username;
+          const userID = this.uD;
+          const session = this.sID;
+  
+          if (modal) {
+            
+            this.renderer.addClass(modal, 'show');
+            this.renderer.setStyle(modal, 'display', 'block');  
+  
+            try {
+              const sendotp = await sendOTP(mobile, otpGen, userID, session);
+            } catch (error: any) {
+              const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            }          
+          }
+          // Log successful login
+          this.logAction('login', 'Login success', true, 'Login');
+        } else {
+          // Log unsuccessful login
+          this.logAction('login', 'Invalid username or password', false, 'Login');
+  
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            // text: 'Invalid username or password',
+          });
+        }
       } catch (error: any) {
+        // Log unsuccessful login with error message
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        this.logAction('login', 'Invalid username or password', false, 'Login', errorMessage);
+      
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Invalid username or password',
+        });
       }
+      // Simulate OTP generation and saving
+      // try {
+      //   const sendotp = await sendOTP(mobile, otpGen, userID, session);
+      // } catch (error: any) {
+      //   const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      // }
   
       this.startResendTimer();
     
