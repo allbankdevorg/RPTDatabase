@@ -55,6 +55,7 @@ const routes: Routes = [
       },
       {
         path: 'maintenance',
+        canActivate: [AuthGuard],
         loadChildren: () =>
           import('./views/maintenance/maintenance.module').then((m) => m.MaintenanceModule)
       },
