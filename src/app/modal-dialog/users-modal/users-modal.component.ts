@@ -103,28 +103,28 @@ export class UsersModalComponent {
       role: ['', [Validators.required]],
       commandControl: [''],
       username: ['', [Validators.required]],
-      // uPass: ['', [Validators.required]],
-      // authority: this.formBuilder.group({
-      //   view: [false],
-      //   add: [false],
-      //   update: [false],
-      //   delete: [false],
-      //   maker: [false],
-      //   approver: [false],
-      //   reviewer: [false],
-      //   // Add more authority checkboxes as needed
-      //   // ...
-      // })
-        // Add more authority checkboxes as needed
-        // ...
     });
     _dialogRef.disableClose = true;
   }
 
 
+
+
+  updateCheckboxValue(event: any, controlName: string, access: any): void {
+    access[controlName] = event.checked ? 1 : 0;
+    console.log("Access Updated", access[controlName])
+  }
+  
+
+  
+  editdata: any;
+
   ngOnInit(): void {
   // Attempt to patch the form
+  // this.userForm.patchValue(this.data);
+  if (this.data != '' && this.data != null) {
   this.userForm.patchValue(this.data);
+  }
   this.getUserAccess();
 
   this.renderer.listen('document', 'click', (event: MouseEvent) => {
@@ -137,6 +137,9 @@ export class UsersModalComponent {
     }
   });
   }
+
+  
+
 
    // Functions
 
