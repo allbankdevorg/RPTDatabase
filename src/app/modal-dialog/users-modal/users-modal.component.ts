@@ -112,7 +112,6 @@ export class UsersModalComponent {
 
   updateCheckboxValue(event: any, controlName: string, access: any): void {
     access[controlName] = event.checked ? 1 : 0;
-    console.log("Access Updated", access[controlName])
   }
   
 
