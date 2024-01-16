@@ -27,7 +27,6 @@ export class AuthGuard {
 
     if (route.url.length > 0) {
       let menu = route.url[0].path;
-      console.log(menu);
       if (menu === 'maintenance' && this.authService.getRole() !== '4') {
         // User with role other than '4' is trying to access 'maintenance/users'
         // this.toastr.warning('You do not have access to this page.');
