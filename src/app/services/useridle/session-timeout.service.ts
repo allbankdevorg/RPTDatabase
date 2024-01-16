@@ -18,16 +18,20 @@ export class SessionTimeoutService {
     private authService : AuthSessionService,
     private keepalive: Keepalive,
     @Inject(DOCUMENT) private document: Document) {
-    // this.setIdleConfig();
+    this.setIdleConfig();
     // Reset idle timer on mouse move
-    if (this.authService.isAuthenticated()) {
-      this.setIdleConfig();
-    }
+    
   
 }
 
+ngOninit () {
+  if (this.authService.isAuthenticated()) {
+    this.setIdleConfig();
+  }
+}
+
   public setIdleConfig(): void {
-    this.idle.setIdle(10); // 10 seconds
+    this.idle.setIdle(5); // 5 seconds
     this.idle.setTimeout(300); // 5 minutes
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
     this.keepalive.interval(5); // 5 seconds
