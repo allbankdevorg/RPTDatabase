@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
   sID: any = [];
   uA: any = [];
   uT: any = [];
+  urole: any;
 
 
   // otp = '';
@@ -171,7 +172,7 @@ async login() {
       this.userName = response.result[0].user_details[0].username;
       this.sID = sessionId;
       this.uA = response.result[0].user_access;
-
+      this.urole = response.result[0].user_details[0].role;
       this.userName = username;
       this.password = password;
 
@@ -230,6 +231,7 @@ async verifyOtp() {
     const user = this.userName;
     const userID = this.uD;
     const session = this.sID;
+    const role = this.urole;
     const loadingModal = Swal.fire({
       title: 'Verifying...',
       allowOutsideClick: false,
@@ -251,6 +253,7 @@ async verifyOtp() {
       sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
       sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
       sessionStorage.setItem('userID', JSON.stringify(this.userName));
+      sessionStorage.setItem('role', JSON.stringify(this.urole));
       // Navigate to the dashboard
       await this.router.navigate(['/dashboard']);
 
