@@ -97,16 +97,22 @@ export class AuthSessionService {
     return this.username;
   }
 
-  getRole(): string | null {
-    if (this.role === null) {
-      const storedUser = sessionStorage.getItem('user');
-      if (storedUser) {
-        const userObj = JSON.parse(storedUser);
-        this.role = userObj.role;
-      }
-    }
-    return this.role;
+  
+  getRole(){
+    return sessionStorage.getItem('role')!=null?sessionStorage.getItem('role')?.toString():'';
   }
+
+  // getRole(): string | null {
+  //   if (this.role === null) {
+  //     const storedUser = sessionStorage.getItem('role');
+  //     if (storedUser) {
+  //       const userObj = JSON.parse(storedUser);
+  //       this.role = userObj.role;
+  //       console.log(this.role);
+  //     }
+  //   }
+  //   return this.role;
+  // }
 
   // Simulate generating and saving OTP
   generateAndSaveOtp(): string {
