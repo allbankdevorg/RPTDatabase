@@ -10,7 +10,7 @@ import {getManagingCompany} from '../../functions-files/getFunctions';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
 import {createAffil, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
-import {updateManagingCompany} from '../../functions-files/update/updateAPI'
+import {updateCompany} from '../../functions-files/update/updateAPI'
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../model/audit-trail.model';
@@ -78,10 +78,12 @@ export class AffiliatesRPModalComponent implements OnInit{
       const formData = this.affForm.value; 
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      const holdOUT = formData.depoHoldOut;
+      
       
       if (this.data) {
         
-        updateManagingCompany(formData)
+        updateCompany(formData)
           .then((response) => {
             this.ngOnInit();
             this.logAction('Update', 'Updated Affiliates', true, 'Affiliates');
@@ -99,10 +101,10 @@ export class AffiliatesRPModalComponent implements OnInit{
               this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
               this.close();
 
-
+              
               const resultData = this.cisLookUpResult;
               console.log(resultData);
-              addPNData(resultData, session, userID)
+              addPNData(resultData, holdOUT, session, userID)
               .then((response) => {
 
               })
