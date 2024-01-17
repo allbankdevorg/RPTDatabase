@@ -300,7 +300,7 @@ function getOfficers(callback) {
       $.ajax(settings).done(function (response) {
         if (response && response.result && response.result.length > 0 && response.result[0].Data) {
             var mngComp = response.result[0].Data;
-            //console.log(affilComp);
+            // console.log(mngComp);
             if (callback) {
                 callback(mngComp);
             }
