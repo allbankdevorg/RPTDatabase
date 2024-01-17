@@ -252,7 +252,7 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber,
 */
 function createAffil(formData, moduleV, session, userID) {
     return new Promise((resolve, reject) => {
-
+      console.log(formData.depoHoldOut);
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
         "method": "POST",
@@ -269,8 +269,8 @@ function createAffil(formData, moduleV, session, userID) {
             "account_name": formData.aff_com_account_name,
             "company_name": formData.aff_com_company_name,
             "manager": formData.managing_company,
-            "depositholdout": formData.depoHoldOut,
             "module": moduleV,
+            "hold_out": formData.depoHoldOut,
           }
         }),
       };
@@ -737,7 +737,7 @@ function userAccess(userid) {
  * @param {any} session - The Sesison ID.
  * @param {any} userID - The Username of the user.
 */
-function addPNData(resultData, session, userID) {
+function addPNData(resultData, holdOUT, session, userID) {
     
   return new Promise((resolve, reject) => {
     // console.log(resultData)
@@ -745,48 +745,53 @@ function addPNData(resultData, session, userID) {
     if (Array.isArray(resultData)) {
       const totalItems = resultData.length;
       let successfulInsertions = 0;
-      
+      const pnHoldOut = holdOUT / totalItems;
+
       resultData.forEach((item) => {
-        console.log(item.loan_no);
-        var settings = {
-            "url": "http://10.232.236.15:8092/api/addData",
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-              "Content-Type": "application/json"
-            },
-            "data": JSON.stringify({
-              "cmd": 20,
-              "session": session,
-              "userid": userID,
-              "request": {
-                "cis_no": item.cis_no,
-                "name": item.name,
-                "loan_no": item.loan_no,
-                "principal": item.principal,
-                "principal_bal": item.principal_bal,
-                "date_granted": item.date_granted,
-                "created_by": item.created_by,
-                "date_created": item.date_created,
-                "loan_security": item.loan_security
-              }
-            }),
-        };
-
-        $.ajax(settings).done(function (response) {
-          if (response.result[0].status === 'success') {
-            successfulInsertions++;
-
-            if (successfulInsertions === totalItems) {
-              // All items inserted successfully, show the modal
-              Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-              resolve(response);
-            }
-          } else {
-            reject(response);
-          }
-        });
+      console.log(pnHoldOut);
       });
+      
+      // resultData.forEach((item) => {
+      //   console.log(item.loan_no);
+      //   var settings = {
+      //       "url": "http://10.232.236.15:8092/api/addData",
+      //       "method": "POST",
+      //       "timeout": 0,
+      //       "headers": {
+      //         "Content-Type": "application/json"
+      //       },
+      //       "data": JSON.stringify({
+      //         "cmd": 20,
+      //         "session": session,
+      //         "userid": userID,
+      //         "request": {
+      //           "cis_no": item.cis_no,
+      //           "name": item.name,
+      //           "loan_no": item.loan_no,
+      //           "principal": item.principal,
+      //           "principal_bal": item.principal_bal,
+      //           "date_granted": item.date_granted,
+      //           "created_by": item.created_by,
+      //           "date_created": item.date_created,
+      //           "loan_security": item.loan_security,
+      //         }
+      //       }),
+      //   };
+
+      //   $.ajax(settings).done(function (response) {
+      //     if (response.result[0].status === 'success') {
+      //       successfulInsertions++;
+
+      //       if (successfulInsertions === totalItems) {
+      //         // All items inserted successfully, show the modal
+      //         Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+      //         resolve(response);
+      //       }
+      //     } else {
+      //       reject(response);
+      //     }
+      //   });
+      // });
     } else {
       // If resultData is not an array, log an error or handle accordingly
       console.error("Invalid resultData format");
@@ -847,6 +852,37 @@ function addSimulatedPNData(sPNData, session, userID) {
 }
 
 
+/**
+ * HoldOut
+ * @param {any} userID - The Username of the user.
+*/
+function HoldOutValue(cis) {
+  return new Promise((resolve, reject) => {
+    var settings = {
+      "url": "http://10.232.236.15:8092/api/dataTables",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "cmd": 115,
+        "com_cis": cis,
+      }),
+    };
+    
+    $.ajax(settings).done(function (response) {
+      // console.log(response);
+      if (response.result[0].message === 'Success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
+    });
+});
+}
+
+
  module.exports = {
     createDosri,
     createDirectors,
@@ -866,5 +902,6 @@ function addSimulatedPNData(sPNData, session, userID) {
     createUser,
     userAccess,
     addPNData,
-    addSimulatedPNData
+    addSimulatedPNData,
+    HoldOutValue
  }
