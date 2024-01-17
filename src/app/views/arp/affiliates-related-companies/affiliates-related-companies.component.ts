@@ -339,7 +339,7 @@ openAddEditEmpForm() {
 }
 
 openEditForm(event: any) {
-  const data = this.selectedData
+  const data = this.selectedData;
   event.stopPropagation();
   // console.log(data);
   const dialogRef = this._dialog.open(UpdateManagingCompanyModalComponent, {
