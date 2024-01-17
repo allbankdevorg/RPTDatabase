@@ -48,7 +48,7 @@ export class UpdateManagingCompanyModalComponent {
       aff_com_comp_name: ['', [Validators.required]],
       managing_company: [''],
       // commandControl: [''],
-      depoHoldOut: ['']
+      hold_out: ['']
       });
       _dialogRef.disableClose = true;
   }
@@ -75,7 +75,7 @@ export class UpdateManagingCompanyModalComponent {
       const formData = this.affForm.value; 
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
-      
+      console.log(formData);
       if (this.data) {
         
         updateManagingCompany(formData)
