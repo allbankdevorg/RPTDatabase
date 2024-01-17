@@ -111,21 +111,23 @@
 
 
                      <!-- Position Column -->
-                     <ng-container matColumnDef="DepositHO">
+                     <ng-container matColumnDef="hold_out">
                       <mat-header-cell *matHeaderCellDef> Deposit Hold-out </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.DepositHO}} </mat-cell>
+                      <mat-cell *matCellDef="let element"> {{element.hold_out | number: '1.2-2'}} </mat-cell>
                     </ng-container>
 
-                     <!-- Position Column -->
-                     <ng-container matColumnDef="netBal">
+                    <!-- Net Balance -->
+                    <ng-container matColumnDef="netBal">
                       <mat-header-cell *matHeaderCellDef> Net Balance </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.netBal}} </mat-cell>
+                      <mat-cell *matCellDef="let element">
+                        {{ (element.principal_bal || 0) - (element.hold_out || 0) | number:'1.2-2' }}
+                      </mat-cell>
                     </ng-container>
 
                      <!-- Position Column -->
-                     <ng-container matColumnDef="tran_date">
+                     <ng-container matColumnDef="date_granted">
                       <mat-header-cell *matHeaderCellDef> Transaction Date </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.tran_date}} </mat-cell>
+                      <mat-cell *matCellDef="let element"> {{element.date_granted | date: 'MM/dd/yyyy'}} </mat-cell>
                     </ng-container>
 
                      <!-- Position Column -->
@@ -171,6 +173,7 @@
                                                     <td> <strong>TOTAL RPT</strong> </td>
                                                     <td>Php {{ttlRPTOL | number: '1.2-2'}}</td>
                                                     <td>Php {{ttlRPTOB | number: '1.2-2'}}</td>
+                                                    <td>Php {{rptBal | number: '1.2-2'}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
