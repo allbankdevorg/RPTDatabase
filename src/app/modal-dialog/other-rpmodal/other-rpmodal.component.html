@@ -29,7 +29,7 @@
                   <input matInput #accDinput id="accountName"  name="accountName"
                   type="text" placeholder="Account Name" [readonly]="isReadOnly"
                   formControlName="aff_com_account_name" appCaps>
-                  <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
                 </mat-form-field>
             </c-col>
           </c-row>
@@ -43,7 +43,7 @@
                   <input matInput #accDinput id="companyName" name="companyName"
                   type="text" placeholder="Company Name" [readonly]="isReadOnly"
                   formControlName="aff_com_company_name" appCaps>
-                  <mat-error *ngIf="affForm.get('aff_com_company_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
                 </mat-form-field>
               </c-col>
       
@@ -68,7 +68,7 @@
                   <input matInput #accDinput id="depoHoldOut" name="depoHoldOut"
                   type="text" placeholder="Deposit Hold-Out" [readonly]="isReadOnly"
                   formControlName="depoHoldOut" appNum>
-                  <mat-error *ngIf="affForm.get('depoHoldOut')?.hasError('required')" class="error-msg">Deposit Hold-Out Amount is required</mat-error>
+                  <!-- <mat-error *ngIf="affForm.get('depoHoldOut')?.hasError('required')" class="error-msg">Deposit Hold-Out Amount is required</mat-error> -->
                 </mat-form-field>
               </c-col>
       
