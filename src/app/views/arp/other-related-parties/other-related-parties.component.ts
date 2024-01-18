@@ -131,6 +131,7 @@ export class OtherRelatedPartiesComponent {
       data.addColumn('string', 'Manager');
       data.addColumn('string', 'Name_cis');
       data.addColumn('string', 'managerCIS');
+      data.addColumn('number', 'hold_out');
 
       data.addRows(this.orgsData);
       var options = {
@@ -196,7 +197,8 @@ export class OtherRelatedPartiesComponent {
               item.aff_com_account_name, 
               item.manager, 
               item.aff_com_cis_number, 
-              item.managing_company]);
+              item.managing_company,
+              item.hold_out]);
 
           this.orgsData = dataArr;
           google.charts.load('current', { packages: ['orgchart'] });
@@ -241,7 +243,8 @@ export class OtherRelatedPartiesComponent {
       aff_com_comp_name: selectedItem[0],
       manager: selectedItem[1],
       aff_com_cis_number: selectedItem[2],
-      managing_company: selectedItem[3] 
+      managing_company: selectedItem[3], 
+      hold_out: selectedItem[4]
   };
     
     this.selectedData = transformedData;
