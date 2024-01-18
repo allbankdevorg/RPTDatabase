@@ -75,7 +75,6 @@ export class UpdateManagingCompanyModalComponent {
       const formData = this.affForm.value; 
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
-      console.log(formData);
       if (this.data) {
         
         updateManagingCompany(formData)
