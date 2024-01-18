@@ -68,7 +68,7 @@
                   <!-- <mat-label>Company Name</mat-label> -->
                   <input matInput #accDinput id="depoHoldOut" name="depoHoldOut"
                   type="text" placeholder="Deposit Hold-Out" 
-                  formControlName="depoHoldOut" appNum>
+                  formControlName="hold_out" appNum>
                   <mat-error *ngIf="affForm.get('depoHoldOut')?.hasError('required')" class="error-msg">Deposit Hold-Out Amount is required</mat-error>
                 </mat-form-field>
               </c-col>
