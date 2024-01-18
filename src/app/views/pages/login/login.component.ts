@@ -307,6 +307,7 @@ async verifyOtp() {
     const session = this.sID;
     const mobile = this.mobileNum;
     const otpGen = this.authService.generateAndSaveOtp();
+    this.startResendTimer();
       // Implement OTP resend logic here
       // alert('OTP Resent');
 
@@ -373,7 +374,7 @@ async verifyOtp() {
       //   const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       // }
   
-      this.startResendTimer();
+      
     
   }
 
