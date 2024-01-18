@@ -116,11 +116,19 @@
                               <div>
                                 <c-card class="mb-4">
                                     <c-card-body>
-                                      <table cTable [responsive]="true">
+                                      <table cTable [responsive]="true" >
                                         <tbody>
                                            <tr>
                                             <th>Total {{account.company_name}} GRP</th>
-                                            <td> {{ calculateLoanListSummary(account.loan_list).totalPrincipalBal - totalHoldOut | number: '1.2-2' }} </td>
+                                            
+                                            <td>
+                                              {{ calculateTotalNetHoldOut(account.loan_list) | number: '1.2-2' }}
+                                            </td>
+                                            
+                                            <!-- Display the hidden element to trigger the calculation -->
+                                            <td style="display: none;">
+                                              {{ updateTotalNetHoldOut(account) }}
+                                            </td>
                                            </tr>
                                            
                                            <tr>
