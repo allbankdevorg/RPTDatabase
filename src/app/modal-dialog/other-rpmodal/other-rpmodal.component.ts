@@ -47,7 +47,7 @@ export class OtherRPModalComponent implements OnInit {
       aff_com_account_name: ['', [Validators.required]],
       aff_com_company_name: ['', [Validators.required]],
       managing_company: [''],
-      depoHoldOut: ['']
+      hold_out: ['']
       });
       _dialogRef.disableClose = true;
   }
