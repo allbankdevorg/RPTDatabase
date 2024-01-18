@@ -8,7 +8,9 @@ import {HoldoutAllocationModalComponent} from '../../../modal-dialog/holdout-all
 
 //Import for API Function
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
+import {HoldOutValue} from '../../../functions-files/add/postAPI';
 import { MatTableDataSource } from '@angular/material/table';
+
 
 import { FilterPipe } from 'src/app/pipe/filterPipe/filter.pipe';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -140,6 +142,8 @@ export class SBLListComponent implements OnInit{
 sblIsNegative: boolean = false;
 
 searchTextLoanList: any;
+totalHoldOut: number = 0;
+
 
 // Inside the method where you calculate the summary
 
@@ -147,7 +151,7 @@ searchTextLoanList: any;
   // account: any = {};
 
   dataSource = new MatTableDataSource<ResultItem>
-  displayedColumns: string[] = ['loan_no', 'account_name', 'branch_name', 'loan_security', 'collateral', 'amount_granted', 'date_granted'
+  displayedColumns: string[] = ['loan_no', 'account_name', 'branch_name', 'loan_security', 'amount_granted', 'date_granted'
   , 'principal_bal', 'hold_out', 'net_holdout', 'payment_status'];
 
 
@@ -198,50 +202,112 @@ searchTextLoanList: any;
     // this.data = this.getFlattenedData(this.data); 
   }
 
+
   updateTableData(): void {
     this.get.getSBL((sblData) => {
       if (sblData) {
-        // this.SBL = sblData;
-        // console.log(this.SBL);
+        const uniqueCisNumbers = [...new Set(sblData.flatMap((entry) =>  entry.loan_list.map(loan => loan.cis_no)))];
+
+        uniqueCisNumbers.forEach((cisNumber) => {
+          HoldOutValue(cisNumber)
+            .then((response) => {
+              const holdOUT = response.result[0].Data[0].hold_out;
+  
+              if (holdOUT) {
+                const entries =  sblData.flatMap(entry => entry.loan_list.filter(loan => loan.cis_no === cisNumber));
+                
+                const holdOutValue = holdOUT || 0;
+                const holdOutPerCis = entries.length > 0 ? holdOutValue / entries.length : 0;
+  
+                // Update PN Data with divided hold_out values
+                entries.forEach((entry, index) => {
+                  // const holdOutPerEntry = holdOutPerCis * (index + 1);
+                  entry.hold_out = Number(holdOutPerCis.toFixed(2));
+                  this.totalHoldOut += entry.hold_out;
+                });
+              } else {
+                // Handle error or empty hold_out response
+              }
+            })
+            .catch((error) => {
+              // Handle error
+            });
+        });
+  
+        // Move this line outside the forEach loop to update the original sblData array
         this.dataSource.data = sblData;
-
-        // console.log(this.dataSource.data);
+  
+        // Calculate sums and ratios based on the filtered data
+        const sumPrincipal = sblData.reduce((acc, obj) => {
+          acc.principal += parseFloat(obj.principal) || 0;
+          acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+          return acc;
+        }, { principal: 0, principal_bal: 0 });
+  
+        this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
+        const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
+        this.rptRatio = percentage;
+        this.ttlRPTOL = sumPrincipal.principal;
+        this.ttlRPTOB = sumPrincipal.principal_bal;
+        this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+        this.approvedCapital = this.unimpairedCap * 0.5;
+        this.availBal = this.approvedCapital - this.rptBal;
+  
         this.cdr.detectChanges();
-        // if (Array.isArray(sblData)) {
-        //   sblData.forEach((item) => {
-
-        //     console.log(item);
-            
-        //   });
-        // }
-        // else{
-
-        // }
-        // Use reduce to calculate the sum of "principal" values
-        // const sumPrincipal = sblData.reduce((acc, obj) => {
-        //   acc.principal += parseFloat(obj.principal) || 0;
-        //   acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-        //   return acc;
-        // }, { principal: 0, principal_bal: 0 });
-
-        // this.rptBal = sumPrincipal.principal_bal;
-        // const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
-        // this.rptRatio = percentage;
-        // // this.subtlOL = sumPrincipal.principal;
-        // // this.subtlOB = this.rptBal;
-        // this.ttlRPTOL = sumPrincipal.principal;
-        // this.ttlRPTOB = this.rptBal;
-        // this.SBL = sblData;
-        // console.log(this.SBL);
-        // this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
-        // this.approvedCapital = this.unimpairedCap * 0.5;
-        
-        // this.availBal = this.approvedCapital - this.rptBal;
       } else {
-
+        // Handle case where sblData is empty
       }
     });
   }
+  
+  
+
+  // updateTableData(): void {
+  //   this.get.getSBL((sblData) => {
+  //     if (sblData) {
+  //       // this.SBL = sblData;
+  //       // console.log(this.SBL);
+  //       this.dataSource.data = sblData;
+
+
+
+  //       // console.log(this.dataSource.data);
+  //       this.cdr.detectChanges();
+  //       // if (Array.isArray(sblData)) {
+  //       //   sblData.forEach((item) => {
+
+  //       //     console.log(item);
+            
+  //       //   });
+  //       // }
+  //       // else{
+
+  //       // }
+  //       // Use reduce to calculate the sum of "principal" values
+  //       // const sumPrincipal = sblData.reduce((acc, obj) => {
+  //       //   acc.principal += parseFloat(obj.principal) || 0;
+  //       //   acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+  //       //   return acc;
+  //       // }, { principal: 0, principal_bal: 0 });
+
+  //       // this.rptBal = sumPrincipal.principal_bal;
+  //       // const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
+  //       // this.rptRatio = percentage;
+  //       // // this.subtlOL = sumPrincipal.principal;
+  //       // // this.subtlOB = this.rptBal;
+  //       // this.ttlRPTOL = sumPrincipal.principal;
+  //       // this.ttlRPTOB = this.rptBal;
+  //       // this.SBL = sblData;
+  //       // console.log(this.SBL);
+  //       // this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+  //       // this.approvedCapital = this.unimpairedCap * 0.5;
+        
+  //       // this.availBal = this.approvedCapital - this.rptBal;
+  //     } else {
+
+  //     }
+  //   });
+  // }
 
 
   calculateLoanListSummary(loanList: Loan[]): any {
