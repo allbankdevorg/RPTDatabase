@@ -51,7 +51,7 @@ export class UpdateJMNComponent {
       aff_com_comp_name: ['', [Validators.required]],
       managing_company: [''],
       // commandControl: [''],
-      depoHoldOut: ['']
+      hold_out: ['']
       });
       _dialogRef.disableClose = true;
   }
