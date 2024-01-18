@@ -63,14 +63,14 @@
                           </ng-container>
 
                           <ng-container matColumnDef="loan_security">
-                            <mat-header-cell *matHeaderCellDef> Loan Secuity </mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef> Collateral</mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="collateral">
+                          <!-- <ng-container matColumnDef="collateral">
                             <mat-header-cell *matHeaderCellDef> Collateral </mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
-                          </ng-container>
+                          </ng-container> -->
 
                           <ng-container matColumnDef="amount_granted">
                             <mat-header-cell *matHeaderCellDef> Amount Granted </mat-header-cell>
@@ -95,7 +95,7 @@
                           <ng-container matColumnDef="net_holdout">
                             <mat-header-cell *matHeaderCellDef> Net of Hold-Out </mat-header-cell>
                             <mat-cell *matCellDef="let element"> 
-                              {{ (+element.principal_bal || 0 - +element.hold_out || 0) | number: '1.2-2' }}
+                              {{ (element.principal_bal || 0) - (element.hold_out || 0) | number:'1.2-2' }}
                             </mat-cell>
                           </ng-container>
 
@@ -120,7 +120,7 @@
                                         <tbody>
                                            <tr>
                                             <th>Total {{account.company_name}} GRP</th>
-                                            <td> {{ calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2' }} </td>
+                                            <td> {{ calculateLoanListSummary(account.loan_list).totalPrincipalBal - totalHoldOut | number: '1.2-2' }} </td>
                                            </tr>
                                            
                                            <tr>
@@ -131,7 +131,7 @@
                                            <tr cTableColor="info" [ngClass]="{'green-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
                                             <td> 
-                                              {{ sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2' }} 
+                                              {{ sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal  - totalHoldOut  | number: '1.2-2' }} 
                                             </td>
                                           </tr>                                          
                                            <tr>
@@ -140,7 +140,7 @@
                                            </tr>
                                            <tr>
                                             <th>TOTAL {{account.company_name}} GRP</th>
-                                            <td> {{calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2'}} </td>
+                                            <td> {{calculateLoanListSummary(account.loan_list).totalPrincipalBal - totalHoldOut  | number: '1.2-2'}} </td>
                                            </tr>
                                            
                                            <tr>
@@ -150,7 +150,7 @@
                                            
                                            <tr cTableColor="info" [ngClass]="{'green-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
-                                            <td>{{internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal | number: '1.2-2'}}</td>
+                                            <td>{{internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal - totalHoldOut | number: '1.2-2'}}</td>
                                            </tr>
                                            
                                            
