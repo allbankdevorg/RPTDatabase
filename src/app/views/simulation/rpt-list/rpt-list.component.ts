@@ -102,7 +102,6 @@ export class RptListComponent {
         if (PNData) {
           const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
           
-
           uniqueCisNumbers.forEach((cisNumber) => {
             HoldOutValue(cisNumber) // Pass the entire formData object
             .then((response) => {
