@@ -243,6 +243,7 @@ async verifyOtp() {
     try {
       // Perform OTP verification asynchronously
       const verificationPromise = await checkOTP(user, enteredOTP, userID, session);
+      const sessionExpireTime = Date.now() + 300000;
 
       if (verificationPromise.result[0].message === 'success') {
       
@@ -260,6 +261,8 @@ async verifyOtp() {
       localStorage.setItem('userAcces', JSON.stringify(this.uA));
       localStorage.setItem('userID', JSON.stringify(this.userName));
       localStorage.setItem('role', JSON.stringify(this.urole));
+      localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
+
 
       // Navigate to the dashboard
       await this.router.navigate(['/dashboard']);
