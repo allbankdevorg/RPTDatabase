@@ -111,16 +111,16 @@
 
 
                      <!-- Position Column -->
-                     <ng-container matColumnDef="hold_out">
+                     <ng-container matColumnDef="deposit_holdout">
                       <mat-header-cell *matHeaderCellDef> Deposit Hold-out </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.hold_out | number: '1.2-2'}} </mat-cell>
+                      <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | number: '1.2-2'}} </mat-cell>
                     </ng-container>
 
                     <!-- Net Balance -->
                     <ng-container matColumnDef="netBal">
                       <mat-header-cell *matHeaderCellDef> Net Balance </mat-header-cell>
                       <mat-cell *matCellDef="let element">
-                        {{ (element.principal_bal || 0) - (element.hold_out || 0) | number:'1.2-2' }}
+                        {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }}
                       </mat-cell>
                     </ng-container>
 
@@ -150,7 +150,7 @@
 
                 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'selected-row': row === selectedPN}"></mat-row>
                     </mat-table>
 
 
@@ -163,12 +163,20 @@
                                         <table [responsive]="true" [cBorder]="1" cTable bordered >
                                             <thead cTableColor="success">
                                             <tr>
-                                            <!-- <th scope="col">Unimpaired Capital (as of November 30, 2023)</th>
-                                            <th scope="col"> RPT Balance (Net of Hold-out) </th>
-                                            <th scope="col"> RPT Ratio </th> -->
+                                            <th></th>
+                                            <th scope="col">Original Loan</th>
+                                            <th scope="col">Outstanding Balance</th>
+                                            <th scope="col">Net Balance</th>
                                             </tr>
+                                            <!-- <thead>
+                                              <th></th>
+                                              <th>Original Loan</th>
+                                              <th>Outstanding Balance</th>
+                                              <th>Net Balance</th>
+                                            </thead> -->
                                             </thead>
                                             <tbody>
+                                                
                                                 <tr>
                                                     <td> <strong>TOTAL RPT</strong> </td>
                                                     <td>Php {{ttlRPTOL | number: '1.2-2'}}</td>
