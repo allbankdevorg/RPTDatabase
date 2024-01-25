@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 // Import for Simulation Modal
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { RPTSimulationModalComponent } from 'src/app/modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
+import {HoldoutAllocationModalComponent} from '../../../modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component'
 
 //Import for API Function
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
@@ -38,10 +39,10 @@ export class RptListComponent {
   availRptRatio: any;
   approvedCapital: any;  // => the Loan approved Limit
   totalHoldOut: number = 0;
-      
+  selectedPN: any;
   
   displayedColumns: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security', 
-  'hold_out', 'netBal', 'date_granted', 'terms', 'purpose', 'intRate'];
+  'deposit_holdout', 'netBal', 'date_granted', 'terms', 'purpose', 'intRate'];
   dataSource = new MatTableDataSource<any>([]);
   ToDisplay: string[] = [];
 
@@ -81,13 +82,15 @@ export class RptListComponent {
       return acc;
     }, { principal: 0, principal_bal: 0 });
   
-    this.rptBal = sumPrincipal.principal_bal;
+    this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
     const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
     this.rptRatio = percentage;
     this.subtlOL = sumPrincipal.principal;
     this.subtlOB = this.rptBal
     this.ttlRPTOL = sumPrincipal.principal;
-    this.ttlRPTOB = this.rptBal;
+    this.ttlRPTOB = sumPrincipal.principal_bal;
+
+    // this.availBal = this.approvedCapital - this.rptBal;
   }
 
   
@@ -106,20 +109,20 @@ export class RptListComponent {
             HoldOutValue(cisNumber) // Pass the entire formData object
             .then((response) => {
               // Log the response when the promise is resolved
-                const holdOUT = response.result[0].Data[0].hold_out;
+                // const holdOUT = response.result[0].Data[0].hold_out;
 
-                if (holdOUT) {
-                    // Distribute hold_out data equally among PN data entries
-                    const entries = PNData.filter((entry) => entry.cis_no === cisNumber);
-                    const holdOutValue = holdOUT || 0;
-                    const holdOutPerCis = entries.length > 0 ? holdOutValue / entries.length : 0;
+                // if (holdOUT) {
+                //     // Distribute hold_out data equally among PN data entries
+                //     const entries = PNData.filter((entry) => entry.cis_no === cisNumber);
+                //     const holdOutValue = holdOUT || 0;
+                //     const holdOutPerCis = entries.length > 0 ? holdOutValue / entries.length : 0;
 
-                    // Update PN Data with divided hold_out values
-                    entries.forEach((entry) => {
-                      entry.hold_out = Number(holdOutPerCis.toFixed(2));
-                      // console.log(entry.hold_out);
-                      this.totalHoldOut += entry.hold_out;
-                    });
+                //     // Update PN Data with divided hold_out values
+                //     entries.forEach((entry) => {
+                //       entry.hold_out = Number(holdOutPerCis.toFixed(2));
+                //       // console.log(entry.hold_out);
+                //       this.totalHoldOut += entry.hold_out;
+                //     });
       
                     // Update the dataSource with the combined data
                     this.dataSource.data = PNData;
@@ -143,9 +146,9 @@ export class RptListComponent {
                             
                             this.availBal = this.approvedCapital - this.rptBal;
 
-                  } else {
+                  // } else {
                     // Handle error or empty hold_out response
-                  }
+                  // }
 
             })
             .catch((error) => {
@@ -167,6 +170,25 @@ export class RptListComponent {
       dialogRef.afterClosed().subscribe({
         next: (val) => {
           if (val) {
+            // this.updateTableData();
+          }
+        },
+      });
+    }
+
+  
+    allocateHoldOut(data: any) {
+      this.selectedPN = data;
+      const dialogRef = this._dialog.open(HoldoutAllocationModalComponent, {
+        width: '40%', // Set the width as per your requirement
+        // Other MatDialog options can be specified here
+        data,
+      });
+      dialogRef.afterClosed().subscribe({
+        next: (val) => {
+          if (val) {
+            this.ngOnInit();
+            this.selectedPN = null;
             // this.updateTableData();
           }
         },

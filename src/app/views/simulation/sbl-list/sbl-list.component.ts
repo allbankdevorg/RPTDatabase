@@ -140,6 +140,7 @@ export class SBLListComponent implements OnInit{
   net: any;
   available_net: any;
   available_bal: any;
+  selectedPN: any;
 
   sblIsPositive: boolean = false;
 sblIsNegative: boolean = false;
@@ -160,7 +161,7 @@ totalNetOfHoldOut: number = 0;
 
   dataSource = new MatTableDataSource<ResultItem>
   displayedColumns: string[] = ['loan_no', 'account_name', 'branch_name', 'loan_security', 'amount_granted', 'date_granted'
-  , 'principal_bal', 'hold_out', 'net_holdout', 'payment_status'];
+  , 'principal_bal', 'deposit_holdout', 'net_holdout', 'payment_status'];
 
 
   
@@ -219,7 +220,7 @@ totalNetOfHoldOut: number = 0;
   calculateTotalNetHoldOut(loanList): number {
     let sum = 0;
     for (const element of loanList) {
-      sum += (element.principal_bal || 0) - (element.hold_out || 0);
+      sum += (element.principal_bal || 0) - (element.deposit_holdout || 0);
     }
     return sum;
   }
@@ -228,45 +229,16 @@ totalNetOfHoldOut: number = 0;
   updateTotalNetHoldOut(account): void {
     this.totalNetHoldOut = this.calculateTotalNetHoldOut(account.loan_list);
   }
-  
-
 
   updateTableData(): void {
     // Initialize totalHoldOut for each account
-    this.dataSource.data.forEach((account: ResultItem) => {
-      account.totalHoldOutForCard = 0;
-    });
+    
   
     this.get.getSBL((sblData) => {
       if (sblData) {
         const uniqueCisNumbers = [...new Set(sblData.flatMap((entry) => entry.loan_list.map(loan => loan.cis_no)))];
   
-        uniqueCisNumbers.forEach((cisNumber) => {
-          HoldOutValue(cisNumber)
-            .then((response) => {
-              const holdOUT = response.result[0].Data[0].hold_out;
   
-              if (holdOUT) {
-                const entriesForCis = sblData.flatMap(entry => entry.loan_list.filter(loan => loan.cis_no === cisNumber));
-                const holdOutValue = holdOUT || 0;
-                const holdOutPerCis = entriesForCis.length > 0 ? holdOutValue / entriesForCis.length : 0;
-        
-                // Update PN Data with divided hold_out values
-                entriesForCis.forEach((loanEntry) => {
-                  loanEntry.hold_out = Number(holdOutPerCis.toFixed(2));
-                  this.totalHoldOut += loanEntry.hold_out;
-                  // Accumulate hold_out values for the card
-                });
-              } else {
-                // Handle error or empty hold_out response
-              }
-            })
-            .catch((error) => {
-              // Handle error
-            });
-        });
-  
-        // Move this line outside the forEach loop to update the original sblData array
         this.dataSource.data = sblData;
   
         // Calculate sums and ratios based on the filtered data
@@ -279,13 +251,13 @@ totalNetOfHoldOut: number = 0;
         // Calculate ratios and other values using this.totalHoldOut
         this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
         const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
-        // ... (rest of the calculations)
   
       } else {
         // Handle case where sblData is empty
       }
     });
   }
+  
 
 
 
@@ -335,15 +307,18 @@ calculateLoanListSummary(loanList: Loan[]): any {
   }
 
 
-  allocateHoldOut() {
+  allocateHoldOut(data: any) {
+    this.selectedPN = data;
     const dialogRef = this._dialog.open(HoldoutAllocationModalComponent, {
-      width: '30%', // Set the width as per your requirement
+      width: '40%', // Set the width as per your requirement
       // Other MatDialog options can be specified here
+      data,
     });
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
           this.ngOnInit();
+          this.selectedPN = null;
           // this.updateTableData();
         }
       },

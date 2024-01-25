@@ -87,15 +87,15 @@
                             <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="hold_out" >
+                          <ng-container matColumnDef="deposit_holdout" >
                             <mat-header-cell *matHeaderCellDef> Hold-Out </mat-header-cell>
-                            <mat-cell *matCellDef="let element" (click)="allocateHoldOut()"> {{element.hold_out | number: '1.2-2'}} </mat-cell>
+                            <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | number: '1.2-2'}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="net_holdout">
                             <mat-header-cell *matHeaderCellDef> Net of Hold-Out </mat-header-cell>
                             <mat-cell *matCellDef="let element"> 
-                              {{ (element.principal_bal || 0) - (element.hold_out || 0) | number:'1.2-2' }}
+                              {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }}
                             </mat-cell>
                           </ng-container>
 
@@ -105,7 +105,7 @@
                           </ng-container>
 
                           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'selected-row': row === selectedPN}"></mat-row>
       
 
                         </mat-table>
@@ -139,7 +139,7 @@
                                            <tr cTableColor="info" [ngClass]="{'green-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
                                             <td> 
-                                              {{ sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal  - totalHoldOut  | number: '1.2-2' }} 
+                                              {{ sbl - calculateTotalNetHoldOut(account.loan_list) | number: '1.2-2' }} 
                                             </td>
                                           </tr>                                          
                                            <tr>
@@ -148,7 +148,7 @@
                                            </tr>
                                            <tr>
                                             <th>TOTAL {{account.company_name}} GRP</th>
-                                            <td> {{calculateLoanListSummary(account.loan_list).totalPrincipalBal - totalHoldOut  | number: '1.2-2'}} </td>
+                                            <td> {{ calculateTotalNetHoldOut(account.loan_list)  | number: '1.2-2'}} </td>
                                            </tr>
                                            
                                            <tr>
@@ -158,7 +158,7 @@
                                            
                                            <tr cTableColor="info" [ngClass]="{'green-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
-                                            <td>{{internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal - totalHoldOut | number: '1.2-2'}}</td>
+                                            <td>{{internalSBL - calculateTotalNetHoldOut(account.loan_list) | number: '1.2-2'}}</td>
                                            </tr>
                                            
                                            
