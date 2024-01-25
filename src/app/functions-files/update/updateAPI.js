@@ -66,8 +66,41 @@ function updateCompany(formData) {
 }
 
 
+function updateHoldOut(formData) {
+    return new Promise((resolve, reject) => {
+            var settings = {
+                "url": "http://10.232.236.15:8092/api/updateData",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({
+                "cmd": 11,
+                "request": {
+                    "pn_no": formData.loan_no,
+                    "hold_out": formData.deposit_holdout   
+                }
+                }),
+            };
+
+            $.ajax(settings).done(function (response) {
+                
+                // Check the status and resolve/reject the promise accordingly
+                Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+                if (response.result[0].status === 'success') {
+                resolve(response);
+                } else {
+                reject(response);
+                }
+            });
+    });
+}
+
+
 
 module.exports = {
     updateManagingCompany,
-    updateCompany
+    updateCompany,
+    updateHoldOut
 }
