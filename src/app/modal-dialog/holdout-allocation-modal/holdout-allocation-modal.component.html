@@ -8,6 +8,18 @@
     <div mat-dialog-content class="content">
         <!-- Modal Form -->
         <c-modal-body>
+        <c-row class="align-items-center">
+            <!-- CIS Number Input -->
+            <c-col [sm]="12">
+                <label cLabel="col" for="PNNumber">PN Number</label>
+                <mat-form-field appearance="fill" [style.width.%]=100>
+                    <!-- <mat-label>CIS Number</mat-label> -->
+                    <input matInput #accDinput id="PNNumber" name="PNNumber" readonly
+                    type="text" placeholder="Amount" 
+                    formControlName="loan_no" appNum>
+                </mat-form-field>
+            </c-col>
+        </c-row>
           <c-row class="align-items-center">
              <!-- CIS Number Input -->
              <c-col [sm]="12">
@@ -16,18 +28,20 @@
                   <!-- <mat-label>CIS Number</mat-label> -->
                   <input matInput #accDinput id="holdOutVal" name="holdOutVal"
                   type="text" placeholder="Amount" 
-                  formControlName="holdOut_Val" appNum>
-                  <mat-error *ngIf="hldOTForm.get('hldOTForm')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                  formControlName="deposit_holdout" appNum>
+                  <mat-error *ngIf="hldOTForm.get('deposit_holdout')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 </mat-form-field>
             </c-col>
           </c-row>
         </c-modal-body>
     </div>
     <div mat-dialog-actions class="action">
-        <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+        <button mat-raised-button type="button" mat-dialog-close (click)="close()">Cancel</button>
         <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
         
-        <button mat-raised-button color="primary" type="submit" [disabled]="!hldOTForm.valid">{{data ? 'Update': 'Save'}}</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!hldOTForm.valid">
+            {{ initialDepositHoldout === 0 || initialDepositHoldout ? 'Save' : 'Update' }}
+        </button>
     </div>
 </form>
 
