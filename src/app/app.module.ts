@@ -141,6 +141,12 @@ import { UpdateManagingCompanyModalComponent } from './modal-dialog/update-manag
 import { UpdateJMNComponent } from './modal-dialog/update-jmn/update-jmn.component';
 import { HoldoutAllocationModalComponent } from './modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component';
 import { FilterPipe } from './pipe/filterPipe/filter.pipe';
+import { ForapprovalComponent } from './views/entry/forapproval/forapproval.component';
+import { ForreviewComponent } from './views/entry/forreview/forreview.component';
+import { DeniedComponent } from './views/entry/denied/denied.component';
+import { AffiliatesRpmodalDetailsComponent } from './modal-dialog/affiliates-rpmodal-details/affiliates-rpmodal-details.component';
+import { AddChildModalComponent } from './modal-dialog/add-child-modal/add-child-modal.component';
+import { AddJMNChildModalComponent } from './modal-dialog/add-jmnchild-modal/add-jmnchild-modal.component';
 
 
 const APP_CONTAINERS = [
@@ -162,7 +168,27 @@ const APP_CONTAINERS = [
     BankofficerRIModalComponent,
     AffiliatesRPModalComponent,
     SBLSimulationModalComponent, 
-    RPTSimulationModalComponent,OtherRPModalComponent, RptListComponent, SBLListComponent, AffiliatesDirModalComponent, AffiliatesDirRIModalComponent, AffiliatesOffModalComponent, AffiliatesOffRIModalComponent, UsersModalComponent, StockholdersModalComponent, LowerCaseDirective, UsersAddModalComponent, ViewUsersModalComponent, UpdateManagingCompanyModalComponent, UpdateJMNComponent, HoldoutAllocationModalComponent, FilterPipe],
+    RPTSimulationModalComponent,
+    OtherRPModalComponent, 
+    RptListComponent, 
+    SBLListComponent, 
+    AffiliatesDirModalComponent, 
+    AffiliatesDirRIModalComponent, 
+    AffiliatesOffModalComponent, 
+    AffiliatesOffRIModalComponent, 
+    UsersModalComponent, 
+    StockholdersModalComponent, 
+    LowerCaseDirective, 
+    UsersAddModalComponent, 
+    ViewUsersModalComponent, 
+    UpdateManagingCompanyModalComponent, 
+    UpdateJMNComponent, 
+    HoldoutAllocationModalComponent, 
+    FilterPipe, 
+    ForapprovalComponent, 
+    ForreviewComponent, 
+    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent],
+    
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
