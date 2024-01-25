@@ -4,6 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuditTrail } from 'src/app/model/audit-trail.model';
 import { AuditTrailService } from 'src/app/services/auditTrail/audit-trail.service';
 
+// Update
+import {updateHoldOut} from '../../functions-files/update/updateAPI';
 @Component({
   selector: 'app-holdout-allocation-modal',
   templateUrl: './holdout-allocation-modal.component.html',
@@ -12,6 +14,7 @@ import { AuditTrailService } from 'src/app/services/auditTrail/audit-trail.servi
 export class HoldoutAllocationModalComponent implements OnInit {
 
   hldOTForm: FormGroup;
+  initialDepositHoldout: number | null = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,7 +25,8 @@ export class HoldoutAllocationModalComponent implements OnInit {
     // private _coreService: CoreService,
     private auditTrailService: AuditTrailService) {
     this.hldOTForm = this.formBuilder.group({
-        holdOut_Val: ['']
+        loan_no: [''],
+        deposit_holdout: [0, [Validators.required]]
       // commandControl: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;
@@ -40,6 +44,15 @@ export class HoldoutAllocationModalComponent implements OnInit {
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
 
+      updateHoldOut(formData)
+          .then((response) => {
+            this.ngOnInit();
+            this.logAction('Update', 'Updated Affiliates', true, 'Affiliates');
+            this.close();
+          })
+          .catch((error) => {
+
+          })
       // createAffil(formData, moduleV, session, userID)
       // .then((response) => {
       //   this.ngOnInit();
@@ -66,7 +79,7 @@ export class HoldoutAllocationModalComponent implements OnInit {
   }
 
   close() {
-    this._dialogRef.close(true); 
+    this._dialogRef.close(true);
   }
 
 
