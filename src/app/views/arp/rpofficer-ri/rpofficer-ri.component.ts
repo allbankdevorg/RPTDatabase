@@ -15,7 +15,7 @@ import { Injectable } from '@angular/core';
 
 // Services
 import { DataTransferService } from '../../../services/data-transfer.service';
-import { SharedService } from '../../dosri/dataintegration/shared.service';
+import { SharedservicesService } from '../../arp/rp-officer/Services/sharedservices.service';
 import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
 // Imports for Functions
@@ -29,6 +29,7 @@ import { AffiliatesDirModalComponent } from 'src/app/modal-dialog/affiliates-dir
 import { DirectorsModalComponent } from 'src/app/modal-dialog/directors-modal/directors-modal.component';
 import {AffiliatesOffModalComponent} from '../../../modal-dialog/affiliates-off-modal/affiliates-off-modal.component'
 import {AffiliatesOffRIModalComponent} from '../../../modal-dialog/affiliates-off-ri-modal/affiliates-off-ri-modal.component'
+import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
 @Component({
   selector: 'app-rpofficer-ri',
@@ -66,20 +67,19 @@ export class RPOfficerRIComponent implements AfterViewInit {
     public _dialog: MatDialog,
     private formBuilder: FormBuilder, 
     private http: HttpClient,
-    private sharedService: SharedService,
+    private sharedService: SharedservicesService,
     private dataService: AffiliatesService,
     private dataTransferService: DataTransferService,
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone)
+    private ngZone: NgZone,
+    private get: FetchDataService)
     {
-       
-       
         this.route.params.subscribe(params => {
           this.compId = params['id'];
           const companyName = this.sharedService.getCompName();
-
-          getManagingCompany((mngComp) => {
+         
+          this.get.getAffiliatesCompanyOfficers((mngComp) => {
               // Process the data to count directors related to each company
               const companytoDisplay = companyName;
               // console.log(affilComp);
@@ -87,6 +87,7 @@ export class RPOfficerRIComponent implements AfterViewInit {
               for (const company of filteredCompany ) {
                 const Company = company.aff_com_company_name;
                 this.Company = Company;
+
                 
               }
               // console.log(mngComp);
