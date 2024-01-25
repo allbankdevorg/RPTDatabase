@@ -37,15 +37,15 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="actionModalLabel">Select an Action</h5>
+            <h5 class="modal-title" id="actionModalLabel">Select an Action for {{datas}}</h5>
             <button (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <button class="btn btn-primary" id="addButton">Add Child</button>
-            <button class="btn btn-primary" id="updateButton" (click)="closeModal()" (click)="openEditForm($event)">Update Node</button>
-            <button class="btn btn-primary" id="detailsButton">Show Details</button>
+            <button class="btn btn-primary" id="addButton" (click)="onButtonClick('ORP')" (click)="AddChildComp($event)">Add Child</button>
+            <button class="btn btn-primary" id="updateButton" (click)="closeModal()" (click)="openEditForm($event)">Update Company</button>
+            <button class="btn btn-primary" id="detailsButton" (click)="onButtonClick('ORP')" (click)="viewData($event)">Show Details</button>
           </div>
         </div>
       </div>
