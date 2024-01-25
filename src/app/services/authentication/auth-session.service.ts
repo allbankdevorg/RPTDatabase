@@ -25,27 +25,35 @@ export class AuthSessionService {
 
   // Returns true when the user is logged in and email is verified
   get isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('sessionID');
+    // return !!sessionStorage.getItem('sessionID');
+    return !!localStorage.getItem('sessionID');
+
   }
 
   setAuthToken(token: string): void {
-    sessionStorage.setItem(this.tokenKey, token);
+    // sessionStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(this.tokenKey, token)
   }
   
   getAuthToken(): string | null {
-    return sessionStorage.getItem(this.tokenKey);
+    // return sessionStorage.getItem(this.tokenKey);
+    return localStorage.getItem(this.tokenKey)
   }
   
   removeAuthToken(): void {
-    sessionStorage.removeItem(this.tokenKey);
+    // sessionStorage.removeItem(this.tokenKey);
+    localStorage.removeItem('tokenKey');
   }
   
   setUserData(user: any): void {
-    sessionStorage.setItem(this.userDataKey, JSON.stringify(user));
+    // sessionStorage.setItem(this.userDataKey, JSON.stringify(user));
+    localStorage.setItem(this.userDataKey, JSON.stringify(user));
   }
 
   getUserData(): any {
-    const storedUser = sessionStorage.getItem(this.userDataKey);
+    // const storedUser = sessionStorage.getItem(this.userDataKey);
+    
+  const storedUser = localStorage.getItem(this.userDataKey);
   if (storedUser) {
     const userObj = JSON.parse(storedUser);
     this.username = userObj.username;
@@ -73,7 +81,8 @@ export class AuthSessionService {
   setSessionData(username: string, role: string): void {
     this.username = username;
     this.role = role;
-    sessionStorage.setItem('user', JSON.stringify({ username, role }));
+    localStorage.setItem('user', JSON.stringify({ username, role }));
+    // sessionStorage.setItem('user', JSON.stringify({ username, role }));
   }
   
   clearSession(): void {
@@ -88,7 +97,8 @@ export class AuthSessionService {
 
   getUsername(): string | null {
     if (this.username === null) {
-      const storedUser = sessionStorage.getItem('user');
+      const storedUser = localStorage.getItem('user');
+      // const storedUser = sessionStorage.getItem('user');
       if (storedUser) {
         const userObj = JSON.parse(storedUser);
         this.username = userObj.username;
@@ -99,7 +109,8 @@ export class AuthSessionService {
 
   
   getRole(){
-    return sessionStorage.getItem('role')!=null?sessionStorage.getItem('role')?.toString():'';
+    return localStorage.getItem('role') !== null ? localStorage.getItem('role')?.toString() : '';
+    // return sessionStorage.getItem('role')!=null?sessionStorage.getItem('role')?.toString():'';
   }
 
   // getRole(): string | null {
@@ -150,7 +161,8 @@ export class AuthSessionService {
         // Set session data and authentication token
         
         const userD: any[] = [{ id: matchingUser.id, userName: matchingUser.userName }];
-        sessionStorage.setItem('user', JSON.stringify(userD));
+        localStorage.setItem('user', JSON.stringify(userD));
+        // sessionStorage.setItem('user', JSON.stringify(userD));
         // localforage.setItem('user', userD);
         
         this.setAuthToken('yourAuthToken'); // Replace with an actual token
