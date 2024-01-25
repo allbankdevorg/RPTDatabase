@@ -7,7 +7,7 @@ import {animate,state,style,transition,trigger} from '@angular/animations';
 import { NgFor, NgIf } from '@angular/common';
 
 
-import {createAffil} from '../../../functions-files/add/postAPI';
+import {checkHoldOutValue} from '../../../functions-files/add/postAPI';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -30,7 +30,9 @@ import {AuditTrail} from '../../../model/audit-trail.model';
 // For Modals
 import { AffiliatesRPModalComponent } from 'src/app/modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {UpdateManagingCompanyModalComponent} from 'src/app/modal-dialog/update-managing-company-modal/update-managing-company-modal.component'
+import {UpdateManagingCompanyModalComponent} from 'src/app/modal-dialog/update-managing-company-modal/update-managing-company-modal.component';
+import {AffiliatesRpmodalDetailsComponent} from '../../../modal-dialog/affiliates-rpmodal-details/affiliates-rpmodal-details.component';
+import {AddChildModalComponent} from '../../../modal-dialog/add-child-modal/add-child-modal.component';
 
 declare var google: any;
 export interface Child {
@@ -121,7 +123,10 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   
   
   selectedData: any
+  
+  datas: any;
 
+  totalHoldOut: any;
 
   // private orgData:any;
   constructor(
@@ -173,28 +178,42 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
       chart = new google.visualization.OrgChart(document.getElementById('org-chart-container'));
       
-
+      
       var lastClickTime = 0; // Variable to store the last click time
+      
       google.visualization.events.addListener(chart, 'select', () => {
-        // Check if the time since the last click is less than 300 milliseconds (double-click)
-        if (Date.now() - lastClickTime < 300) {
-          this.showModal();
-
-          // $('#actionModal').modal('show'); // Show the modal dialog on double-click
-        } else {
-          const selectedItem = this.orgsDataService.orgsData[chart.getSelection()[0].row];
-          this.updateNodeDetails(selectedItem);
-          this.isNodeDetailsVisible = true;
-          this.showPopup(); // 
-          chart.collapse(data.getValue(chart.getSelection()[0].row, 0)); // Collapse on single-click
-          // console.log(selectedItem);
+        const selectedRows = chart.getSelection();
+        if (selectedRows && selectedRows.length > 0) {
+          const selectedRow = selectedRows[0].row;
+          if (selectedRow !== undefined && selectedRow !== null) {
+            const selectedItem = this.orgsDataService.orgsData[selectedRow];
+            this.updateNodeDetails(selectedItem);
+      
+            // Check if the time since the last click is less than 400 milliseconds (double-click)
+            if (Date.now() - lastClickTime < 500) {
+              this.isNodeDetailsVisible = true;
+              
+              chart.collapse(data.getValue(selectedRow, 0));
+              
+            } else {
+              this.showModal();
+              this.fetchTotalHoldOut();
+            }
+      
+            lastClickTime = Date.now(); // Update the last click time
+          }
         }
-        lastClickTime = Date.now(); // Update the last click time
-        
       });
 
+
+      google.visualization.events.addListener(chart, 'onmouseover', (e) => {
+        const selectedItem = this.orgsDataService.orgsData[e.row];
+        this.updateNodeDetails(selectedItem);
+        this.showPopup();
+      });
       
-       // Hide the popover when the mouse leaves the chart area
+
+      
        chart.getContainer().addEventListener('mouseleave', () => {
         if (!this.isNodeDetailsVisible) {
           this.hideNodePopover();
@@ -212,6 +231,29 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
       chart.draw(data, options);
       
      
+  }
+
+  
+
+  fetchTotalHoldOut() {
+    const com_cis = this.selectedData.aff_com_cis_number;
+    checkHoldOutValue(com_cis)
+      .then((response) => {
+        this.ngOnInit();
+        this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
+        
+        const holdOutData = response;
+        if (response && response.result && response.result[0] && response.result[0].Data) {
+          const dataArray = response.result[0].Data;
+          this.totalHoldOut = dataArray.reduce((acc, item) => acc + (item.deposit_holdout || 0), 0);
+        } else {
+          this.totalHoldOut = 0;
+        }
+      })
+      .catch((error) => {
+        // Handle errors when the promise is rejected
+      });
+
   }
 
 
@@ -293,6 +335,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   }
 
   showModal(): void {
+    this.datas = this.selectedData.aff_com_comp_name;
     const modal = this.actionModal.nativeElement;
   
     // Use Renderer2 to add or remove CSS classes
@@ -302,7 +345,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
   showPopup(): void {
     const modal = this.nodePopover.nativeElement;
-  
+    
     // Use Renderer2 to add or remove CSS classes
     this.renderer.addClass(modal, 'show');
     this.renderer.setStyle(modal, 'display', 'block');
@@ -347,6 +390,44 @@ openEditForm(event: any) {
   // console.log(data);
   const dialogRef = this._dialog.open(UpdateManagingCompanyModalComponent, {
     data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+      }
+    },
+  });
+}
+
+
+viewData(event: any) {
+  const data = this.selectedData;
+  const holdOUT = this.totalHoldOut;
+  event.stopPropagation();
+  const dialogRef = this._dialog.open(AffiliatesRpmodalDetailsComponent, {
+    data: {
+      totalHoldOut: this.totalHoldOut,
+      selectedData: data,
+    },
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+      }
+    },
+  });
+}
+
+
+AddChildComp(event: any) {
+  const data = this.selectedData;
+  console.log(data)
+  const dialogRef = this._dialog.open(AddChildModalComponent, {
+    data,
   });
 
   dialogRef.afterClosed().subscribe({
