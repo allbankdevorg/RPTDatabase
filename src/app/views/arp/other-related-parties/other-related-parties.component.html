@@ -41,9 +41,9 @@
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  <button class="btn btn-primary" id="addButton">Add Child</button>
-                                  <button class="btn btn-primary" id="updateButton" (click)="closeModal()" (click)="openEditForm($event)">Update Node</button>
-                                  <button class="btn btn-primary" id="detailsButton">Show Details</button>
+                                  <button class="btn btn-primary" id="addButton" (click)="onButtonClick('JMN')" (click)="AddChildComp($event)">Add Child</button>
+                                  <button class="btn btn-primary" id="updateButton" (click)="closeModal()" (click)="openEditForm($event)">Update Company</button>
+                                  <button class="btn btn-primary" id="detailsButton" (click)="onButtonClick('JMN')" (click)="viewData($event)">Show Details</button>
                                 </div>
                               </div>
                             </div>
