@@ -249,11 +249,18 @@ async verifyOtp() {
       
       // OTP verification completed successfully
 
-      sessionStorage.setItem('user', JSON.stringify(this.uD));
-      sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
-      sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
-      sessionStorage.setItem('userID', JSON.stringify(this.userName));
-      sessionStorage.setItem('role', JSON.stringify(this.urole));
+      // sessionStorage.setItem('user', JSON.stringify(this.uD));
+      // sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
+      // sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
+      // sessionStorage.setItem('userID', JSON.stringify(this.userName));
+      // sessionStorage.setItem('role', JSON.stringify(this.urole));
+
+      localStorage.setItem('user', JSON.stringify(this.uD));
+      localStorage.setItem('sessionID', JSON.stringify(this.sID));
+      localStorage.setItem('userAcces', JSON.stringify(this.uA));
+      localStorage.setItem('userID', JSON.stringify(this.userName));
+      localStorage.setItem('role', JSON.stringify(this.urole));
+
       // Navigate to the dashboard
       await this.router.navigate(['/dashboard']);
 
