@@ -44,6 +44,17 @@ const routes: Routes = [
           import('./views/simulation/simulation.module').then((m) => m.SimulationModule)
       },
       {
+        path: 'entry',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./views/entry/entry.module').then((m) => m.EntryModule)
+      },{
+        path: 'maintenance',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./views/maintenance/maintenance.module').then((m) => m.MaintenanceModule)
+      },
+      {
         path: 'dir2nd-deg-relatives',
         loadChildren: () =>
           import('./views/dir2nd-deg-relatives/dir2nd-deg-relatives.module').then((m) => m.DIR2ndDegRelativesModule)
@@ -53,12 +64,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/officer2nd-deg-relatives/officer2nd-deg-relatives.module').then((m) => m.Officer2ndDegRelativesModule)
       },
-      {
-        path: 'maintenance',
-        canActivate: [AuthGuard],
-        loadChildren: () =>
-          import('./views/maintenance/maintenance.module').then((m) => m.MaintenanceModule)
-      },
+      
       {
         path: 'icons',
         loadChildren: () =>
