@@ -18,6 +18,7 @@
  *  - createUser
  *  - userAccess
  *  - addPNData
+ *  - checkHoldOutValue
  */
  
 
@@ -879,6 +880,33 @@ function HoldOutValue(cis) {
 }
 
 
+function checkHoldOutValue(com_cis) {
+  return new Promise((resolve, reject) => {
+    var settings = {
+      "url": "http://10.232.236.15:8092/api/dataTables",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "cmd": 116,
+        "cisno": com_cis,
+      }),
+    };
+    
+    $.ajax(settings).done(function (response) {
+      // console.log(response);
+      if (response.result[0].message === 'Success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
+    });
+});
+}
+
+
  module.exports = {
     createDosri,
     createDirectors,
@@ -899,5 +927,6 @@ function HoldOutValue(cis) {
     userAccess,
     addPNData,
     addSimulatedPNData,
-    HoldOutValue
+    HoldOutValue,
+    checkHoldOutValue
  }
