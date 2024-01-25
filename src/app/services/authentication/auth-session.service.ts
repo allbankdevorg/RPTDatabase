@@ -25,8 +25,12 @@ export class AuthSessionService {
 
   // Returns true when the user is logged in and email is verified
   get isLoggedIn(): boolean {
+    const sessionExpireTime = localStorage.getItem('sessionExpireTime');
+
     // return !!sessionStorage.getItem('sessionID');
-    return !!localStorage.getItem('sessionID');
+    // return !!localStorage.getItem('sessionID');
+    return !!localStorage.getItem('sessionID') && !!sessionExpireTime && Date.now() < Number(sessionExpireTime);
+
 
   }
 
