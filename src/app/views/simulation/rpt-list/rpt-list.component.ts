@@ -41,7 +41,7 @@ export class RptListComponent {
   totalHoldOut: number = 0;
   selectedPN: any;
   
-  displayedColumns: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security', 
+  displayedColumns: string[] = ['loan_no', 'cis_no', 'name', 'principal', 'principal_bal', 'loan_security', 
   'deposit_holdout', 'netBal', 'date_granted', 'terms', 'purpose', 'intRate'];
   dataSource = new MatTableDataSource<any>([]);
   ToDisplay: string[] = [];
@@ -79,10 +79,11 @@ export class RptListComponent {
     const sumPrincipal = filteredData.reduce((acc, obj) => {
       acc.principal += parseFloat(obj.principal) || 0;
       acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+      acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
       return acc;
-    }, { principal: 0, principal_bal: 0 });
+    }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
   
-    this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
+    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
     const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
     this.rptRatio = percentage;
     this.subtlOL = sumPrincipal.principal;
@@ -130,10 +131,11 @@ export class RptListComponent {
                     const sumPrincipal = PNData.reduce((acc, obj) => {
                               acc.principal += parseFloat(obj.principal) || 0;
                               acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+                              acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
                               return acc;
-                            }, { principal: 0, principal_bal: 0 });
-                    
-                            this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
+                            }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+                          
+                            this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
                             const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
                             this.rptRatio = percentage;
                             // this.subtlOL = sumPrincipal.principal;
