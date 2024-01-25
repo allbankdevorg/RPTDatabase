@@ -41,7 +41,7 @@ export class HasPermissionDirective {
       // this.user = this.authSessionService.getUserData();
 
     // Dynamic Data
-    this.user = sessionStorage.getItem('userAcces');
+    this.user = localStorage.getItem('userAcces');
     this.jsonData =  JSON.parse(this.user) 
     // console.log(this.jsonData);
   }
