@@ -5,7 +5,7 @@ import { NgFor, NgIf } from '@angular/common';
 
 // Functions Import
 import {getOtherCompany} from '../../../functions-files/getFunctions';
-import {createAffil} from '../../../functions-files/add/postAPI';
+import {checkHoldOutValue} from '../../../functions-files/add/postAPI';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,6 +25,9 @@ import { AuditTrailService } from '../../../services/auditTrail/audit-trail.serv
 import {AuditTrail} from '../../../model/audit-trail.model';
 import { OtherRPModalComponent } from 'src/app/modal-dialog/other-rpmodal/other-rpmodal.component';
 import {UpdateJMNComponent} from '../../../modal-dialog/update-jmn/update-jmn.component'
+import {AffiliatesRpmodalDetailsComponent} from '../../../modal-dialog/affiliates-rpmodal-details/affiliates-rpmodal-details.component';
+import {AddChildModalComponent} from '../../../modal-dialog/add-child-modal/add-child-modal.component';
+
 
 
 declare var google: any;
@@ -93,7 +96,8 @@ export class OtherRelatedPartiesComponent {
   // commandGroups: commandGroup[] = []; // Moved initialization here
   commandGroups: any[] = [];
   // private orgData:any;
-
+  
+  totalHoldOut: any;
 
   selectedData: any
 
@@ -147,22 +151,55 @@ export class OtherRelatedPartiesComponent {
       
 
       var lastClickTime = 0; // Variable to store the last click time
+
       google.visualization.events.addListener(chart, 'select', () => {
-        // Check if the time since the last click is less than 300 milliseconds (double-click)
-        if (Date.now() - lastClickTime < 300) {
-          this.showModal();
-          // $('#actionModal').modal('show'); // Show the modal dialog on double-click
-        } else {
-          const selectedItem = this.orgsData[chart.getSelection()[0].row];
-          this.updateNodeDetails(selectedItem);
-          this.isNodeDetailsVisible = true;
-          this.showPopup(); // 
-          chart.collapse(data.getValue(chart.getSelection()[0].row, 0)); // Collapse on single-click
-          // console.log(selectedItem);
+        const selectedRows = chart.getSelection();
+        if (selectedRows && selectedRows.length > 0) {
+          const selectedRow = selectedRows[0].row;
+          if (selectedRow !== undefined && selectedRow !== null) {
+            const selectedItem = this.orgsData[selectedRow];
+            this.updateNodeDetails(selectedItem);
+      
+            // Check if the time since the last click is less than 500 milliseconds (adjust as needed)
+            if (Date.now() - lastClickTime < 500) {
+              this.isNodeDetailsVisible = true;
+              chart.collapse(data.getValue(selectedRow, 0));
+            } else {
+              // Ensure that showModal and fetchTotalHoldOut are working as intended
+              this.showModal();
+              this.fetchTotalHoldOut();
+            }
+      
+            lastClickTime = Date.now(); // Update the last click time
+          }
         }
-        lastClickTime = Date.now(); // Update the last click time
-        
       });
+      
+      google.visualization.events.addListener(chart, 'onmouseover', (e) => {
+        const selectedRow = e.row; // Access row directly from the event
+        if (selectedRow !== undefined && selectedRow !== null) {
+          const selectedItem = this.orgsData[selectedRow];
+          this.updateNodeDetails(selectedItem);
+          this.showPopup();
+        }
+      });
+
+      // google.visualization.events.addListener(chart, 'select', () => {
+      //   // Check if the time since the last click is less than 300 milliseconds (double-click)
+      //   if (Date.now() - lastClickTime < 300) {
+      //     this.showModal();
+      //     // $('#actionModal').modal('show'); // Show the modal dialog on double-click
+      //   } else {
+      //     const selectedItem = this.orgsData[chart.getSelection()[0].row];
+      //     this.updateNodeDetails(selectedItem);
+      //     this.isNodeDetailsVisible = true;
+      //     this.showPopup(); // 
+      //     chart.collapse(data.getValue(chart.getSelection()[0].row, 0)); // Collapse on single-click
+      //     // console.log(selectedItem);
+      //   }
+      //   lastClickTime = Date.now(); // Update the last click time
+        
+      // });
 
       
        // Hide the popover when the mouse leaves the chart area
@@ -185,6 +222,27 @@ export class OtherRelatedPartiesComponent {
      
   }
 
+
+  fetchTotalHoldOut() {
+    const com_cis = this.selectedData.aff_com_cis_number;
+    checkHoldOutValue(com_cis)
+      .then((response) => {
+        this.ngOnInit();
+        this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
+        
+        const holdOutData = response;
+        if (response && response.result && response.result[0] && response.result[0].Data) {
+          const dataArray = response.result[0].Data;
+          this.totalHoldOut = dataArray.reduce((acc, item) => acc + (item.deposit_holdout || 0), 0);
+        } else {
+          this.totalHoldOut = 0;
+        }
+      })
+      .catch((error) => {
+        // Handle errors when the promise is rejected
+      });
+
+  }
 
 
   fetchAssocCompany() {
@@ -334,6 +392,43 @@ openEditForm(event: any) {
   event.stopPropagation();
   const dialogRef = this._dialog.open(UpdateJMNComponent, {
     data,    
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+      }
+    },
+  });
+}
+
+
+viewData(event: any) {
+  const data = this.selectedData;
+  const holdOUT = this.totalHoldOut;
+  event.stopPropagation();
+  const dialogRef = this._dialog.open(AffiliatesRpmodalDetailsComponent, {
+    data: {
+      totalHoldOut: this.totalHoldOut,
+      selectedData: data,
+    },
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+      }
+    },
+  });
+}
+
+
+AddChildComp(event: any) {
+  const data = this.selectedData;
+  const dialogRef = this._dialog.open(AddChildModalComponent, {
+    data,
   });
 
   dialogRef.afterClosed().subscribe({
