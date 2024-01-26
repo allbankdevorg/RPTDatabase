@@ -6,6 +6,8 @@ import { ShareddataService } from '../userdata/shareddata.service'; // Adjust th
 import {DummyDataService, Users} from '../dummyData/dummy-data.service';
 import * as localforage from 'localforage';
 
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +23,8 @@ export class AuthSessionService {
   constructor(public router: Router, 
       public ngZone: NgZone,
       public usersService: DummyDataService,
-      private userDataService: ShareddataService ) {}
+      private userDataService: ShareddataService,
+      public _dialog: MatDialog, ) {}
 
   // Returns true when the user is logged in and email is verified
   get isLoggedIn(): boolean {
@@ -177,6 +180,7 @@ export class AuthSessionService {
   
   // Simulate logout
   simulateLogout(): void {
+    this.close();
     this.clearSession();
     this.router.navigate(['/login']);
   }
@@ -186,6 +190,9 @@ export class AuthSessionService {
     // Reset lastAction date
   }
 
+  close() {
+    this._dialog.closeAll(); 
+  }
 
 
   private otpKey = 'otp';
