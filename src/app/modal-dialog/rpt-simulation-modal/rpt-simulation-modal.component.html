@@ -5,7 +5,7 @@
     <!-- </c-modal-header> -->
 </div>
 
-<form cForm class="mb-2" [formGroup]="rptSimulateForm" (ngSubmit)="onSubmit()"> 
+<form cForm class="mb-2" [formGroup]="rptSimulateForm"> 
     <div mat-dialog-content class="content">
         <c-row class="align-items-center">
             <!-- CIS Number Input -->
@@ -98,7 +98,7 @@
         <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!affForm.valid">{{data ? 'Update': 'Save'}}</button> -->
     
         
-        <button mat-raised-button color="primary" *ngIf="simulatedRptTTL < availBal" type="submit" [disabled]="!rptSimulateForm.valid">Submit</button>
+        <button mat-raised-button color="primary" *ngIf="simulatedRptTTL < availBal" (click)="onSubmit()" [disabled]="!rptSimulateForm.valid">Submit</button>
         <!-- Show the Simulate button if simulatedRptTTL is not greater than currentSttl -->
         <button mat-raised-button color="accent" *ngIf="!(simulatedRptTTL < availBal)"  (click)="simulateRPT()" [disabled]="!rptSimulateForm.valid">Simulate</button>
     
