@@ -35,7 +35,9 @@ export class RPTSimulationModalComponent implements OnInit{
   simulatedRptTTL: any;             // => Simulated Rpt Total
   unimpairedCap: number = 1214764186.16;   //Unimpaired Capital
   availBal: any;    // => Remaining Balance of Possible Loan Amount
-
+  rptBal: any;      // => RPT Balance (Net of Hold-out)
+  approvedCapital: any;  // => the Loan approved Limit
+ 
   constructor(
     private formBuilder: FormBuilder,
     private _dosriService: AddServicesService,
@@ -65,7 +67,9 @@ export class RPTSimulationModalComponent implements OnInit{
 
     if (this.rptSimulateForm.valid) {
       const sPNData = this.rptSimulateForm.value;
-      addSimulatedPNData(sPNData, session, userID)
+
+      if (this.simulatedRptTTL <= this.availBal) {
+        addSimulatedPNData(sPNData, session, userID)
           .then((response) => {
             this.logAction('Add', 'Successfuly Added RPT PN Data', true, 'rpofficer-ri');
             this.close();
@@ -73,6 +77,15 @@ export class RPTSimulationModalComponent implements OnInit{
           .catch((error) => {
 
           });
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Loan Breached!',
+          text: 'Please Enter Amount not Greater than the Available Balance',
+        });
+      }
+      
     }
   }
 
@@ -168,10 +181,13 @@ export class RPTSimulationModalComponent implements OnInit{
         const sumPrincipal = PNData.reduce((acc, obj) => {
           acc.principal += parseFloat(obj.principal) || 0;
           acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+          acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
           return acc;
-        }, { principal: 0, principal_bal: 0 });
+        }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
 
-        this.availBal = this.unimpairedCap - sumPrincipal.principal_bal;
+        this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
+        this.approvedCapital = this.unimpairedCap * 0.5;
+        this.availBal = this.approvedCapital - this.rptBal;
       } else {
 
       }
