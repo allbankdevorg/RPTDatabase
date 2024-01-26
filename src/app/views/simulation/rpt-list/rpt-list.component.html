@@ -48,8 +48,10 @@
                                     </tr>
                                     <tr>
                                       <td><p class="color-blue">Available Balance</p></td>
-                                      <td><p class="color-blue">Php {{availBal | number: '1.2-2'}}</p></td>
-                                      <td><p class="color-blue">{{availRptRatio}}</p></td>
+                                      <td [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}">
+                                      <p>Php {{availBal | number: '1.2-2'}}</p></td>
+                                      <td [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}"
+                                      ><p>{{availRptRatio}}</p></td>
                                     </tr>
                                   </tbody>
                                 </table>
