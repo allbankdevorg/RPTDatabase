@@ -15,7 +15,7 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="boRICisNumber" name="boRICisNumber"
               placeholder="CIS Number"
-              type="text" formControlName="boRICisNumber" appNum>
+              type="text" formControlName="boRICisNumber" (keyup.enter)="CISlookup()" appNum>
             </mat-form-field>
           </c-col>
       

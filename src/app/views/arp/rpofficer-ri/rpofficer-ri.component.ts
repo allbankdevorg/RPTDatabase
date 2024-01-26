@@ -59,8 +59,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.OffdataSource.paginator = this.paginator;
-    
-    // console.log(this.dataSource.filteredData[0].company);
   }
 
   constructor(private router: Router,
@@ -82,7 +80,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
           this.get.getAffiliatesCompanyOfficers((mngComp) => {
               // Process the data to count directors related to each company
               const companytoDisplay = companyName;
-              // console.log(affilComp);
               const filteredCompany = mngComp.filter((company) => company.aff_com_cis_number === this.compId);
               for (const company of filteredCompany ) {
                 const Company = company.aff_com_company_name;
@@ -90,9 +87,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
                 
               }
-              // console.log(mngComp);
-              // console.log(filteredCompany);
-              // console.log(this.Company);
                 // Set the data source for your MatTable
             });
         });
@@ -111,12 +105,8 @@ export class RPOfficerRIComponent implements AfterViewInit {
     // Get Officers
     getAffiliatesOfficers((affilOffData) => {
       // const directorIdToDisplay = directorId;
-      // console.log(affilOffData);
-      // console.log('directorIdToDisplay:', directorIdToDisplay)
-      // console.log(companytoDisplay);
       if (affilOffData) {
           const filteredOfficers = affilOffData.filter((director) => director.com_related === this.compId);
-          // console.log(filteredOfficers);
           const relationColumn = ['MothersName', 'FathersName', "Siblings", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const OfftableData: Record<string, any>[] = [];
@@ -130,7 +120,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
                   'off_CisNumber': officer.off_cisnumber,
                   'comp_CIS': officer.com_related,
               };
-              // console.log(officer);
               // Loop through each element in the 'relationColumn' array
               for (let index = 0; index < relationColumn.length; index++) {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
@@ -157,20 +146,14 @@ export class RPOfficerRIComponent implements AfterViewInit {
             }
           
             OfftableData.push(row);
-              // console.log(OfftableData);
           }
           
         this.OffdataSource.data = OfftableData;
-
-        
-        // console.log(OfftableData);
-        // console.log(this.Company);
 
           // Trigger change detection
           this.changeDetectorRef.detectChanges();
       }else {
         // Handle the case where affilOffData is null or undefined
-        // console.error('No Officers');
       }
     });
   }
@@ -189,7 +172,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   openEditAffilOfficersForm(data: any, event: any) {
     event.stopPropagation();
-    console.log(data);
     const dialogRef = this._dialog.open(AffiliatesOffModalComponent, {
       data,    
     });
@@ -198,7 +180,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
       next: (val) => {
         if (val) {
           // this.getEmployeeList();
-          console.log("Successs");
         }
       },
     });
@@ -219,7 +200,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   openEditAffilOfficerRIForm(data: any, event: any) {
     event.stopPropagation();
-    console.log(data);
     const dialogRef = this._dialog.open(AffiliatesOffRIModalComponent, {
       data,    
     });
@@ -228,7 +208,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
       next: (val) => {
         if (val) {
           // this.getEmployeeList();
-          console.log("Successs");
         }
       },
     });
@@ -239,7 +218,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
   setAffilCompOff() {
     this.selectedAffilCompCISNumber = this.compId;
-    // console.log(this.selectedAffilCompCISNumber)
   }
 
   setButtonId(id: number, off_cisnumber: number) {
@@ -248,22 +226,15 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
      this.dataService.setButtonId(id);
      this.dataService.setDirCIS(off_cisnumber);
-    // console.log(off_cisnumber);
-    // console.log(id);
     
   }
 
   setdirRelated() {
-    // director = director.dir_related;
-    // console.log(director);
   }
 
 
   // Delete Functions
   delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
-    // console.log(element);
-    // console.log(dirAffilCIS);
-    // console.log(offRelatComCIS);
     deleteAffilOff((dosriId) => {
   
     })
@@ -272,11 +243,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   
   delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
-    // console.log(element);
-    // console.log(cisNum);
-    // console.log(offRelated);
-    // deleteRelationship()
-    // console.log("Are you sure you want to delete?")
     deleteAffilOffRI((dosriId) => {
   
     })

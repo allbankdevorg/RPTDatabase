@@ -8,7 +8,7 @@ import { CoreService } from '../../services/core/core.service';
 import {callJSFun} from '../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../services/fetch/fetch-data.service';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
-import {createAffil, cisLookUP} from '../../functions-files/add/postAPI.js'
+import {createAffil, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
@@ -29,6 +29,7 @@ export class AffiliatesModalComponent implements OnInit {
   affForm: FormGroup;
   moduleV: any;
   isReadOnly: boolean = true;
+  cisLookUpResult: [] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,14 +50,9 @@ export class AffiliatesModalComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
 
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.affForm.value);
-
   }
 
 
@@ -68,12 +64,22 @@ export class AffiliatesModalComponent implements OnInit {
       const formData = this.affForm.value;
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      const holdOUT = formData.depoHoldOut;
 
       createAffil(formData, moduleV, session, userID)
       .then((response) => {
         this.ngOnInit();
         this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
         this.close();
+
+        const resultData = this.cisLookUpResult;
+          addPNData(resultData, holdOUT, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
       })
       .catch((error) => {
         // Handle errors when the promise is rejected
@@ -133,7 +139,6 @@ export class AffiliatesModalComponent implements OnInit {
     CISlookup() {
       const dataLookup = this.affForm.value;
       
-      // console.log(dataLookup.aff_com_cis_number);
       if (dataLookup.aff_com_cis_number) {
         let cis = dataLookup.aff_com_cis_number;
         cisLookUP(cis)
@@ -200,9 +205,9 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    // console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 
 }

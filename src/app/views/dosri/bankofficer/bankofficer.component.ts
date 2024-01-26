@@ -162,7 +162,6 @@ export class BankofficerComponent implements AfterViewInit{
                   'comp_CIS': officer.com_related,
             };
   
-            // console.log(officer.off_cisnumber);
             // Loop through each element in the 'relationColumn' array
             for (let index = 0; index < relationColumn.length; index++) {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
@@ -203,11 +202,9 @@ export class BankofficerComponent implements AfterViewInit{
             });
   
             this.officers = officers;
-            // console.log(tableData);
         }
           
           this.dataSource.data = tableData;
-          // console.log(this.officers);
           // Trigger change detection
           this.changeDetectorRef.detectChanges();
         });
@@ -216,15 +213,12 @@ export class BankofficerComponent implements AfterViewInit{
       }
       
       
-    //  console.log(this.tableData);
     })
   }
   
   setButtonId(id: number, offCisNumber: number) {
     this.buttonId = id;
     this.selectedcomCisNumber = offCisNumber;
-    // console.log(offCisNumber);
-    // console.log(id);
 
     this.dataService.setboCIS(offCisNumber);
     this.dataService.setButtonId(id);
@@ -245,7 +239,6 @@ export class BankofficerComponent implements AfterViewInit{
   
   openEditForm(data: any, event: any) {
     event.stopPropagation();
-    // console.log(data);
     const dialogRef = this._dialog.open(BankofficerModalComponent, {
       data,    
     });
@@ -253,8 +246,6 @@ export class BankofficerComponent implements AfterViewInit{
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
-          // this.getEmployeeList();
-          console.log("Successs");
         }
       },
     });
@@ -266,7 +257,6 @@ export class BankofficerComponent implements AfterViewInit{
 
   // Start of Button Click
   onButtonClick() {
-    // console.log('Show Modal Form');
     
   }
 
@@ -294,8 +284,6 @@ export class BankofficerComponent implements AfterViewInit{
 
 
   setoffcRelated() {
-    // director = director.dir_related;
-    // console.log(director);
   }
 
 
@@ -313,7 +301,6 @@ openRIForm() {
 
 openEditRIForm(data: any, event: any) {
   event.stopPropagation();
-  console.log(data);
   const dialogRef = this._dialog.open(BankofficerRIModalComponent, {
     data,    
   });
@@ -321,40 +308,38 @@ openEditRIForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
-        // console.log("Successs");
       }
     },
   });
 }
 
 
-  // // Start of Functions for Audit Trail
-  //  logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
-  //   const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
-  //   this.logAuditTrail(auditTrailEntry);
-  // }
+  // Start of Functions for Audit Trail
+   logAction(actionType: string, details: string, success: boolean, page: string, errorMessage?: string) {
+    const auditTrailEntry = this.createAuditTrailEntry(actionType, details, success, page, errorMessage);
+    this.logAuditTrail(auditTrailEntry);
+  }
   
   
   
-  // private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
-  //   return {
-  //     userId: 'current_user_id',
-  //     userName: 'Current_user',
-  //     timestamp: new Date(),
-  //     actionType,
-  //     details,
-  //     success,
-  //     page, // Include the page information
-  //     errorMessage: errorMessage || '', // Optional: Include error message if available
-  //   };
-  // }
+  private createAuditTrailEntry(actionType: string, details: string, success: boolean, page: string, errorMessage?: string): AuditTrail {
+    return {
+      userId: 'current_user_id',
+      userName: 'Current_user',
+      timestamp: new Date(),
+      actionType,
+      details,
+      success,
+      page, // Include the page information
+      errorMessage: errorMessage || '', // Optional: Include error message if available
+    };
+  }
   
   
-  // private logAuditTrail(auditTrailEntry: AuditTrail) {
-  //   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  //     console.log('Audit trail entry logged successfully.');
-  //   });
-  //   // console.log('Audit trail entry logged successfully.');
-  // }
+  private logAuditTrail(auditTrailEntry: AuditTrail) {
+    this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
+      
+    });
+    
+  }
 }

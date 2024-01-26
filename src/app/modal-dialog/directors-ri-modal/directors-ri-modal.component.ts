@@ -6,10 +6,11 @@ import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilde
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 // Imports for Functions
 import {createDirectors} from '../../functions-files/add/postAPI';
-import {createRelatedInterest} from '../../functions-files/add/postAPI';
+import {createRelatedInterest, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
@@ -31,6 +32,8 @@ export class DirectorsRIModalComponent implements OnInit {
   riForm: FormGroup;
   selectedDirCisNumber: number = 0;
   selectedCompCISNumber: number = 0;
+  isReadOnly: boolean = true;
+  cisLookUpResult: [] = [];
 
    // Subscription variables
    private buttonIdSubscription: Subscription = new Subscription();
@@ -64,10 +67,6 @@ export class DirectorsRIModalComponent implements OnInit {
   ngOnInit(): void {
   // Attempt to patch the form
   this.riForm.patchValue(this.data);
-  
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.riForm.value);
 
   }
 
@@ -81,23 +80,33 @@ export class DirectorsRIModalComponent implements OnInit {
     const directorId = this.sharedService.getDirectorId();
     const companyName = this.sharedService.getCompName();
     
+    
     if (this.riForm.valid) {
       const riData = this.riForm.value;
-      console.log(riData, buttonId, selectedDirCisNumber);
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      const holdOUT = riData.depoHoldOut;
+
       // Call the JavaScript function with form data
       createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) // Pass the entire formData object
       .then((response) => {
         
         this.logAction('Add', 'Successfuly Added Related Interest', true, 'directorsrelated');
         this.close();
+
+        const resultData = this.cisLookUpResult;
+          addPNData(resultData, holdOUT, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
         // this.updateTableData();
       })
       .catch((error) => {
         this.logAction('Add', 'Failed Adding Related Interest', false, 'directorsrelated');
         // this.updateTableData();
-        // console.log(this.dataSource);
       });
 
       
@@ -109,21 +118,67 @@ export class DirectorsRIModalComponent implements OnInit {
     
       // Trigger change detection
     this.changeDetectorRef.detectChanges();
-    console.log(this.changeDetectorRef.detectChanges);
-    // console.log(this.dataSource);
   }
-
-
-
-
-
-
 
 
 
   close() {
     this._dialogRef.close(true); 
   }
+
+
+  CISlookup() {
+    const dataLookup = this.riForm.value;
+  
+    if (dataLookup.riCisNumber) {
+      let cis = dataLookup.riCisNumber;
+      cisLookUP(cis)
+        .then((response) => {
+          if (response.length > 0) {
+            // If the array is not empty, use the first element
+            this.cisLookUpResult = response;
+
+            let accName = response[0].name;
+            Swal.fire({
+              icon: 'success',
+              title: 'CIS Found!',
+              text: 'CIS has Related Loan Found',
+            });
+            this.toggleInputReadOnly();
+            // Update form controls with new values
+            this.riForm.patchValue({
+              riFirstName: accName,
+              // com_company_name: accName // Assuming you have company_name in the response
+              // Add other form controls if needed
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'No CIS Found!',
+              text: 'Please Enter the First Name, Middle Name and Last Name',
+            });
+            this.toggleInputReadOnly();
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while fetching data.',
+          });
+          this.toggleInputReadOnly();
+        });
+    }
+  }
+  
+  
+
+  toggleInputReadOnly() {
+    this.isReadOnly = !this.isReadOnly;
+  }
+
+
+
 
 
 
@@ -151,9 +206,9 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 
 }

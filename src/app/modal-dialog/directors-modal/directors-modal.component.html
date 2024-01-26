@@ -12,7 +12,7 @@
             <label cLabel="col" for="cisNumber">CIS Number</label>
             <mat-form-field appearance="fill" [style.width.%]=100>
               <!-- <mat-label>First Name</mat-label> -->
-              <input matInput id="cisNumber" name="cisNumber"
+              <input matInput id="cisNumber" name="cisNumber" (keyup.enter)="CISlookup()"
               type="text" placeholder="CIS Number" formControlName="cisNumber" appNum>
               <mat-error *ngIf="drctrForm.get('cisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             </mat-form-field>

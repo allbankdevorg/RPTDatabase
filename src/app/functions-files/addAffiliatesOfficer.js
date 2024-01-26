@@ -1,6 +1,4 @@
 // function createAffilOff(offData, compId) {
-//     console.log(offData)
-//     console.log(compId)
 //    var settings = {
 //      "url": "http://10.232.236.15:8092/api/addData",
 //      "method": "POST",

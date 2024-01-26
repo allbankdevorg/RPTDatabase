@@ -53,7 +53,6 @@ export class AuditLogsComponent implements OnInit, AfterViewInit {
   updateTableData(): void {
     this.get.getAuditLogs((auditLogs) => {
       if (auditLogs) {
-        // console.log(auditLogs);
         this.logsDataSource.data = auditLogs;
         // this.logsDataSource.sort = this.sort;
       } else {

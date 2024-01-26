@@ -230,13 +230,11 @@ this.updateTableData();
         const companiesWithDirectors = affilCompOff.map(company => {
           const officers = company.officers || []; // Ensure there is a directors array
           const officerCount = officers.length;
-          // console.log(directorCount);
           return { ...company, officerCount, officers };
         });
   
         // Set the data source for your MatTable
         this.dataSource.data = companiesWithDirectors;
-        // console.log(companiesWithDirectors);
       }
     });
   
@@ -252,7 +250,6 @@ this.updateTableData();
           });
           
           // Set the data source for your MatTable
-          // console.log(affiliatesWithDirectors)
           this.affilOffdataSource.data = affiliatesWithDirectors;
           // Trigger change detection
           this.cdr.detectChanges();
@@ -263,11 +260,9 @@ this.updateTableData();
     this.get.getManagingCompany((mngComp) => {
       this.compData = mngComp;
     this.commandGroups = []; // Clear the existing commandGroups
-    // console.log(this.compData);
 
       if (mngComp) {
         const data = mngComp;
-        // console.log(data);
         data.forEach(item => {
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
@@ -280,7 +275,6 @@ this.updateTableData();
         });
       }
       // const data = this.compData.result[0].Data;
-      // console.log(mngComp);
     })
   }
 
@@ -331,13 +325,11 @@ this.updateTableData();
 
   // Start of Button Click
   onButtonClick() {
-    // console.log('Show Modal Form');
     
   }
 
   onRowClick(row: any, event: Event) {
     event.stopPropagation();
-    // console.log(row)
     // Capture the selected data and navigate to another component with it
       const directorId = row.aff_com_cis_number; // Extract the ID from the clicked row
       const companyName = row.aff_com_company_name;
@@ -383,9 +375,7 @@ openAddEditEmpForm() {
 }
 
 openEditForm(data: any, event: any) {
-  console.log(data);
   event.stopPropagation();
-  // console.log(data);
   const dialogRef = this._dialog.open(AffiliatesRPModalComponent, {
     data,    
   });
@@ -407,7 +397,6 @@ openEditForm(data: any, event: any) {
 
      // Check if the selectedManager exists in the commandGroups
      const isValidManager = this.commandGroups.some(group => {
-      // console.log('Group Value:', group.value);
       return group.value === selectedManager;
     });
   
@@ -415,7 +404,6 @@ openEditForm(data: any, event: any) {
   // Set the value only if it's a valid manager
   if (isValidManager) {
     this.affForm.get('commandControl')?.setValue(selectedManager);
-    // console.log(this.affForm);
   } else {
     // Optionally, handle the case where the manager is not valid
   }

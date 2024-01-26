@@ -206,14 +206,23 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
       });
 
 
+      // Show Popup Containing Name and Managing Company on Mouse Hover
       google.visualization.events.addListener(chart, 'onmouseover', (e) => {
         const selectedItem = this.orgsDataService.orgsData[e.row];
         this.updateNodeDetails(selectedItem);
         this.showPopup();
       });
+
+      google.visualization.events.addListener(chart, 'mouseleave', (e) => {
+        if (this.isNodeDetailsVisible) {
+          this.isNodeDetailsVisible = false;
+            // this.closePopover(); // Close the popover when clicking the chart container
+        }
+      });
       
 
       
+       // Hide the popover when the mouse leaves the chart area
        chart.getContainer().addEventListener('mouseleave', () => {
         if (!this.isNodeDetailsVisible) {
           this.hideNodePopover();
@@ -275,7 +284,6 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
             // Update the orgsData in the orgsDataService
             google.charts.load('current', { packages: ['orgchart'] });
             google.charts.setOnLoadCallback(() => this.drawChart( this.orgsDataService.orgsData));
-            // console.log(this.orgsDataService.orgsData);
             
             resolve();
           } catch (error) {
@@ -387,7 +395,6 @@ openAddEditEmpForm() {
 openEditForm(event: any) {
   const data = this.selectedData;
   event.stopPropagation();
-  // console.log(data);
   const dialogRef = this._dialog.open(UpdateManagingCompanyModalComponent, {
     data,    
   });
@@ -425,7 +432,6 @@ viewData(event: any) {
 
 AddChildComp(event: any) {
   const data = this.selectedData;
-  console.log(data)
   const dialogRef = this._dialog.open(AddChildModalComponent, {
     data,
   });
@@ -469,8 +475,8 @@ AddChildComp(event: any) {
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      // console.log('Audit trail entry logged successfully.');
+      
     });
-    // console.log('Audit trail entry logged successfully.');
+    
   }
 }

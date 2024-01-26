@@ -18,7 +18,6 @@ export class AuditTrailService {
 
   logAuditTrail(auditTrailEntry: AuditTrail): Observable<AuditTrail> {
     // Log specific messages regardless of the success or error status
-    // console.log('Audit trail entry logged:', auditTrailEntry);
 
     // Simulate the asynchronous behavior of an HTTP request
     return of(auditTrailEntry).pipe(

@@ -1,6 +1,4 @@
 // function createAffilDir(dirData, compId) {
-//     console.log(dirData)
-//     console.log(compId)
 //    var settings = {
 //      "url": "http://10.232.236.15:8092/api/addData",
 //      "method": "POST",

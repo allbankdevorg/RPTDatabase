@@ -34,10 +34,8 @@ function deleteDosri(dosriId) {
     //         }).then((result) => {
     //             if (result.isConfirmed) {
     //                 // User clicked 'Yes', perform additional actions if needed
-    //                 console.log('User clicked Yes');
     //             } else {
     //                 // User clicked 'No', perform additional actions if needed
-    //                 console.log('User clicked No');
     //             }
     //         });
     //     } else {

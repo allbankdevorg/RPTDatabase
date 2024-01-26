@@ -18,7 +18,7 @@
         type="text" [value]="selectedOffCisNumber || ''" hidden> -->
         <input
             aria-describedby="passwordHelpInline-3" matInput
-            id="riCisNumber" name="riCisNumber"
+            id="riCisNumber" name="riCisNumber" (keyup.enter)="CISlookup()"
             placeholder="CIS Number"
             type="text" formControlName="riCisNumber">
             <mat-error *ngIf="affilOfficerRIForm.get('riCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>

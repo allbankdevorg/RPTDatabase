@@ -1,7 +1,5 @@
 // function createAffil(formData, moduleV) {
 //   return new Promise((resolve, reject) => {
-//     console.log(formData)
-//     console.log(moduleV);
 //     var settings = {
 //       "url": "http://10.232.236.15:8092/api/addData",
 //       "method": "POST",
@@ -22,8 +20,6 @@
 //     };
 
 //     $.ajax(settings).done(function (response) {
-//       // Log the response
-//       console.log(response.result[0].status);
       
 //       // Check the status and resolve/reject the promise accordingly
 //       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
@@ -37,9 +33,7 @@
    
 //   //  $.ajax(settings).done(function (response) {
 //   //    Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-//   //    console.log(response.result[0].status);
 //   //    return response;
-//   //   //  console.log(response);
 //   //  });
 
    

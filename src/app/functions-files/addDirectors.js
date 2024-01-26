@@ -1,5 +1,4 @@
 // function createDirectors(directData, selectedCompCISNumber) {
-//   console.log(selectedCompCISNumber);
   
 //     var settings = {
 //       "url": "http://10.232.236.15:8092/api/addData",

@@ -57,14 +57,8 @@ export class SBLSimulationModalComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
-    // this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.sblSimulateForm.patchValue(this.data);
-  
-  // Log the form control values
-  // console.log('Form controls after patching:', this.affForm.value);
-
   }
 
 
@@ -116,8 +110,6 @@ export class SBLSimulationModalComponent implements OnInit{
     const dataLookup = this.sblSimulateForm.value;
     
     this.sblTotalRPT = this.sblSimulateService.getAvailBal();
-    console.log(this.sblTotalRPT);
-    // console.log(dataLookup.aff_com_cis_number);
     if (dataLookup.com_cis_number) {
       let cis = dataLookup.com_cis_number;
       cisLookUP(cis)
@@ -200,9 +192,9 @@ logAction(actionType: string, details: string, success: boolean, page: string, e
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    // console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
   }
   
 }

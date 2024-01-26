@@ -55,14 +55,9 @@ export class OtherRPModalComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
     this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.affForm.value);
-
   }
 
 
@@ -75,7 +70,7 @@ export class OtherRPModalComponent implements OnInit {
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
       
       if (this.data) {
-        console.log(this.data);
+        
       } else {
             createAffil(formData, moduleV, session, userID) // Pass the entire formData object
             .then((response) => {
@@ -155,7 +150,6 @@ export class OtherRPModalComponent implements OnInit {
   CISlookup() {
     const dataLookup = this.affForm.value;
   
-    // console.log(dataLookup.aff_com_cis_number);
     if (dataLookup.aff_com_cis_number) {
       let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
@@ -216,8 +210,6 @@ export class OtherRPModalComponent implements OnInit {
           this.commandGroups.push(commandGroup);
         });
       }
-      // const data = this.compData.result[0].Data;
-      // console.log(mngComp);
     })
   }
 
@@ -250,9 +242,9 @@ return {
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
 this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  // console.log('Audit trail entry logged successfully.');
+  
 });
-// console.log('Audit trail entry logged successfully.');
+
 }
 
 }

@@ -1,8 +1,4 @@
 function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber) {
-
-    console.log(buttonId)
-    console.log(selectedDirCisNumber)
-    console.log(riData)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -25,7 +21,6 @@ function createRPDIrectorsRelatedInterest(riData, buttonId, selectedDirCisNumber
     
     $.ajax(settings).done(function (response) {
       Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-      console.log(response);
     });
     // Implement code to insert a new director into the database
   }

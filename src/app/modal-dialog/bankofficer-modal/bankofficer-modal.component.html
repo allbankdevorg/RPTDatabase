@@ -15,7 +15,7 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="boCisNumber" name="boCisNumber"
               placeholder="CIS Number" 
-              type="text" formControlName="boCisNumber" appNum>
+              type="text" formControlName="boCisNumber" (keyup.enter)="CISlookup()" appNum>
               <mat-error *ngIf="boForm.get('boCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             </mat-form-field>
           </c-col>

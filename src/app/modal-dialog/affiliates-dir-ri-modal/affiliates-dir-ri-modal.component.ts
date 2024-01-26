@@ -5,9 +5,9 @@ import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilde
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-
+import Swal from 'sweetalert2';
 // Imports for Functions
-import {createAffilDirectorsRelatedInterest} from '../../functions-files/add/postAPI';
+import {createAffilDirectorsRelatedInterest, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../model/audit-trail.model';
@@ -25,8 +25,9 @@ import {AffiliatesService} from '../../services/affiliates/affiliates.service'; 
 export class AffiliatesDirRIModalComponent implements OnInit {
   affilDirRiForm: FormGroup;
   
-  // buttonId: number = 0;
-  // selectedDirCisNumber: number = 0;
+  isReadOnly: boolean = true;
+  cisLookUpResult: [] = [];
+  
 
 
   constructor(
@@ -67,19 +68,26 @@ export class AffiliatesDirRIModalComponent implements OnInit {
     const riData = this.affilDirRiForm.value;
     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
     const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
-    
+    const holdOUT = riData.depoHoldOut;
     // Call the JavaScript function with form data
     createAffilDirectorsRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) // Pass the entire formData object
       .then((response) => {
         
         this.logAction('Add', 'Successfuly Added Related Interest', true, 'directorsrelated');
         this.close();
-        // this.updateTableData();
+        
+        const resultData = this.cisLookUpResult;
+          addPNData(resultData, holdOUT, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
       })
       .catch((error) => {
         this.logAction('Add', 'Failed Adding Related Interest', false, 'directorsrelated');
         // this.updateTableData();
-        // console.log(this.dataSource);
       });
 
      // Pass the entire formData object
@@ -97,6 +105,49 @@ export class AffiliatesDirRIModalComponent implements OnInit {
 
 close() {
   this._dialogRef.close(true); 
+}
+
+
+CISlookup() {
+  const dataLookup = this.affilDirRiForm.value;
+  
+  if (dataLookup.riCisNumber) {
+    let cis = dataLookup.riCisNumber;
+    cisLookUP(cis)
+      .then((response) => {
+        if (response.length > 0) {
+          // If the array is not empty, use the first element
+          let accName = response[0].name;
+          this.toggleInputReadOnly();
+          // Update form controls with new values
+          this.affilDirRiForm.patchValue({
+            riFirstName: accName,
+            // Assuming you have company_name in the response
+            // Add other form controls if needed
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'No CIS Found!',
+            text: 'Please Enter the Account and Company Name',
+          });
+          this.toggleInputReadOnly();
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while fetching data.',
+        });
+        this.toggleInputReadOnly();
+      });
+  }
+}
+
+
+toggleInputReadOnly() {
+  this.isReadOnly = !this.isReadOnly;
 }
 
 
@@ -125,9 +176,9 @@ return {
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
 this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  console.log('Audit trail entry logged successfully.');
+  
 });
-// console.log('Audit trail entry logged successfully.');
+
 }
 
 

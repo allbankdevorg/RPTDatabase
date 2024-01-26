@@ -121,7 +121,6 @@ export class RptListComponent {
                 //     // Update PN Data with divided hold_out values
                 //     entries.forEach((entry) => {
                 //       entry.hold_out = Number(holdOutPerCis.toFixed(2));
-                //       // console.log(entry.hold_out);
                 //       this.totalHoldOut += entry.hold_out;
                 //     });
       

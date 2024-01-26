@@ -208,8 +208,6 @@ export class DirectorsrelatedComponent {
   
   setButtonId(id: number, dirCisNumber: number) {
     // Set values in the service
-    // console.log(id);
-    // console.log(dirCisNumber);
     
     this.dataService.setDirCIS(dirCisNumber);
     this.dataService.setButtonId(id);
@@ -224,7 +222,6 @@ export class DirectorsrelatedComponent {
     this.selectedCompCISNumber = this.compId;
     
     this.dataService.setCompCIS(this.selectedCompCISNumber);
-    console.log(this.selectedCompCISNumber)
   }
 
 
@@ -235,10 +232,6 @@ export class DirectorsrelatedComponent {
       const companyName = row.com_company_name;
       this.sharedService.setCompName(companyName);
       this.sharedService.setDirectorId(directorId);
-      console.log(directorId);
-      console.log(companyName);
-      console.log('row has been clicked');
-      console.log('Clicked row data:', row);
   }
  
   delDirector(row: any, comp_cis: any, dir_cis: any): void {
@@ -280,7 +273,6 @@ openAddEditEmpForm() {
 
 openEditForm(data: any, event: any) {
   event.stopPropagation();
-  console.log(data);
   const dialogRef = this._dialog.open(DirectorsRIModalComponent, {
     data,    
   });
@@ -288,8 +280,7 @@ openEditForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
-        console.log("Successs");
+
       }
     },
   });
@@ -309,7 +300,6 @@ openDirectorsForm() {
 
 openEditDirForm(data: any, event: any) {
   event.stopPropagation();
-  console.log(data);
   const dialogRef = this._dialog.open(DirectorsModalComponent, {
     data,    
   });
@@ -317,8 +307,6 @@ openEditDirForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
-        console.log("Successs");
       }
     },
   });
@@ -350,9 +338,9 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 
 }

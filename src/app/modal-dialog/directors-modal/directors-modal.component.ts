@@ -5,9 +5,9 @@ import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilde
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-
+import Swal from 'sweetalert2';
 // Imports for Functions
-import {createDirectors} from '../../functions-files/add/postAPI';
+import {createDirectors, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 import {createRelatedInterest} from '../../functions-files/add/postAPI';
 
 // Audit Trail
@@ -29,6 +29,8 @@ export class DirectorsModalComponent implements OnInit{
   
   drctrForm: FormGroup;
   selectedDirCisNumber: number = 0;
+  cisLookUpResult: [] = [];
+  isReadOnly: boolean = true;
   // selectedCompCISNumber: number = 0;
 
   // / Subscription variables
@@ -60,10 +62,6 @@ export class DirectorsModalComponent implements OnInit{
     // Attempt to patch the form
     this.drctrForm.patchValue(this.data);
     
-  
-    // Log the form control values
-    // console.log('Form controls after patching:', this.riForm.value);
-  
     }
 
   // Adding Directors
@@ -76,8 +74,8 @@ export class DirectorsModalComponent implements OnInit{
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
       const comp_CIS = this.dataService.getCompCIS();
+      const holdOUT = directData.depoHoldOut;
 
-      console.log(comp_CIS);
     
       // Call the JavaScript function with form data
       createDirectors(directData, comp_CIS, session, userID)
@@ -86,6 +84,15 @@ export class DirectorsModalComponent implements OnInit{
         this.ngOnInit();
         this.logAction('Add', 'Successfuly Added Director', true, 'directorsrelated');
         this.close();
+
+        const resultData = this.cisLookUpResult;
+          addPNData(resultData, holdOUT, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
 
       })
       .catch((error) => {
@@ -102,13 +109,54 @@ export class DirectorsModalComponent implements OnInit{
 
       // Trigger change detection
     this.changeDetectorRef.detectChanges();
-    // console.log(this.changeDetectorRef.detectChanges);
-    // console.log(this.dataSource);
   }
 
 
   close() {
     this._dialogRef.close(true); 
+  }
+
+
+  CISlookup() {
+    const dataLookup = this.drctrForm.value;
+  
+    if (dataLookup.cisNumber) {
+      let cis = dataLookup.cisNumber;
+      cisLookUP(cis)
+        .then((response) => {
+          if (response.length > 0) {
+            // If the array is not empty, use the first element
+            this.cisLookUpResult = response;
+            let accName = response[0].name;
+  
+            // Update form controls with new values
+            this.drctrForm.patchValue({
+              dFirstName: accName,
+              // Add other form controls if needed
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'No CIS Found!',
+              text: 'Please Enter the Account and Company Name',
+            });
+            this.toggleInputReadOnly();
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while fetching data.',
+          });
+          this.toggleInputReadOnly();
+        });
+    }
+  }
+
+
+  toggleInputReadOnly() {
+    this.isReadOnly = !this.isReadOnly;
   }
 
 
@@ -137,8 +185,8 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    console.log('Audit trail entry logged successfully.');
+
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 }

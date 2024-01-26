@@ -107,8 +107,8 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    // console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 }

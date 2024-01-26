@@ -56,9 +56,8 @@ export class AffiliatesRpmodalDetailsComponent {
 
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
     this.getParentCompany();//load dropdown Company list
-    // this.fetchTotalHoldOut();
+
   // Attempt to patch the form
     this.affForm.patchValue({ aff_com_cis_number: this.data.selectedData.aff_com_cis_number,
     aff_com_comp_name: this.data.selectedData.aff_com_comp_name, managing_company: this.data.selectedData.managing_company,
@@ -96,7 +95,6 @@ export class AffiliatesRpmodalDetailsComponent {
 
 
               const resultData = this.cisLookUpResult;
-              console.log(resultData);
               addPNData(resultData, session, userID)
               .then((response) => {
 
@@ -112,16 +110,7 @@ export class AffiliatesRpmodalDetailsComponent {
                     // Handle other error conditions 
                 this.logAction('Add', 'Adding Company Failed. CIS Number is already Define', false, 'DRI');
                 
-              //   const resultData = this.cisLookUpResult;
-                
-              //   console.log(resultData);
-              //   addPNData(resultData, session, userID)
-              //   .then((response) => {
-
-              //   })
-              //   .catch((error) => {
-
-              //   });
+              
               } else {
                 // Handle other error conditions 
                 this.logAction('Add', 'Adding Company Failed', false, 'affiliates-related-companies');
@@ -172,8 +161,6 @@ export class AffiliatesRpmodalDetailsComponent {
 
   CISlookup() {
     const dataLookup = this.affForm.value;
-    console.log(dataLookup);
-    // console.log(dataLookup.aff_com_cis_number);
     if (dataLookup.aff_com_cis_number) {
       let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
@@ -182,7 +169,6 @@ export class AffiliatesRpmodalDetailsComponent {
             // If the array is not empty, use the first element
             this.cisLookUpResult = response;
             let accName = response[0].name;
-            console.log(response)
             this.toggleInputReadOnly();
             // Update form controls with new values
             this.affForm.patchValue({
@@ -224,14 +210,11 @@ export class AffiliatesRpmodalDetailsComponent {
       this.get.getManagingCompany((mngComp) => {
         this.compData = mngComp;
         this.commandGroups = []; // Clear the existing commandGroups
-      // console.log(this.compData);
   
         // if (mngComp) {
           const data = mngComp;
-          // console.log(data);
           data.forEach(item => {
             
-            // console.log(item);
             // Create a commandGroup item with value and viewValue
             const commandGroup = {
               value: item.aff_com_cis_number,
@@ -239,13 +222,9 @@ export class AffiliatesRpmodalDetailsComponent {
             };
             
             
-            // this.manager = commandGroup;
             // Add the command group to the array
             this.commandGroups.push(commandGroup);
           });
-        // }
-        // const data = this.compData.result[0].Data;
-        // console.log(mngComp);
       })
     }
     else if (moduleV === "JMN") {
@@ -268,8 +247,6 @@ export class AffiliatesRpmodalDetailsComponent {
             this.commandGroups.push(commandGroup);
           });
         }
-        // const data = this.compData.result[0].Data;
-        // console.log(mngComp);
       })
       
     }
@@ -304,8 +281,8 @@ return {
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
 this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  // console.log('Audit trail entry logged successfully.');
+  
 });
-// console.log('Audit trail entry logged successfully.');
+
 }
 }

@@ -1,13 +1,14 @@
 import { Component, Inject, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 // Imports for Functions
-import {createAffilOffRI} from '../../functions-files/add/postAPI';
+import {createAffilOffRI, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 import {createRelatedInterest} from '../../functions-files/add/postAPI';
 
 // Audit Trail
@@ -27,6 +28,8 @@ import {AffiliatesService} from '../../services/affiliates/affiliates.service'; 
 export class AffiliatesOffRIModalComponent implements OnInit{
 
   affilOfficerRIForm: FormGroup;
+  isReadOnly: boolean = true;
+  cisLookUpResult: [] = [];
 
 
   constructor(
@@ -64,14 +67,23 @@ export class AffiliatesOffRIModalComponent implements OnInit{
       const riData = this.affilOfficerRIForm.value;
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
-      
+      const holdOUT = riData.depoHoldOut;
+
       // Call the JavaScript function with form data
       createAffilOffRI(riData, buttonId, selectedOffCisNumber, session, userID)
       .then((response) => {
         
         this.logAction('Add', 'Successfuly Added Affiliates Officers', true, 'rpofficer-ri');
         this.close();
-        // this.updateTableData();
+        
+        const resultData = this.cisLookUpResult;
+          addPNData(resultData, holdOUT, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
       })
       .catch((error) => {
         this.logAction('Add', 'Failed Adding Related Interest', false, 'directorsrelated');
@@ -93,6 +105,52 @@ export class AffiliatesOffRIModalComponent implements OnInit{
     close() {
       this._dialogRef.close(true); 
     }
+
+
+
+
+    CISlookup() {
+      const dataLookup = this.affilOfficerRIForm.value;
+      
+      if (dataLookup.riCisNumber) {
+        let cis = dataLookup.riCisNumber;
+        cisLookUP(cis)
+          .then((response) => {
+            if (response.length > 0) {
+              // If the array is not empty, use the first element
+              let accName = response[0].name;
+              this.toggleInputReadOnly();
+              // Update form controls with new values
+              this.affilOfficerRIForm.patchValue({
+                riFirstName: accName
+                // Assuming you have company_name in the response
+                // Add other form controls if needed
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'No CIS Found!',
+                text: 'Please Enter the Account and Company Name',
+              });
+              this.toggleInputReadOnly();
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'An error occurred while fetching data.',
+            });
+            this.toggleInputReadOnly();
+          });
+      }
+    }
+
+
+    toggleInputReadOnly() {
+      this.isReadOnly = !this.isReadOnly;
+    }
+
     
     
     
@@ -120,8 +178,8 @@ export class AffiliatesOffRIModalComponent implements OnInit{
     
     private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      console.log('Audit trail entry logged successfully.');
+      
     });
-    // console.log('Audit trail entry logged successfully.');
+    
     }
 }

@@ -1,7 +1,7 @@
 <!-- ADD DOSRI FORM -->
 <div mat-dialog-title>
     <c-modal-header>
-        <h3 cModalTitle>DOSRI Form</h3>
+        <h3 cModalTitle>Company DOSRI Form</h3>
     </c-modal-header>
 </div>
 <form cForm class="mb-2" [formGroup]="dosriForm" (ngSubmit)="onSubmit()">    
@@ -15,7 +15,7 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>First Name</mat-label> -->
                 <input matInput id="cisNumber" name="cisNumber" (keyup.enter)="CISlookup()"
-                type="text" placeholder="CIS Number" formControlName="com_cis_number" appNum>
+                type="text" placeholder="CIS Number" formControlName="com_cis_number" (keyup.enter)="CISlookup()" appNum>
                  <mat-error *ngIf="dosriForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               </mat-form-field>
             </c-col>

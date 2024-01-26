@@ -7,9 +7,9 @@ import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 // Imports for Functions
-import {createAffilDir} from '../../functions-files/add/postAPI';
-import {createRelatedInterest} from '../../functions-files/add/postAPI';
+import {createAffilDir, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 
+import Swal from 'sweetalert2';
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../model/audit-trail.model';
@@ -29,7 +29,9 @@ export class AffiliatesDirModalComponent implements OnInit{
 
   affilDrctrForm: FormGroup;
   compId: any;
-
+  
+  isReadOnly: boolean = true;
+  cisLookUpResult: [] = [];
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -69,12 +71,22 @@ export class AffiliatesDirModalComponent implements OnInit{
     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
     const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
     const comp_CIS = this.dataService.getCompCIS();
+    const holdOUT = directData.depoHoldOut;
     
     // Call the JavaScript function with form data
     createAffilDir(directData, comp_CIS, session, userID)
       .then((response) => {
         this.logAction('Add', 'Successfuly Added Director', true, 'directorsrelated');
         this.close();
+
+        const resultData = this.cisLookUpResult;
+        addPNData(resultData, holdOUT, session, userID)
+        .then((response) => {
+
+        })
+        .catch((error) => {
+
+        });
       })
       .catch((error) => {
         this.logAction('Add', 'Failed Adding Director', false, 'directorsrelated');
@@ -95,6 +107,50 @@ export class AffiliatesDirModalComponent implements OnInit{
 
 close() {
   this._dialogRef.close(true); 
+}
+
+
+
+CISlookup() {
+  const dataLookup = this.affilDrctrForm.value;
+  
+  if (dataLookup.affildcisNumber) {
+    let cis = dataLookup.affildcisNumber;
+    cisLookUP(cis)
+      .then((response) => {
+        if (response.length > 0) {
+          // If the array is not empty, use the first element
+          let accName = response[0].name;
+          this.toggleInputReadOnly();
+          // Update form controls with new values
+          this.affilDrctrForm.patchValue({
+            affildFirstName: accName,
+            // Assuming you have company_name in the response
+            // Add other form controls if needed
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'No CIS Found!',
+            text: 'Please Enter the Account and Company Name',
+          });
+          this.toggleInputReadOnly();
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while fetching data.',
+        });
+        this.toggleInputReadOnly();
+      });
+  }
+}
+
+
+toggleInputReadOnly() {
+  this.isReadOnly = !this.isReadOnly;
 }
 
 
@@ -123,8 +179,8 @@ return {
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
 this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  console.log('Audit trail entry logged successfully.');
+  
 });
-// console.log('Audit trail entry logged successfully.');
+
 }
 }

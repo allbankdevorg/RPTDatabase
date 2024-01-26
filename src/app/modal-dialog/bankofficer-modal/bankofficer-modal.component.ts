@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
+import Swal from 'sweetalert2';
 // Functions Import
-import {createBankOfficer, createBankOfficerRelationship} from '../../functions-files/add/postAPI';
+import {createBankOfficer, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 import {deleteDOSRIOfficer, deleteDOSRIOfficerRI} from '../../functions-files/delFunctions'
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
@@ -21,6 +22,8 @@ import {AuditTrail} from '../../model/audit-trail.model';
 export class BankofficerModalComponent implements OnInit{
 
   boForm: FormGroup;
+  isReadOnly: boolean = true;
+  cisLookUpResult: [] = [];
 
   constructor(private formBuilder: FormBuilder,
     private _dialogRef: MatDialogRef<BankofficerModalComponent>,
@@ -42,10 +45,6 @@ export class BankofficerModalComponent implements OnInit{
   ngOnInit(): void {
   // Attempt to patch the form
   this.boForm.patchValue(this.data);
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.boForm.value);
-
   }
 
 
@@ -72,7 +71,14 @@ export class BankofficerModalComponent implements OnInit{
         this.logAction('Add Bank Officer', 'Successfuly Added Bank Officer', true, 'bankofficer');
         this.close();
 
-        
+        const resultData = this.cisLookUpResult;
+          addPNData(resultData, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
       })
       .catch((error) => {
         this.logAction('Add Bank Officer', 'Failed Adding Bank Officer', false, 'bankofficer');
@@ -88,6 +94,56 @@ export class BankofficerModalComponent implements OnInit{
   close() {
     this._dialogRef.close(true); 
   }
+
+
+  CISlookup() {
+    const dataLookup = this.boForm.value;
+    if (dataLookup.boCisNumber) {
+      let cis = dataLookup.boCisNumber;
+      cisLookUP(cis)
+        .then((response) => {
+          if (response.length > 0) {
+            // If the array is not empty, use the first element
+            
+            this.cisLookUpResult = response;
+            let accName = response[0].name;
+            Swal.fire({
+              icon: 'success',
+              title: 'CIS Found!',
+              text: 'CIS has Related Loan Found',
+            });
+            this.toggleInputReadOnly();
+            // Update form controls with new values
+            this.boForm.patchValue({
+              boFirstName: accName,
+              // Assuming you have company_name in the response
+              // Add other form controls if needed
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'No CIS Found!',
+              text: 'Please Enter the Account and Company Name',
+            });
+            this.toggleInputReadOnly();
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while fetching data.',
+          });
+          this.toggleInputReadOnly();
+        });
+    }
+  }
+
+
+  toggleInputReadOnly() {
+    this.isReadOnly = !this.isReadOnly;
+  }
+  
 
 
   
@@ -115,9 +171,9 @@ export class BankofficerModalComponent implements OnInit{
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      console.log('Audit trail entry logged successfully.');
+      
     });
-    // console.log('Audit trail entry logged successfully.');
+    
   }
 
 }

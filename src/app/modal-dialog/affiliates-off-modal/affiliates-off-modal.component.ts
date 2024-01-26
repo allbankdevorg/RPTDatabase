@@ -67,11 +67,9 @@ export class AffiliatesOffModalComponent implements OnInit {
         const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
         const comp_CIS = this.dataService.getCompCIS();
         
-        console.log(comp_CIS);
         // Call the JavaScript function with form data
         createAffilOff(offData, comp_CIS, session, userID) // Pass the entire formData object
         .then((response) => {
-          // console.log(response);
           this.logAction('Add', 'Successfuly Added Affiliates Officers', true, 'rpofficer-ri');
           this.close();
 
@@ -86,7 +84,6 @@ export class AffiliatesOffModalComponent implements OnInit {
           // this.updateTableData();
         })
         .catch((error) => {
-          console.log(error)
           if (error && error.result && error.result[0] && error.result[0].status === "error" &&
                   error.result[0].message === "Officer CISNumber already defined") {
                 this._dialogRef.close(true);
@@ -120,15 +117,13 @@ export class AffiliatesOffModalComponent implements OnInit {
     
     CISlookup() {
       const dataLookup = this.affilOfficerForm.value;
-      console.log(dataLookup);
-      // console.log(dataLookup.aff_com_cis_number);
       if (dataLookup.affildcisNumber) {
         let cis = dataLookup.affildcisNumber;
         cisLookUP(cis)
           .then((response) => {
             if (response.length > 0) {
               // If the array is not empty, use the first element
-              console.log(response);
+              
               this.cisLookUpResult = response;
               let accName = response[0].name;
               Swal.fire({
@@ -192,8 +187,8 @@ export class AffiliatesOffModalComponent implements OnInit {
     
     private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      console.log('Audit trail entry logged successfully.');
+
     });
-    // console.log('Audit trail entry logged successfully.');
+    
     }
 }

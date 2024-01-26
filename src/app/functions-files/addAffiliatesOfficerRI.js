@@ -1,7 +1,4 @@
 // function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber) {
-//     console.log(OffriData)
-//     console.log(buttonId)
-//     console.log(selectedOffCisNumber)
 //     var settings = {
 //       "url": "http://10.232.236.15:8092/api/addData",
 //       "method": "POST",

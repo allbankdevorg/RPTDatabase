@@ -83,7 +83,6 @@ export class BankstockholdersComponent {
   onRowClick(row: any) {
     // Capture the selected data and navigate to another component with it
     // this.router.navigate(['/details', row.id]);
-    console.log('Show Update Modal Form');
     // this.router.navigate(['/dri/directorsrelated', row.bn]);
   }
 
@@ -112,7 +111,6 @@ export class BankstockholdersComponent {
   
   openEditForm(data: any, event: any) {
     event.stopPropagation();
-    // console.log(data);
     const dialogRef = this._dialog.open(StockholdersModalComponent, {
       data,    
     });
@@ -121,7 +119,6 @@ export class BankstockholdersComponent {
       next: (val) => {
         if (val) {
           // this.getEmployeeList();
-          console.log("Successs");
         }
       },
     });
@@ -129,13 +126,3 @@ export class BankstockholdersComponent {
   
 
 }
-
-
-// Data Sets
-
-
-
-
-
-
-  

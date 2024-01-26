@@ -170,7 +170,6 @@ export class PacComponent implements AfterViewInit {
     ngAfterViewInit() {
       this.dataSource.paginator = this.paginator1;
       this.OffdataSource.paginator = this.paginator2;
-      // console.log(this.dataSource.filteredData[0].company);
     }
 
 
@@ -207,7 +206,6 @@ export class PacComponent implements AfterViewInit {
             this.get.getAffiliatesCompany((affilComp) => {
                 // Process the data to count directors related to each company
                 const companytoDisplay = companyName;
-                // console.log(affilComp);
                 const filteredCompany = affilComp.filter((company) => company.aff_com_cis_number === this.compId);
                 for (const company of filteredCompany ) {
                   const Company = company.aff_com_company_name;
@@ -235,7 +233,6 @@ async  ngOnInit() {
 
       // if (affilDirData) {
           const filteredDirectors = affilDirData.filter((director) => director.com_related === this.compId);
-          // console.log(filteredDirectors);
           const relationColumn = ['MothersName', 'FathersName', 'Siblings', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const tableData: Record<string, any>[] = [];
@@ -249,7 +246,6 @@ async  ngOnInit() {
                   'dir_CisNumber': director.dir_cisnumber,
                   'comp_CIS': director.com_related,
               };
-              // console.log(this.Company);
               // Loop through each element in the 'relationColumn' array
               for (let index = 0; index < relationColumn.length; index++) {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
@@ -276,7 +272,6 @@ async  ngOnInit() {
             }
           
               tableData.push(row);
-              // console.log(tableData);
           }
           
         this.dataSource.data = tableData;
@@ -289,7 +284,6 @@ async  ngOnInit() {
     this.get.getAffiliatesOfficers().subscribe((affilOffData) => {
       if (affilOffData) {
           const filteredOfficers = affilOffData.filter((director) => director.com_related === this.compId);
-          // console.log(filteredOfficers);
           const relationColumn = ['MothersName', 'FathersName', "Siblings", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw', 
           'stepChild', 'sonDaughterInLaw', 'grandParents', 'grandParentsInLaw', 'sistersInLaw', 'brothersInLaw', 'grandChildren', 'grandChildrenInLaw'];
           const OfftableData: Record<string, any>[] = [];
@@ -303,7 +297,6 @@ async  ngOnInit() {
                   'off_CisNumber': officer.off_cisnumber,
                   'comp_CIS': officer.com_related,
               };
-              // console.log(this.Company);
               // Loop through each element in the 'relationColumn' array
               for (let index = 0; index < relationColumn.length; index++) {
                 const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
@@ -330,7 +323,6 @@ async  ngOnInit() {
             }
           
             OfftableData.push(row);
-              // console.log(OfftableData);
           }
           
         this.OffdataSource.data = OfftableData;
@@ -362,7 +354,6 @@ async  ngOnInit() {
   
   openEditAffilDirForm(data: any, event: any) {
     event.stopPropagation();
-    console.log(data);
     const dialogRef = this._dialog.open(AffiliatesDirModalComponent, {
       data,    
     });
@@ -371,7 +362,6 @@ async  ngOnInit() {
       next: (val) => {
         if (val) {
           // this.getEmployeeList();
-          console.log("Successs");
         }
       },
     });
@@ -392,7 +382,6 @@ async  ngOnInit() {
   
   openEditAffilDirRIForm(data: any, event: any) {
     event.stopPropagation();
-    console.log(data);
     const dialogRef = this._dialog.open(AffiliatesDirRIModalComponent, {
       data,    
     });
@@ -401,7 +390,6 @@ async  ngOnInit() {
       next: (val) => {
         if (val) {
           // this.getEmployeeList();
-          console.log("Successs");
         }
       },
     });
@@ -423,17 +411,14 @@ async  ngOnInit() {
 
  setAffilComp() {
    this.selectedAffilCompCISNumber = this.compId;
-  //  console.log(this.selectedAffilCompCISNumber)
  }
 
  setAffilCompOff() {
    this.selectedAffilCompCISNumber = this.compId;
-  //  console.log(this.selectedAffilCompCISNumber)
  }
 
  setdirRelated() {
    // director = director.dir_related;
-   // console.log(director);
  }
 
 
@@ -480,7 +465,6 @@ async  ngOnInit() {
      createAffilOff(offData, this.compId, session, userID); // Pass the entire formData object
      this.ngOnInit();
 
-    //  console.log(offData);
    }
 
    this.ngZone.run(() => {

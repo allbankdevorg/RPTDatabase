@@ -208,7 +208,6 @@ totalNetOfHoldOut: number = 0;
     this.internalSBL = (this.unimpairedCap * .20);
     this.availBal = this.internalSBL 
     this.searchTextLoanList = new FormControl();
-    // console.log(this.availBal);
     // this.updateTableDatas();
     // this.data = this.getFlattenedData(this.data);  
     // Call the calculateTotalNetOfHoldOut method

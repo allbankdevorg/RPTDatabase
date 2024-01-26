@@ -11,16 +11,11 @@
       <c-col [sm]="6">
         <label cLabel="col" for="riCisNumber">CIS Number</label>
         <mat-form-field appearance="fill" [style.width.%]=100>
-        <!-- <input
-        aria-describedby="passwordHelpInline-3"cFormControl
-        id="dir_CIS" name="dir_CIS"
-        placeholder="dir_CIS"
-        type="text" [value]="selectedOffCisNumber || ''" hidden> -->
         <input
             aria-describedby="passwordHelpInline-3" matInput
             id="riCisNumber" name="riCisNumber"
             placeholder="CIS Number"
-            type="text" formControlName="riCisNumber">
+            type="text" formControlName="riCisNumber" (keyup.enter)="CISlookup()">
         </mat-form-field>
       </c-col>
 

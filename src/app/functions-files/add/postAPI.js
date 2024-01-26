@@ -340,7 +340,6 @@ function createAffilDir(directData, comp_CIS, session, userID) {
 */
 function createAffilOff(offData, comp_CIS, session, userID) {
   return new Promise((resolve, reject) => {
-    console.log(offData);
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -478,7 +477,6 @@ function createAffilDirectorsRelatedInterest(riData, buttonId, selectedDirCisNum
 function createStockHolders(formData, session, userID) {
     
   return new Promise((resolve, reject) => {
-    // console.log(formData)
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -740,7 +738,6 @@ function userAccess(userid) {
 function addPNData(resultData, holdOUT, session, userID) {
     
   return new Promise((resolve, reject) => {
-    // console.log(resultData)
 
     if (Array.isArray(resultData)) {
       const totalItems = resultData.length;
@@ -749,7 +746,6 @@ function addPNData(resultData, holdOUT, session, userID) {
 
       
       resultData.forEach((item) => {
-        console.log(item.loan_no);
         var settings = {
             "url": "http://10.232.236.15:8092/api/addData",
             "method": "POST",
@@ -807,10 +803,6 @@ function addPNData(resultData, holdOUT, session, userID) {
 function addSimulatedPNData(sPNData, session, userID) {
     
   return new Promise((resolve, reject) => {
-    console.log(sPNData);
-    console.log(sPNData.com_account_name);
-    console.log(sPNData.com_cis_number);
-    console.log(sPNData.amount);
         var settings = {
             "url": "http://10.232.236.15:8092/api/addData",
             "method": "POST",
@@ -869,7 +861,6 @@ function HoldOutValue(cis) {
     };
     
     $.ajax(settings).done(function (response) {
-      // console.log(response);
       if (response.result[0].message === 'Success') {
         resolve(response);
       } else {
@@ -896,7 +887,6 @@ function checkHoldOutValue(com_cis) {
     };
     
     $.ajax(settings).done(function (response) {
-      // console.log(response);
       if (response.result[0].message === 'Success') {
         resolve(response);
       } else {

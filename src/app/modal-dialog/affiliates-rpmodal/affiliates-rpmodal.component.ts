@@ -58,15 +58,9 @@ export class AffiliatesRPModalComponent implements OnInit{
 
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
     this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
-  
-  // console.log(commandGroup)
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.affForm.value);
 
   }
 
@@ -103,7 +97,6 @@ export class AffiliatesRPModalComponent implements OnInit{
 
               
               const resultData = this.cisLookUpResult;
-              console.log(resultData);
               addPNData(resultData, holdOUT, session, userID)
               .then((response) => {
 
@@ -119,16 +112,7 @@ export class AffiliatesRPModalComponent implements OnInit{
                     // Handle other error conditions 
                 this.logAction('Add', 'Adding Company Failed. CIS Number is already Define', false, 'DRI');
                 
-              //   const resultData = this.cisLookUpResult;
-                
-              //   console.log(resultData);
-              //   addPNData(resultData, session, userID)
-              //   .then((response) => {
-
-              //   })
-              //   .catch((error) => {
-
-              //   });
+              
               } else {
                 // Handle other error conditions 
                 this.logAction('Add', 'Adding Company Failed', false, 'affiliates-related-companies');
@@ -178,8 +162,7 @@ export class AffiliatesRPModalComponent implements OnInit{
 
   CISlookup() {
     const dataLookup = this.affForm.value;
-    console.log(dataLookup);
-    // console.log(dataLookup.aff_com_cis_number);
+
     if (dataLookup.aff_com_cis_number) {
       let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
@@ -188,7 +171,6 @@ export class AffiliatesRPModalComponent implements OnInit{
             // If the array is not empty, use the first element
             this.cisLookUpResult = response;
             let accName = response[0].name;
-            console.log(response)
             this.toggleInputReadOnly();
             // Update form controls with new values
             this.affForm.patchValue({
@@ -224,14 +206,11 @@ export class AffiliatesRPModalComponent implements OnInit{
     this.get.getManagingCompany((mngComp) => {
       this.compData = mngComp;
       this.commandGroups = []; // Clear the existing commandGroups
-    // console.log(this.compData);
 
       // if (mngComp) {
         const data = mngComp;
-        // console.log(data);
         data.forEach(item => {
           
-          // console.log(item);
           // Create a commandGroup item with value and viewValue
           const commandGroup = {
             value: item.aff_com_cis_number,
@@ -245,7 +224,6 @@ export class AffiliatesRPModalComponent implements OnInit{
         });
       // }
       // const data = this.compData.result[0].Data;
-      // console.log(mngComp);
     })
   }
 
@@ -277,9 +255,9 @@ return {
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
 this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  // console.log('Audit trail entry logged successfully.');
+  
 });
-// console.log('Audit trail entry logged successfully.');
+
 }
 
 

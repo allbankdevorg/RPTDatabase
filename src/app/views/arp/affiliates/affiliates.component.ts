@@ -163,7 +163,6 @@ this.initializeCommandGroups();
 
 ngOnInit() {
 this.updateTableData();
-// console.log(this.displayedData)
 }
 
 
@@ -183,7 +182,6 @@ updateTableData() {
 
       // Set the data source for your MatTable
       this.affDataSource.data = companiesWithOfficers;
-      // console.log(companiesWithOfficers);
     }
   });
 
@@ -209,8 +207,6 @@ updateTableData() {
 
 
 onButtonClick(module: any) {
-// console.log('Add Data');
-// console.log(module);
 this.moduleV = module;
 
 this.dataService.setmoduleV(module);
@@ -248,8 +244,6 @@ this.renderer.setStyle(modal, 'display', 'block');
 }
 
 onModalClose() {
-// console.log('Show Modal');
-// console.log("success: Login Successfully");
 const modal = this.editAffilModal.nativeElement;
 
 if (modal) {
@@ -281,13 +275,9 @@ delAffilComp(cis_id)
 editAffil(row: any, event: Event) {
 event.stopPropagation();
 this.editAffilvisible = !this.editAffilvisible;
-// console.log(row);
-// console.log(this.commandGroups);
 const selectedManager = row.managing_company;
-// console.log('Selected Manager:', selectedManager);
 // Check if the selectedManager exists in the commandGroups
 const isValidManager = this.commandGroups.some(group => {
-// console.log('Group Value:', group.value);
 return group.value === selectedManager;
 });
 
@@ -355,7 +345,6 @@ openAddEditEmpForm() {
 
 openEditForm(data: any, event: any) {
   event.stopPropagation();
-  // console.log(data);
   const dialogRef = this._dialog.open(AffiliatesModalComponent, {
     data,    
   });
@@ -364,7 +353,6 @@ openEditForm(data: any, event: any) {
     next: (val) => {
       if (val) {
         // this.getEmployeeList();
-        // console.log("Successs");
       }
     },
   });
@@ -400,8 +388,8 @@ openEditForm(data: any, event: any) {
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      // console.log('Audit trail entry logged successfully.');
+      
     });
-    // console.log('Audit trail entry logged successfully.');
+    
   }
 }

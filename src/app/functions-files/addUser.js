@@ -1,5 +1,4 @@
 function addUsers(formData) {
-    console.log(formData);
     
     //   var settings = {
     //     "url": "http://10.232.236.15:8092/api/addData",

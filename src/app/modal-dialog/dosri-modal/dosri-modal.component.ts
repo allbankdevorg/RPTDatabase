@@ -5,7 +5,7 @@ import { CoreService } from '../../services/core/core.service';
 // import { EmployeeService } from '../services/employee.service';
 
 // Functions Imports
-import {createDosri, cisLookUP} from '../../functions-files/add/postAPI.js'
+import {createDosri, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
 
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
@@ -52,14 +52,10 @@ export class DosriModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
     this.foodCtrl = new FormControl({value: '', disabled: this.disabled})
 
   // Attempt to patch the form
   this.dosriForm.patchValue(this.data);
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.dosriForm.value);
 
   }
 
@@ -72,7 +68,8 @@ export class DosriModalComponent implements OnInit {
       const formData = this.dosriForm.value;
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
-  
+      const holdOUT = formData.depoHoldOut;
+
       // Call the JavaScript function with form data
       createDosri(formData, session, userID)
         .then((response) => {
@@ -80,6 +77,15 @@ export class DosriModalComponent implements OnInit {
           this.ngOnInit();
           this.logAction('Add', 'Added Company', true, 'DRI');
           this.close();
+
+          const resultData = this.cisLookUpResult;
+          addPNData(resultData, holdOUT, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
           
         })
         .catch((error) => {
@@ -150,9 +156,7 @@ export class DosriModalComponent implements OnInit {
           if (response.length > 0) {
             // If the array is not empty, use the first element
             this.cisLookUpResult = response;
-            console.log(this.cisLookUpResult);
             let accName = response[0].name;
-            console.log(response);
   
             // Update form controls with new values
             this.dosriForm.patchValue({
@@ -212,9 +216,9 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    // console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 
 

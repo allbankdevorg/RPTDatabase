@@ -58,16 +58,10 @@ export class UpdateJMNComponent {
 
 
   ngOnInit(): void {
-    // console.log('Data received in DosriModalComponent:', this.data);
+    
     this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
-  
-  // console.log(commandGroup)
-
-  // Log the form control values
-  // console.log('Form controls after patching:', this.affForm.value);
-
   }
 
 
@@ -101,7 +95,6 @@ export class UpdateJMNComponent {
 
 
               const resultData = this.cisLookUpResult;
-              console.log(resultData);
               addPNData(resultData, session, userID)
               .then((response) => {
 
@@ -117,16 +110,6 @@ export class UpdateJMNComponent {
                     // Handle other error conditions 
                 this.logAction('Add', 'Adding Company Failed. CIS Number is already Define', false, 'DRI');
                 
-              //   const resultData = this.cisLookUpResult;
-                
-              //   console.log(resultData);
-              //   addPNData(resultData, session, userID)
-              //   .then((response) => {
-
-              //   })
-              //   .catch((error) => {
-
-              //   });
               } else {
                 // Handle other error conditions 
                 this.logAction('Add', 'Adding Company Failed', false, 'affiliates-related-companies');
@@ -176,8 +159,6 @@ export class UpdateJMNComponent {
 
   CISlookup() {
     const dataLookup = this.affForm.value;
-    console.log(dataLookup);
-    // console.log(dataLookup.aff_com_cis_number);
     if (dataLookup.aff_com_cis_number) {
       let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
@@ -186,7 +167,6 @@ export class UpdateJMNComponent {
             // If the array is not empty, use the first element
             this.cisLookUpResult = response;
             let accName = response[0].name;
-            console.log(response)
             this.toggleInputReadOnly();
             // Update form controls with new values
             this.affForm.patchValue({
@@ -269,9 +249,9 @@ return {
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
 this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-  // console.log('Audit trail entry logged successfully.');
+
 });
-// console.log('Audit trail entry logged successfully.');
+
 }
 
 }

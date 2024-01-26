@@ -36,17 +36,11 @@ ngOninit () {
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
     this.keepalive.interval(5); // 5 seconds
     
-    // this.document.body.addEventListener('mousemove', () => {
-    //   this.resetIdleTimer(); 
-    //   console.log("Hover, Idle reset")
-    // });
   
-    this.idle.onIdleStart.subscribe(() => {
-      // console.log('Entered idle mode');  
+    this.idle.onIdleStart.subscribe(() => { 
     });
   
     this.idle.onIdleEnd.subscribe(() => {
-      // console.log('Exited idle mode');
       this.resetIdleTimer();
     });
     
@@ -54,12 +48,10 @@ ngOninit () {
     this.idle.watch();
 
     this.idle.onIdleEnd.subscribe(() => {
-      // console.log('No longer idle.');
       this.resetIdleTimer();
     });
 
     this.idle.onTimeout.subscribe(() => {
-      // console.log('Session expired!');
       // Implement your logout logic here
       this.timedOut();
     });
@@ -90,7 +82,6 @@ ngOninit () {
 
   public timedOut(): void {
     // Implement your logout logic here
-    // console.log('Logging out...');
     // Calling the Logout Function
     this.authService.simulateLogout();
   }

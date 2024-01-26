@@ -1,7 +1,5 @@
 function Logout(Logout) {
     return new Promise((resolve, reject) => {
-        console.log(formData)
-        console.log(moduleV);
 
         Swal.fire({
             title: 'Are you sure?',

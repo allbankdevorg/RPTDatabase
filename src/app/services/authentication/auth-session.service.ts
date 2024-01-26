@@ -62,11 +62,9 @@ export class AuthSessionService {
     const userObj = JSON.parse(storedUser);
     this.username = userObj.username;
     this.role = userObj.role;
-    // console.log(storedUser);
     return storedUser ? JSON.parse(storedUser) : null;
   }
 
-  console.log(storedUser);
   return { username: '', role: '' };
   }
 
@@ -123,7 +121,6 @@ export class AuthSessionService {
   //     if (storedUser) {
   //       const userObj = JSON.parse(storedUser);
   //       this.role = userObj.role;
-  //       console.log(this.role);
   //     }
   //   }
   //   return this.role;
@@ -153,14 +150,11 @@ export class AuthSessionService {
   simulateLogin(username: string, password: string): Observable<boolean> {
     // Get user data from your dummy data service
     const user: Users[] = this.usersService.getUsers(username);
-    console.log(user);
-    console.log(username, password)
   
     // Check if the user list is not empty
     if (user.length > 0) {
       // Find the user with matching username and password
       const matchingUser = user.find(user => user.userName === username && user.password === password);
-      console.log(matchingUser);
       if (matchingUser) {
         // Set session data and authentication token
         
@@ -171,55 +165,16 @@ export class AuthSessionService {
         
         this.setAuthToken('yourAuthToken'); // Replace with an actual token
   
-        console.log('Login successful!'); // Log success
-        // this.userDataService.setUserData(matchingUser);
-  
-        // this.userDataService.setUserAuthority(matchingAuthority);  
-  
         return of(true);
       }
     }
   
     // If no matching user is found or the user list is empty, log failure
-    console.log('Login failed!');
     return of(false);
   }
   
 
-  // Simulate login with static credentials (including passwords)
-  // simulateLogin(username: string, password: string): Observable<boolean> {
-  //   // Simulate checking credentials against a backend (hardcoded for simplicity)
-  //   const storedCredentials = {
-  //     'admin': { password: 'admin1234', role: 'admin' },
-  //     // Add more usernames, passwords, and roles as needed
-  //   };
   
-  //   const storedUser = storedCredentials[username];
-  //   console.log(storedUser);
-  //   console.log('Entered Username:', username);
-
-
-  
-  //   if (storedUser && storedUser.password === password) {
-  //     // Simulate getting user info from a backend
-  //     const userId = '1'; // Replace with actual user ID
-  //     const userRole = storedUser.role; // Use the role from stored credentials
-  
-  //     // Set session data and authentication token
-  //     this.setSessionData(username, userRole);
-  //     this.setAuthToken('yourAuthToken'); // Replace with an actual token
-      
-  //     console.log('Login successful!'); // Log success
-
-  //     return of(true);
-  //   } else {
-  //     console.log('Login failed!'); // Log failure
-  //     console.log(storedUser);
-  //     return of(false);
-  //   }
-  // }
-  
-
   // Simulate logout
   simulateLogout(): void {
     this.clearSession();
@@ -228,7 +183,6 @@ export class AuthSessionService {
 
   resetTimer() {
     this.lastAction = Date.now();  
-    console.log('Timer Reset')
     // Reset lastAction date
   }
 

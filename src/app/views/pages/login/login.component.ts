@@ -115,7 +115,6 @@ export class LoginComponent implements OnInit {
   
   onOtpChange(otp) {
     this.otp = otp;
-    // console.log(this.otp)
   }
 
   setVal(val) {
@@ -421,9 +420,9 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 
 

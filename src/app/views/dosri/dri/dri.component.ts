@@ -250,7 +250,6 @@ openAddEditEmpForm() {
 
 openEditForm(data: any, event: any) {
   event.stopPropagation();
-  // console.log(data);
   const dialogRef = this._dialog.open(DosriModalComponent, {
     data,    
   });
@@ -258,8 +257,6 @@ openEditForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
-        // console.log("Successs");
       }
     },
   });
@@ -291,9 +288,9 @@ private createAuditTrailEntry(actionType: string, details: string, success: bool
 
 private logAuditTrail(auditTrailEntry: AuditTrail) {
   this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-    // console.log('Audit trail entry logged successfully.');
+    
   });
-  // console.log('Audit trail entry logged successfully.');
+  
 }
 
 }

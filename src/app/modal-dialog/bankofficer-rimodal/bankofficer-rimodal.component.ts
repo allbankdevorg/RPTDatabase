@@ -7,8 +7,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+
+import Swal from 'sweetalert2';
 // Imports for Functions
-import {createBankOfficerRelationship} from '../../functions-files/add/postAPI';
+import {createBankOfficerRelationship, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 
 
 // Audit Trail
@@ -30,7 +32,9 @@ export class BankofficerRIModalComponent implements OnInit{
   boRIForm: FormGroup;
   selectedDirCisNumber: number = 0;
   selectedCompCISNumber: number = 0;
-
+  
+  isReadOnly: boolean = true;
+  cisLookUpResult: [] = [];
 
   constructor(private formBuilder: FormBuilder, 
     private sharedService: SharedService,
@@ -74,6 +78,16 @@ export class BankofficerRIModalComponent implements OnInit{
           // this.logAction('Add Bank Officer Related Interest', 'Successfuly Added Related Interest', true, 'bankofficer');
           this.logAction('Add', 'Successfuly Added Related Interest', true, 'Bank Officer');
           this.close();
+
+          const resultData = this.cisLookUpResult;
+          addPNData(resultData, session, userID)
+          .then((response) => {
+
+          })
+          .catch((error) => {
+
+          });
+
         })
         .catch((error) => {
           // this.logAction('Add Bank Officer Related Interest', 'Failed Adding Related Interest', false, 'bankofficer');
@@ -87,6 +101,56 @@ export class BankofficerRIModalComponent implements OnInit{
 
     close() {
       this._dialogRef.close(true); 
+    }
+
+
+
+    CISlookup() {
+      const dataLookup = this.boRIForm.value;
+      if (dataLookup.boRICisNumber) {
+        let cis = dataLookup.boRICisNumber;
+        cisLookUP(cis)
+          .then((response) => {
+            if (response.length > 0) {
+              // If the array is not empty, use the first element
+              
+              this.cisLookUpResult = response;
+              let accName = response[0].name;
+              Swal.fire({
+                icon: 'success',
+                title: 'CIS Found!',
+                text: 'CIS has Related Loan Found',
+              });
+              this.toggleInputReadOnly();
+              // Update form controls with new values
+              this.boRIForm.patchValue({
+                boRIFirstName: accName,
+                // Assuming you have company_name in the response
+                // Add other form controls if needed
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'No CIS Found!',
+                text: 'Please Enter the Account and Company Name',
+              });
+              this.toggleInputReadOnly();
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'An error occurred while fetching data.',
+            });
+            this.toggleInputReadOnly();
+          });
+      }
+    }
+  
+  
+    toggleInputReadOnly() {
+      this.isReadOnly = !this.isReadOnly;
     }
   
   
@@ -115,9 +179,9 @@ export class BankofficerRIModalComponent implements OnInit{
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      console.log('Audit trail entry logged successfully.');
+      
     });
-    // console.log('Audit trail entry logged successfully.');
+    
   }
 
 

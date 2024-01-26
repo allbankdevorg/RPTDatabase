@@ -122,7 +122,6 @@ export class OtherRelatedPartiesComponent {
     this.fetchAssocCompany();
     this.getParentCompany();
    
-    // console.log(this.orgData);
   }
   
   drawChart(): void {
@@ -175,6 +174,7 @@ export class OtherRelatedPartiesComponent {
         }
       });
       
+      // Show Popup Containing Name and Managing Company on Mouse Hover
       google.visualization.events.addListener(chart, 'onmouseover', (e) => {
         const selectedRow = e.row; // Access row directly from the event
         if (selectedRow !== undefined && selectedRow !== null) {
@@ -184,22 +184,6 @@ export class OtherRelatedPartiesComponent {
         }
       });
 
-      // google.visualization.events.addListener(chart, 'select', () => {
-      //   // Check if the time since the last click is less than 300 milliseconds (double-click)
-      //   if (Date.now() - lastClickTime < 300) {
-      //     this.showModal();
-      //     // $('#actionModal').modal('show'); // Show the modal dialog on double-click
-      //   } else {
-      //     const selectedItem = this.orgsData[chart.getSelection()[0].row];
-      //     this.updateNodeDetails(selectedItem);
-      //     this.isNodeDetailsVisible = true;
-      //     this.showPopup(); // 
-      //     chart.collapse(data.getValue(chart.getSelection()[0].row, 0)); // Collapse on single-click
-      //     // console.log(selectedItem);
-      //   }
-      //   lastClickTime = Date.now(); // Update the last click time
-        
-      // });
 
       
        // Hide the popover when the mouse leaves the chart area
@@ -466,8 +450,8 @@ AddChildComp(event: any) {
   
   private logAuditTrail(auditTrailEntry: AuditTrail) {
     this.auditTrailService.logAuditTrail(auditTrailEntry).subscribe(() => {
-      // console.log('Audit trail entry logged successfully.');
+      
     });
-    // console.log('Audit trail entry logged successfully.');
+    
   }
 }
