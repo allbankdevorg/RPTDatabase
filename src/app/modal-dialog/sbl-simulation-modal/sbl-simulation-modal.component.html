@@ -6,7 +6,7 @@
 </div>
 
 
-<form cForm class="mb-2" [formGroup]="sblSimulateForm" (ngSubmit)="onSubmit()"> 
+<form cForm class="mb-2" [formGroup]="sblSimulateForm"> 
     <div mat-dialog-content class="content">
         <c-row class="align-items-center">
             <!-- CIS Number Input -->
@@ -62,7 +62,7 @@
                                         <div><strong>TOTAL RPT</strong></div>
                                     </c-col>
                                     <c-col [sm]="6" class="border p-2">
-                                        <div>Php {{sblTotalRPT | number: '1.2-2'}}</div>
+                                        <div>Php {{totalLoan | number: '1.2-2'}}</div>
                                     </c-col>
                                 </c-row>
                             </div>
@@ -99,7 +99,7 @@
         <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!affForm.valid">{{data ? 'Update': 'Save'}}</button> -->
     
         
-        <button mat-raised-button color="primary" *ngIf="amount_Val < sblTotalRPT" type="submit" [disabled]="!sblSimulateForm.valid">Submit</button>
+        <button mat-raised-button color="primary" *ngIf="amount_Val < sblTotalRPT" (click)="onSubmit()" [disabled]="!sblSimulateForm.valid">Submit</button>
         <!-- Show the Simulate button if simulatedRptTTL is not greater than currentSttl -->
         <button mat-raised-button color="accent" *ngIf="!(amount_Val < sblTotalRPT)" (click)="simulateSBL()" [disabled]="!sblSimulateForm.valid">Simulate</button>
     

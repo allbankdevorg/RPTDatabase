@@ -325,11 +325,9 @@ calculateLoanListSummary(loanList: Loan[]): any {
   }
 
   // Setting the Available Balance
-  calculateAvailable(Avail: any) {
-    // this.available_balance = Avail;
-
+  calculateAvailable(Avail: any, totalLoan: any) {
     this.dataService.setAvailBal(Avail);
-    
+    this.dataService.setTotalLoan(totalLoan)
   }
   
 

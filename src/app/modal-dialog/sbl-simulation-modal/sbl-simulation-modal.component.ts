@@ -34,9 +34,13 @@ export class SBLSimulationModalComponent implements OnInit{
   currentRptTTL: any;               // => Current Rpt Total
   simulatedSttl: any;               // => Simulated Sub total
   simulatedRptTTL: any;             // => Simulated Rpt Total
-
-  sblTotalRPT: any;                 // => Avail Balance of SBL
+  unimpairedCap: number = 1214764186.16;  
+  sblTotalRPT: any; 
+  totalLoan: any;                // => Avail Balance of SBL
   amount_Val: any;
+  availBal: any;
+  rptBal: any;  
+  approvedCapital: any;  // => the Loan approved Limit
 
   constructor(
     private formBuilder: FormBuilder,
@@ -70,8 +74,8 @@ export class SBLSimulationModalComponent implements OnInit{
     if (this.sblSimulateForm.valid) {
       const sPNData = this.sblSimulateForm.value;
       
-      
-      addSimulatedPNData(sPNData, session, userID)
+      if (this.simulatedRptTTL <= this.availBal) {
+        addSimulatedPNData(sPNData, session, userID)
           .then((response) => {
             this.logAction('Add', 'Successfuly Added SBL PN Data', true, 'rpofficer-ri');
             this.close();
@@ -79,6 +83,15 @@ export class SBLSimulationModalComponent implements OnInit{
           .catch((error) => {
 
           });
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Loan Breached!',
+          text: 'Please Enter Amount not Greater than the Available Balance',
+        });
+      }
+      
     }
 
   }
@@ -94,8 +107,16 @@ export class SBLSimulationModalComponent implements OnInit{
 
       this.amount_Val = amountValue;
       // Perform the addition
-      this.simulatedSttl = this.sblTotalRPT + amountValue;
-      this.simulatedRptTTL = amountValue;
+      this.simulatedSttl = this.totalLoan + amountValue;
+
+      if (this.amount_Val > this.sblTotalRPT ) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Loan Breached!',
+          text: 'Please Enter Amount not Greater than the Available Balance',
+        });
+      }
+      // this.simulatedRptTTL = amountValue;
       this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
   }
@@ -110,6 +131,7 @@ export class SBLSimulationModalComponent implements OnInit{
     const dataLookup = this.sblSimulateForm.value;
     
     this.sblTotalRPT = this.sblSimulateService.getAvailBal();
+    this.totalLoan = this.sblSimulateService.getTotalLoan();
     if (dataLookup.com_cis_number) {
       let cis = dataLookup.com_cis_number;
       cisLookUP(cis)
@@ -165,6 +187,28 @@ export class SBLSimulationModalComponent implements OnInit{
 
   toggleInputReadOnly() {
     this.isReadOnly = !this.isReadOnly;
+  }
+
+
+
+  updateTableData(): void {
+    this.get.getPNData((PNData) => {
+      if (PNData) {
+        // Use reduce to calculate the sum of "principal" values
+        const sumPrincipal = PNData.reduce((acc, obj) => {
+          acc.principal += parseFloat(obj.principal) || 0;
+          acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+          acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
+          return acc;
+        }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+
+        this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
+        this.approvedCapital = this.unimpairedCap * 0.5;
+        this.availBal = this.approvedCapital - this.rptBal;
+      } else {
+
+      }
+    });
   }
 
 
