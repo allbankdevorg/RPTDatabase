@@ -29,6 +29,14 @@
  */
 function createDosri(formData, session, userID) {
   return new Promise((resolve, reject) => {
+    
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+  });
 
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -59,7 +67,15 @@ function createDosri(formData, session, userID) {
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
 
 }
@@ -73,6 +89,15 @@ function createDosri(formData, session, userID) {
  */
  function createDirectors(directData, comp_CIS, session, userID) {
   return new Promise((resolve, reject) => {
+    
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -104,7 +129,15 @@ function createDosri(formData, session, userID) {
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
 }
 
@@ -117,6 +150,15 @@ function createDosri(formData, session, userID) {
 */
 function createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
   return new Promise((resolve, reject) => {
+    
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -150,7 +192,15 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, 
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
 }
 
@@ -162,7 +212,15 @@ function createRelatedInterest(riData, buttonId, selectedDirCisNumber, session, 
 function createBankOfficer(boData, session, userID) {
   return new Promise((resolve, reject) => {
     // Implement code to insert a new director into the database
-    var settings = {
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+  
+  var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
       "timeout": 0,
@@ -193,7 +251,15 @@ function createBankOfficer(boData, session, userID) {
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
 
 }
@@ -208,6 +274,13 @@ function createBankOfficer(boData, session, userID) {
 function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber, session, userID) {
   return new Promise((resolve, reject) => {
     
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
     // Implement code to insert a new director into the database
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
@@ -241,7 +314,15 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber,
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
 }
 
@@ -253,6 +334,14 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber,
 */
 function createAffil(formData, moduleV, session, userID) {
     return new Promise((resolve, reject) => {
+      Swal.fire({
+        title: 'Processing...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+      });
+
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
         "method": "POST",
@@ -284,7 +373,15 @@ function createAffil(formData, moduleV, session, userID) {
         } else {
           reject(response);
         }
-      });
+      })
+
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        // Handle AJAX errors here
+        reject({
+            message: textStatus,
+            status: errorThrown
+        });
+    });
     });
 }
 
@@ -296,6 +393,13 @@ function createAffil(formData, moduleV, session, userID) {
 */
 function createAffilDir(directData, comp_CIS, session, userID) {
     return new Promise((resolve, reject) => {
+      Swal.fire({
+        title: 'Processing...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+      });
 
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
@@ -328,7 +432,15 @@ function createAffilDir(directData, comp_CIS, session, userID) {
         } else {
           reject(response);
         }
-      });
+      })
+
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        // Handle AJAX errors here
+        reject({
+            message: textStatus,
+            status: errorThrown
+        });
+    });
     });
 }
 
@@ -341,6 +453,14 @@ function createAffilDir(directData, comp_CIS, session, userID) {
 function createAffilOff(offData, comp_CIS, session, userID) {
   return new Promise((resolve, reject) => {
     // Implement code to insert a new director into the database
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -373,7 +493,15 @@ function createAffilOff(offData, comp_CIS, session, userID) {
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
 
 }
@@ -388,6 +516,14 @@ function createAffilOff(offData, comp_CIS, session, userID) {
 function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber, session, userID) {
   return new Promise((resolve, reject) => {
     // Implement code to insert a new director into the database
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -419,7 +555,15 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber, session, us
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
  }
 
@@ -432,6 +576,13 @@ function createAffilOffRI(OffriData, buttonId, selectedOffCisNumber, session, us
 function createAffilDirectorsRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) {
     
     return new Promise((resolve, reject) => {
+      Swal.fire({
+        title: 'Processing...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+      });
 
       var settings = {
         "url": "http://10.232.236.15:8092/api/addData",
@@ -462,7 +613,15 @@ function createAffilDirectorsRelatedInterest(riData, buttonId, selectedDirCisNum
         } else {
           reject(response);
         }
-      });
+      })
+
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        // Handle AJAX errors here
+        reject({
+            message: textStatus,
+            status: errorThrown
+        });
+    });
     });
 }
 
@@ -477,6 +636,15 @@ function createAffilDirectorsRelatedInterest(riData, buttonId, selectedDirCisNum
 function createStockHolders(formData, session, userID) {
     
   return new Promise((resolve, reject) => {
+    
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+
     var settings = {
       "url": "http://10.232.236.15:8092/api/addData",
       "method": "POST",
@@ -505,7 +673,15 @@ function createStockHolders(formData, session, userID) {
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
   });
 }
 
@@ -518,7 +694,14 @@ function createStockHolders(formData, session, userID) {
 */
 function Loginuser(username, password, sessionId, otpGen, userID) {
     return new Promise((resolve, reject) => {
-        
+      Swal.fire({
+        title: 'Processing...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
         var settings = {
           "url": "http://10.232.236.15:8092/api/userManagement",
           "method": "POST",
@@ -549,7 +732,17 @@ function Loginuser(username, password, sessionId, otpGen, userID) {
             } else {
               reject(response);
             }
-          });
+          })
+
+          .fail(function(jqXHR, textStatus, errorThrown) {
+            // Handle AJAX errors here
+            reject({
+                message: textStatus,
+                status: errorThrown
+            });
+        });
+
+        
       });
 }
 
@@ -562,6 +755,7 @@ function Loginuser(username, password, sessionId, otpGen, userID) {
 */
 function sendOTP(mobile, otpGen, userID, session) {
   return new Promise((resolve, reject) => {
+        
       var settings = {
         "url": "http://10.232.236.15:8092/api/OTP",
         "method": "POST",
@@ -599,6 +793,15 @@ function sendOTP(mobile, otpGen, userID, session) {
 */
 function checkOTP(user, enteredOTP, userID, session) {
   return new Promise((resolve, reject) => {
+      
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+
       var settings = {
         "url": "http://10.232.236.15:8092/api/userManagement",
         "method": "POST",
@@ -633,6 +836,15 @@ function checkOTP(user, enteredOTP, userID, session) {
 
 function cisLookUP(cis) {
     return new Promise((resolve, reject) => {
+      
+      Swal.fire({
+        title: 'Processing...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+      });
+      
       var settings = {
         "url": "http://10.232.236.15:8092/api/Cis",
         "method": "POST",
@@ -667,6 +879,15 @@ function cisLookUP(cis) {
 
 function createUser(formData, userID, session) {
   return new Promise((resolve, reject) => {
+      
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+    
       var settings = {
         "url": "http://10.232.236.15:8092/api/userManagement",
         "method": "POST",
@@ -695,7 +916,15 @@ function createUser(formData, userID, session) {
           } else {
             reject(response);
           }
-      });
+      })
+
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        // Handle AJAX errors here
+        reject({
+            message: textStatus,
+            status: errorThrown
+        });
+    });
   });
 }
 
@@ -705,6 +934,7 @@ function createUser(formData, userID, session) {
 */
 function userAccess(userid) {
   return new Promise((resolve, reject) => {
+    
     var settings = {
       "url": "http://10.232.236.15:8092/api/dataTables",
       "method": "POST",
@@ -803,6 +1033,15 @@ function addPNData(resultData, holdOUT, session, userID) {
 function addSimulatedPNData(sPNData, session, userID) {
     
   return new Promise((resolve, reject) => {
+
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+
         var settings = {
             "url": "http://10.232.236.15:8092/api/addData",
             "method": "POST",
@@ -836,7 +1075,15 @@ function addSimulatedPNData(sPNData, session, userID) {
           } else {
               reject(response);
           }
-        });
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          // Handle AJAX errors here
+          reject({
+              message: textStatus,
+              status: errorThrown
+          });
+      });
       });
 }
 
@@ -847,6 +1094,15 @@ function addSimulatedPNData(sPNData, session, userID) {
 */
 function HoldOutValue(cis) {
   return new Promise((resolve, reject) => {
+    
+    Swal.fire({
+      title: 'Processing...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
+      }
+    });
+    
     var settings = {
       "url": "http://10.232.236.15:8092/api/dataTables",
       "method": "POST",
@@ -866,7 +1122,15 @@ function HoldOutValue(cis) {
       } else {
         reject(response);
       }
-    });
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      // Handle AJAX errors here
+      reject({
+          message: textStatus,
+          status: errorThrown
+      });
+  });
 });
 }
 
