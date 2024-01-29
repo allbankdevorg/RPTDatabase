@@ -28,7 +28,8 @@ export class BankofficerModalComponent implements OnInit{
   constructor(private formBuilder: FormBuilder,
     private _dialogRef: MatDialogRef<BankofficerModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private auditTrailService: AuditTrailService) {
+    private auditTrailService: AuditTrailService,
+    private get: FetchDataService,) {
       
         this.boForm = this.formBuilder.group({
           boCisNumber: ['',[Validators.required]],
@@ -45,8 +46,23 @@ export class BankofficerModalComponent implements OnInit{
   ngOnInit(): void {
   // Attempt to patch the form
   this.boForm.patchValue(this.data);
+    this.updateTableData();
   }
 
+
+
+  updateTableData(): void {
+    this.get.getCompany().subscribe((compData) => {
+    
+      if (compData) {
+        console.log(compData)
+      }
+      else {
+        console.log("No DOSRI");
+      }
+    
+    })
+  }
 
 
 
