@@ -8,6 +8,9 @@ import { AuthSessionService } from '../authentication/auth-session.service';
 
 import { DOCUMENT } from '@angular/common';
 
+import { fromEvent } from 'rxjs';
+import { throttleTime } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +21,7 @@ export class SessionTimeoutService {
     private authService : AuthSessionService,
     private keepalive: Keepalive,
     @Inject(DOCUMENT) private document: Document) {
-    // this.setIdleConfig();
+    this.setIdleConfig();
     // Reset idle timer on mouse move
     
   
@@ -26,27 +29,36 @@ export class SessionTimeoutService {
 
 ngOninit () {
   if (this.authService.isAuthenticated()) {
-    // this.setIdleConfig();
+    this.setIdleConfig();
   }
+
+  fromEvent(document, 'mousemove').pipe(
+  throttleTime(1000) // Throttle user activity events to avoid excessive updates
+).subscribe(() => {
+  this.updateSessionExpireTime();
+});
 }
 
   public setIdleConfig(): void {
-    this.idle.setIdle(30); // 5 minutes
-    this.idle.setTimeout(300); // 1 second
+    this.idle.setIdle(300); // 5 minutes
+    this.idle.setTimeout(5); // 1 second
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
     this.keepalive.interval(5); // 5 seconds
     
   
     this.idle.onIdleStart.subscribe(() => { 
     });
-
-    
-    this.idle.watch();
-
+  
     this.idle.onIdleEnd.subscribe(() => {
       this.resetIdleTimer();
+      const sessionExpireTime = Date.now() + 300000; // 5 minutes in milliseconds
+    localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
     });
+    
 
+    this.idle.watch();
+
+    
     this.idle.onTimeout.subscribe(() => {
       // Implement your logout logic here
       this.timedOut();
@@ -57,7 +69,9 @@ ngOninit () {
   resetIdleTimer(): void {
     this.idle.watch();
     this.keepalive.ping();
-    this.updateSessionExpireTime();
+    
+    console.log("reset");
+    // this.updateSessionExpireTime();
     // Update session expire time on user activity
     // Check for session expiration before performing any critical operations
     
@@ -71,7 +85,7 @@ ngOninit () {
   }
 
   isSessionExpired(): boolean {
-    const sessionExpireTime = localStorage.getItem('sessionExpireTime');
+    const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
     return !!sessionExpireTime && Date.now() >= Number(sessionExpireTime);
     
   }
