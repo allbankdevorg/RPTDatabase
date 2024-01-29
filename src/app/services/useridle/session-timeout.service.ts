@@ -31,20 +31,16 @@ ngOninit () {
 }
 
   public setIdleConfig(): void {
-    this.idle.setIdle(300); // 5 minutes
-    this.idle.setTimeout(1); // 1 seconds
+    this.idle.setIdle(30); // 5 minutes
+    this.idle.setTimeout(300); // 1 second
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
     this.keepalive.interval(5); // 5 seconds
     
   
     this.idle.onIdleStart.subscribe(() => { 
     });
-  
-    this.idle.onIdleEnd.subscribe(() => {
-      this.resetIdleTimer();
-    });
-    
 
+    
     this.idle.watch();
 
     this.idle.onIdleEnd.subscribe(() => {
