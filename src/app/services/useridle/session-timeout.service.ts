@@ -18,7 +18,7 @@ export class SessionTimeoutService {
     private authService : AuthSessionService,
     private keepalive: Keepalive,
     @Inject(DOCUMENT) private document: Document) {
-    this.setIdleConfig();
+    // this.setIdleConfig();
     // Reset idle timer on mouse move
     
   
@@ -26,7 +26,7 @@ export class SessionTimeoutService {
 
 ngOninit () {
   if (this.authService.isAuthenticated()) {
-    this.setIdleConfig();
+    // this.setIdleConfig();
   }
 }
 
