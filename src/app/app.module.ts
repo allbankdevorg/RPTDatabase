@@ -7,6 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 
 
@@ -253,7 +255,12 @@ const APP_CONTAINERS = [
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
-
+    },
+    {
+      // Provide HTTP_INTERCEPTORS and ErrorInterceptor
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
     },
     Keepalive,
     IconSetService,
