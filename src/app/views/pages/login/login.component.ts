@@ -9,6 +9,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 
 // Functions imports
 import {Loginuser, sendOTP, checkOTP} from '../../../functions-files/add/postAPI';
+import { HttpClient } from '@angular/common/http';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -85,7 +86,8 @@ export class LoginComponent implements OnInit {
     private storageService: SessionStorageService,
     // private addAPI: AddServicesService,
     private idle: SessionTimeoutService,
-    private auditTrailService: AuditTrailService ) {
+    private auditTrailService: AuditTrailService,
+    private http: HttpClient ) {
       try {
         localStorage.setItem('test', 'test');
         localStorage.removeItem('test');
@@ -211,14 +213,12 @@ async login() {
       }
     } catch (error: any) {
       // Log unsuccessful login with error message
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.logAction('login', 'Invalid username or password', false, 'Login', errorMessage);
-    
-      Swal.fire({
-        icon: 'error',
-        title: 'Login Failed',
-        text: 'Invalid username or password',
-      });
+      const errorMessage = error instanceof Error ? error.message : 'Failed to connect to the server. Please try again later';
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: errorMessage
+        });
     }
   }
 }
@@ -302,11 +302,6 @@ async verifyOtp() {
     });
   }
 }
-
-
-
-
-
 
 
 
