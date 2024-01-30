@@ -99,8 +99,17 @@ export class RPTSimulationModalComponent implements OnInit{
       const amountValue = parseFloat(dataLookup.amount) || 0;
   
       // Perform the addition
-      this.simulatedSttl = currentSttlValue + amountValue;
+      this.simulatedSttl = currentSttlValue + amountValue;      
       this.simulatedRptTTL = amountValue;
+
+      if (amountValue > this.availBal) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Loan Breached!',
+          text: 'Please Enter Amount not Greater than the Available Balance',
+        });
+      }
+
       this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
   }
