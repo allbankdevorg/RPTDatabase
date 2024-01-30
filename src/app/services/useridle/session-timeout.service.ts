@@ -31,12 +31,6 @@ ngOninit () {
   if (this.authService.isAuthenticated()) {
     this.setIdleConfig();
   }
-
-  fromEvent(document, 'mousemove').pipe(
-  throttleTime(1000) // Throttle user activity events to avoid excessive updates
-).subscribe(() => {
-  this.updateSessionExpireTime();
-});
 }
 
   public setIdleConfig(): void {
@@ -51,8 +45,10 @@ ngOninit () {
   
     this.idle.onIdleEnd.subscribe(() => {
       this.resetIdleTimer();
+      const doe = localStorage.getItem('ng2Idle.main.expiry');
       const sessionExpireTime = Date.now() + 300000; // 5 minutes in milliseconds
-    localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
+      console.log(sessionExpireTime);
+      localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
     });
     
 
@@ -79,16 +75,16 @@ ngOninit () {
       
   }
 
-  updateSessionExpireTime(): void {
-    const sessionExpireTime = Date.now() + 300000; // 5 minutes in milliseconds
-    localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
-  }
+  // updateSessionExpireTime(): void {
+  //   const sessionExpireTime = Date.now() + 300000; // 5 minutes in milliseconds
+  //   localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
+  // }
 
-  isSessionExpired(): boolean {
-    const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
-    return !!sessionExpireTime && Date.now() >= Number(sessionExpireTime);
+  // isSessionExpired(): boolean {
+  //   const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
+  //   return !!sessionExpireTime && Date.now() >= Number(sessionExpireTime);
     
-  }
+  // }
 
   public timedOut(): void {
     // Implement your logout logic here
