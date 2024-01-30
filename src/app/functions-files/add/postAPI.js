@@ -1095,13 +1095,7 @@ function addSimulatedPNData(sPNData, session, userID) {
 function HoldOutValue(cis) {
   return new Promise((resolve, reject) => {
     
-    Swal.fire({
-      title: 'Processing...',
-      allowOutsideClick: false,
-      didOpen: () => {
-          Swal.showLoading();
-      }
-    });
+   
     
     var settings = {
       "url": "http://10.232.236.15:8092/api/dataTables",
