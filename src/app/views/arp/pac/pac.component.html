@@ -176,7 +176,7 @@
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Stepchild.cisNumber, Stepchild.dirRelated)" *ngIf="element.stepChild">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Stepchild.fullName}}
-                                        </div>mat-icon
+                                        </div>
                                         <br>
                                     </ng-container> 
                                     <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
@@ -207,7 +207,7 @@
                                     <ng-container *ngFor="let Grandparents of element.grandParents">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="danger" (click)="delAffilDirRI(element, Grandparents.cisNumber, Grandparents.dirRelated)" *ngIf="element.grandParents">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandparents.cisNumber, Grandparents.dirRelated)" *ngIf="element.grandParents">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandparents.fullName}}
                                         </div>
