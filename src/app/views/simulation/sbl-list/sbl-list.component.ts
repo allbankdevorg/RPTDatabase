@@ -130,7 +130,7 @@ export class SBLListComponent implements OnInit{
   ttlRPTOL: any;    // => TOTAL RPT Original Loan
   ttlRPTOB: any;    // => TOTAL RPT Outstanding Loan
   availBal: any;    // => Remaining Balance of Possible Loan Amount
-  unimpairedCap: number = 1214764186.16;   //Unimpaired Capital
+  unimpairedCap: number = 0;   //Unimpaired Capital
   definedRptRatio: number = 50;     //Pre defined Percentage
   availRptRatio: any;
   approvedCapital: any;        // => the Loan approved Limit
@@ -141,6 +141,7 @@ export class SBLListComponent implements OnInit{
   available_net: any;
   available_bal: any;
   selectedPN: any;
+  UnimpairedDate: any;
 
   sblIsPositive: boolean = false;
 sblIsNegative: boolean = false;
@@ -203,9 +204,8 @@ totalNetOfHoldOut: number = 0;
 
   ngOnInit() {
     // Additional initialization logic if needed
+    this.getUnimpairedCap();
     this.updateTableData();
-    this.sbl = (this.unimpairedCap * .25);
-    this.internalSBL = (this.unimpairedCap * .20);
     this.availBal = this.internalSBL 
     this.searchTextLoanList = new FormControl();
     // this.updateTableDatas();
@@ -257,6 +257,17 @@ totalNetOfHoldOut: number = 0;
     });
   }
   
+  getUnimpairedCap(): void {
+    this.get.getUnimpairedCapital((unimpairedCap) => {
+        
+        this.UnimpairedDate = unimpairedCap[0].date;
+        this.unimpairedCap = unimpairedCap[0].impared_capital;
+        
+        this.sbl = (this.unimpairedCap * .25);
+        this.internalSBL = (this.unimpairedCap * .20);
+
+    })
+  }
 
 
 
