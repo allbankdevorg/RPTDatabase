@@ -25,14 +25,14 @@
                                 <table [responsive]="true" [cBorder]="1" cTable bordered>
                                   <thead cTableColor="success">
                                     <tr>
-                                      <th scope="col">Unimpaired Capital</th>
+                                      <th scope="col">Unimpaired Capital as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</th>
                                       <th scope="col">RPT Balance (Net of Hold-out)</th>
                                       <th scope="col">RPT Ratio</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>1,214,764,186.16</td>
+                                      <td>{{unimpairedCap | number: '1.2-2'}}</td>
                                       <td>Php {{rptBal | number: '1.2-2'}}</td>
                                       <td>{{rptRatio}}</td>
                                     </tr>
