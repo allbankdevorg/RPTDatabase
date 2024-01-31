@@ -34,12 +34,13 @@ export class RptListComponent {
   ttlRPTOL: any;    // => TOTAL RPT Original Loan
   ttlRPTOB: any;    // => TOTAL RPT Outstanding Loan
   availBal: any;    // => Remaining Balance of Possible Loan Amount
-  unimpairedCap: number = 1214764186.16;   //Unimpaired Capital
+  unimpairedCap: number = 0;   //Unimpaired Capital
   definedRptRatio: number = 50;     //Pre defined Percentage
   availRptRatio: any;
   approvedCapital: any;  // => the Loan approved Limit
   totalHoldOut: number = 0;
   selectedPN: any;
+  UnimpairedDate: any;
   
   displayedColumns: string[] = ['loan_no', 'cis_no', 'name', 'principal', 'principal_bal', 'loan_security', 
   'deposit_holdout', 'netBal', 'date_granted', 'terms', 'purpose', 'intRate'];
@@ -99,6 +100,7 @@ export class RptListComponent {
   
   ngOnInit() {
     this.updateTableData();
+    this.getUnimpairedCap();
   }
 
  updateTableData(): void {
@@ -135,7 +137,7 @@ export class RptListComponent {
                             }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
                           
                             this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
-                            const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
+                            const percentage = `${((this.rptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
                             this.rptRatio = percentage;
                             // this.subtlOL = sumPrincipal.principal;
                             // this.subtlOB = this.rptBal;
@@ -160,6 +162,15 @@ export class RptListComponent {
         }
       })
  }
+
+    getUnimpairedCap(): void {
+      this.get.getUnimpairedCapital((unimpairedCap) => {
+          
+          this.UnimpairedDate = unimpairedCap[0].date;
+          this.unimpairedCap = unimpairedCap[0].impared_capital;
+
+      })
+    }
 
 
    
