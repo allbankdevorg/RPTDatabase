@@ -15,7 +15,7 @@
  * 902 - getUserList                     => fetch Users List
  * 113 - getPNData                       => fetch PN Data
  * 114 - getSBL                          => fetch PN Data
- * 
+ * 117 - getUnimpairedCapital            => fetch the Unimpaired Capital and Date as Of
  */
 
 
@@ -415,8 +415,45 @@ getUserList(callback: (data: any) => void): void {
       });
       }
   
+      
+    getUnimpairedCapital(callback: (data: any) => void): void {
+        const settings = {
+          url: 'http://10.232.236.15:8092/api/dataTables',
+          method: 'POST',
+          timeout: 0,
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          }),
+          data: {
+            cmd: 117,
+          },
+        };
+        
+        this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+          next: (response: any) => {
+        
+            if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+              const unimpairedCap = response.result[0].Data;
+              
+              if (callback) {
+                callback(unimpairedCap);
 
-
+              }
+            } else {
+            
+              if (callback) {
+                callback(null);
+              }
+            }
+          },
+          error: (error) => {
+        
+            if (callback) {
+              callback(null);
+            }
+          },
+        });
+        }
 
   // getAuditLogs(): Observable<any> {
   //   const userid = this.userID
