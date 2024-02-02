@@ -57,7 +57,7 @@ ngOninit () {
     
     this.idle.onTimeout.subscribe(() => {
       // Implement your logout logic here
-      this.timedOut();
+      // this.timedOut();
     });
 
   }
