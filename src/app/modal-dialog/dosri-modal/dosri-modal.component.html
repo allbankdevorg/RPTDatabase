@@ -15,8 +15,8 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>First Name</mat-label> -->
                 <input matInput id="cisNumber" name="cisNumber" (keyup.enter)="CISlookup()"
-                type="text" placeholder="CIS Number" formControlName="com_cis_number" (keyup.enter)="CISlookup()" appNum>
-                 <mat-error *ngIf="dosriForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                type="text" placeholder="CIS Number" formControlName="com_cis_number" (keyup.enter)="CISlookup()" >
+                 <!-- <mat-error *ngIf="dosriForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error> -->
               </mat-form-field>
             </c-col>
 
@@ -25,7 +25,7 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Middle Name</mat-label> -->
                 <input matInput id="accountName"  name="accountName"
-                type="text" placeholder="Account Name" formControlName="com_account_name" appCaps [readonly]="isReadOnly">
+                type="text" placeholder="Account Name" formControlName="com_account_name" appCaps>
                 <mat-error *ngIf="dosriForm.get('com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
                 
               </mat-form-field>
@@ -39,7 +39,7 @@
               <label cLabel="col" for="companyName">Company Name</label>
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Last Name</mat-label> -->
-                <input matInput #accDinput id="companyName"  name="companyName" [readonly]="isReadOnly"
+                <input matInput #accDinput id="companyName"  name="companyName"
                 type="text" placeholder="Company Name" formControlName="com_company_name" appCaps>
                 <mat-error *ngIf="dosriForm.get('com_company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
                 
