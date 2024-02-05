@@ -19,7 +19,20 @@ import {AuditTrail} from '../../model/audit-trail.model';
 import {AddServicesService} from '../../services/add/add-services.service';
 import { AffiliatesService } from 'src/app/services/affiliates/affiliates.service';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
+import { SimulatedDataService } from '../../services/simulatedDataService/simulated-data-service.service';
 
+
+export interface Loan {
+  loan_no: number,
+  cis_no: number,
+  name: string,
+  principal: number,
+  principal_bal: number,
+  loan_security: string,
+  deposit_holdout: number,
+  date_granted: any,
+  netBal: number
+}
 
 @Component({
   selector: 'app-rpt-simulation-modal',
@@ -37,7 +50,8 @@ export class RPTSimulationModalComponent implements OnInit{
   availBal: any;    // => Remaining Balance of Possible Loan Amount
   rptBal: any;      // => RPT Balance (Net of Hold-out)
   approvedCapital: any;  // => the Loan approved Limit
- 
+  temporaryLoans?: Loan[];
+
   constructor(
     private formBuilder: FormBuilder,
     private _dosriService: AddServicesService,
@@ -46,11 +60,17 @@ export class RPTSimulationModalComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService,
     private auditTrailService: AuditTrailService,
-    private get: FetchDataService) {
+    private get: FetchDataService,
+    private simulatedDataService: SimulatedDataService) {
     this.rptSimulateForm = this.formBuilder.group({
-      com_cis_number: ['', [Validators.required]],
-      com_account_name: ['', [Validators.required]],
-      amount: ['', [Validators.required]]
+      cis_no: [''],
+      name: [''],
+      principal: ['', [Validators.required]],
+      principal_bal: ['']
+      });
+      this.rptSimulateForm.get('principal')?.valueChanges.subscribe(principal => {
+        // Update the value of principal_bal whenever principal changes
+        this.rptSimulateForm.get('principal_bal')?.setValue(principal);
       });
       _dialogRef.disableClose = true;
   }
@@ -66,17 +86,19 @@ export class RPTSimulationModalComponent implements OnInit{
     const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
 
     if (this.rptSimulateForm.valid) {
-      const sPNData = this.rptSimulateForm.value;
+      const simulatedData = this.rptSimulateForm.value;
 
       if (this.simulatedRptTTL <= this.availBal) {
-        addSimulatedPNData(sPNData, session, userID)
-          .then((response) => {
-            this.logAction('Add', 'Successfuly Added RPT PN Data', true, 'rpofficer-ri');
-            this.close();
-          })
-          .catch((error) => {
+        this.simulatedDataService.addTemporaryLoan(simulatedData)
+        this.close();
+        // addSimulatedPNData(sPNData, session, userID)
+        //   .then((response) => {
+        //     this.logAction('Add', 'Successfuly Added RPT PN Data', true, 'rpofficer-ri');
+        //     this.close();
+        //   })
+        //   .catch((error) => {
 
-          });
+        //   });
       }
       else {
         Swal.fire({
@@ -96,7 +118,7 @@ export class RPTSimulationModalComponent implements OnInit{
   
       // Convert the values to numbers using parseFloat or the unary + operator
       const currentSttlValue = parseFloat(this.currentSttl) || 0;
-      const amountValue = parseFloat(dataLookup.amount) || 0;
+      const amountValue = parseFloat(dataLookup.principal) || 0;
   
       // Perform the addition
       this.simulatedSttl = currentSttlValue + amountValue;      
@@ -127,9 +149,9 @@ export class RPTSimulationModalComponent implements OnInit{
   CISlookup() {
     const dataLookup = this.rptSimulateForm.value;
   
-    // Check if com_cis_number is present and not empty
-    if (dataLookup.com_cis_number) {
-      let cis = dataLookup.com_cis_number;
+    // Check if cis_no is present and not empty
+    if (dataLookup.cis_no) {
+      let cis = dataLookup.cis_no;
   
       cisLookUP(cis)
         .then((response) => {
@@ -140,7 +162,7 @@ export class RPTSimulationModalComponent implements OnInit{
   
             // Update form controls with new values
             this.rptSimulateForm.patchValue({
-              com_account_name: accName,
+              name: accName,
               // Add other form controls if needed
             });
   
