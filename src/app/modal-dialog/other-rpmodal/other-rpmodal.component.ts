@@ -43,7 +43,7 @@ export class OtherRPModalComponent implements OnInit {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: ['', [Validators.required]],
+      aff_com_cis_number: [''],
       aff_com_account_name: ['', [Validators.required]],
       aff_com_company_name: ['', [Validators.required]],
       managing_company: [''],
