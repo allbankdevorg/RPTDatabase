@@ -96,7 +96,7 @@ import { AffiliatesRelatedCompaniesComponent } from './views/arp/affiliates-rela
 import { OtherRelatedPartiesComponent } from './views/arp/other-related-parties/other-related-parties.component';
 import { RpOfficerComponent } from './views/arp/rp-officer/rp-officer.component';
 import { RPOfficerRIComponent } from './views/arp/rpofficer-ri/rpofficer-ri.component';
-
+import { PaviGroupComponent } from './views/arp/pavi-group/pavi-group.component'
 // Maintenance
 import { LoginComponent } from './views/pages/login/login.component';
 import { UsersComponent} from './views/maintenance/users/users.component';
@@ -189,7 +189,7 @@ const APP_CONTAINERS = [
     FilterPipe, 
     ForapprovalComponent, 
     ForreviewComponent, 
-    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent],
+    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent, PaviGroupComponent],
     
   imports: [
     BrowserModule,
