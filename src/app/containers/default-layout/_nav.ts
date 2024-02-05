@@ -36,6 +36,14 @@ import { INavData } from '@coreui/angular';
 //               "name": "Other Related Companies",
 //               "url": "/arp/affiliates-related-companies"
 //           },
+//              {       
+//                   "name": "PAVI",
+//                   "url": "/arp/affiliates-related-companies"
+//               },
+//               {
+//                   "name": "FAITHFUL HOLDINGS, INC.",
+//                   "url": "/arp/affiliates-related-companies"
+//               },
 //           {
 //               "name": "Other RC Under JMN'",
 //               "url": "/arp/other-related-parties"
