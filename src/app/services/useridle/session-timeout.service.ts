@@ -45,10 +45,6 @@ ngOninit () {
   
     this.idle.onIdleEnd.subscribe(() => {
       this.resetIdleTimer();
-      const doe = localStorage.getItem('ng2Idle.main.expiry');
-      const sessionExpireTime = Date.now() + 300000; // 5 minutes in milliseconds
-      console.log(sessionExpireTime);
-      localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
     });
     
 
@@ -66,7 +62,6 @@ ngOninit () {
     this.idle.watch();
     this.keepalive.ping();
     
-    console.log("reset");
     // this.updateSessionExpireTime();
     // Update session expire time on user activity
     // Check for session expiration before performing any critical operations
