@@ -44,7 +44,7 @@ export class AffiliatesOffModalComponent implements OnInit {
     private auditTrailService: AuditTrailService)
     {
       this.affilOfficerForm = this.formBuilder.group({
-        affildcisNumber: ['', [Validators.required]],
+        affildcisNumber: [''],
         affildFirstName: ['', [Validators.required]],
         affildMiddleName: [''],
         affildLastName: ['', [Validators.required]],
