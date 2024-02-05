@@ -7,7 +7,7 @@ import { OtherRelatedPartiesComponent } from './other-related-parties/other-rela
 import { RpOfficerComponent } from './rp-officer/rp-officer.component';
 import { PacComponent } from './pac/pac.component';
 import { RPOfficerRIComponent } from './rpofficer-ri/rpofficer-ri.component';
-
+import { PaviGroupComponent } from './pavi-group/pavi-group.component';
 
 const routes: Routes = [
         {
@@ -61,6 +61,13 @@ const routes: Routes = [
               component: RPOfficerRIComponent,
               data: {
                 title: 'Related Party Officers Related Interest',
+              },
+            },
+            {
+              path: 'pavi-group',
+              component: PaviGroupComponent,
+              data: {
+                title: 'Pavi Group',
               },
             },
           ]
