@@ -11,24 +11,24 @@
             <!-- CIS Number Input -->
 
             <c-col [md]="6">
-            <label cLabel="col" for="affilCisNumberM"></label>
+            <label cLabel="col" for="cis_no"></label>
             <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>CIS Number</mat-label> -->
-                <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
+                <input matInput #accDinput id="cis_no" name="cis_no"
                 type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
-                formControlName="com_cis_number" appNum>
-                <mat-error *ngIf="rptSimulateForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                formControlName="cis_no" appNum>
+                <mat-error *ngIf="rptSimulateForm.get('cis_no')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             </mat-form-field>
         </c-col>
 
         <c-col [md]="6">
-            <label cLabel="col" for="accountName"></label>
+            <label cLabel="col" for="name"></label>
             <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Account Name</mat-label> -->
-                <input matInput #accDinput id="accountName"  name="accountName"
-                type="text" placeholder="Account Name"
-                formControlName="com_account_name" [readonly]="isReadOnly">
-                <mat-error *ngIf="rptSimulateForm.get('com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
+                <input matInput #accDinput id="name"  name="name"
+                type="text" placeholder="Name"
+                formControlName="name">
+                <mat-error *ngIf="rptSimulateForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>
@@ -37,13 +37,13 @@
             <!-- CIS Number Input -->
 
             <c-col [md]="12">
-            <label cLabel="col" for="amount"></label>
+            <label cLabel="col" for="principal"></label>
             <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>CIS Number</mat-label> -->
-                <input matInput #accDinput id="amount" name="amount"
+                <input matInput #accDinput id="principal" name="principal"
                 type="text" placeholder="Amount" 
-                formControlName="amount" appNum>
-                <mat-error *ngIf="rptSimulateForm.get('amount')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error>
+                formControlName="principal" appNum>
+                <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>
