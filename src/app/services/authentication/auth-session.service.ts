@@ -28,16 +28,16 @@ export class AuthSessionService {
 
   // Returns true when the user is logged in and email is verified
   get isLoggedIn(): boolean {
-    const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
+    // const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
 
-    if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
-      // Clear relevant items from local storage
-      localStorage.clear();
-      localStorage.clear();
-      // Redirect the user to the login page
-      this.router.navigate(['/login']);
-      return false;
-  }
+    // if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
+    //   // Clear relevant items from local storage
+    //   localStorage.clear();
+    //   localStorage.clear();
+    //   // Redirect the user to the login page
+    //   // this.router.navigate(['/login']);
+    //   return false;
+    // }
 
   return !!localStorage.getItem('sessionID');
 
