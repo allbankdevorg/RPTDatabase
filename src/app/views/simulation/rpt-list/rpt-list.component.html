@@ -25,6 +25,9 @@
                                 <table [responsive]="true" [cBorder]="1" cTable bordered>
                                   <thead cTableColor="success">
                                     <tr>
+                                      <th colspan="3" class="center-header"><h3>Before Simulation</h3></th>
+                                    </tr>
+                                    <tr>
                                       <th scope="col">Unimpaired Capital as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</th>
                                       <th scope="col">RPT Balance (Net of Hold-out)</th>
                                       <th scope="col">RPT Ratio</th>
@@ -65,6 +68,9 @@
                               <c-card-body>
                                 <table [responsive]="true" [cBorder]="1" cTable bordered>
                                   <thead cTableColor="success">
+                                    <tr>
+                                      <th colspan="3" class="center-header"><h3>After Simulation</h3></th>
+                                    </tr>
                                     <tr>
                                       <th scope="col">Unimpaired Capital as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</th>
                                       <th scope="col">RPT Balance (Net of Hold-out)</th>
