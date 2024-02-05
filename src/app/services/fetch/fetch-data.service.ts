@@ -552,5 +552,10 @@ getUserList(callback: (data: any) => void): void {
     this.getData(112, callback);
   }
 
+  // 110
+  getPavi(callback: (PaviComp: any) => void): void {
+    this.getData(118, callback);
+  }
+
   
 }
