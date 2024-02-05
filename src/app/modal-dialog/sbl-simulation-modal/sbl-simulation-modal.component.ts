@@ -53,8 +53,8 @@ export class SBLSimulationModalComponent implements OnInit{
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.sblSimulateForm = this.formBuilder.group({
-      com_cis_number: ['', [Validators.required]],
-      com_account_name: ['', [Validators.required]],
+      com_cis_number: [''],
+      com_account_name: [''],
       amount: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;
