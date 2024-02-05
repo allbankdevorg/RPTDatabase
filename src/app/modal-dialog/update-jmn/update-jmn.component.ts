@@ -199,26 +199,52 @@ export class UpdateJMNComponent {
   }
 
   getParentCompany() {
-    this.get.getOtherCompany((OtherComp) => {
-      this.compData = OtherComp;
-    this.commandGroups = []; // Clear the existing commandGroups
-    
-
-      if (OtherComp) {
-        const data = OtherComp;
-        
-        data.forEach(item => {
-          // Create a commandGroup item with value and viewValue
-          const commandGroup = {
-            value: item.aff_com_cis_number,
-            viewValue: item.aff_com_company_name,
-          };
-
-          // Add the command group to the array
-          this.commandGroups.push(commandGroup);
-        });
-      }
-    })
+    const moduleV = this.dataService.getmoduleV();
+    console.log(moduleV);
+    if (moduleV === "JMN") {
+      this.get.getOtherCompany((OtherComp) => {
+        this.compData = OtherComp;
+      this.commandGroups = []; // Clear the existing commandGroups
+      
+  
+        if (OtherComp) {
+          const data = OtherComp;
+          
+          data.forEach(item => {
+            // Create a commandGroup item with value and viewValue
+            const commandGroup = {
+              value: item.aff_com_cis_number,
+              viewValue: item.aff_com_company_name,
+            };
+  
+            // Add the command group to the array
+            this.commandGroups.push(commandGroup);
+          });
+        }
+      })
+    } else if (moduleV === "PAVI") {
+      this.get.getPavi((PaviComp) => {
+        this.compData = PaviComp;
+      this.commandGroups = []; // Clear the existing commandGroups
+      
+  
+        if (PaviComp) {
+          const data = PaviComp;
+          
+          data.forEach(item => {
+            // Create a commandGroup item with value and viewValue
+            const commandGroup = {
+              value: item.aff_com_cis_number,
+              viewValue: item.aff_com_company_name,
+            };
+  
+            // Add the command group to the array
+            this.commandGroups.push(commandGroup);
+          });
+        }
+      })
+      
+    }
   }
 
 
