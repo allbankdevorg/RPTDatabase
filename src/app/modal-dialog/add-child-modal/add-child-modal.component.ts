@@ -44,7 +44,7 @@ export class AddChildModalComponent implements OnInit {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: ['', [Validators.required]],
+      aff_com_cis_number: [''],
       aff_com_account_name: ['', [Validators.required]],
       aff_com_company_name: ['', [Validators.required]],
       managing_company: [{value: '', disabled: true}],
@@ -225,6 +225,27 @@ export class AddChildModalComponent implements OnInit {
   
         if (OtherComp) {
           const data = OtherComp;
+          
+          data.forEach(item => {
+            // Create a commandGroup item with value and viewValue
+            const commandGroup = {
+              value: item.aff_com_cis_number,
+              viewValue: item.aff_com_company_name,
+            };
+  
+            // Add the command group to the array
+            this.commandGroups.push(commandGroup);
+          });
+        }
+      })
+    } else if (moduleV === "PAVI") {
+      this.get.getPavi((PaviComp) => {
+        this.compData = PaviComp;
+      this.commandGroups = []; // Clear the existing commandGroups
+      
+  
+        if (PaviComp) {
+          const data = PaviComp;
           
           data.forEach(item => {
             // Create a commandGroup item with value and viewValue
