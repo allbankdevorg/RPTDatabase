@@ -32,7 +32,7 @@
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>{{unimpairedCap | number: '1.2-2'}}</td>
+                                      <td>{{unimpairedCap | currency:'PHP'}}</td>
                                       <td>Php {{rptBal | number: '1.2-2'}}</td>
                                       <td>{{rptRatio}}</td>
                                     </tr>
@@ -43,13 +43,13 @@
                                     </tr>
                                     <tr>
                                       <td><p class="color-red">Board Approved RPT Limit</p></td>
-                                      <td><p class="color-red">Php {{approvedCapital | number: '1.2-2'}}</p></td>
+                                      <td><p class="color-red">{{approvedCapital | currency:'PHP'}}</p></td>
                                       <td><p class="color-red">50%</p></td>
                                     </tr>
                                     <tr>
                                       <td><p class="color-blue">Available Balance</p></td>
                                       <td [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}">
-                                      <p>Php {{availBal | number: '1.2-2'}}</p></td>
+                                      <p>{{availBal | currency:'PHP'}}</p></td>
                                       <td [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}"
                                       ><p>{{availRptRatio}}</p></td>
                                     </tr>
@@ -58,6 +58,51 @@
                               </c-card-body>
                             </c-card>
                           </c-col>
+
+                          <!-- Simulated Amount Data -->
+                          <c-col>
+                            <c-card>
+                              <c-card-body>
+                                <table [responsive]="true" [cBorder]="1" cTable bordered>
+                                  <thead cTableColor="success">
+                                    <tr>
+                                      <th scope="col">Unimpaired Capital as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</th>
+                                      <th scope="col">RPT Balance (Net of Hold-out)</th>
+                                      <th scope="col">RPT Ratio</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>{{unimpairedCap | currency:'PHP'}}</td>
+                                      <td>{{SimulatedrptBal | currency:'PHP'}}</td>
+                                      <td>{{SimulatedrptRatio}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td><p class="color-red">Board Approved RPT Limit</p></td>
+                                      <td><p class="color-red">{{approvedCapital | currency:'PHP'}}</p></td>
+                                      <td><p class="color-red">50%</p></td>
+                                    </tr>
+                                    <tr>
+                                      <td><p class="color-blue">Available Balance</p></td>
+                                      <td [ngClass]="{'green-text': SimulatedavailBal > 0, 'red-text': SimulatedavailBal <= 0}">
+                                      <p>{{SimulatedavailBal | currency:'PHP'}}</p></td>
+                                      <td [ngClass]="{'green-text': SimulatedavailBal > 0, 'red-text': SimulatedavailBal <= 0}"
+                                      ><p>{{SimulatedavailRptRatio}}</p></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </c-card-body>
+                            </c-card>
+                          </c-col>
+                          
+                        </c-row>
+
+                        <c-row>
                           <c-col>
                             <mat-form-field [style.width.%]=100>
                               <input matInput #filterInput (input)="applyFilter(filterInput.value)" placeholder="Search">
