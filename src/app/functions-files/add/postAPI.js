@@ -256,41 +256,42 @@ function createBankOfficerRelationship(boRIData, buttonId, selectedcomCisNumber,
  * @param {any} moduleV - The module information.
 */
 function createAffil(formData, moduleV, session, userID) {
-    return new Promise((resolve, reject) => {
-     console.log(moduleV,formData);
-      var settings = {
-        "url": "http://10.232.236.15:8092/api/addData",
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "data": JSON.stringify({
-          "cmd": 6,
-          "session": session,
-          "userid": userID,
-          "request": {
-            "cis_number": formData.aff_com_cis_number,
-            "account_name": formData.aff_com_account_name,
-            "company_name": formData.aff_com_company_name,
-            "manager": formData.parent_company,
-            "module": moduleV,
-            "hold_out": 0,
-          }
-        }),
-      };
-  
-      $.ajax(settings).done(function (response) {
-        
-        // Check the status and resolve/reject the promise accordingly
-        Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-        if (response.result[0].status === 'success') {
-          resolve(response);
-        } else {
-          reject(response);
+  return new Promise((resolve, reject) => {
+    // Check if hold_out is null, if so, assign 0
+    const holdOutValue = formData.hold_out !== '' ? formData.hold_out : 0;
+    
+    var settings = {
+      "url": "http://10.232.236.15:8092/api/addData",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "cmd": 6,
+        "session": session,
+        "userid": userID,
+        "request": {
+          "cis_number": formData.aff_com_cis_number,
+          "account_name": formData.aff_com_account_name,
+          "company_name": formData.aff_com_company_name,
+          "manager": formData.parent_company,
+          "module": moduleV,
+          "hold_out": holdOutValue, // Use the modified holdOutValue here
         }
-      })
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      // Check the status and resolve/reject the promise accordingly
+      Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+      if (response.result[0].status === 'success') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
     });
+  });
 }
 
 

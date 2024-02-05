@@ -259,7 +259,6 @@ export class PaviGroupComponent {
       this.compData = PaviComp;
     this.commandGroups = []; // Clear the existing commandGroups
       
-    console.log(PaviComp);
 
       if (PaviComp) {
         const data = PaviComp;
@@ -271,7 +270,6 @@ export class PaviGroupComponent {
             viewValue: item.aff_com_company_name,
           };
           
-          console.log(commandGroup);
           // Add the command group to the array
           this.commandGroups.push(commandGroup);
         });
