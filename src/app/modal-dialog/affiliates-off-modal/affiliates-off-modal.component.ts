@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 // Imports for Functions
 import {createAffilOff, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
-import {createRelatedInterest} from '../../functions-files/add/postAPI';
+import {updateAffilOff} from '../../functions-files/update/updateAPI';
 
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
@@ -44,11 +44,11 @@ export class AffiliatesOffModalComponent implements OnInit {
     private auditTrailService: AuditTrailService)
     {
       this.affilOfficerForm = this.formBuilder.group({
-        affildcisNumber: [''],
-        affildFirstName: ['', [Validators.required]],
-        affildMiddleName: [''],
-        affildLastName: ['', [Validators.required]],
-        affildPosition: ['', [Validators.required]],
+        off_CisNumber: [''],
+        off_fname: ['', [Validators.required]],
+        off_mname: [''],
+        off_lname: ['', [Validators.required]],
+        Position: ['', [Validators.required]],
       });
     }
 
@@ -67,36 +67,52 @@ export class AffiliatesOffModalComponent implements OnInit {
         const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
         const comp_CIS = this.dataService.getCompCIS();
         
-        // Call the JavaScript function with form data
-        createAffilOff(offData, comp_CIS, session, userID) // Pass the entire formData object
-        .then((response) => {
-          this.logAction('Add', 'Successfuly Added Affiliates Officers', true, 'rpofficer-ri');
-          this.close();
-
-          const resultData = this.cisLookUpResult;
-          addPNData(resultData, session, userID)
+        if (this.data) {
+          const data_id = this.data.id;
+          const old_cis = this.data.off_CisNumber;
+          updateAffilOff(offData, data_id, old_cis)
           .then((response) => {
-
+            this.ngOnInit();
+            this.logAction('Update', 'Updated Affiliates', true, 'Affiliates');
+            this.close();
           })
           .catch((error) => {
 
-          });
-          // this.updateTableData();
-        })
-        .catch((error) => {
-          if (error && error.result && error.result[0] && error.result[0].status === "error" &&
-                  error.result[0].message === "Officer CISNumber already defined") {
-                this._dialogRef.close(true);
+          })
+      // creat
+        } else {
+           // Call the JavaScript function with form data
+            createAffilOff(offData, comp_CIS, session, userID) // Pass the entire formData object
+            .then((response) => {
+              this.logAction('Add', 'Successfuly Added Affiliates Officers', true, 'rpofficer-ri');
+              this.close();
+
+              const resultData = this.cisLookUpResult;
+              addPNData(resultData, session, userID)
+              .then((response) => {
+
+              })
+              .catch((error) => {
+
+              });
+              // this.updateTableData();
+            })
+            .catch((error) => {
+              if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+                      error.result[0].message === "Officer CISNumber already defined") {
+                    this._dialogRef.close(true);
+                        // Handle other error conditions 
+                      this.logAction('Add', 'Failed Adding Related Interest', false, 'rpofficer-ri/:id');
+            
+                  
+                  } else {
                     // Handle other error conditions 
-                  this.logAction('Add', 'Failed Adding Related Interest', false, 'rpofficer-ri/:id');
-         
-               
-              } else {
-                // Handle other error conditions 
-                this.logAction('Add', 'Failed Adding Related Interest', false, 'rpofficer-ri/:id');
-                 // this._dialogRef.close(false);
-              }
-        });
+                    this.logAction('Add', 'Failed Adding Related Interest', false, 'rpofficer-ri/:id');
+                    // this._dialogRef.close(false);
+                  }
+              });
+        }
+       
   
       }
   
@@ -117,8 +133,8 @@ export class AffiliatesOffModalComponent implements OnInit {
     
     CISlookup() {
       const dataLookup = this.affilOfficerForm.value;
-      if (dataLookup.affildcisNumber) {
-        let cis = dataLookup.affildcisNumber;
+      if (dataLookup.off_CisNumber) {
+        let cis = dataLookup.off_CisNumber;
         cisLookUP(cis)
           .then((response) => {
             if (response.length > 0) {
