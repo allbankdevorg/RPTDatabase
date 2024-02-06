@@ -22,7 +22,7 @@ import {AffiliatesService} from '../../../services/affiliates/affiliates.service
 import {createAffilDir, createAffilOff, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getManagingCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilOff, deleteAffilOffRI} from '../../../functions-files/delFunctions'
-
+import { delAffilOffRI } from '../../../functions-files/delete/deleteAPI';
 // For Modals
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { AffiliatesDirModalComponent } from 'src/app/modal-dialog/affiliates-dir-modal/affiliates-dir-modal.component';
@@ -114,7 +114,11 @@ export class RPOfficerRIComponent implements AfterViewInit {
           for (const officer of filteredOfficers) {
               // const dir_relatedId = director.dir_cisnumber;
               const row: Record<string, any> = {
+                  'id': officer.id,
                   'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
+                  'off_fname': officer.fname,
+                  'off_mname': officer.mname,
+                  'off_lname': officer.lname,
                   'Company': this.Company,
                   'Position': officer.position,
                   'off_CisNumber': officer.off_cisnumber,
@@ -129,6 +133,7 @@ export class RPOfficerRIComponent implements AfterViewInit {
                     .filter(related => related.relation === index + 1)
                     // Create an object with the required properties
                     .map(related => ({
+                        id: related.id,
                         fullName: `${related.fname} ${related.mname} ${related.lname}`,
                         cisNumber: related.cis_number,
                         offRelated: related.officer_related
@@ -172,6 +177,7 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   openEditAffilOfficersForm(data: any, event: any) {
     event.stopPropagation();
+    console.log(data);
     const dialogRef = this._dialog.open(AffiliatesOffModalComponent, {
       data,    
     });
@@ -179,12 +185,12 @@ export class RPOfficerRIComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
+          this.updateTableData();
           // this.getEmployeeList();
         }
       },
     });
   } 
-
 
 
   openAffilOfficerRIForm() {
@@ -207,6 +213,7 @@ export class RPOfficerRIComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
+          this.updateTableData();
           // this.getEmployeeList();
         }
       },
@@ -217,7 +224,8 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
 
   setAffilCompOff() {
-    this.selectedAffilCompCISNumber = this.compId;
+    const comp_ID = this.compId;
+    this.dataService.setCompCIS(comp_ID)
   }
 
   setButtonId(id: number, off_cisnumber: number) {
@@ -242,9 +250,15 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   
   
-  delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
-    deleteAffilOffRI((dosriId) => {
-  
+  deleteAffilOffRI(element: any, id: any, offRelated: any): void {
+    const data_id = id;
+    
+    delAffilOffRI(data_id)
+    .then((response) => {
+      this.ngOnInit();
+    })
+    .catch((error) => {
+     
     })
   }
   
