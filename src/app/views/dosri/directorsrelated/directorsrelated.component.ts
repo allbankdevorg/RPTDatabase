@@ -299,7 +299,6 @@ export class DirectorsrelatedComponent {
 
   delRelationship(row: any, id: string, dir_related: any): void {
     const data_id = id;
-    console.log(data_id);
     delDosriDRI(data_id)
     .then((response) => {
       this.ngOnInit();

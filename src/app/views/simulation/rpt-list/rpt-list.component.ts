@@ -242,11 +242,10 @@ export class RptListComponent {
     // Recalculate available balance after adding temporary loan data only if SimulatedrptBal is not zero
     if (this.SimulatedrptBal !== 0) {
       const simulatedavailBal = Math.max(0, this.SimulatedapprovedCapital - this.SimulatedrptBal);
-      console.log("SimulatedavailBal:", simulatedavailBal);
-  
+      
       // Update available balance
       this.SimulatedavailBal = simulatedavailBal;
-      console.log("Updated SimulatedavailBal:", this.SimulatedavailBal);
+    
     } else {
       this.SimulatedavailBal = 0;
     }

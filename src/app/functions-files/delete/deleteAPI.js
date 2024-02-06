@@ -113,7 +113,6 @@ function delDosriDIR(cis_id) {
  * @param {any} data_id - Contain the cisNumber as reference for the unlinking
  */
 function delDosriDRI(data_id) {
-  console.log(data_id);
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Unlink this Related Interest?",
@@ -258,7 +257,6 @@ function delBankOff(cis_id) {
  * @param {any} data_id - Contain the cisNumber as reference for the unlinking
  */
 function delBankOffRI(data_id) {
-  console.log(data_id)
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Remove this Officer's Related Interest?",
@@ -453,7 +451,6 @@ function delAffilComDIR(cis_id) {
  * @param {any} id - Contain the cisNumber as reference for the unlinking
  */
 function delAffilOffRI(data_id) {
-  console.log(data_id);
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Remove this Officer's Related Interest?",

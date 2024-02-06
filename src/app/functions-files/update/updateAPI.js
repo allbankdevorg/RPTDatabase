@@ -99,7 +99,6 @@ function updateHoldOut(formData) {
 
 
 function updateAffilOff(offData, data_id, old_cis) {
-    console.log(offData, data_id, old_cis);
     return new Promise((resolve, reject) => {
             var settings = {
                 "url": "http://10.232.236.15:8092/api/updateData",

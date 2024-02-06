@@ -45,7 +45,6 @@ export class SimulatedDataService {
 
   addTemporaryLoan(loan: Loan) {
     this.temporaryLoans.push(loan);
-    console.log(this.temporaryLoans);
   }
 
   removeTemporaryLoan(index: number) {

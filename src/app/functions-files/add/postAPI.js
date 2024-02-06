@@ -345,7 +345,6 @@ function createAffilDir(directData, comp_CIS, session, userID) {
  * @param {any} compId - The company ID.
 */
 function createAffilOff(offData, comp_CIS, session, userID) {
-  console.log(offData, comp_CIS)
   return new Promise((resolve, reject) => {
     // Implement code to insert a new director into the database
 
@@ -685,14 +684,15 @@ function cisLookUP(cis) {
       };
       
       $.ajax(settings).done(function (response) {
+        console.log(response);
         
         // Check the status and resolve/reject the promise accordingly
         // Swal.fire(`${response}`, ``, `${response}`);
-        if (response != null ) {
-          resolve(response);
-        } else {
-          reject(response);
-        }
+        // if (response != null ) {
+        //   resolve(response);
+        // } else {
+        //   reject(response);
+        // }
       });
   });
 }

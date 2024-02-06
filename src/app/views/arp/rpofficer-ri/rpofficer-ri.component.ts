@@ -177,7 +177,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   openEditAffilOfficersForm(data: any, event: any) {
     event.stopPropagation();
-    console.log(data);
     const dialogRef = this._dialog.open(AffiliatesOffModalComponent, {
       data,    
     });

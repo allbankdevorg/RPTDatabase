@@ -200,7 +200,6 @@ export class UpdateJMNComponent {
 
   getParentCompany() {
     const moduleV = this.dataService.getmoduleV();
-    console.log(moduleV);
     if (moduleV === "JMN") {
       this.get.getOtherCompany((OtherComp) => {
         this.compData = OtherComp;

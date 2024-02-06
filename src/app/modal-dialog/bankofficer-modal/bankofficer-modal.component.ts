@@ -55,10 +55,8 @@ export class BankofficerModalComponent implements OnInit{
     this.get.getCompany().subscribe((compData) => {
     
       if (compData) {
-        console.log(compData)
       }
       else {
-        console.log("No DOSRI");
       }
     
     })
