@@ -16,7 +16,7 @@
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="cis_no" name="cis_no"
                 type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
-                formControlName="cis_no" appNum>
+                formControlName="cis_no">
                 <mat-error *ngIf="rptSimulateForm.get('cis_no')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             </mat-form-field>
         </c-col>

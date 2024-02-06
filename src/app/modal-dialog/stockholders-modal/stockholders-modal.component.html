@@ -15,7 +15,7 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>First Name</mat-label> -->
                 <input matInput id="cisNumber" name="cisNumber" 
-                type="text" placeholder="CIS Number" formControlName="cis_number" appNum>
+                type="text" placeholder="CIS Number" formControlName="cis_number">
                  <mat-error *ngIf="stockHoldersForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               </mat-form-field>
             </c-col>

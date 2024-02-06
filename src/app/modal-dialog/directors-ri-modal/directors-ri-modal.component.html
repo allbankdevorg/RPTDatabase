@@ -20,7 +20,7 @@
             aria-describedby="passwordHelpInline-3" matInput
             id="riCisNumber" name="riCisNumber"
             placeholder="CIS Number"
-            type="text" formControlName="riCisNumber" appNum (keyup.enter)="CISlookup()">
+            type="text" formControlName="riCisNumber" (keyup.enter)="CISlookup()">
           <mat-error *ngIf="riForm.get('riCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
         </mat-form-field>
       </c-col>

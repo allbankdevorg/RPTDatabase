@@ -15,7 +15,7 @@
                 aria-describedby="passwordHelpInline-3" matInput
                 id="affildcisNumber" name="affildcisNumber"
                 placeholder="CIS Number"
-                type="text" formControlName="affildcisNumber" (keyup.enter)="CISlookup()" appNum>
+                type="text" formControlName="affildcisNumber" (keyup.enter)="CISlookup()">
                 <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               </mat-form-field>
 
