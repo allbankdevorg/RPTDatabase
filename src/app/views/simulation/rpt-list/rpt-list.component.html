@@ -10,10 +10,16 @@
 
                     <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
                         <!-- <c-row> -->
+                          <div>
+                            <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'">
+                              <!-- <mat-icon>download</mat-icon> -->
+                              CSV
+                            </button>
                             <button (click)="openSimulation()" mat-fab extended color="primary" *appHasPermission="'add'">
-                              <!-- <mat-icon>add</mat-icon> -->
                               Simulate
                             </button>
+                          </div>
+                            
                             <button *ngIf="simulationPerformed" (click)="resetSimulation()" mat-fab extended color="primary">
                               <!-- <mat-icon>add</mat-icon> -->
                               Reset Simulation
@@ -179,7 +185,8 @@
                     <ng-container matColumnDef="netBal">
                       <mat-header-cell *matHeaderCellDef> Net Balance </mat-header-cell>
                       <mat-cell *matCellDef="let element">
-                        {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }}
+                        {{element.netBal}}
+                        <!-- {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }} -->
                       </mat-cell>
                     </ng-container>
 

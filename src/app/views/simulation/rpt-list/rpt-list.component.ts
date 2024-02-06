@@ -13,6 +13,8 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { HoldOutValue } from '../../../functions-files/add/postAPI';
 import { SimulatedDataService } from '../../../services/simulatedDataService/simulated-data-service.service';
 
+// Save CSV
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
 
 export interface RPTlist_model {
   loantype: string;
@@ -80,7 +82,8 @@ export class RptListComponent {
   constructor(
     private get: FetchDataService,
     public _dialog: MatDialog,
-    private simulatedDataService: SimulatedDataService) {
+    private simulatedDataService: SimulatedDataService,
+    private csvExportService: CsvExportService) {
        
     }
 
@@ -154,6 +157,9 @@ export class RptListComponent {
         const tempData = PNData.slice(); // Create a shallow copy of PNData
         if (this.temporaryLoans) {
           tempData.push(...this.temporaryLoans);
+          tempData.forEach((loan) => {
+            loan.netBal = (loan.principal_bal || 0) - (loan.deposit_holdout || 0);
+          });
             this.calculateSimulatedData(tempData); // Spread the temporary loans array to push each loan individually
            // Only calculate simulated data if temporary loan data is pushed
         }
@@ -296,6 +302,36 @@ export class RptListComponent {
         },
       });
     }
+
+    downloadCSV(): void {
+      const data = this.dataSource.data.map(item => ({
+        'CIS NUMBER': item.cis_no,
+        'PN/LOAN NUMBER': item.loan_no,
+        'BORROWER/GROUP': item.name,
+        'ORIGINAL LOAN': item.principal,
+        'OUTSTANDING BALANCE': item.principal_bal,
+        'DEPOSIT HOLDOUT': item.deposit_holdout,
+        'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
+        'LOAN SECURITY': item.loan_security,
+        'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+      }));
+    
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+      const filename = `RPT_List_${formattedDate}.csv`;
+    
+      // Specify the columns to include in the CSV
+      const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'TRANSACTION DATE'];
+    
+      this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+    }
+    
+    
+    
+    
+    
+    
+    
 
 
     resetSimulation(): void {
