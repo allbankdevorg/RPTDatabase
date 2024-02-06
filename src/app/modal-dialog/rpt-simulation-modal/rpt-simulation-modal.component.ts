@@ -90,6 +90,7 @@ export class RPTSimulationModalComponent implements OnInit{
 
       if (this.simulatedRptTTL <= this.availBal) {
         this.simulatedDataService.addTemporaryLoan(simulatedData)
+        this.simulatedDataService.setSimulationPerformed();
         this.close();
         // addSimulatedPNData(sPNData, session, userID)
         //   .then((response) => {
