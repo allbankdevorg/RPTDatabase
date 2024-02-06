@@ -40,7 +40,7 @@
                       <ng-container *ngFor="let motherName of element['MothersName']">
                         <div class="d-flex d-sub-icon">
                             <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherName.cisNumber, motherName.dirRelated)" *ngIf="element.MothersName">
+                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherName.id, motherName.dirRelated)" *ngIf="element.MothersName">
                                   remove_circle
                                 </mat-icon>
                               </ng-container>
@@ -59,7 +59,7 @@
                         <ng-container *ngFor="let fatherName of element['FathersName']">
                           <div class="d-flex d-sub-icon">
                             <ng-container *appHasPermission="'delete'">
-                              <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherName.cisNumber, fatherName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
+                              <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherName.id, fatherName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
                             </ng-container>
                               {{fatherName.fullName}}
                           </div>
@@ -76,7 +76,7 @@
                         <ng-container *ngFor="let spouse of element['Spouse']">
                           <div class="d-flex d-sub-icon">
                             <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, spouse.cisNumber, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
+                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, spouse.id, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
                             </ng-container>
                                 {{spouse.fullName}}
                           </div>
@@ -93,7 +93,7 @@
                         <ng-container *ngFor="let child of element['Children']">
                           <div class="d-flex d-sub-icon">
                             <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, child.cisNumber, child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
+                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, child.id, child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
                             </ng-container>
                                 {{ child.fullName }}
                           </div>
@@ -110,7 +110,7 @@
                         <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
                           <div class="d-flex d-sub-icon">
                             <ng-container *appHasPermission="'delete'">
-                              <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherinlaw.cisNumber, motherinlaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
+                              <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherinlaw.id, motherinlaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
                             </ng-container>
                               {{motherinlaw.fullName}}
                           </div>
@@ -126,7 +126,7 @@
                         <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
                           <div class="d-flex d-sub-icon">
                             <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherinlaw.cisNumber, fatherinlaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon> 
+                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherinlaw.id, fatherinlaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon> 
                             </ng-container>
                                 {{fatherinlaw.fullName}}
                           </div>

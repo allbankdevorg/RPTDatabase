@@ -110,9 +110,10 @@ function delDosriDIR(cis_id) {
 
 /**
  * Unlink a Director's Related Interest
- * @param {any} cis_id - Contain the cisNumber as reference for the unlinking
+ * @param {any} data_id - Contain the cisNumber as reference for the unlinking
  */
-function delDosriDRI(cis_id) {
+function delDosriDRI(data_id) {
+  console.log(data_id);
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Unlink this Related Interest?",
@@ -135,7 +136,7 @@ function delDosriDRI(cis_id) {
           "data": JSON.stringify({
             "cmd": 3,
             "request": {
-              "cis_number": cis_id
+              "data_id": data_id
             }
           }),
         };
@@ -254,9 +255,10 @@ function delBankOff(cis_id) {
 
 /**
  * Remove Bank Officer Related Interest
- * @param {any} cis_id - Contain the cisNumber as reference for the unlinking
+ * @param {any} data_id - Contain the cisNumber as reference for the unlinking
  */
-function delBankOffRI(cis_id) {
+function delBankOffRI(data_id) {
+  console.log(data_id)
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to Remove this Officer's Related Interest?",
@@ -279,7 +281,7 @@ function delBankOffRI(cis_id) {
           "data": JSON.stringify({
             "cmd": 5,
             "request": {
-              "cis_number": cis_id
+              "data_id": data_id
             }
           }),
         };

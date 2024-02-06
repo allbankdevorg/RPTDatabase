@@ -135,86 +135,148 @@ export class BankofficerComponent implements AfterViewInit{
    }
 
    // Functions Below
-  updateTableData(): void {
+   updateTableData(): void {
     this.get.getCompany().subscribe((compData) => {
-
       if (compData) {
         const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
         const tableData: Record<string, any>[] = [];
   
-  
         this.get.getOfficers().subscribe((Officers) => {
-          const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
-          const tableData: Record<string, any>[] = [];
-  
           for (const officer of Officers) {
             const officerData = officer.Officers || [];
-  
             const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
-  
             const companyName = matchingCompany ? matchingCompany.com_company_name : '';
   
             const row: Record<string, any> = {
-                  'FullName': `(${officer.off_cisnumber}) ${officer.fname} ${officer.mname}  ${officer.lname}`,
-                  'Company': companyName,
-                  'Position': officer.position,
-                  'offc_CisNumber': officer.off_cisnumber,
-                  'comp_CIS': officer.com_related,
+              'FullName': `(${officer.off_cisnumber}) ${officer.fname} ${officer.mname}  ${officer.lname}`,
+              'Company': companyName,
+              'Position': officer.position,
+              'offc_CisNumber': officer.off_cisnumber,
+              'comp_CIS': officer.com_related,
             };
   
             // Loop through each element in the 'relationColumn' array
             for (let index = 0; index < relationColumn.length; index++) {
-                const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
-                // Filter 'director.related_interest' array to get related names based on the relation index
-                const relatedData = officer.related_interest 
-                    .filter(related => related.relation === index + 1)
-                    // Create a full name by concatenating 'fname', 'mname', and 'lname'
-                    .map(related => ({
-                      fullName: `${related.fname} ${related.mname} ${related.lname}`,
-                      cisNumber: related.cis_number,
-                      offRelated: related.officer_related
-                  }))
-                  // Filter out objects with empty names (names with only whitespace)
-                  .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
-    
-                // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
-                row[relationName] = relatedData;
+              const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
+  
+              // Filter 'officer.related_interest' array to get related names based on the relation index
+              const relatedData = officer.related_interest
+                .filter((related) => related.relation === index + 1)
+                // Create a full name by concatenating 'fname', 'mname', and 'lname'
+                .map((related) => ({
+                  id: related.id,
+                  fullName: `${related.fname} ${related.mname} ${related.lname}`,
+                  cisNumber: related.cis_number,
+                  offRelated: related.officer_related
+                }))
+                // Filter out objects with empty names (names with only whitespace)
+                .filter((data) => typeof data.fullName === 'string' && data.fullName.trim() !== '')
+                // Sort relatedData array by id from lowest to highest
+                .sort((a, b) => a.id - b.id);
+  
+              // Assign the 'relatedData' array to the 'row' object with the key as 'relationName'
+              row[relationName] = relatedData;
             }
   
-            tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
             tableData.push(row);
+          }
   
-            const officers: Officers[] = tableData.map(item => {
-              return {
-                FullName: item['FullName'],
-                Company: item['Company'],
-                Position: item['Position'],
-                MothersName: item['MothersName'],
-                FathersName: item['FathersName'],
-                Spouse: item['Spouse'],
-                Children: item['Children'],
-                MotherinLaw: item['MotherinLaw'],
-                FatherinLaw: item['FatherinLaw'],
-                offc_CisNumber: item['offc_CisNumber'],
+          // Sort tableData array by 'offc_CisNumber' property from lowest to highest
+          tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
   
-                // Map other properties here
-              };
-            });
-  
-            this.officers = officers;
-        }
-          
+          // Assign tableData to dataSource.data
           this.dataSource.data = tableData;
+  
           // Trigger change detection
           this.changeDetectorRef.detectChanges();
         });
-      }else {
-        
+      } else {
+        // Handle case where compData is empty
       }
-      
-      
-    })
+    });
   }
+  
+  // updateTableData(): void {
+  //   this.get.getCompany().subscribe((compData) => {
+
+  //     if (compData) {
+  //       const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  //       const tableData: Record<string, any>[] = [];
+  
+  
+  //       this.get.getOfficers().subscribe((Officers) => {
+  //         const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  //         const tableData: Record<string, any>[] = [];
+  
+  //         for (const officer of Officers) {
+  //           const officerData = officer.Officers || [];
+  
+  //           const matchingCompany = compData.find((company) => company.com_cis_number === officer.com_related);
+  
+  //           const companyName = matchingCompany ? matchingCompany.com_company_name : '';
+  
+  //           const row: Record<string, any> = {
+  //                 'FullName': `(${officer.off_cisnumber}) ${officer.fname} ${officer.mname}  ${officer.lname}`,
+  //                 'Company': companyName,
+  //                 'Position': officer.position,
+  //                 'offc_CisNumber': officer.off_cisnumber,
+  //                 'comp_CIS': officer.com_related,
+  //           };
+  
+  //           // Loop through each element in the 'relationColumn' array
+  //           for (let index = 0; index < relationColumn.length; index++) {
+  //               const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array
+  //               // Filter 'director.related_interest' array to get related names based on the relation index
+  //               const relatedData = officer.related_interest 
+  //                   .filter(related => related.relation === index + 1)
+  //                   // Create a full name by concatenating 'fname', 'mname', and 'lname'
+  //                   .map(related => ({
+  //                     id: related.id,
+  //                     fullName: `${related.fname} ${related.mname} ${related.lname}`,
+  //                     cisNumber: related.cis_number,
+  //                     offRelated: related.officer_related
+  //                 }))
+  //                 // Filter out objects with empty names (names with only whitespace)
+  //                 .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
+    
+  //               // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
+  //               row[relationName] = relatedData;
+  //           }
+  
+  //           tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
+  //           tableData.push(row);
+  
+  //           const officers: Officers[] = tableData.map(item => {
+  //             return {
+  //               FullName: item['FullName'],
+  //               Company: item['Company'],
+  //               Position: item['Position'],
+  //               MothersName: item['MothersName'],
+  //               FathersName: item['FathersName'],
+  //               Spouse: item['Spouse'],
+  //               Children: item['Children'],
+  //               MotherinLaw: item['MotherinLaw'],
+  //               FatherinLaw: item['FatherinLaw'],
+  //               offc_CisNumber: item['offc_CisNumber'],
+  
+  //               // Map other properties here
+  //             };
+  //           });
+  
+  //           this.officers = officers;
+  //       }
+          
+  //         this.dataSource.data = tableData;
+  //         // Trigger change detection
+  //         this.changeDetectorRef.detectChanges();
+  //       });
+  //     }else {
+        
+  //     }
+      
+      
+  //   })
+  // }
   
   setButtonId(id: number, offCisNumber: number) {
     this.buttonId = id;
@@ -271,9 +333,9 @@ export class BankofficerComponent implements AfterViewInit{
     })
   }
 
-  delRelationship(row: any, cisNumber: any, officer_related: any): void {
-    const cis_id = cisNumber;
-    delBankOffRI(cis_id)
+  delRelationship(row: any, id: any, officer_related: any): void {
+    const data_id = id;
+    delBankOffRI(data_id)
     .then((response) => {
       this.ngOnInit();
     })

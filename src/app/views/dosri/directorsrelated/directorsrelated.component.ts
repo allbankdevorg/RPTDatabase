@@ -155,53 +155,105 @@ export class DirectorsrelatedComponent {
     // Now that you have processed the data, you can fetch directors or perform any other operation
     this.get.getDirectors().subscribe((directors) => {
       if (directors) {
-        
-            const filteredDirectors = directors.filter((director) => director.com_related === this.compId);
-        
-            const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
-        
-            const tableData = filteredDirectors.map((director) => {
-              const row: Record<string, any> = {
-                'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
-                'Company': this.Company,
-                'Position': director.position,
-                'dir_CisNumber': director.dir_cisnumber,
-                'comp_CIS': director.com_related,
-              };
-        
-              for (let index = 0; index < relationColumn.length; index++) {
-                const relationName = relationColumn[index];
-        
-                // Check if director.related_interest is not null or undefined
-                const relatedData = director.related_interest
-                  ? director.related_interest
-                      .filter((related) => related && related.relation === index + 1)
-                      .map((related) => ({
-                        fullName: `${related.fname || ''} ${related.mname || ''} ${related.lname || ''}`,
-                        cisNumber: related.cis_number || '',
-                        dirRelated: related.dir_related || '',
-                      }))
-                      .filter((data) => typeof data.fullName === 'string' && data.fullName.trim() !== '')
-                  : [];
-        
-                row[relationName] = relatedData;
-              }
-        
-              return row;
-            });
-        
-            this.dataSource = new MatTableDataSource(tableData);
-            // this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-        
-            // Trigger change detection
-            this.changeDetectorRef.detectChanges();
-      }
-      else {
+        const filteredDirectors = directors.filter((director) => director.com_related === this.compId);
+        const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  
+        const tableData = filteredDirectors.map((director) => {
+          const row: Record<string, any> = {
+            'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
+            'Company': this.Company,
+            'Position': director.position,
+            'dir_CisNumber': director.dir_cisnumber,
+            'comp_CIS': director.com_related,
+          };
+  
+          for (let index = 0; index < relationColumn.length; index++) {
+            const relationName = relationColumn[index];
+  
+            // Check if director.related_interest is not null or undefined
+            const relatedData = director.related_interest
+              ? director.related_interest
+                  .filter((related) => related && related.relation === index + 1)
+                  .map((related) => ({
+                    id: related.id,
+                    fullName: `${related.fname || ''} ${related.mname || ''} ${related.lname || ''}`,
+                    cisNumber: related.cis_number || '',
+                    dirRelated: related.dir_related || '',
+                  }))
+                  .filter((data) => typeof data.fullName === 'string' && data.fullName.trim() !== '')
+                  .sort((a, b) => a.id - b.id) // Sort relatedData array by id from lowest to highest
+              : [];
+  
+            row[relationName] = relatedData;
+          }
+  
+          return row;
+        });
+  
+        this.dataSource = new MatTableDataSource(tableData);
+        // this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+  
+        // Trigger change detection
+        this.changeDetectorRef.detectChanges();
+      } else {
         directors = [];
       }
     });
   }
+  
+  // updateTableData(): void {
+  //   // Now that you have processed the data, you can fetch directors or perform any other operation
+  //   this.get.getDirectors().subscribe((directors) => {
+  //     if (directors) {
+        
+  //           const filteredDirectors = directors.filter((director) => director.com_related === this.compId);
+        
+  //           const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+        
+  //           const tableData = filteredDirectors.map((director) => {
+  //             const row: Record<string, any> = {
+  //               'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
+  //               'Company': this.Company,
+  //               'Position': director.position,
+  //               'dir_CisNumber': director.dir_cisnumber,
+  //               'comp_CIS': director.com_related,
+  //             };
+        
+  //             for (let index = 0; index < relationColumn.length; index++) {
+  //               const relationName = relationColumn[index];
+        
+  //               // Check if director.related_interest is not null or undefined
+  //               const relatedData = director.related_interest
+  //                 ? director.related_interest
+  //                     .filter((related) => related && related.relation === index + 1)
+  //                     .map((related) => ({
+  //                       id: related.id,
+  //                       fullName: `${related.fname || ''} ${related.mname || ''} ${related.lname || ''}`,
+  //                       cisNumber: related.cis_number || '',
+  //                       dirRelated: related.dir_related || '',
+  //                     }))
+  //                     .filter((data) => typeof data.fullName === 'string' && data.fullName.trim() !== '')
+  //                 : [];
+        
+  //               row[relationName] = relatedData;
+  //             }
+        
+  //             return row;
+  //           });
+        
+  //           this.dataSource = new MatTableDataSource(tableData);
+  //           // this.dataSource.sort = this.sort;
+  //           this.dataSource.paginator = this.paginator;
+        
+  //           // Trigger change detection
+  //           this.changeDetectorRef.detectChanges();
+  //     }
+  //     else {
+  //       directors = [];
+  //     }
+  //   });
+  // }
   
   
 
@@ -245,10 +297,10 @@ export class DirectorsrelatedComponent {
     })
   }
 
-  delRelationship(row: any, cis_number: string, dir_related: any): void {
-    const cis_id = cis_number;
-
-    delDosriDRI(cis_id)
+  delRelationship(row: any, id: string, dir_related: any): void {
+    const data_id = id;
+    console.log(data_id);
+    delDosriDRI(data_id)
     .then((response) => {
       this.ngOnInit();
     })
