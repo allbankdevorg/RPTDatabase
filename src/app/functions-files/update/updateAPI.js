@@ -98,9 +98,47 @@ function updateHoldOut(formData) {
 }
 
 
+function updateAffilOff(offData, data_id, old_cis) {
+    console.log(offData, data_id, old_cis);
+    return new Promise((resolve, reject) => {
+            var settings = {
+                "url": "http://10.232.236.15:8092/api/updateData",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({
+                "cmd": 81,
+                "request": {
+                    "data_id": data_id,
+                    "old_cis": old_cis,
+                    "cis_number": offData.off_CisNumber,  // Use form data
+                    "fname": offData.off_fname, 
+                    "mname": offData.off_mname, 
+                    "lname": offData.off_lname,
+                    "position": offData.Position 
+                }
+                }),
+            };
+
+            $.ajax(settings).done(function (response) {
+                
+                // Check the status and resolve/reject the promise accordingly
+                Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+                if (response.result[0].status === 'success') {
+                resolve(response);
+                } else {
+                reject(response);
+                }
+            });
+    });
+}
+
 
 module.exports = {
     updateManagingCompany,
     updateCompany,
-    updateHoldOut
+    updateHoldOut,
+    updateAffilOff
 }

@@ -345,6 +345,7 @@ function createAffilDir(directData, comp_CIS, session, userID) {
  * @param {any} compId - The company ID.
 */
 function createAffilOff(offData, comp_CIS, session, userID) {
+  console.log(offData, comp_CIS)
   return new Promise((resolve, reject) => {
     // Implement code to insert a new director into the database
 
@@ -360,11 +361,11 @@ function createAffilOff(offData, comp_CIS, session, userID) {
         "session": session,
         "userid": userID,
         "request": {
-              "cis_number": offData.affildcisNumber,       // Use form data
-              "fname": offData.affildFirstName, 
-              "mname": offData.affildMiddleName, 
-              "lname": offData.affildLastName,
-              "position": offData.affildPosition,    // Use form data
+              "cis_number": offData.off_CisNumber,       // Use form data
+              "fname": offData.off_fname, 
+              "mname": offData.off_mname, 
+              "lname": offData.off_lname,
+              "position": offData.Position,    // Use form data
               "com_cisnumber": comp_CIS    // Use form data
             }
       }),
