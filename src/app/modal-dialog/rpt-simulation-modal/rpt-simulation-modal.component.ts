@@ -147,54 +147,96 @@ export class RPTSimulationModalComponent implements OnInit{
     return this.rptSimulateForm.get('amount');
   }
 
+  // CISlookup() {
+  //   const dataLookup = this.rptSimulateForm.value;
+  
+  //   // Check if cis_no is present and not empty
+  //   if (dataLookup.cis_no) {
+  //     let cis = dataLookup.cis_no;
+  
+  //     cisLookUP(cis)
+  //       .then((response) => {
+  
+  //         if (response.length > 0) {
+  //           // Use the first element of the response array
+  //           let accName = response[0].name;
+  
+  //           // Update form controls with new values
+  //           this.rptSimulateForm.patchValue({
+  //             name: accName,
+  //             // Add other form controls if needed
+  //           });
+  
+  //           if (Array.isArray(response)) {
+  //             // Initialize sumPrincipal outside the loop
+  //             let sumPrincipal = { principal: 0, principal_bal: 0 };
+  
+  //             response.forEach((item) => {
+  //               // Calculate the sum for each item
+  //               sumPrincipal.principal += parseFloat(item.principal) || 0;
+  //               sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+  //             });
+  
+  //             // Assign the sum to the class variables
+  //             this.currentSttl = sumPrincipal.principal;
+  //             this.currentRptTTL = sumPrincipal.principal_bal;
+  //           } else {
+  //             console.error("Invalid resultData format");
+  //           }
+  //         } else {
+  //           // Display an error message if no CIS is found
+  //           Swal.fire({
+  //             icon: 'error',
+  //             title: 'No CIS Found!',
+  //             text: 'Please Enter the Account and Company Name',
+  //           });
+  //           this.toggleInputReadOnly();
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         // Display an error message if an error occurs
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Error',
+  //           text: 'An error occurred while fetching data.',
+  //         });
+  //         this.toggleInputReadOnly();
+  //       });
+  //   }
+  // }
+
+
   CISlookup() {
     const dataLookup = this.rptSimulateForm.value;
   
-    // Check if cis_no is present and not empty
     if (dataLookup.cis_no) {
       let cis = dataLookup.cis_no;
-  
       cisLookUP(cis)
         .then((response) => {
+          if (Array.isArray(response.data)) {
+            if (response.data.length > 0) {
+              // If response.data is an array and not empty, use the first element
+              const firstElement = response.data[0];
+              let accName = firstElement.name;
   
-          if (response.length > 0) {
-            // Use the first element of the response array
-            let accName = response[0].name;
-  
-            // Update form controls with new values
-            this.rptSimulateForm.patchValue({
-              name: accName,
-              // Add other form controls if needed
-            });
-  
-            if (Array.isArray(response)) {
-              // Initialize sumPrincipal outside the loop
-              let sumPrincipal = { principal: 0, principal_bal: 0 };
-  
-              response.forEach((item) => {
-                // Calculate the sum for each item
-                sumPrincipal.principal += parseFloat(item.principal) || 0;
-                sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+              this.rptSimulateForm.patchValue({
+                name: accName
               });
-  
-              // Assign the sum to the class variables
-              this.currentSttl = sumPrincipal.principal;
-              this.currentRptTTL = sumPrincipal.principal_bal;
             } else {
-              console.error("Invalid resultData format");
+              // Handle the case when response.data is an empty array
+              const accName = response.cisName || '';
+              this.updateFormControls(accName);
+              this.toggleInputReadOnly();
             }
           } else {
-            // Display an error message if no CIS is found
-            Swal.fire({
-              icon: 'error',
-              title: 'No CIS Found!',
-              text: 'Please Enter the Account and Company Name',
-            });
+            // Handle the case when response.data is not an array
+            const accName = response.cisName || '';
+            this.updateFormControls(accName);
             this.toggleInputReadOnly();
           }
         })
         .catch((error) => {
-          // Display an error message if an error occurs
+          console.log(error);
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -204,7 +246,14 @@ export class RPTSimulationModalComponent implements OnInit{
         });
     }
   }
-
+  
+  // Function to update form controls
+  updateFormControls(accName: string) {
+    this.rptSimulateForm.patchValue({
+      name: accName // Assuming you have company_name in the response
+      // Add other form controls if needed
+    });
+  }
 
   updateTableData(): void {
     this.get.getPNData((PNData) => {

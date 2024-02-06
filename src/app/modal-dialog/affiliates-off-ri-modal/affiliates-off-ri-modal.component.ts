@@ -111,31 +111,35 @@ export class AffiliatesOffRIModalComponent implements OnInit{
 
     CISlookup() {
       const dataLookup = this.affilOfficerRIForm.value;
-      
-      if (dataLookup.riCisNumber) {
-        let cis = dataLookup.riCisNumber;
+    
+      if (dataLookup.com_cis_number) {
+        let cis = dataLookup.com_cis_number;
         cisLookUP(cis)
           .then((response) => {
-            if (response.length > 0) {
-              // If the array is not empty, use the first element
-              let accName = response[0].name;
-              this.toggleInputReadOnly();
-              // Update form controls with new values
-              this.affilOfficerRIForm.patchValue({
-                riFirstName: accName
-                // Assuming you have company_name in the response
-                // Add other form controls if needed
-              });
+            if (Array.isArray(response.data)) {
+              if (response.data.length > 0) {
+                // If response.data is an array and not empty, use the first element
+                const firstElement = response.data[0];
+                this.cisLookUpResult = response.data;
+                console.log(this.cisLookUpResult);
+                let accName = firstElement.name;
+    
+                this.updateFormControls(accName);
+              } else {
+                // Handle the case when response.data is an empty array
+                const accName = response.cisName || '';
+                this.updateFormControls(accName);
+                this.toggleInputReadOnly();
+              }
             } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'No CIS Found!',
-                text: 'Please Enter the Account and Company Name',
-              });
+              // Handle the case when response.data is not an array
+              const accName = response.cisName || '';
+              this.updateFormControls(accName);
               this.toggleInputReadOnly();
             }
           })
           .catch((error) => {
+            console.log(error);
             Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -144,6 +148,15 @@ export class AffiliatesOffRIModalComponent implements OnInit{
             this.toggleInputReadOnly();
           });
       }
+    }
+    
+    // Function to update form controls
+    updateFormControls(accName: string) {
+      this.affilOfficerRIForm.patchValue({
+        com_account_name: accName,
+        com_company_name: accName // Assuming you have company_name in the response
+        // Add other form controls if needed
+      });
     }
 
 

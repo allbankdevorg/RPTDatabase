@@ -684,15 +684,14 @@ function cisLookUP(cis) {
       };
       
       $.ajax(settings).done(function (response) {
-        console.log(response);
-        
         // Check the status and resolve/reject the promise accordingly
         // Swal.fire(`${response}`, ``, `${response}`);
-        // if (response != null ) {
-        //   resolve(response);
-        // } else {
-        //   reject(response);
-        // }
+        if (response.cisName === null && response.data === null) {
+          reject(response);
+      } else {
+          resolve(response);
+      }
+        
       });
   });
 }
@@ -793,7 +792,6 @@ function userAccess(userid) {
  * @param {any} userID - The Username of the user.
 */
 function addPNData(resultData, holdOUT, session, userID) {
-    
   return new Promise((resolve, reject) => {
 
     if (Array.isArray(resultData)) {
@@ -801,6 +799,7 @@ function addPNData(resultData, holdOUT, session, userID) {
       let successfulInsertions = 0;
       // const pnHoldOut = holdOUT / totalItems;
 
+      console.log(resultData);
       
       resultData.forEach((item) => {
         var settings = {
