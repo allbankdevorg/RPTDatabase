@@ -47,7 +47,10 @@
               "chart.js",
               "moment",
               "lodash",
-              "sweetalert2"
+              "sweetalert2",
+              "jspdf-autotable",
+              "raf",
+              "core-js"
             ]
           },
           "configurations": {

@@ -30,6 +30,10 @@
                                 <mat-icon>file_download</mat-icon>
                                 CSV
                               </button>
+                              <button (click)="generatePDF()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                                <mat-icon>file_download</mat-icon>
+                                PDF
+                              </button>
                               <button (click)="openSimulation()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
                                 <mat-icon>play_arrow</mat-icon>
                                 Simulate
@@ -155,90 +159,90 @@
                       </c-container>
                       
                     
+                    <!-- <div id="htmlData"> -->
+                      <mat-table cTable  id="htmlData" [responsive]="true" [dataSource]="dataSource" class="mat-elevation-z8 pnTable" matSort>
+                  
+                      <!-- CIS Column -->
+                      <ng-container matColumnDef="cis_no">
+                      <mat-header-cell *matHeaderCellDef> CIS Number </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.cis_no}} </mat-cell>
+                      </ng-container>
+                  
+                      <!-- Loan/PN Column -->
+                      <ng-container matColumnDef="loan_no">
+                      <mat-header-cell *matHeaderCellDef>Loan/PN Number </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.loan_no}} </mat-cell>
+                      </ng-container>
+                  
+                      <!-- Borrower Column -->
+                      <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef> Borrower </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                      </ng-container>
 
-                    <mat-table cTable [responsive]="true" [dataSource]="dataSource" class="mat-elevation-z8 pnTable" matSort>
-                
-                    <!-- CIS Column -->
-                    <ng-container matColumnDef="cis_no">
-                    <mat-header-cell *matHeaderCellDef> CIS Number </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.cis_no}} </mat-cell>
-                    </ng-container>
-                
-                    <!-- Loan/PN Column -->
-                    <ng-container matColumnDef="loan_no">
-                    <mat-header-cell *matHeaderCellDef>Loan/PN Number </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.loan_no}} </mat-cell>
-                    </ng-container>
-                
-                    <!-- Borrower Column -->
-                    <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef> Borrower </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                    </ng-container>
+                      <!-- Original Loan Column -->
+                      <ng-container matColumnDef="principal">
+                          <mat-header-cell *matHeaderCellDef> Original Loan </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.principal | number: '1.2-2'}} </mat-cell>
+                      </ng-container>
 
-                    <!-- Original Loan Column -->
-                    <ng-container matColumnDef="principal">
-                        <mat-header-cell *matHeaderCellDef> Original Loan </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.principal | number: '1.2-2'}} </mat-cell>
-                    </ng-container>
+                      <!-- Outstanding Balance Column -->
+                      <ng-container matColumnDef="principal_bal">
+                          <mat-header-cell *matHeaderCellDef> Outstanding Balance </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
+                      </ng-container>
 
-                    <!-- Outstanding Balance Column -->
-                    <ng-container matColumnDef="principal_bal">
-                        <mat-header-cell *matHeaderCellDef> Outstanding Balance </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="loan_security">
-                      <mat-header-cell *matHeaderCellDef> Loan Security </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
-                    </ng-container>
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="loan_security">
+                        <mat-header-cell *matHeaderCellDef> Loan Security </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.loan_security}} </mat-cell>
+                      </ng-container>
 
 
-                     <!-- Position Column -->
-                     <ng-container matColumnDef="deposit_holdout">
-                      <mat-header-cell *matHeaderCellDef> Deposit Hold-out </mat-header-cell>
-                      <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | number: '1.2-2'}} </mat-cell>
-                    </ng-container>
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="deposit_holdout">
+                        <mat-header-cell *matHeaderCellDef> Deposit Hold-out </mat-header-cell>
+                        <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | number: '1.2-2'}} </mat-cell>
+                      </ng-container>
 
-                    <!-- Net Balance -->
-                    <ng-container matColumnDef="netBal">
-                      <mat-header-cell *matHeaderCellDef> Net Balance </mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        {{element.netBal}}
-                        <!-- {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }} -->
-                      </mat-cell>
-                    </ng-container>
+                      <!-- Net Balance -->
+                      <ng-container matColumnDef="netBal">
+                        <mat-header-cell *matHeaderCellDef> Net Balance </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                          {{element.netBal}}
+                          <!-- {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }} -->
+                        </mat-cell>
+                      </ng-container>
 
-                     <!-- Position Column -->
-                     <ng-container matColumnDef="date_granted">
-                      <mat-header-cell *matHeaderCellDef> Transaction Date </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.date_granted | date: 'MM/dd/yyyy'}} </mat-cell>
-                    </ng-container>
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="date_granted">
+                        <mat-header-cell *matHeaderCellDef> Transaction Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.date_granted | date: 'MM/dd/yyyy'}} </mat-cell>
+                      </ng-container>
 
-                     <!-- Position Column -->
-                     <ng-container matColumnDef="terms">
-                      <mat-header-cell *matHeaderCellDef> Term(mos) </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.terms}} </mat-cell>
-                    </ng-container>
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="terms">
+                        <mat-header-cell *matHeaderCellDef> Term(mos) </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.terms}} </mat-cell>
+                      </ng-container>
 
-                     <!-- Position Column -->
-                     <ng-container matColumnDef="purpose">
-                      <mat-header-cell *matHeaderCellDef> Purpose </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.purpose}} </mat-cell>
-                    </ng-container>
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="purpose">
+                        <mat-header-cell *matHeaderCellDef> Purpose </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.purpose}} </mat-cell>
+                      </ng-container>
 
-                     <!-- Position Column -->
-                     <ng-container matColumnDef="int_rate">
-                      <mat-header-cell *matHeaderCellDef> Interest Rate </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.int_rate}}% </mat-cell>
-                    </ng-container>
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="int_rate">
+                        <mat-header-cell *matHeaderCellDef> Interest Rate </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.int_rate}}% </mat-cell>
+                      </ng-container>
 
-                
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'selected-row': row === selectedPN}"></mat-row>
-                    </mat-table>
-
+                  
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'selected-row': row === selectedPN}"></mat-row>
+                      </mat-table>
+                    <!-- </div> -->
 
                     <c-container fluid class="px-0 my-2" >
                         <c-row>

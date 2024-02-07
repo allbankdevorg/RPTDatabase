@@ -18,6 +18,11 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 // Service
 import {SblLoanSimulateService} from '../../../services/sblLoanSimulate/sbl-loan-simulate.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
+// Save CSV
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
+
 interface account {
   name: string;
   list: any[];
@@ -175,6 +180,8 @@ totalNetOfHoldOut: number = 0;
     private dataService: SblLoanSimulateService,      // => For SBL Simulation
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
+    private csvExportService: CsvExportService,
+    private pdfExportService: PdfExportService
     ) {
       
 
@@ -340,9 +347,28 @@ calculateLoanListSummary(loanList: Loan[]): any {
     this.dataService.setAvailBal(Avail);
     this.dataService.setTotalLoan(totalLoan)
   }
+
+  generatePDF() {}
   
 
+  // generatePDF(): void {
+  //   const elementId = 'htmlData'; // Replace 'htmlData' with the ID of the element you want to convert to PDF
+  //   const fileName = 'your-file-name.pdf'; // Replace 'your-file-name' with the desired file name
 
+  //   this.pdfExportService.generatePDF(elementId, fileName);
+  // }
+
+  // public generatePDF(): void {
+  //   const htmlDataElement = document.getElementById('htmlData');
+  
+  //   if (htmlDataElement) {
+  //     const htmlContent = htmlDataElement.innerHTML;
+  //     this.pdfExportService.generatePDF(htmlContent, 'output.pdf');
+  //   } else {
+  //     console.error("Element with ID 'htmlData' not found.");
+  //   }
+  // }
+  
 
 
 
