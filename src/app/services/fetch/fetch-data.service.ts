@@ -335,7 +335,9 @@ getUserList(callback: (data: any) => void): void {
 
 
   
-  getPNData(callback: (data: any) => void): void {
+  getPNData(date: any, callback: (data: any) => void): void {
+    console.log(date);
+    
     const settings = {
       url: 'http://10.232.236.15:8092/api/dataTables',
       method: 'POST',
@@ -345,34 +347,37 @@ getUserList(callback: (data: any) => void): void {
       }),
       data: {
         cmd: 113,
-        // userid: userid,
+        date: date, // Pass the date string directly
       },
     };
     
-    this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
-      next: (response: any) => {
-    
-        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
-          const PNData = response.result[0].Data;
+    // Rest of your function code here
+  
+      
+      this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+        next: (response: any) => {
+      
+          if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+            const PNData = response.result[0].Data;
+            
+            if (callback) {
+              callback(PNData);
+            }
+          } else {
           
-          if (callback) {
-            callback(PNData);
+            if (callback) {
+              callback(null);
+            }
           }
-        } else {
-        
+        },
+        error: (error) => {
+      
           if (callback) {
             callback(null);
           }
-        }
-      },
-      error: (error) => {
-    
-        if (callback) {
-          callback(null);
-        }
-      },
-    });
-    }
+        },
+      });
+      }
 
 
   
@@ -385,7 +390,7 @@ getUserList(callback: (data: any) => void): void {
           'Content-Type': 'application/json',
         }),
         data: {
-          cmd: 114,
+          cmd: 114
           // userid: userid,
         },
       };

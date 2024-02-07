@@ -192,7 +192,12 @@ export class SBLSimulationModalComponent implements OnInit{
 
 
   updateTableData(): void {
-    this.get.getPNData((PNData) => {
+    let dateString: string;
+    const currentDate = new Date();
+    let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+   
+
+    this.get.getPNData(date, (PNData) => {
       if (PNData) {
         // Use reduce to calculate the sum of "principal" values
         const sumPrincipal = PNData.reduce((acc, obj) => {

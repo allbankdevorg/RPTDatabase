@@ -160,6 +160,7 @@ export class DirectorsrelatedComponent {
   
         const tableData = filteredDirectors.map((director) => {
           const row: Record<string, any> = {
+            'id': director.id,
             'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
             'Company': this.Company,
             'Position': director.position,
@@ -189,7 +190,10 @@ export class DirectorsrelatedComponent {
   
           return row;
         });
-  
+        
+        // Sort tableData array by 'id' property from lowest to highest
+        tableData.sort((a, b) => a['id'] - b['id']);
+
         this.dataSource = new MatTableDataSource(tableData);
         // this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;

@@ -148,6 +148,7 @@ export class BankofficerComponent implements AfterViewInit{
             const companyName = matchingCompany ? matchingCompany.com_company_name : '';
   
             const row: Record<string, any> = {
+              'id': officer.id,
               'FullName': `(${officer.off_cisnumber}) ${officer.fname} ${officer.mname}  ${officer.lname}`,
               'Company': companyName,
               'Position': officer.position,
@@ -181,8 +182,8 @@ export class BankofficerComponent implements AfterViewInit{
             tableData.push(row);
           }
   
-          // Sort tableData array by 'offc_CisNumber' property from lowest to highest
-          tableData.sort((a, b) => a['offc_CisNumber'] - b['offc_CisNumber']);
+          // Sort tableData array by 'id' property from lowest to highest
+          tableData.sort((a, b) => a['id'] - b['id']);
   
           // Assign tableData to dataSource.data
           this.dataSource.data = tableData;

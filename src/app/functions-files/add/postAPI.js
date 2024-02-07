@@ -822,7 +822,9 @@ function addPNData(resultData, holdOUT, session, userID) {
                 "date_granted": item.date_granted,
                 "created_by": item.created_by,
                 "date_created": item.date_created,
-                "loan_security": item.loan_security,
+                "loan_security": item.loanSecurity,
+                "granted_rate": grantedRate,
+                "MISgroup": MISGroup1
               }
             }),
         };

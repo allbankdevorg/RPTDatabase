@@ -152,7 +152,11 @@ export class RPOfficerRIComponent implements AfterViewInit {
           
             OfftableData.push(row);
           }
-          
+ 
+        // Sort tableData array by 'id' property from lowest to highest
+        OfftableData.sort((a, b) => a['id'] - b['id']);
+  
+        // Assign tableData to dataSource.data
         this.OffdataSource.data = OfftableData;
 
           // Trigger change detection

@@ -215,6 +215,18 @@ export class RPTSimulationModalComponent implements OnInit{
         .then((response) => {
           if (Array.isArray(response.data)) {
             if (response.data.length > 0) {
+              let sumPrincipal = { principal: 0, principal_bal: 0 };
+  
+              response.data.forEach((item) => {
+                // Calculate the sum for each item
+                sumPrincipal.principal += parseFloat(item.principal) || 0;
+                sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+              });
+
+              // Assign the sum to the class variables
+              this.currentSttl = sumPrincipal.principal;
+              this.currentRptTTL = sumPrincipal.principal_bal;
+
               // If response.data is an array and not empty, use the first element
               const firstElement = response.data[0];
               let accName = firstElement.name;
@@ -224,7 +236,7 @@ export class RPTSimulationModalComponent implements OnInit{
               });
             } else {
               // Handle the case when response.data is an empty array
-              const accName = response.cisName || '';
+              const accName = response.data.cisName || '';
               this.updateFormControls(accName);
               this.toggleInputReadOnly();
             }
@@ -256,7 +268,12 @@ export class RPTSimulationModalComponent implements OnInit{
   }
 
   updateTableData(): void {
-    this.get.getPNData((PNData) => {
+    let dateString: string;
+    const currentDate = new Date();
+    let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+   
+
+    this.get.getPNData(date, (PNData) => {
       if (PNData) {
         // Use reduce to calculate the sum of "principal" values
         const sumPrincipal = PNData.reduce((acc, obj) => {

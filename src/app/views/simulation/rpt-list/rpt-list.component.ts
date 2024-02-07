@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import { MatSort } from '@angular/material/sort';
 
 // Import for Simulation Modal
@@ -69,9 +70,22 @@ export class RptListComponent {
 
   simulationPerformed: boolean = false;
   temporaryLoans?: Loan[];
+
+  events: string[] = [];
+
+  //Variable to hold the selected date
+  selectedDate: Date | null = null;
+
+  // Variable to determine whether to display real-time or historical data
+  displayHistoricalData: boolean = false;
+
+  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    this.events.push(`${type}: ${event.value}`);
+    console.log(event.value);
+  }
   
   displayedColumns: string[] = ['loan_no', 'cis_no', 'name', 'principal', 'principal_bal', 'loan_security', 
-  'deposit_holdout', 'netBal', 'date_granted', 'terms', 'purpose', 'intRate'];
+  'deposit_holdout', 'netBal', 'date_granted', 'terms', 'purpose', 'int_rate'];
   dataSource = new MatTableDataSource<any>([]);
   ToDisplay: string[] = [];
 
@@ -139,7 +153,20 @@ export class RptListComponent {
 
 
   updateTableData(): void {
-    this.get.getPNData((PNData) => {
+    let dateString: string;
+    const currentDate = new Date();
+    let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    console.log(date); // Output: "02/07/2024" // Initialize to today's date
+    
+    if (this.selectedDate !== null) {
+      date = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    } else {
+      date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    }
+    
+    // Convert the dateString back to a Date object
+    // 
+    this.get.getPNData(date, (PNData) => {
       if (PNData) {
         const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
         
@@ -303,30 +330,49 @@ export class RptListComponent {
     }
 
     downloadCSV(): void {
-      const data = this.dataSource.data.map(item => ({
-        'CIS NUMBER': item.cis_no,
-        'PN/LOAN NUMBER': item.loan_no,
-        'BORROWER/GROUP': item.name,
-        'ORIGINAL LOAN': item.principal,
-        'OUTSTANDING BALANCE': item.principal_bal,
-        'DEPOSIT HOLDOUT': item.deposit_holdout,
-        'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
-        'LOAN SECURITY': item.loan_security,
-        'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-      }));
-    
       const currentDate = new Date();
-      const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+      let selectedDateFormatted: string = '';
+      
+      if (this.selectedDate) {
+        selectedDateFormatted = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+      }
+      
+      console.log(selectedDateFormatted);
+      const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
       const filename = `RPT_List_${formattedDate}.csv`;
+      console.log(filename);
     
-      // Specify the columns to include in the CSV
-      const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'TRANSACTION DATE'];
+      // const data = this.dataSource.data.map(item => ({
+      //   'CIS NUMBER': item.cis_no,
+      //   'PN/LOAN NUMBER': item.loan_no,
+      //   'BORROWER/GROUP': item.name,
+      //   'ORIGINAL LOAN': item.principal,
+      //   'OUTSTANDING BALANCE': item.principal_bal,
+      //   'DEPOSIT HOLDOUT': item.deposit_holdout,
+      //   'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
+      //   'LOAN SECURITY': item.loan_security,
+      //   'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+      // }));
     
-      this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+      // // Specify the columns to include in the CSV
+      // const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'TRANSACTION DATE'];
+    
+      // this.csvExportService.exportToCSV(data, filename, columnsToInclude);
     }
     
     
     
+    // Event handler for date selection
+    onDateSelected(event: MatDatepickerInputEvent<Date>) {
+      if (event.value) {
+        this.selectedDate = event.value;
+        // Determine whether to display historical data based on the selected date
+        this.displayHistoricalData = this.selectedDate <= new Date();
+        // Update the data source for the DataTable
+        this.updateTableData();
+      }
+    }
+
     
     
     

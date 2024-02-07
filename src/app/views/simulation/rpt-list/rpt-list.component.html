@@ -10,14 +10,27 @@
 
                     <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
                         <!-- <c-row> -->
-                          <div>
-                            <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'">
-                              <!-- <mat-icon>download</mat-icon> -->
-                              CSV
-                            </button>
-                            <button (click)="openSimulation()" mat-fab extended color="primary" *appHasPermission="'add'">
-                              Simulate
-                            </button>
+                          <div style="display: flex; align-items: center;">
+                            <div>
+                              <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                                <!-- <mat-icon>download</mat-icon> -->
+                                CSV
+                              </button>
+                              <button (click)="openSimulation()" mat-fab extended color="primary" *appHasPermission="'add'">
+                                Simulate
+                              </button>
+                            </div>
+                            <div style="margin-left: 20px;">
+                              
+                              <mat-form-field>
+                                <mat-label>MM/DD/YYYY</mat-label>
+                                <input matInput [matDatepicker]="picker"
+                                       (dateInput)="addEvent('input', $event); onDateSelected($event)" (dateChange)="addEvent('change', $event)">
+                                <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
+                            </div>
                           </div>
                             
                             <button *ngIf="simulationPerformed" (click)="resetSimulation()" mat-fab extended color="primary">
@@ -209,9 +222,9 @@
                     </ng-container>
 
                      <!-- Position Column -->
-                     <ng-container matColumnDef="intRate">
-                      <mat-header-cell *matHeaderCellDef> Int. Rate </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.intRate}} </mat-cell>
+                     <ng-container matColumnDef="int_rate">
+                      <mat-header-cell *matHeaderCellDef> Interest Rate </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.int_rate}}% </mat-cell>
                     </ng-container>
 
                 

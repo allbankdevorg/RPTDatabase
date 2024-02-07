@@ -240,6 +240,7 @@ async  ngOnInit() {
           for (const director of filteredDirectors) {
               // const dir_relatedId = director.dir_cisnumber;
               const row: Record<string, any> = {
+                  'id': director.id,
                   'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
                   'Company': this.Company,
                   'Position': director.position,
@@ -274,6 +275,10 @@ async  ngOnInit() {
               tableData.push(row);
           }
           
+        // Sort tableData array by 'id' property from lowest to highest
+        tableData.sort((a, b) => a['id'] - b['id']);
+  
+        // Assign tableData to dataSource.data
         this.dataSource.data = tableData;
 
           this.changeDetectorRef.detectChanges();
