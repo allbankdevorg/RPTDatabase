@@ -342,22 +342,22 @@ export class RptListComponent {
       const filename = `RPT_List_${formattedDate}.csv`;
       console.log(filename);
     
-      // const data = this.dataSource.data.map(item => ({
-      //   'CIS NUMBER': item.cis_no,
-      //   'PN/LOAN NUMBER': item.loan_no,
-      //   'BORROWER/GROUP': item.name,
-      //   'ORIGINAL LOAN': item.principal,
-      //   'OUTSTANDING BALANCE': item.principal_bal,
-      //   'DEPOSIT HOLDOUT': item.deposit_holdout,
-      //   'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
-      //   'LOAN SECURITY': item.loan_security,
-      //   'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-      // }));
+      const data = this.dataSource.data.map(item => ({
+        'CIS NUMBER': item.cis_no,
+        'PN/LOAN NUMBER': item.loan_no,
+        'BORROWER/GROUP': item.name,
+        'ORIGINAL LOAN': item.principal,
+        'OUTSTANDING BALANCE': item.principal_bal,
+        'DEPOSIT HOLDOUT': item.deposit_holdout,
+        'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
+        'LOAN SECURITY': item.loan_security,
+        'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+      }));
     
-      // // Specify the columns to include in the CSV
-      // const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'TRANSACTION DATE'];
+      // Specify the columns to include in the CSV
+      const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'TRANSACTION DATE'];
     
-      // this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+      this.csvExportService.exportToCSV(data, filename, columnsToInclude);
     }
     
     
