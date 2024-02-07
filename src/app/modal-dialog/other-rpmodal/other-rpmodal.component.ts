@@ -150,8 +150,8 @@ export class OtherRPModalComponent implements OnInit {
   CISlookup() {
     const dataLookup = this.affForm.value;
   
-    if (dataLookup.com_cis_number) {
-      let cis = dataLookup.com_cis_number;
+    if (dataLookup.aff_com_cis_number) {
+      let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
         .then((response) => {
           if (Array.isArray(response.data)) {
@@ -191,8 +191,8 @@ export class OtherRPModalComponent implements OnInit {
   // Function to update form controls
   updateFormControls(accName: string) {
     this.affForm.patchValue({
-      com_account_name: accName,
-      com_company_name: accName // Assuming you have company_name in the response
+      aff_com_account_name: accName,
+      aff_com_company_name: accName // Assuming you have company_name in the response
       // Add other form controls if needed
     });
   }

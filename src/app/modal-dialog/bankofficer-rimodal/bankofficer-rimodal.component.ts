@@ -108,8 +108,8 @@ export class BankofficerRIModalComponent implements OnInit{
     CISlookup() {
       const dataLookup = this.boRIForm.value;
     
-      if (dataLookup.com_cis_number) {
-        let cis = dataLookup.com_cis_number;
+      if (dataLookup.boRICisNumber) {
+        let cis = dataLookup.boRICisNumber;
         cisLookUP(cis)
           .then((response) => {
             if (Array.isArray(response.data)) {
@@ -149,7 +149,7 @@ export class BankofficerRIModalComponent implements OnInit{
     // Function to update form controls
     updateFormControls(accName: string) {
       this.boRIForm.patchValue({
-        com_account_name: accName,
+        boRIFirstName: accName,
         com_company_name: accName // Assuming you have company_name in the response
         // Add other form controls if needed
       });

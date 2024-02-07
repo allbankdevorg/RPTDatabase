@@ -113,8 +113,8 @@ export class BankofficerModalComponent implements OnInit{
   CISlookup() {
     const dataLookup = this.boForm.value;
   
-    if (dataLookup.com_cis_number) {
-      let cis = dataLookup.com_cis_number;
+    if (dataLookup.boCisNumber) {
+      let cis = dataLookup.boCisNumber;
       cisLookUP(cis)
         .then((response) => {
           if (Array.isArray(response.data)) {
@@ -154,7 +154,7 @@ export class BankofficerModalComponent implements OnInit{
   // Function to update form controls
   updateFormControls(accName: string) {
     this.boForm.patchValue({
-      com_account_name: accName,
+      boFirstName: accName,
       com_company_name: accName // Assuming you have company_name in the response
       // Add other form controls if needed
     });

@@ -124,4 +124,59 @@ private logAuditTrail(auditTrailEntry: AuditTrail) {
   
 }
 
+
+CISlookup() {
+  const dataLookup = this.stockHoldersForm.value;
+  if (dataLookup.cis_number) {
+    let cis = dataLookup.cis_number;
+    cisLookUP(cis)
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          if (response.data.length > 0) {
+            // If response.data is an array and not empty, use the first element
+            const firstElement = response.data[0];
+            // this.cisLookUpResult = response.data;
+            // console.log(this.cisLookUpResult);
+            let accName = firstElement.name;
+
+            this.updateFormControls(accName);
+          } else {
+            // Handle the case when response.data is an empty array
+            const accName = response.cisName || '';
+            this.updateFormControls(accName);
+            this.toggleInputReadOnly();
+          }
+        } else {
+          // Handle the case when response.data is not an array
+          const accName = response.cisName || '';
+          this.updateFormControls(accName);
+          this.toggleInputReadOnly();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while fetching data.',
+        });
+        this.toggleInputReadOnly();
+      });
+  }
+}
+
+// Function to update form controls
+updateFormControls(accName: string) {
+  this.stockHoldersForm.patchValue({
+    name: accName,
+    com_company_name: accName // Assuming you have company_name in the response
+    // Add other form controls if needed
+  });
+}
+
+
+toggleInputReadOnly() {
+  this.isReadOnly = !this.isReadOnly;
+}
+
 }

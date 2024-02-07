@@ -120,8 +120,8 @@ export class DirectorsModalComponent implements OnInit{
   CISlookup() {
     const dataLookup = this.drctrForm.value;
   
-    if (dataLookup.com_cis_number) {
-      let cis = dataLookup.com_cis_number;
+    if (dataLookup.cisNumber) {
+      let cis = dataLookup.cisNumber;
       cisLookUP(cis)
         .then((response) => {
           if (Array.isArray(response.data)) {

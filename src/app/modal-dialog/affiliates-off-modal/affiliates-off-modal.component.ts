@@ -134,8 +134,8 @@ export class AffiliatesOffModalComponent implements OnInit {
     CISlookup() {
       const dataLookup = this.affilOfficerForm.value;
     
-      if (dataLookup.com_cis_number) {
-        let cis = dataLookup.com_cis_number;
+      if (dataLookup.off_CisNumber) {
+        let cis = dataLookup.off_CisNumber;
         cisLookUP(cis)
           .then((response) => {
             if (Array.isArray(response.data)) {
@@ -175,7 +175,7 @@ export class AffiliatesOffModalComponent implements OnInit {
     // Function to update form controls
     updateFormControls(accName: string) {
       this.affilOfficerForm.patchValue({
-        com_account_name: accName,
+        off_fname: accName,
         com_company_name: accName // Assuming you have company_name in the response
         // Add other form controls if needed
       });

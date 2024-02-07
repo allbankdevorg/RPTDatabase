@@ -114,8 +114,8 @@ close() {
 CISlookup() {
   const dataLookup = this.affilDrctrForm.value;
 
-  if (dataLookup.com_cis_number) {
-    let cis = dataLookup.com_cis_number;
+  if (dataLookup.affildcisNumber) {
+    let cis = dataLookup.affildcisNumber;
     cisLookUP(cis)
       .then((response) => {
         if (Array.isArray(response.data)) {
@@ -155,7 +155,7 @@ CISlookup() {
 // Function to update form controls
 updateFormControls(accName: string) {
   this.affilDrctrForm.patchValue({
-    com_account_name: accName,
+    affildFirstName: accName,
     com_company_name: accName // Assuming you have company_name in the response
     // Add other form controls if needed
   });

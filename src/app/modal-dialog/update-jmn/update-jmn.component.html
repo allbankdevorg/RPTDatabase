@@ -27,7 +27,7 @@
                 <mat-form-field appearance="fill" [style.width.%]=100>
                   <!-- <mat-label>Account Name</mat-label> -->
                   <input matInput #accDinput id="accountName"  name="accountName"
-                  type="text" placeholder="Account Name" [readonly]="isReadOnly"
+                  type="text" placeholder="Account Name"
                   formControlName="aff_com_comp_name" appCaps>
                   <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 </mat-form-field>
@@ -41,8 +41,7 @@
                 <mat-form-field appearance="fill" [style.width.%]=100>
                   <!-- <mat-label>Company Name</mat-label> -->
                   <input matInput #accDinput id="companyName" name="companyName"
-                  type="text" placeholder="Company Name" [readonly]="isReadOnly"
-                  formControlName="aff_com_comp_name" appCaps>
+                  type="text" placeholder="Company Name" formControlName="aff_com_comp_name" appCaps>
                   <mat-error *ngIf="affForm.get('aff_com_company_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 </mat-form-field>
               </c-col>

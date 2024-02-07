@@ -111,15 +111,17 @@ export class AffiliatesOffRIModalComponent implements OnInit{
 
     CISlookup() {
       const dataLookup = this.affilOfficerRIForm.value;
+      
     
-      if (dataLookup.com_cis_number) {
-        let cis = dataLookup.com_cis_number;
+      if (dataLookup.riCisNumber) {
+        let cis = dataLookup.riCisNumber;
         cisLookUP(cis)
           .then((response) => {
             if (Array.isArray(response.data)) {
               if (response.data.length > 0) {
                 // If response.data is an array and not empty, use the first element
                 const firstElement = response.data[0];
+                console.log(firstElement);
                 this.cisLookUpResult = response.data;
                 console.log(this.cisLookUpResult);
                 let accName = firstElement.name;
@@ -153,7 +155,7 @@ export class AffiliatesOffRIModalComponent implements OnInit{
     // Function to update form controls
     updateFormControls(accName: string) {
       this.affilOfficerRIForm.patchValue({
-        com_account_name: accName,
+        riFirstName: accName,
         com_company_name: accName // Assuming you have company_name in the response
         // Add other form controls if needed
       });

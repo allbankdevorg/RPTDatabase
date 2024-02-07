@@ -130,8 +130,8 @@ export class DirectorsRIModalComponent implements OnInit {
   CISlookup() {
     const dataLookup = this.riForm.value;
   
-    if (dataLookup.com_cis_number) {
-      let cis = dataLookup.com_cis_number;
+    if (dataLookup.riCisNumber) {
+      let cis = dataLookup.riCisNumber;
       cisLookUP(cis)
         .then((response) => {
           if (Array.isArray(response.data)) {
@@ -171,7 +171,7 @@ export class DirectorsRIModalComponent implements OnInit {
   // Function to update form controls
   updateFormControls(accName: string) {
     this.riForm.patchValue({
-      com_account_name: accName,
+      riFirstName: accName,
       com_company_name: accName // Assuming you have company_name in the response
       // Add other form controls if needed
     });
