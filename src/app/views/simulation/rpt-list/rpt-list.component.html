@@ -8,20 +8,20 @@
           <c-card-body>
                 <c-container fluid class="my-3">
 
-                    <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
+                    <c-container fluid class="px-0 d-flex justify-content-between align-items-center">
                         <!-- <c-row> -->
                           <div>
 
                             <h6>Select Date</h6>
                             
-                            <mat-form-field>
+                            <mat-form-field style="width: 380px;">
                               <mat-label>MM/DD/YYYY</mat-label>
                               <input matInput [matDatepicker]="picker" 
                                      (dateInput)="addEvent('input', $event); onDateSelected($event)" (dateChange)="addEvent('change', $event)">
-                              <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
                               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
+                            
                           </div>
 
                           <div style="display: flex; align-items: center;">
