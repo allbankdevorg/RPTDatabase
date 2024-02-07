@@ -336,7 +336,6 @@ getUserList(callback: (data: any) => void): void {
 
   
   getPNData(date: any, callback: (data: any) => void): void {
-    console.log(date);
     
     const settings = {
       url: 'http://10.232.236.15:8092/api/dataTables',

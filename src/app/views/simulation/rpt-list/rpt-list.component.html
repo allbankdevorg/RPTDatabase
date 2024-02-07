@@ -13,10 +13,11 @@
                           <div style="display: flex; align-items: center;">
                             <div>
                               <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
-                                <!-- <mat-icon>download</mat-icon> -->
+                                <mat-icon>file_download</mat-icon>
                                 CSV
                               </button>
                               <button (click)="openSimulation()" mat-fab extended color="primary" *appHasPermission="'add'">
+                                <mat-icon>play_arrow</mat-icon>
                                 Simulate
                               </button>
                             </div>
@@ -34,7 +35,7 @@
                           </div>
                             
                             <button *ngIf="simulationPerformed" (click)="resetSimulation()" mat-fab extended color="primary">
-                              <!-- <mat-icon>add</mat-icon> -->
+                              <mat-icon>refresh</mat-icon>
                               Reset Simulation
                             </button>
                         <!-- </c-row> -->

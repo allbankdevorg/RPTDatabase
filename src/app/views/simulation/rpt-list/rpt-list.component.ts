@@ -81,7 +81,6 @@ export class RptListComponent {
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.events.push(`${type}: ${event.value}`);
-    console.log(event.value);
   }
   
   displayedColumns: string[] = ['loan_no', 'cis_no', 'name', 'principal', 'principal_bal', 'loan_security', 
@@ -156,16 +155,13 @@ export class RptListComponent {
     let dateString: string;
     const currentDate = new Date();
     let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-    console.log(date); // Output: "02/07/2024" // Initialize to today's date
     
     if (this.selectedDate !== null) {
       date = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     } else {
       date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     }
-    
-    // Convert the dateString back to a Date object
-    // 
+     
     this.get.getPNData(date, (PNData) => {
       if (PNData) {
         const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
@@ -337,11 +333,9 @@ export class RptListComponent {
         selectedDateFormatted = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
       }
       
-      console.log(selectedDateFormatted);
       const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
       const filename = `RPT_List_${formattedDate}.csv`;
-      console.log(filename);
-    
+     
       const data = this.dataSource.data.map(item => ({
         'CIS NUMBER': item.cis_no,
         'PN/LOAN NUMBER': item.loan_no,
@@ -351,11 +345,12 @@ export class RptListComponent {
         'DEPOSIT HOLDOUT': item.deposit_holdout,
         'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
         'LOAN SECURITY': item.loan_security,
+        'INTEREST RATE': item.int_rate,
         'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
       }));
     
       // Specify the columns to include in the CSV
-      const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'TRANSACTION DATE'];
+      const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'INTEREST RATE', 'TRANSACTION DATE'];
     
       this.csvExportService.exportToCSV(data, filename, columnsToInclude);
     }
