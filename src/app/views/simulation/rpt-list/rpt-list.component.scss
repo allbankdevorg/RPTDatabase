@@ -36,3 +36,13 @@
   .center-header {
     text-align: center;
   }
+
+
+  
+  ::ng-deep .datepickerTwo {
+    background:lightblue;
+  }
+  
+  ::ng-deep .datepickerTwo .mat-calendar-body-today:not(.mat-calendar-body-selected){
+    border-color:darkblue;
+  }
