@@ -94,7 +94,7 @@ export class DirectorsrelatedComponent {
   
   // Populating the dataSource
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = [ 'FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  displayedColumns: string[] = [ 'cis_num', 'FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
 
    directorData: Director[] = [];
 
@@ -161,6 +161,7 @@ export class DirectorsrelatedComponent {
         const tableData = filteredDirectors.map((director) => {
           const row: Record<string, any> = {
             'id': director.id,
+            'cis_num': director.dir_cisnumber,
             'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
             'Company': this.Company,
             'Position': director.position,

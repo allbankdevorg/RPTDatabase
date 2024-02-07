@@ -29,8 +29,14 @@
                 
                 <!-- Header row second group -->
                 <ng-container matColumnDef="header-row-second-group">
-                    <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
+                    <th class="cTableCols" *matHeaderCellDef [attr.colspan]="7"> Related Interest </th>
                 </ng-container>
+
+                 <!-- CIS Number Column -->
+              <ng-container matColumnDef="cis_num">
+                <th mat-header-cell *matHeaderCellDef> CIS Number </th>
+                <td mat-cell *matCellDef="let element"> {{element.cis_num}} </td>
+            </ng-container>
         
                 <!-- FullName Column -->
                 <ng-container matColumnDef="FullName">

@@ -100,7 +100,7 @@ export class BankofficerComponent implements AfterViewInit{
   public officers: Officers[] = [];
 
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
+  displayedColumns: string[] = ['cis_num', 'FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
   
   directorData: Officers[] = [];
   
@@ -149,13 +149,14 @@ export class BankofficerComponent implements AfterViewInit{
   
             const row: Record<string, any> = {
               'id': officer.id,
-              'FullName': `(${officer.off_cisnumber}) ${officer.fname} ${officer.mname}  ${officer.lname}`,
+              'cis_num': officer.off_cisnumber,
+              'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
               'Company': companyName,
               'Position': officer.position,
               'offc_CisNumber': officer.off_cisnumber,
               'comp_CIS': officer.com_related,
             };
-  
+            
             // Loop through each element in the 'relationColumn' array
             for (let index = 0; index < relationColumn.length; index++) {
               const relationName = relationColumn[index]; // Get the current relation name from the 'relationColumn' array

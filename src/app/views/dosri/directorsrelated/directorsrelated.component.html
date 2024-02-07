@@ -10,7 +10,13 @@
               
               <!-- Data Table -->
               <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table table table-bordered" mat-table [dataSource]="dataSource" >
-          
+                
+                <!-- CIS Number Column -->
+                <ng-container matColumnDef="cis_num">
+                  <th mat-header-cell *matHeaderCellDef> CIS Number </th>
+                  <td mat-cell *matCellDef="let element"> {{element.cis_num}} </td>
+              </ng-container>
+
                 <!-- FullName Column -->
                 <ng-container matColumnDef="FullName">
                     <th mat-header-cell *matHeaderCellDef> Full Name </th>
@@ -150,7 +156,7 @@
                 
                 <!-- Header row second group -->
                 <ng-container matColumnDef="header-row-second-group">
-                    <th class="cTableCols" *matHeaderCellDef [attr.colspan]="6"> Related Interest </th>
+                    <th class="cTableCols" *matHeaderCellDef [attr.colspan]="7"> Related Interest </th>
                 </ng-container>
         
                 <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
