@@ -22,7 +22,6 @@ export class AuditTrailService {
     // Simulate the asynchronous behavior of an HTTP request
     return of(auditTrailEntry).pipe(
       catchError((error: any): Observable<AuditTrail> => {
-        console.error('Error logging audit trail:', error);
         return of(null as any); // Return an Observable with null as an AuditTrail
       })
     );

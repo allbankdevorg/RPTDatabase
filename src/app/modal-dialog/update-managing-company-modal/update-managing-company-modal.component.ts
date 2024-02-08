@@ -131,7 +131,6 @@ export class UpdateManagingCompanyModalComponent {
               this._dialogRef.close(true);
             },
             error: (err: any) => {
-              // console.error(err);
             },
           });
       } else {
@@ -140,7 +139,6 @@ export class UpdateManagingCompanyModalComponent {
             this._coreService.openSnackBar('Employee added successfully');
           },
           error: (err: any) => {
-            // console.error(err);
           },
         });
       }
@@ -165,7 +163,6 @@ export class UpdateManagingCompanyModalComponent {
               // If response.data is an array and not empty, use the first element
               const firstElement = response.data[0];
               this.cisLookUpResult = response.data;
-              console.log(this.cisLookUpResult);
               let accName = firstElement.name;
   
               this.updateFormControls(accName);
@@ -183,7 +180,6 @@ export class UpdateManagingCompanyModalComponent {
           }
         })
         .catch((error) => {
-          console.log(error);
           Swal.fire({
             icon: 'error',
             title: 'No CIS Found!',

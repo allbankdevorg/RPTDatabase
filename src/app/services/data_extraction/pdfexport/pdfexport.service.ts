@@ -60,9 +60,7 @@ private formatPDFBody(data: any[], columnsToInclude: string[]): any[] {
 
 
 private formatCurrency(value: any): string {
-  console.log("Original value:", value);
   const numericValue = Number(value);
-  console.log("Numeric value:", numericValue);
   // Convert value to number
   
   // Check if numericValue is a valid number

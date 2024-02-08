@@ -175,7 +175,7 @@ export class UsersComponent {
       if (usersList) {
         this.userDataSource.data = usersList;
       } else {
-        console.error('No Users received');
+        
       }
     });
   }

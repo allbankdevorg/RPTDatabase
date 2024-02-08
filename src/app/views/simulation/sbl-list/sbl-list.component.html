@@ -88,7 +88,7 @@
 
                           <ng-container matColumnDef="amount_granted">
                             <mat-header-cell *matHeaderCellDef> Amount Granted </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.principal | number: '1.2-2'}} </mat-cell>
+                            <mat-cell *matCellDef="let element"> {{element.principal | currency:'PHP'}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="date_granted">
@@ -98,7 +98,7 @@
 
                           <ng-container matColumnDef="principal_bal">
                             <mat-header-cell *matHeaderCellDef> Outstanding Balance </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
+                            <mat-cell *matCellDef="let element"> {{element.principal_bal | currency:'PHP'}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="deposit_holdout" >
@@ -109,7 +109,7 @@
                           <ng-container matColumnDef="net_holdout">
                             <mat-header-cell *matHeaderCellDef> Net of Hold-Out </mat-header-cell>
                             <mat-cell *matCellDef="let element"> 
-                              {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }}
+                              {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | currency:'PHP' }}
                             </mat-cell>
                           </ng-container>
 
@@ -136,7 +136,7 @@
                                             <th>Total {{account.company_name}} GRP</th>
                                             
                                             <td>
-                                              {{ calculateTotalNetHoldOut(account.loan_list) | number: '1.2-2' }}
+                                              {{ calculateTotalNetHoldOut(account.loan_list) | currency:'PHP' }}
                                             </td>
                                             
                                             <!-- Display the hidden element to trigger the calculation -->
@@ -147,13 +147,13 @@
                                            
                                            <tr>
                                             <th>Single Borrower's Limit (25% of NW)</th>
-                                            <td>  {{sbl | number: '1.2-2'}} </td>
+                                            <td>  {{sbl | currency:'PHP'}} </td>
                                            </tr>
                                            
                                            <tr cTableColor="info" [ngClass]="{'green-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
                                             <td> 
-                                              {{ sbl - calculateTotalNetHoldOut(account.loan_list) | number: '1.2-2' }} 
+                                              {{ sbl - calculateTotalNetHoldOut(account.loan_list) | currency:'PHP' }} 
                                             </td>
                                           </tr>                                          
                                            <tr>
@@ -162,17 +162,17 @@
                                            </tr>
                                            <tr>
                                             <th>TOTAL {{account.company_name}} GRP</th>
-                                            <td> {{ calculateTotalNetHoldOut(account.loan_list)  | number: '1.2-2'}} </td>
+                                            <td> {{ calculateTotalNetHoldOut(account.loan_list)  | currency:'PHP'}} </td>
                                            </tr>
                                            
                                            <tr>
                                             <th>Internal SBL (20% of NW)</th>
-                                            <td> {{internalSBL | number: '1.2-2'}} </td>
+                                            <td> {{internalSBL | currency:'PHP'}} </td>
                                            </tr>
                                            
                                            <tr cTableColor="info" [ngClass]="{'green-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
-                                            <td>{{internalSBL - calculateTotalNetHoldOut(account.loan_list) | number: '1.2-2'}}</td>
+                                            <td>{{internalSBL - calculateTotalNetHoldOut(account.loan_list) | currency:'PHP'}}</td>
                                            </tr>
                                            
                                            

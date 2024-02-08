@@ -126,7 +126,6 @@ export class AddChildModalComponent implements OnInit {
               this._dialogRef.close(true);
             },
             error: (err: any) => {
-              // console.error(err);
             },
           });
       } else {
@@ -135,7 +134,6 @@ export class AddChildModalComponent implements OnInit {
             this._coreService.openSnackBar('Employee added successfully');
           },
           error: (err: any) => {
-            // console.error(err);
           },
         });
       }

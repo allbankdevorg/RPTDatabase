@@ -38,7 +38,6 @@ export class NavItemsService {
   }
 
   private handleError(error: any): Observable<never> {
-    console.error('An error occurred:', error);
     return new Observable<never>();
   }
 }

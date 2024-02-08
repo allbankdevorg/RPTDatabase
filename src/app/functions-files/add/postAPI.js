@@ -798,11 +798,8 @@ function addPNData(resultData, holdOUT, session, userID) {
       const totalItems = resultData.length;
       let successfulInsertions = 0;
       // const pnHoldOut = holdOUT / totalItems;
-
-      console.log(resultData);
       
       resultData.forEach((item) => {
-        console.log(item);
         var settings = {
             "url": "http://10.232.236.15:8092/api/addData",
             "method": "POST",
@@ -846,7 +843,6 @@ function addPNData(resultData, holdOUT, session, userID) {
       });
     } else {
       // If resultData is not an array, log an error or handle accordingly
-      console.error("Invalid resultData format");
       reject("Invalid resultData format");
     }
   });

@@ -139,7 +139,6 @@ export class DirectorsRIModalComponent implements OnInit {
               // If response.data is an array and not empty, use the first element
               const firstElement = response.data[0];
               this.cisLookUpResult = response.data;
-              console.log(this.cisLookUpResult);
               let accName = firstElement.name;
   
               this.updateFormControls(accName);
@@ -157,7 +156,6 @@ export class DirectorsRIModalComponent implements OnInit {
           }
         })
         .catch((error) => {
-          console.log(error);
           Swal.fire({
             icon: 'error',
             title: 'No CIS Found!',

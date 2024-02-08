@@ -16,13 +16,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         catchError((error: HttpErrorResponse) => {
           if (error.error instanceof ErrorEvent) {
             // Client-side error
-            console.error('An error occurred:', error.error.message);
           } else {
             // Server-side error
-            console.error(
-              `Backend returned code ${error.status}, ` +
-              `body was: ${error.error}`
-            );
+           
           }
   
           if (error.error.code === 'ERR_CONNECTION_REFUSED') {

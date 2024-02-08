@@ -92,7 +92,7 @@ export class BankstockholdersComponent {
       if (stckHldrs) {
         this.dataSource.data = stckHldrs;
       } else {
-        // console.error('No bankstock holder received');
+        
       }
     });
   }

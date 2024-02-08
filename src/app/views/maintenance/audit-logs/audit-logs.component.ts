@@ -56,7 +56,7 @@ export class AuditLogsComponent implements OnInit, AfterViewInit {
         this.logsDataSource.data = auditLogs;
         // this.logsDataSource.sort = this.sort;
       } else {
-        console.error('No audit logs received');
+        
       }
     });
   }

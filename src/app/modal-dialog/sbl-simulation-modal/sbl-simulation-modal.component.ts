@@ -161,7 +161,7 @@ export class SBLSimulationModalComponent implements OnInit{
             this.currentSttl = sumPrincipal.principal;
             this.currentRptTTL = sumPrincipal.principal_bal;
           } else {
-            console.error("Invalid resultData format");
+            
           }
         } else {
           // Display an error message if no CIS is found

@@ -70,7 +70,7 @@
                                   <tbody>
                                     <tr>
                                       <td>{{unimpairedCap | currency:'PHP'}}</td>
-                                      <td>Php {{rptBal | number: '1.2-2'}}</td>
+                                      <td>Php {{rptBal | currency:'PHP'}}</td>
                                       <td>{{rptRatio}}</td>
                                     </tr>
                                     <tr>
@@ -183,13 +183,13 @@
                       <!-- Original Loan Column -->
                       <ng-container matColumnDef="principal">
                           <mat-header-cell *matHeaderCellDef> Original Loan </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.principal | number: '1.2-2'}} </mat-cell>
+                          <mat-cell *matCellDef="let element"> {{element.principal | currency:'PHP'}} </mat-cell>
                       </ng-container>
 
                       <!-- Outstanding Balance Column -->
                       <ng-container matColumnDef="principal_bal">
                           <mat-header-cell *matHeaderCellDef> Outstanding Balance </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.principal_bal | number: '1.2-2'}} </mat-cell>
+                          <mat-cell *matCellDef="let element"> {{element.principal_bal | currency:'PHP'}} </mat-cell>
                       </ng-container>
 
                       <!-- Position Column -->
@@ -202,14 +202,14 @@
                       <!-- Position Column -->
                       <ng-container matColumnDef="deposit_holdout">
                         <mat-header-cell *matHeaderCellDef> Deposit Hold-out </mat-header-cell>
-                        <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | number: '1.2-2'}} </mat-cell>
+                        <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | currency:'PHP'}} </mat-cell>
                       </ng-container>
 
                       <!-- Net Balance -->
                       <ng-container matColumnDef="netBal">
                         <mat-header-cell *matHeaderCellDef> Net Balance </mat-header-cell>
                         <mat-cell *matCellDef="let element">
-                          {{element.netBal}}
+                          {{element.netBal | currency:'PHP'}}
                           <!-- {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | number:'1.2-2' }} -->
                         </mat-cell>
                       </ng-container>
