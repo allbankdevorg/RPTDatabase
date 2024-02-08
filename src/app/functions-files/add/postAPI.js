@@ -802,6 +802,7 @@ function addPNData(resultData, holdOUT, session, userID) {
       console.log(resultData);
       
       resultData.forEach((item) => {
+        console.log(item);
         var settings = {
             "url": "http://10.232.236.15:8092/api/addData",
             "method": "POST",
@@ -823,8 +824,8 @@ function addPNData(resultData, holdOUT, session, userID) {
                 "created_by": item.created_by,
                 "date_created": item.date_created,
                 "loan_security": item.loanSecurity,
-                "granted_rate": grantedRate,
-                "MISgroup": MISGroup1
+                "int_rate": item.grantedRate,
+                // "MISgroup": item.MISGroup1
               }
             }),
         };
