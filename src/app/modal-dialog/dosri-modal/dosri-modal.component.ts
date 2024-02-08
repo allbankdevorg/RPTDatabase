@@ -179,8 +179,8 @@ export class DosriModalComponent implements OnInit {
           console.log(error);
           Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'An error occurred while fetching data.',
+            title: 'No CIS Found!',
+            text: 'CIS Does Not Exist!',
           });
           this.toggleInputReadOnly();
         });
