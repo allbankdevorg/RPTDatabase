@@ -117,6 +117,28 @@ export class BankofficerComponent implements AfterViewInit{
   }
 
 
+  applyFilter(column: string[], filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+  
+    // Define a custom filter predicate
+  const customFilter = (data: any): boolean => {
+    for (const column of this.displayedColumns) {
+      const columnValue = data[column]?.toString().toLowerCase();
+      if (columnValue && columnValue.includes(filterValue)) {
+        return true; // If any of the specified columns match, return true
+      }
+    }
+    return false; // If no match is found in any column, return false
+  };
+
+  // Set the custom filter predicate for the specified columns
+  this.dataSource.filterPredicate = customFilter;
+
+  // Apply the filter
+  this.dataSource.filter = filterValue;
+  }
+
+
   constructor(private router: Router,
           public _dialog: MatDialog,  
           private formBuilder: FormBuilder, 

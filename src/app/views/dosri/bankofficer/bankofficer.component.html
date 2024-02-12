@@ -6,6 +6,14 @@
           <c-card-header class="d-flex justify-content-between align-items-center"><h2>Bank Officers</h2>
           </c-card-header>
           <c-card-body>
+
+            <c-container class="mt-2">
+              <mat-form-field [style.width.%]=100>
+                <input matInput #filterInput (input)="applyFilter(['aff_com_cis_number', 'aff_com_company_name'], filterInput.value)" placeholder="Search">
+                    <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </c-container>
+            
             <c-container fluid class="my-3">
               <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table" mat-table [dataSource]="dataSource" >
             
