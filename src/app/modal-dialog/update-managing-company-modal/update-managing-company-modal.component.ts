@@ -44,7 +44,7 @@ export class UpdateManagingCompanyModalComponent {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: ['', [Validators.required]],
+      aff_com_cis_number: [''] ,
       aff_com_comp_name: ['', [Validators.required]],
       managing_company: [''],
       // commandControl: [''],
@@ -154,8 +154,8 @@ export class UpdateManagingCompanyModalComponent {
   CISlookup() {
     const dataLookup = this.affForm.value;
   
-    if (dataLookup.com_cis_number) {
-      let cis = dataLookup.com_cis_number;
+    if (dataLookup.aff_com_cis_number) {
+      let cis = dataLookup.aff_com_cis_number;
       cisLookUP(cis)
         .then((response) => {
           if (Array.isArray(response.data)) {
@@ -180,6 +180,7 @@ export class UpdateManagingCompanyModalComponent {
           }
         })
         .catch((error) => {
+          console.log(error);
           Swal.fire({
             icon: 'error',
             title: 'No CIS Found!',
