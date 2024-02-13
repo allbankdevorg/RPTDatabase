@@ -1,0 +1,38 @@
+<div id="orgChartContainer">
+    <div id="orgChart"></div>
+  </div>
+<div id="consoleOutput"></div>
+  
+
+
+<!--PopOver-->
+<div #nodePopover id="nodePopover" class="pop" style="display: none;">
+  <h5>Node Details</h5>
+  <p id="nodeDetails" #nodeDetails></p>
+</div>
+
+
+
+                      <div class="modal fade" #actionModal tabindex="-1" role="dialog" aria-labelledby="actionModalLabel" aria-hidden="true">
+
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="actionModalLabel">Select an Action for {{datas}}</h5>
+                                <button (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <button class="btn btn-primary" id="addButton" (click)="onButtonClick('JMN')" (click)="closeModal()" (click)="AddChildComp($event)">Add Child</button>
+                                <button class="btn btn-primary" id="updateButton" (click)="onButtonClick('JMN')" (click)="closeModal()" (click)="openEditForm($event)">Update Company</button>
+                                <button class="btn btn-primary" id="detailsButton" (click)="closeModal()" (click)="onButtonClick('JMN')" (click)="viewData($event)">Show Details</button>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+
+<!-- Modal Dialog for Actions -->
+
+<!-- Modals -->
