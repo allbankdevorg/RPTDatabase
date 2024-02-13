@@ -41,7 +41,9 @@
               "src/assets/package/dist/sweetalert2.min.css"
             ],
             "scripts": [
-              "src/assets/jquery-3.7.1.min.js"
+              "src/assets/jquery-3.7.1.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/orgchart.plugin.js"
             ],
             "allowedCommonJsDependencies": [
               "chart.js",
