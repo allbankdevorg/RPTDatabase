@@ -236,14 +236,58 @@ totalNetOfHoldOut: number = 0;
     this.totalNetHoldOut = this.calculateTotalNetHoldOut(account.loan_list);
   }
 
-  updateTableData(): void {
-    // Initialize totalHoldOut for each account
+  // updateTableData(): void {
+  //   // Initialize totalHoldOut for each account
     
   
+  //   this.get.getSBL((sblData) => {
+  //     if (sblData) {
+  //       const uniqueCisNumbers = [...new Set(sblData.flatMap((entry) => entry.loan_list.map(loan => loan.cis_no)))];
+  
+  
+  //       this.dataSource.data = sblData;
+  
+  //       // Calculate sums and ratios based on the filtered data
+  //       const sumPrincipal = sblData.reduce((acc, obj) => {
+  //         acc.principal += parseFloat(obj.principal) || 0;
+  //         acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+  //         return acc;
+  //       }, { principal: 0, principal_bal: 0 });
+  
+  //       // Calculate ratios and other values using this.totalHoldOut
+  //       this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
+  //       const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
+  
+  //     } else {
+  //       // Handle case where sblData is empty
+  //     }
+  //   });
+  // }
+
+
+
+
+
+  updateTableData(): void {
+    // Initialize totalHoldOut for each account
     this.get.getSBL((sblData) => {
       if (sblData) {
-        const uniqueCisNumbers = [...new Set(sblData.flatMap((entry) => entry.loan_list.map(loan => loan.cis_no)))];
+        // Use a Set to store unique loan numbers
+        const uniqueLoanNumbers = new Set<string>();
   
+        // Filter out duplicate loans with the same loan_no within each company's SBL data
+        sblData.forEach((entry) => {
+          entry.loan_list = entry.loan_list.filter((loan) => {
+            if (uniqueLoanNumbers.has(loan.loan_no)) {
+              // Return false if it's a duplicate
+              return false;
+            } else {
+              // Add the loan number to the Set and return true
+              uniqueLoanNumbers.add(loan.loan_no);
+              return true;
+            }
+          });
+        });
   
         this.dataSource.data = sblData;
   
@@ -257,12 +301,14 @@ totalNetOfHoldOut: number = 0;
         // Calculate ratios and other values using this.totalHoldOut
         this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
         const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
-  
       } else {
         // Handle case where sblData is empty
       }
     });
   }
+  
+ 
+
   
   getUnimpairedCap(): void {
     this.get.getUnimpairedCapital((unimpairedCap) => {
