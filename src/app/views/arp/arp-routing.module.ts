@@ -8,6 +8,7 @@ import { RpOfficerComponent } from './rp-officer/rp-officer.component';
 import { PacComponent } from './pac/pac.component';
 import { RPOfficerRIComponent } from './rpofficer-ri/rpofficer-ri.component';
 import { PaviGroupComponent } from './pavi-group/pavi-group.component';
+import { OrgsDataChartComponent } from './orgs-data-chart/orgs-data-chart.component'
 
 const routes: Routes = [
         {
@@ -66,6 +67,12 @@ const routes: Routes = [
             {
               path: 'pavi-group',
               component: PaviGroupComponent,
+              data: {
+                title: 'Pavi Group',
+              },
+            },{
+              path: 'orgs-data-chart',
+              component: OrgsDataChartComponent,
               data: {
                 title: 'Pavi Group',
               },
