@@ -77,6 +77,16 @@ export class DraggableDirective {
   }
 }
 
+interface Company {
+  name: string;
+  manager: string;
+  name_cis: string;
+  managerCIS: string;
+  hold_out: number;
+  managers: string[];
+  children: Company[];
+}
+
 
 
 @Component({
@@ -85,11 +95,15 @@ export class DraggableDirective {
   styleUrls: ['./other-related-parties.component.scss']
 })
 export class OtherRelatedPartiesComponent {
+  
+  
+  // Update the type of this.orgsData
+  orgsData: Company[] = [];
 
   sharedData: string | any;
   private chart: any;
   private lastClickTime = 0;
-  orgsData: any = [];
+  // orgsData: any = [];
   compData: any = [];
   moduleV: any;
   private isNodeDetailsVisible: boolean = false
@@ -124,88 +138,171 @@ export class OtherRelatedPartiesComponent {
    
   }
   
-  drawChart(): void {
+  // drawChart(): void {
       
   
-    var chart;
+  //   var chart;
     
-    var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Name');
-      data.addColumn('string', 'Manager');
-      data.addColumn('string', 'Name_cis');
-      data.addColumn('string', 'managerCIS');
-      data.addColumn('number', 'hold_out');
+  //   var data = new google.visualization.DataTable();
+  //     data.addColumn('string', 'Name');
+  //     data.addColumn('string', 'Manager');
+  //     data.addColumn('string', 'Name_cis');
+  //     data.addColumn('string', 'managerCIS');
+  //     data.addColumn('number', 'hold_out');
 
-      data.addRows(this.orgsData);
-      var options = {
-        allowCollapse: true,
-        nodeStyle: {
-          background: '#7a7a7a', // Background color for nodes
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-        },
-      };
+  //     data.addRows(this.orgsData);
+  //     var options = {
+  //       allowCollapse: true,
+  //       nodeStyle: {
+  //         background: '#7a7a7a', // Background color for nodes
+  //         border: '1px solid #ccc',
+  //         borderRadius: '5px',
+  //       },
+  //     };
 
-      chart = new google.visualization.OrgChart(document.getElementById('org-chart-container'));
+  //     chart = new google.visualization.OrgChart(document.getElementById('org-chart-container'));
       
 
-      var lastClickTime = 0; // Variable to store the last click time
+  //     var lastClickTime = 0; // Variable to store the last click time
 
-      google.visualization.events.addListener(chart, 'select', () => {
-        const selectedRows = chart.getSelection();
-        if (selectedRows && selectedRows.length > 0) {
-          const selectedRow = selectedRows[0].row;
+  //     google.visualization.events.addListener(chart, 'select', () => {
+  //       const selectedRows = chart.getSelection();
+  //       if (selectedRows && selectedRows.length > 0) {
+  //         const selectedRow = selectedRows[0].row;
+  //         if (selectedRow !== undefined && selectedRow !== null) {
+  //           const selectedItem = this.orgsData[selectedRow];
+  //           this.updateNodeDetails(selectedItem);
+      
+  //           // Check if the time since the last click is less than 500 milliseconds (adjust as needed)
+  //           if (Date.now() - lastClickTime < 500) {
+  //             this.isNodeDetailsVisible = true;
+  //             chart.collapse(data.getValue(selectedRow, 0));
+  //           } else {
+  //             // Ensure that showModal and fetchTotalHoldOut are working as intended
+  //             this.showModal();
+  //             this.fetchTotalHoldOut();
+  //           }
+      
+  //           lastClickTime = Date.now(); // Update the last click time
+  //         }
+  //       }
+  //     });
+      
+  //     // Show Popup Containing Name and Managing Company on Mouse Hover
+  //     google.visualization.events.addListener(chart, 'onmouseover', (e) => {
+  //       const selectedRow = e.row; // Access row directly from the event
+  //       if (selectedRow !== undefined && selectedRow !== null) {
+  //         const selectedItem = this.orgsData[selectedRow];
+  //         this.updateNodeDetails(selectedItem);
+  //         this.showPopup();
+  //       }
+  //     });
+
+
+      
+  //      // Hide the popover when the mouse leaves the chart area
+  //      chart.getContainer().addEventListener('mouseleave', () => {
+  //       if (!this.isNodeDetailsVisible) {
+  //         this.hideNodePopover();
+  //       }
+  //     });
+      
+  //     // Add a click event listener to the chart container
+  //     chart.getContainer().addEventListener('click', () => {
+  //       if (this.isNodeDetailsVisible) {
+  //         this.isNodeDetailsVisible = false;
+  //         // this.closePopover(); // Close the popover when clicking the chart container
+  //       }
+  //     });
+
+  //     chart.draw(data, options);
+      
+     
+  // }
+  drawChart(): void {
+    const chart = new google.visualization.OrgChart(document.getElementById('org-chart-container'));
+    const data = new google.visualization.DataTable();
+    
+    data.addColumn('string', 'Name');
+    data.addColumn('string', 'Manager');
+    data.addColumn('string', 'Name_cis');
+    data.addColumn('string', 'managerCIS');
+    data.addColumn('number', 'hold_out'); // Add a column for tooltip
+  
+    const rows: any[][] = []; // Explicitly define the type of rows array
+    this.orgsData.forEach((company: Company) => { // Specify the type of the company parameter
+      const managers = company.managers.join(', '); // Join multiple managers into a single string
+      const tooltip = `Managers: ${managers}`; // Tooltip showing all managers
+      rows.push([company.name, company.manager, company.name_cis, company.managerCIS, company.hold_out]); // Add tooltip column
+    });
+    data.addRows(rows);
+    const options = {
+      allowCollapse: true,
+      nodeStyle: {
+        background: '#7a7a7a',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+      },
+    };
+
+
+    var lastClickTime = 0; // Variable to store the last click time
+
+        google.visualization.events.addListener(chart, 'select', () => {
+          const selectedRows = chart.getSelection();
+          if (selectedRows && selectedRows.length > 0) {
+            const selectedRow = selectedRows[0].row;
+            if (selectedRow !== undefined && selectedRow !== null) {
+              const selectedItem = this.orgsData[selectedRow];
+              this.updateNodeDetails(selectedItem);
+              console.log(selectedItem)
+        
+              // Check if the time since the last click is less than 500 milliseconds (adjust as needed)
+              if (Date.now() - lastClickTime < 500) {
+                this.isNodeDetailsVisible = true;
+                chart.collapse(data.getValue(selectedRow, 0));
+              } else {
+                // Ensure that showModal and fetchTotalHoldOut are working as intended
+                this.showModal();
+                this.fetchTotalHoldOut();
+              }
+        
+              lastClickTime = Date.now(); // Update the last click time
+            }
+          }
+        });
+        
+        // Show Popup Containing Name and Managing Company on Mouse Hover
+        google.visualization.events.addListener(chart, 'onmouseover', (e) => {
+          const selectedRow = e.row; // Access row directly from the event
           if (selectedRow !== undefined && selectedRow !== null) {
             const selectedItem = this.orgsData[selectedRow];
             this.updateNodeDetails(selectedItem);
-      
-            // Check if the time since the last click is less than 500 milliseconds (adjust as needed)
-            if (Date.now() - lastClickTime < 500) {
-              this.isNodeDetailsVisible = true;
-              chart.collapse(data.getValue(selectedRow, 0));
-            } else {
-              // Ensure that showModal and fetchTotalHoldOut are working as intended
-              this.showModal();
-              this.fetchTotalHoldOut();
-            }
-      
-            lastClickTime = Date.now(); // Update the last click time
+            this.showPopup();
           }
-        }
-      });
-      
-      // Show Popup Containing Name and Managing Company on Mouse Hover
-      google.visualization.events.addListener(chart, 'onmouseover', (e) => {
-        const selectedRow = e.row; // Access row directly from the event
-        if (selectedRow !== undefined && selectedRow !== null) {
-          const selectedItem = this.orgsData[selectedRow];
-          this.updateNodeDetails(selectedItem);
-          this.showPopup();
-        }
-      });
-
-
-      
-       // Hide the popover when the mouse leaves the chart area
-       chart.getContainer().addEventListener('mouseleave', () => {
-        if (!this.isNodeDetailsVisible) {
-          this.hideNodePopover();
-        }
-      });
-      
-      // Add a click event listener to the chart container
-      chart.getContainer().addEventListener('click', () => {
-        if (this.isNodeDetailsVisible) {
-          this.isNodeDetailsVisible = false;
-          // this.closePopover(); // Close the popover when clicking the chart container
-        }
-      });
-
-      chart.draw(data, options);
-      
-     
+        });
+  
+  
+        
+         // Hide the popover when the mouse leaves the chart area
+         chart.getContainer().addEventListener('mouseleave', () => {
+          if (!this.isNodeDetailsVisible) {
+            this.hideNodePopover();
+          }
+        });
+        
+        // Add a click event listener to the chart container
+        chart.getContainer().addEventListener('click', () => {
+          if (this.isNodeDetailsVisible) {
+            this.isNodeDetailsVisible = false;
+            // this.closePopover(); // Close the popover when clicking the chart container
+          }
+        });
+  
+    chart.draw(data, options);
   }
-
+  
+  
 
   fetchTotalHoldOut() {
     const com_cis = this.selectedData.aff_com_cis_number;
@@ -229,31 +326,114 @@ export class OtherRelatedPartiesComponent {
   }
 
 
+  // fetchAssocCompany() {
+  //   this.get.getOtherCompany((OtherComp) => {
+  //       const dataArr: any[] = [];
+  //       if (OtherComp) {
+  //         OtherComp.forEach((item) => {
+  //           // Create a new object with the desired structure and add it to dataArr
+  //           dataArr.push([ 
+  //             item.aff_com_account_name, 
+  //             item.manager, 
+  //             item.aff_com_cis_number, 
+  //             item.managing_company,
+  //             item.hold_out]);
+
+  //         this.orgsData = dataArr;
+  //         google.charts.load('current', { packages: ['orgchart'] });
+  //         google.charts.setOnLoadCallback(() => this.drawChart());
+          
+  //         return dataArr;
+  //         });
+  //       }else {
+          
+  //       } 
+  //   }) 
+  // }
+
+  // fetchAssocCompany() {
+  //   this.get.getOtherCompany((OtherComp) => {
+  //     const companyMap = new Map<string, Company>(); // Map to store companies by their CIS number
+  //     if (OtherComp) {
+
+  //       // Step 1: Create companies and store them in the map
+  //       OtherComp.forEach((item) => {
+  //         const companyId = item.aff_com_cis_number;
+  //         const companyName = item.aff_com_account_name;
+  //         const managerName = item.manager;
+  //         const managerCIS = item.managing_company;
+  //         const company: Company = {
+  //           name: companyName,
+  //           manager: managerName,
+  //           name_cis: companyId,
+  //           managerCIS: managerCIS,
+  //           hold_out: item.hold_out,
+  //           managers: [managerName], // Initialize managers array
+  //           children: [] // Initialize children array
+  //         };
+  //         companyMap.set(companyId, company);
+  //       });
+        
+        
+  //       // Step 2: Populate the children array for each manager
+  //       companyMap.forEach((company, companyId) => {
+  //         const managingCompanyId = company.managerCIS;
+  //         if (managingCompanyId && companyMap.has(managingCompanyId)) {
+  //           const managerCompany = companyMap.get(managingCompanyId);
+  //           if (managerCompany) {
+  //             managerCompany.children.push(company); // Add the current company as a child of its manager
+  //           }
+  //         }
+  //       });
+  
+  //       // Step 3: Find and set root companies (companies without managing company) to this.orgsData
+  //       const rootCompanies: Company[] = [];
+  //       companyMap.forEach((company, companyId) => {
+  //         const managingCompanyId = company.managerCIS;
+  //         if (!managingCompanyId || !companyMap.has(managingCompanyId)) {
+  //           rootCompanies.push(company); // Add root companies to the rootCompanies array
+  //         }
+  //       });
+  //       this.orgsData = rootCompanies;
+  //     }
+      
+  //     // After organizing the data, draw the chart
+  //     google.charts.load('current', { packages: ['orgchart'] });
+  //     google.charts.setOnLoadCallback(() => this.drawChart());
+  //   });
+  // }
+  
+
   fetchAssocCompany() {
     this.get.getOtherCompany((OtherComp) => {
-        const dataArr: any[] = [];
-        if (OtherComp) {
-          OtherComp.forEach((item) => {
-            // Create a new object with the desired structure and add it to dataArr
-            dataArr.push([ 
-              item.aff_com_account_name, 
-              item.manager, 
-              item.aff_com_cis_number, 
-              item.managing_company,
-              item.hold_out]);
-
-          this.orgsData = dataArr;
-          google.charts.load('current', { packages: ['orgchart'] });
-          google.charts.setOnLoadCallback(() => this.drawChart());
-          
-          return dataArr;
-          });
-        }else {
-          
-        } 
-    }) 
+      if (OtherComp) {
+        const dataArr: Company[] = [];
+  
+        OtherComp.forEach((item) => {
+          // Create a new company object for each item
+          const company: Company = {
+            name: item.aff_com_account_name,
+            manager: item.manager,
+            name_cis: item.aff_com_cis_number,
+            managerCIS: item.managing_company,
+            hold_out: item.hold_out,
+            managers: [], // Initialize managers array
+            children: [] // Initialize children array
+          };
+  
+          dataArr.push(company); // Push the company object to the data array
+        });
+  
+        // Set the orgsData to the populated data array
+        this.orgsData = dataArr;
+  
+        // After populating the data, draw the chart
+        google.charts.load('current', { packages: ['orgchart'] });
+        google.charts.setOnLoadCallback(() => this.drawChart());
+      }
+    });
   }
-
+  
 
   getParentCompany() {
     this.get.getOtherCompany((OtherComp) => {
@@ -281,18 +461,20 @@ export class OtherRelatedPartiesComponent {
   
 
   updateNodeDetails(selectedItem) {
+    console.log(selectedItem)
     const transformedData = {
-      aff_com_comp_name: selectedItem[0],
-      manager: selectedItem[1],
-      aff_com_cis_number: selectedItem[2],
-      managing_company: selectedItem[3], 
-      hold_out: selectedItem[4]
+      aff_com_comp_name: selectedItem.name,
+      manager: selectedItem.manager,
+      aff_com_cis_number: selectedItem.name_cis,
+      managing_company: selectedItem.managerCIS, 
+      hold_out: selectedItem.hold_out
   };
     
     this.selectedData = transformedData;
+    console.log(transformedData);
     if (event instanceof MouseEvent) {
-      const nodeName = selectedItem[0];
-      const nodeManager = selectedItem[1];
+      const nodeName = selectedItem.name;
+      const nodeManager = selectedItem.manager;
       const nodeDetails = `Name: ${nodeName}<br>Manager: ${nodeManager}`;
       this.nodeDetails.nativeElement.innerHTML = nodeDetails;
       
