@@ -26,6 +26,10 @@
                         <mat-icon>file_download</mat-icon>
                         PDF
                       </button> -->
+                      <button *ngIf="simulationPerformed" (click)="resetSimulation()" mat-fab extended color="primary" style="margin-right: 10px;">
+                        <mat-icon>refresh</mat-icon>
+                        Reset Simulation
+                      </button>
                       <button (click)="print()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
                         <mat-icon>print</mat-icon>
                         Print
@@ -45,7 +49,7 @@
                     <c-card class="mb-4">
                       <c-card-header class="d-flex justify-content-between align-items-center" id="{{ account.account_name }}">
                         <div>  
-                          {{ account.account_name }} <button (click)="openSimulation(); calculateAvailable(sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal, calculateTotalNetHoldOut(account.loan_list))" mat-fab extended color="primary" class="add-btn-icon">Simulate</button>
+                          {{ account.account_name }} <button (click)="openSimulation(i); calculateAvailable(sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal, calculateTotalNetHoldOut(account.loan_list))" mat-fab extended color="primary" class="add-btn-icon">Simulate</button>
                         </div>
                         <div class="mt-1">
                           <mat-form-field [style.width.%]=100>

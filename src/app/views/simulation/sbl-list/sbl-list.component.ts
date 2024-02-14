@@ -99,23 +99,6 @@ export interface Loan {
 }
 
 
-// interface Loan {
-//   id: number;
-//   cis_no: string;
-//   name: string;
-//   loan_no: string;
-//   principal: number;
-//   principal_bal: number;
-//   date_granted: string;
-//   created_by: string;
-//   date_created: string;
-//   loan_security: string;
-//   status: number;
-//   manager: string;
-//   group: string;
-//   hold_out: number;
-// }
-
 export interface ResultItem {
   id: number;
   aff_com_cis_number: string;
@@ -163,6 +146,7 @@ export class SBLListComponent implements OnInit{
 
   sblIsPositive: boolean = false;
 sblIsNegative: boolean = false;
+simulationPerformed: boolean = false;
 
 searchTextLoanList: any;
 totalHoldOut: number = 0;
@@ -173,7 +157,7 @@ totalprincipalAmount = 0;
 netBal = 0;
 totalNetOfHoldOut: number = 0;
 
-
+index: any; // to get where should the temporary loan will be push
 temporaryLoans?: Loan[]; // For SBL Simulation
 
 // Inside the method where you calculate the summary
@@ -233,6 +217,8 @@ temporaryLoans?: Loan[]; // For SBL Simulation
     this.availBal = this.internalSBL 
     this.searchTextLoanList = new FormControl();
     this.temporaryLoans = this.SimulatedtempSBLloan.getTemporaryLoans();
+    this.simulationPerformed = this.SimulatedtempSBLloan.isSimulationPerformed();
+   
     // this.updateTableDatas();
     // this.data = this.getFlattenedData(this.data);  
     // Call the calculateTotalNetOfHoldOut method
@@ -253,36 +239,6 @@ temporaryLoans?: Loan[]; // For SBL Simulation
   updateTotalNetHoldOut(account): void {
     this.totalNetHoldOut = this.calculateTotalNetHoldOut(account.loan_list);
   }
-
-  // updateTableData(): void {
-  //   // Initialize totalHoldOut for each account
-    
-  
-  //   this.get.getSBL((sblData) => {
-  //     if (sblData) {
-  //       const uniqueCisNumbers = [...new Set(sblData.flatMap((entry) => entry.loan_list.map(loan => loan.cis_no)))];
-  
-  
-  //       this.dataSource.data = sblData;
-  
-  //       // Calculate sums and ratios based on the filtered data
-  //       const sumPrincipal = sblData.reduce((acc, obj) => {
-  //         acc.principal += parseFloat(obj.principal) || 0;
-  //         acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-  //         return acc;
-  //       }, { principal: 0, principal_bal: 0 });
-  
-  //       // Calculate ratios and other values using this.totalHoldOut
-  //       this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
-  //       const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
-  
-  //     } else {
-  //       // Handle case where sblData is empty
-  //     }
-  //   });
-  // }
-
-
 
 
 
@@ -310,13 +266,11 @@ temporaryLoans?: Loan[]; // For SBL Simulation
 
         // Push temporary loan data only once outside the forEach loop
         const tempData = sblData.slice(); // Create a shallow copy of PNData
-        console.log(tempData);
-        console.log(this.temporaryLoans)
         if (this.temporaryLoans && this.temporaryLoans.length > 0) {
-          const index = 0; // Specify the index where you want to insert the temporary loans
+          const i = this.index; // Specify the index where you want to insert the temporary loans
         
-          if (index < tempData.length) { // Check if the index is within the bounds of tempData
-            const account = tempData[index];
+          if (i < tempData.length) { // Check if the index is within the bounds of tempData
+            const account = tempData[i];
             account.loan_list.push(...this.temporaryLoans);
         
             // Calculate net_holdout for each loan in the account's loan_list
@@ -326,7 +280,7 @@ temporaryLoans?: Loan[]; // For SBL Simulation
         
             this.calculateSimulatedData(tempData); // Calculate simulated data
           } else {
-            console.error('Index out of bounds:', index);
+            // console.error('Index out of bounds:', i);
           }
         }
        
@@ -357,30 +311,7 @@ temporaryLoans?: Loan[]; // For SBL Simulation
       acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
       return acc;
     }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
-  
-    // Update simulated balance
-    // this.SimulatedrptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
-  
-    // // Calculate ratios only if unimpairedCap is not zero
-    // if (this.unimpairedCap !== 0) {
-    //   const percentage = `${((this.SimulatedrptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
-    //   this.SimulatedrptRatio = percentage;
-    //   this.SimulatedavailRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
-    // } else {
-    //   this.SimulatedrptRatio = 'N/A';
-    //   this.SimulatedavailRptRatio = 'N/A';
-    // }
-  
-    // this.SimulatedttlRPTOL = sumPrincipal.principal;
-    // this.SimulatedttlRPTOB = sumPrincipal.principal_bal;
-    // this.SimulatedapprovedCapital = this.unimpairedCap * 0.5;
-    
-    // // Recalculate available balance only if SimulatedapprovedCapital is not zero
-    // if (this.SimulatedapprovedCapital !== 0) {
-    //   this.updateSimulatedBalances();
-    // } else {
-    //   this.SimulatedavailBal = 0;
-    // }
+
   }
 
   
@@ -435,8 +366,8 @@ print() {
 
 
   // Function to Show the simulation Modal
-  openSimulation() {
-
+  openSimulation(i: number) {
+    this.index = i;
     const dialogRef = this._dialog.open(SBLSimulationModalComponent, {
       width: '50%', // Set the width as per your requirement
       // Other MatDialog options can be specified here
@@ -476,27 +407,11 @@ print() {
     this.sblSimulateService.setTotalLoan(totalLoan)
   }
 
-  generatePDF() {}
-  
-
-  // generatePDF(): void {
-  //   const elementId = 'htmlData'; // Replace 'htmlData' with the ID of the element you want to convert to PDF
-  //   const fileName = 'your-file-name.pdf'; // Replace 'your-file-name' with the desired file name
-
-  //   this.pdfExportService.generatePDF(elementId, fileName);
-  // }
-
-  // public generatePDF(): void {
-  //   const htmlDataElement = document.getElementById('htmlData');
-  
-  //   if (htmlDataElement) {
-  //     const htmlContent = htmlDataElement.innerHTML;
-  //     this.pdfExportService.generatePDF(htmlContent, 'output.pdf');
-  //   } else {
-  //     console.error("Element with ID 'htmlData' not found.");
-  //   }
-  // }
-  
+  resetSimulation(): void {
+    this.simulationPerformed = false;   
+    this.SimulatedtempSBLloan.resetSimulationPerformed();
+    this.ngOnInit();
+  }
 
 
 
