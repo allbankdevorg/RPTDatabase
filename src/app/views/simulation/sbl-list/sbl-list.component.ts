@@ -5,6 +5,8 @@ import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { SBLSimulationModalComponent } from 'src/app/modal-dialog/sbl-simulation-modal/sbl-simulation-modal.component';
 import {HoldoutAllocationModalComponent} from '../../../modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component'
+//Simulate Loan for SBL
+import {SimulatedSBLDataService} from '../../../services/simulatedSBLService/simulated-sbldata.service'
 
 //Import for API Function
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
@@ -83,25 +85,36 @@ interface companylistData {
   company_list: [];
 }
 
-
-
-
-interface Loan {
-  id: number;
-  cis_no: string;
-  name: string;
-  loan_no: string;
-  principal: number;
-  principal_bal: number;
-  date_granted: string;
-  created_by: string;
-  date_created: string;
-  loan_security: string;
-  status: number;
-  manager: string;
-  group: string;
-  hold_out: number;
+export interface Loan {
+  loan_no: number,
+  cis_no: number,
+  name: string,
+  principal: number,
+  principal_bal: number,
+  loan_security: string,
+  deposit_holdout: number,
+  date_granted: any,
+  net_holdout: number,
+  off_cisnumber: string
 }
+
+
+// interface Loan {
+//   id: number;
+//   cis_no: string;
+//   name: string;
+//   loan_no: string;
+//   principal: number;
+//   principal_bal: number;
+//   date_granted: string;
+//   created_by: string;
+//   date_created: string;
+//   loan_security: string;
+//   status: number;
+//   manager: string;
+//   group: string;
+//   hold_out: number;
+// }
 
 export interface ResultItem {
   id: number;
@@ -160,13 +173,16 @@ totalprincipalAmount = 0;
 netBal = 0;
 totalNetOfHoldOut: number = 0;
 
+
+temporaryLoans?: Loan[]; // For SBL Simulation
+
 // Inside the method where you calculate the summary
 
 
   // account: any = {};
 
   dataSource = new MatTableDataSource<ResultItem>
-  displayedColumns: string[] = ['loan_no', 'account_name', 'branch_name', 'loan_security', 'amount_granted', 'date_granted'
+  displayedColumns: string[] = ['loan_no', 'account_name', 'loan_security', 'amount_granted', 'date_granted'
   , 'principal_bal', 'deposit_holdout', 'net_holdout', 'payment_status'];
 
 
@@ -177,7 +193,8 @@ totalNetOfHoldOut: number = 0;
     private get: FetchDataService,
     public _dialog: MatDialog,
     private filterPipe: FilterPipe,
-    private dataService: SblLoanSimulateService,      // => For SBL Simulation
+    private sblSimulateService: SblLoanSimulateService, 
+    private SimulatedtempSBLloan:  SimulatedSBLDataService,    // => For SBL Simulation
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
     private csvExportService: CsvExportService,
@@ -215,6 +232,7 @@ totalNetOfHoldOut: number = 0;
     this.updateTableData();
     this.availBal = this.internalSBL 
     this.searchTextLoanList = new FormControl();
+    this.temporaryLoans = this.SimulatedtempSBLloan.getTemporaryLoans();
     // this.updateTableDatas();
     // this.data = this.getFlattenedData(this.data);  
     // Call the calculateTotalNetOfHoldOut method
@@ -288,8 +306,32 @@ totalNetOfHoldOut: number = 0;
             }
           });
         });
-  
-        this.dataSource.data = sblData;
+
+
+        // Push temporary loan data only once outside the forEach loop
+        const tempData = sblData.slice(); // Create a shallow copy of PNData
+        console.log(tempData);
+        console.log(this.temporaryLoans)
+        if (this.temporaryLoans && this.temporaryLoans.length > 0) {
+          const index = 0; // Specify the index where you want to insert the temporary loans
+        
+          if (index < tempData.length) { // Check if the index is within the bounds of tempData
+            const account = tempData[index];
+            account.loan_list.push(...this.temporaryLoans);
+        
+            // Calculate net_holdout for each loan in the account's loan_list
+            account.loan_list.forEach((loan) => {
+              loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
+            });
+        
+            this.calculateSimulatedData(tempData); // Calculate simulated data
+          } else {
+            console.error('Index out of bounds:', index);
+          }
+        }
+       
+      // Update the MatTableDataSource
+          this.dataSource.data = tempData;
   
         // Calculate sums and ratios based on the filtered data
         const sumPrincipal = sblData.reduce((acc, obj) => {
@@ -307,7 +349,39 @@ totalNetOfHoldOut: number = 0;
     });
   }
   
- 
+  calculateSimulatedData(tempData: any[]): void {
+    // Calculate sums and ratios based on the filtered data
+    const sumPrincipal = tempData.reduce((acc, obj) => {
+      acc.principal += parseFloat(obj.principal) || 0;
+      acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+      acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
+      return acc;
+    }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+  
+    // Update simulated balance
+    // this.SimulatedrptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
+  
+    // // Calculate ratios only if unimpairedCap is not zero
+    // if (this.unimpairedCap !== 0) {
+    //   const percentage = `${((this.SimulatedrptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
+    //   this.SimulatedrptRatio = percentage;
+    //   this.SimulatedavailRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+    // } else {
+    //   this.SimulatedrptRatio = 'N/A';
+    //   this.SimulatedavailRptRatio = 'N/A';
+    // }
+  
+    // this.SimulatedttlRPTOL = sumPrincipal.principal;
+    // this.SimulatedttlRPTOB = sumPrincipal.principal_bal;
+    // this.SimulatedapprovedCapital = this.unimpairedCap * 0.5;
+    
+    // // Recalculate available balance only if SimulatedapprovedCapital is not zero
+    // if (this.SimulatedapprovedCapital !== 0) {
+    //   this.updateSimulatedBalances();
+    // } else {
+    //   this.SimulatedavailBal = 0;
+    // }
+  }
 
   
   getUnimpairedCap(): void {
@@ -335,14 +409,21 @@ calculateLoanListSummary(loanList: Loan[]): any {
 }  
 
 
+print() {
+  window.print(); // Call the window.print() method to trigger printing
+}
+
+
 
   scrollToUser(name: string) {
+    console.log(name);
     const lowerCaseName = name.toLowerCase();
     const elements = document.querySelectorAll('[id]');
+    console.log(elements);
   
     for (const element of Array.from(elements)) {
       const elementId = element.id.toLowerCase();
-  
+      console.log(elementId.includes(lowerCaseName));
       if (elementId.includes(lowerCaseName)) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         break; // Stop searching after the first match
@@ -355,6 +436,7 @@ calculateLoanListSummary(loanList: Loan[]): any {
 
   // Function to Show the simulation Modal
   openSimulation() {
+
     const dialogRef = this._dialog.open(SBLSimulationModalComponent, {
       width: '50%', // Set the width as per your requirement
       // Other MatDialog options can be specified here
@@ -390,8 +472,8 @@ calculateLoanListSummary(loanList: Loan[]): any {
 
   // Setting the Available Balance
   calculateAvailable(Avail: any, totalLoan: any) {
-    this.dataService.setAvailBal(Avail);
-    this.dataService.setTotalLoan(totalLoan)
+    this.sblSimulateService.setAvailBal(Avail);
+    this.sblSimulateService.setTotalLoan(totalLoan)
   }
 
   generatePDF() {}
