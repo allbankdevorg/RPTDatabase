@@ -36,7 +36,7 @@ export interface Loan {
   loan_security: string,
   deposit_holdout: number,
   date_granted: any,
-  netBal: number
+  // netBal: number
 }
 
 @Component({
@@ -179,10 +179,13 @@ export class RptListComponent {
         });
   
         // Push temporary loan data only once outside the forEach loop
-        const tempData = PNData.slice(); // Create a shallow copy of PNData
+        const tempData = PNData.slice();
+        console.log(tempData);
+         // Create a shallow copy of PNData
         if (this.temporaryLoans) {
           tempData.push(...this.temporaryLoans);
           tempData.forEach((loan) => {
+            // get the Value for netBal
             loan.netBal = (loan.principal_bal || 0) - (loan.deposit_holdout || 0);
           });
             this.calculateSimulatedData(tempData); // Spread the temporary loans array to push each loan individually
