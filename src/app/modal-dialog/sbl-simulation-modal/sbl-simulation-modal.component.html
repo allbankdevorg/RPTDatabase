@@ -17,8 +17,8 @@
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="affilCisNumberM" name="affilCisNumberM"
                 type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
-                formControlName="com_cis_number">
-                <mat-error *ngIf="sblSimulateForm.get('com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                formControlName="cis_no">
+                <mat-error *ngIf="sblSimulateForm.get('cis_no')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             </mat-form-field>
         </c-col>
 
@@ -28,8 +28,8 @@
                 <!-- <mat-label>Account Name</mat-label> -->
                 <input matInput #accDinput id="accountName"  name="accountName"
                 type="text" placeholder="Account Name"
-                formControlName="com_account_name" >
-                <mat-error *ngIf="sblSimulateForm.get('com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
+                formControlName="name" >
+                <mat-error *ngIf="sblSimulateForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>
@@ -43,7 +43,7 @@
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="amount" name="amount"
                 type="text" placeholder="Amount" 
-                formControlName="amount" appNum>
+                formControlName="principal" appNum>
                 <mat-error *ngIf="sblSimulateForm.get('amount')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error>
             </mat-form-field>
         </c-col>
@@ -62,7 +62,7 @@
                                         <div><strong>TOTAL RPT</strong></div>
                                     </c-col>
                                     <c-col [sm]="6" class="border p-2">
-                                        <div>Php {{totalLoan | number: '1.2-2'}}</div>
+                                        <div>Php {{totalLoan | currency: 'PHP'}}</div>
                                     </c-col>
                                 </c-row>
                             </div>
