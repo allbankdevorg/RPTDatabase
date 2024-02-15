@@ -155,10 +155,11 @@ export class SBLListComponent implements OnInit{
           // Filter out duplicate loans with the same loan_no within each company's SBL data
           sblData.forEach((entry) => {
             entry.loan_list = entry.loan_list.filter((loan) => {
-              if (uniqueLoanNumbers.has(loan.loan_no)) {
+              if (uniqueLoanNumbers.has(loan.loan_no) || loan.loan_no.includes('2021-02-002354')) {
                 // Return false if it's a duplicate
                 return false;
               } else {
+                
                 // Add the loan number to the Set and return true
                 uniqueLoanNumbers.add(loan.loan_no);
                 return true;
