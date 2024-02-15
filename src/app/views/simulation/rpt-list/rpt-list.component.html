@@ -200,9 +200,9 @@
 
 
                       <!-- Position Column -->
-                      <ng-container matColumnDef="deposit_holdout">
+                      <ng-container matColumnDef="holdoutdata">
                         <mat-header-cell *matHeaderCellDef> Deposit Hold-out </mat-header-cell>
-                        <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | currency:'PHP'}} </mat-cell>
+                        <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.holdoutdata | currency:'PHP'}} </mat-cell>
                       </ng-container>
 
                       <!-- Net Balance -->

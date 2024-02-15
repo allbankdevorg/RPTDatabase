@@ -34,7 +34,7 @@ export interface Loan {
   principal: number,
   principal_bal: number,
   loan_security: string,
-  deposit_holdout: number,
+  holdoutdata: number,
   date_granted: any,
   // netBal: number
 }
@@ -85,7 +85,7 @@ export class RptListComponent {
   }
   
   displayedColumns: string[] = ['loan_no', 'cis_no', 'name', 'principal', 'principal_bal', 'loan_security', 
-  'deposit_holdout', 'netBal', 'date_granted', 'terms', 'purpose', 'int_rate'];
+  'holdoutdata', 'netBal', 'date_granted', 'terms', 'purpose', 'int_rate'];
   dataSource = new MatTableDataSource<any>([]);
   ToDisplay: string[] = [];
 
@@ -125,11 +125,11 @@ export class RptListComponent {
     const sumPrincipal = filteredData.reduce((acc, obj) => {
       acc.principal += parseFloat(obj.principal) || 0;
       acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
+      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
       return acc;
-    }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
   
-    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
+    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
     const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
     this.rptRatio = percentage;
     this.subtlOL = sumPrincipal.principal;
@@ -165,9 +165,10 @@ export class RptListComponent {
     }
      
     this.get.getPNData(date, (PNData) => {
+      
       if (PNData) {
         const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
-        
+        console.log(PNData);
         uniqueCisNumbers.forEach((cisNumber) => {
           HoldOutValue(cisNumber)
             .then((response) => {
@@ -186,7 +187,7 @@ export class RptListComponent {
           tempData.push(...this.temporaryLoans);
           tempData.forEach((loan) => {
             // get the Value for netBal
-            loan.netBal = (loan.principal_bal || 0) - (loan.deposit_holdout || 0);
+            loan.netBal = (loan.principal_bal || 0) - (loan.holdoutdata || 0);
           });
             this.calculateSimulatedData(tempData); // Spread the temporary loans array to push each loan individually
            // Only calculate simulated data if temporary loan data is pushed
@@ -204,11 +205,11 @@ export class RptListComponent {
     const sumPrincipal = actualData.reduce((acc, obj) => {
       acc.principal += parseFloat(obj.principal) || 0;
       acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
+      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
       return acc;
-    }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
     
-    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
+    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
   
     // Calculate rptRatio only if unimpairedCap is not zero
     if (this.unimpairedCap !== 0) {
@@ -237,12 +238,12 @@ export class RptListComponent {
     const sumPrincipal = tempData.reduce((acc, obj) => {
       acc.principal += parseFloat(obj.principal) || 0;
       acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
+      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
       return acc;
-    }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
   
     // Update simulated balance
-    this.SimulatedrptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
+    this.SimulatedrptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
   
     // Calculate ratios only if unimpairedCap is not zero
     if (this.unimpairedCap !== 0) {
@@ -347,7 +348,7 @@ export class RptListComponent {
         'BORROWER/GROUP': item.name,
         'ORIGINAL LOAN': item.principal,
         'OUTSTANDING BALANCE': item.principal_bal,
-        'DEPOSIT HOLDOUT': item.deposit_holdout,
+        'DEPOSIT HOLDOUT': item.holdoutdata,
         'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
         'LOAN SECURITY': item.loan_security,
         'INTEREST RATE': item.int_rate,
