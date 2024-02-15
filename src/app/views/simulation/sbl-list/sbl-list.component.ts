@@ -1,89 +1,21 @@
 import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
-
-
 // Import for Simulation Modal
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import { SBLSimulationModalComponent } from 'src/app/modal-dialog/sbl-simulation-modal/sbl-simulation-modal.component';
-import {HoldoutAllocationModalComponent} from '../../../modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component'
-//Simulate Loan for SBL
-import {SimulatedSBLDataService} from '../../../services/simulatedSBLService/simulated-sbldata.service'
-
+import {MatDialog} from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormControl } from '@angular/forms';
+import { FilterPipe } from 'src/app/pipe/filterPipe/filter.pipe';
 //Import for API Function
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
-import {HoldOutValue} from '../../../functions-files/add/postAPI';
-import { MatTableDataSource } from '@angular/material/table';
-
-
-import { FilterPipe } from 'src/app/pipe/filterPipe/filter.pipe';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-
+//Simulate Loan for SBL
+import { SimulatedSBLDataService } from '../../../services/simulatedSBLService/simulated-sbldata.service';
 // Service
-import {SblLoanSimulateService} from '../../../services/sblLoanSimulate/sbl-loan-simulate.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
-
+import { SblLoanSimulateService } from '../../../services/sblLoanSimulate/sbl-loan-simulate.service';
 // Save CSV
 import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
 import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+import { SBLSimulationModalComponent } from 'src/app/modal-dialog/sbl-simulation-modal/sbl-simulation-modal.component';
+import { HoldoutAllocationModalComponent } from '../../../modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component';
 
-
-interface account {
-  name: string;
-  list: any[];
-}
-
-interface LoanIndividual {
-  id: number;
-  com_related: string;
-  off_cisnumber: string;
-  fname: string;
-  mname: string;
-  lname: string;
-  position: string;
-  status: number;
-}
-
-interface sblAccount {
-  company_name: string;
-  loan_list: MatTableDataSource<sblList>; // Specify the type here
-}
-
-interface sblList {
-  name: string;
-  loan_no: string;
-  L_type: string;
-  collateral: string;
-  amt_granted: string;
-  date_booked: string;
-  O_blnc: string;
-  hold_out: string;
-  net_holdout: number;
-  payment_status: string;
-  loan_list: [];
-}
-
-interface Data {
-  aff_com_cis_number: string;
-  aff_com_account_name: string;
-  loan_list_company: any[];
-  loan_individual: any[];
-}
-
-
-
-// ///////
-
-export interface loanData {
-  loan_no: number;
-  name: string;
-  principal: number;
-  principal_bal: number;
-  loan_security: string;
-}
-
-interface companylistData {
-  company_name: string;
-  account_name: string;
-  company_list: [];
-}
 
 export interface Loan {
   loan_no: number,
@@ -96,6 +28,12 @@ export interface Loan {
   date_granted: any,
   net_holdout: number,
   off_cisnumber: string
+}
+
+// Define the structure of the wrapper object that holds both the loan data and the index
+interface LoanWrapper {
+  loan: Loan;
+  index: number;
 }
 
 
@@ -122,6 +60,13 @@ export interface ResultItem {
 
 })
 export class SBLListComponent implements OnInit{
+  dataSource = new MatTableDataSource<ResultItem>();
+  displayedColumns: string[] = ['loan_no', 'account_name', 'loan_security', 'amount_granted', 'date_granted', 'principal_bal', 'deposit_holdout', 'net_holdout', 'payment_status'];
+
+  searchTextLoanList?: FormControl;
+  index: any; // to get where should the temporary loan will be push
+  temporaryLoans: LoanWrapper[] = [];  // For SBL Simulation
+  simulationPerformed: boolean = false;
 
   available_balance: any;    // => Calculated Balance for simulation
   rptBal: any;      // => RPT Balance (Net of Hold-out)
@@ -135,7 +80,6 @@ export class SBLListComponent implements OnInit{
   definedRptRatio: number = 50;     //Pre defined Percentage
   availRptRatio: any;
   approvedCapital: any;        // => the Loan approved Limit
-  filterValue: string = '';
   sbl: any;
   internalSBL: any;
   net: any;
@@ -145,32 +89,17 @@ export class SBLListComponent implements OnInit{
   UnimpairedDate: any;
 
   sblIsPositive: boolean = false;
-sblIsNegative: boolean = false;
-simulationPerformed: boolean = false;
-
-searchTextLoanList: any;
-totalHoldOut: number = 0;
-
-finalHoldOut: number = 0;
-
-totalprincipalAmount = 0;
-netBal = 0;
-totalNetOfHoldOut: number = 0;
-
-index: any; // to get where should the temporary loan will be push
-temporaryLoans?: Loan[]; // For SBL Simulation
-
-// Inside the method where you calculate the summary
-
-
-  // account: any = {};
-
-  dataSource = new MatTableDataSource<ResultItem>
-  displayedColumns: string[] = ['loan_no', 'account_name', 'loan_security', 'amount_granted', 'date_granted'
-  , 'principal_bal', 'deposit_holdout', 'net_holdout', 'payment_status'];
-
-
+  sblIsNegative: boolean = false;
+  totalHoldOut: number = 0;
+  finalHoldOut: number = 0;
+  totalprincipalAmount = 0;
+  netBal = 0;
+  totalNetOfHoldOut: number = 0;
+  totalNetHoldOut: number = 0;
   
+  filterValue: string = '';
+
+  totalHoldOuts: number[] = [];
   result: ResultItem[] = [];
 
   constructor(
@@ -178,17 +107,109 @@ temporaryLoans?: Loan[]; // For SBL Simulation
     public _dialog: MatDialog,
     private filterPipe: FilterPipe,
     private sblSimulateService: SblLoanSimulateService, 
-    private SimulatedtempSBLloan:  SimulatedSBLDataService,    // => For SBL Simulation
+    private SimulatedtempSBLloan:  SimulatedSBLDataService,   
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
     private csvExportService: CsvExportService,
     private pdfExportService: PdfExportService
-    ) {
-      
+    ) {}
 
+    ngOnInit() {
+      this.searchTextLoanList = new FormControl();
+      this.loadData();
     }
 
+
+    loadData(): void {
+      // Fetch data and initialize components
+      this.getUnimpairedCap();
+      this.updateTableData();
+      this.temporaryLoans = this.SimulatedtempSBLloan.getTemporaryLoans();
+      this.simulationPerformed = this.SimulatedtempSBLloan.isSimulationPerformed();  
+      this.availBal = this.internalSBL 
+      this.searchTextLoanList = new FormControl();
+    }
     
+
+
+    // Methods for fetching and processing data
+    getUnimpairedCap(): void {
+      // Fetch unimpaired capital data
+      this.get.getUnimpairedCapital((unimpairedCap) => {
+        this.UnimpairedDate = unimpairedCap[0].date;
+        this.unimpairedCap = unimpairedCap[0].impared_capital;     
+        this.sbl = (this.unimpairedCap * .25);
+        this.internalSBL = (this.unimpairedCap * .20);
+      })
+    }
+
+
+    updateTableData(): void {
+      // Fetch SBL data and update table
+      this.get.getSBL((sblData) => {
+        if (sblData) {
+          // Use a Set to store unique loan numbers
+          const uniqueLoanNumbers = new Set<string>();
+    
+          // Filter out duplicate loans with the same loan_no within each company's SBL data
+          sblData.forEach((entry) => {
+            entry.loan_list = entry.loan_list.filter((loan) => {
+              if (uniqueLoanNumbers.has(loan.loan_no)) {
+                // Return false if it's a duplicate
+                return false;
+              } else {
+                // Add the loan number to the Set and return true
+                uniqueLoanNumbers.add(loan.loan_no);
+                return true;
+              }
+            });
+          });
+  
+  
+          // Push temporary loan data only once outside the forEach loop
+          const tempData = sblData.slice(); // Create a shallow copy of sblData
+          if (this.temporaryLoans && this.temporaryLoans.length > 0) {
+              // Iterate over each LoanWrapper object and its index
+              this.temporaryLoans.forEach((loanWrapper) => {
+                  const { index, loan } = loanWrapper;
+                  console.log(loanWrapper);
+                  if (index < tempData.length) { // Check if the index is within the bounds of tempData
+                      const account = tempData[index];
+                      account.loan_list.push(loan);
+          
+                      // Calculate net_holdout for each loan in the account's loan_list
+                      account.loan_list.forEach((loan) => {
+                          loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
+                      });
+                  } else {
+                      // console.error('Index out of bounds:', index);
+                  }
+              });
+          
+              this.calculateSimulatedData(tempData); // Calculate simulated data
+          }
+          
+
+         
+        // Update the MatTableDataSource
+            this.dataSource.data = tempData;
+    
+          // Calculate sums and ratios based on the filtered data
+          const sumPrincipal = sblData.reduce((acc, obj) => {
+            acc.principal += parseFloat(obj.principal) || 0;
+            acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+            return acc;
+          }, { principal: 0, principal_bal: 0 });
+    
+          // Calculate ratios and other values using this.totalHoldOut
+          this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
+          const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
+        } else {
+          // Handle case where sblData is empty
+        }
+      });
+    }
+
 
     applyFilterLoanList(account: any): any[] | undefined {
       if (this.searchTextLoanList && this.searchTextLoanList.value) {
@@ -208,24 +229,9 @@ temporaryLoans?: Loan[]; // For SBL Simulation
 
 
     
-  totalHoldOuts: number[] = [];
+ 
 
-  ngOnInit() {
-    // Additional initialization logic if needed
-    this.getUnimpairedCap();
-    this.updateTableData();
-    this.availBal = this.internalSBL 
-    this.searchTextLoanList = new FormControl();
-    this.temporaryLoans = this.SimulatedtempSBLloan.getTemporaryLoans();
-    this.simulationPerformed = this.SimulatedtempSBLloan.isSimulationPerformed();
-   
-    // this.updateTableDatas();
-    // this.data = this.getFlattenedData(this.data);  
-    // Call the calculateTotalNetOfHoldOut method
-  // this.calculateTotalNetOfHoldOut();
-  }
-
-  totalNetHoldOut: number = 0;
+  
 
   calculateTotalNetHoldOut(loanList): number {
     let sum = 0;
@@ -241,67 +247,6 @@ temporaryLoans?: Loan[]; // For SBL Simulation
   }
 
 
-
-  updateTableData(): void {
-    // Initialize totalHoldOut for each account
-    this.get.getSBL((sblData) => {
-      if (sblData) {
-        // Use a Set to store unique loan numbers
-        const uniqueLoanNumbers = new Set<string>();
-  
-        // Filter out duplicate loans with the same loan_no within each company's SBL data
-        sblData.forEach((entry) => {
-          entry.loan_list = entry.loan_list.filter((loan) => {
-            if (uniqueLoanNumbers.has(loan.loan_no)) {
-              // Return false if it's a duplicate
-              return false;
-            } else {
-              // Add the loan number to the Set and return true
-              uniqueLoanNumbers.add(loan.loan_no);
-              return true;
-            }
-          });
-        });
-
-
-        // Push temporary loan data only once outside the forEach loop
-        const tempData = sblData.slice(); // Create a shallow copy of PNData
-        if (this.temporaryLoans && this.temporaryLoans.length > 0) {
-          const i = this.index; // Specify the index where you want to insert the temporary loans
-        
-          if (i < tempData.length) { // Check if the index is within the bounds of tempData
-            const account = tempData[i];
-            account.loan_list.push(...this.temporaryLoans);
-        
-            // Calculate net_holdout for each loan in the account's loan_list
-            account.loan_list.forEach((loan) => {
-              loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
-            });
-        
-            this.calculateSimulatedData(tempData); // Calculate simulated data
-          } else {
-            // console.error('Index out of bounds:', i);
-          }
-        }
-       
-      // Update the MatTableDataSource
-          this.dataSource.data = tempData;
-  
-        // Calculate sums and ratios based on the filtered data
-        const sumPrincipal = sblData.reduce((acc, obj) => {
-          acc.principal += parseFloat(obj.principal) || 0;
-          acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-          return acc;
-        }, { principal: 0, principal_bal: 0 });
-  
-        // Calculate ratios and other values using this.totalHoldOut
-        this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
-        const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
-      } else {
-        // Handle case where sblData is empty
-      }
-    });
-  }
   
   calculateSimulatedData(tempData: any[]): void {
     // Calculate sums and ratios based on the filtered data
@@ -315,18 +260,7 @@ temporaryLoans?: Loan[]; // For SBL Simulation
   }
 
   
-  getUnimpairedCap(): void {
-    this.get.getUnimpairedCapital((unimpairedCap) => {
-        
-        this.UnimpairedDate = unimpairedCap[0].date;
-        this.unimpairedCap = unimpairedCap[0].impared_capital;
-        
-        this.sbl = (this.unimpairedCap * .25);
-        this.internalSBL = (this.unimpairedCap * .20);
-
-    })
-  }
-
+  
 
 
 calculateLoanListSummary(loanList: Loan[]): any {
@@ -367,7 +301,7 @@ print() {
 
   // Function to Show the simulation Modal
   openSimulation(i: number) {
-    this.index = i;
+    this.SimulatedtempSBLloan.setindexValue(i);
     const dialogRef = this._dialog.open(SBLSimulationModalComponent, {
       width: '50%', // Set the width as per your requirement
       // Other MatDialog options can be specified here
