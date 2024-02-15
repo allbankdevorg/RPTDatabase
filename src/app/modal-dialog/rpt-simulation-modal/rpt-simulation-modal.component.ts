@@ -22,17 +22,17 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { SimulatedDataService } from '../../services/simulatedDataService/simulated-data-service.service';
 
 
-export interface Loan {
-  loan_no: number,
-  cis_no: number,
-  name: string,
-  principal: number,
-  principal_bal: number,
-  loan_security: string,
-  deposit_holdout: number,
-  date_granted: any,
-  netBal: number
-}
+// export interface Loan {
+//   loan_no: number,
+//   cis_no: number,
+//   name: string,
+//   principal: number,
+//   principal_bal: number,
+//   loan_security: string,
+//   deposit_holdout: number,
+//   date_granted: any,
+//   // netBal: number
+// }
 
 @Component({
   selector: 'app-rpt-simulation-modal',
@@ -50,7 +50,7 @@ export class RPTSimulationModalComponent implements OnInit{
   availBal: any;    // => Remaining Balance of Possible Loan Amount
   rptBal: any;      // => RPT Balance (Net of Hold-out)
   approvedCapital: any;  // => the Loan approved Limit
-  temporaryLoans?: Loan[];
+  // temporaryLoans?: Loan[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -87,19 +87,13 @@ export class RPTSimulationModalComponent implements OnInit{
 
     if (this.rptSimulateForm.valid) {
       const simulatedData = this.rptSimulateForm.value;
+      
+      console.log(simulatedData);
 
       if (this.simulatedRptTTL <= this.availBal) {
         this.simulatedDataService.addTemporaryLoan(simulatedData)
         this.simulatedDataService.setSimulationPerformed();
         this.close();
-        // addSimulatedPNData(sPNData, session, userID)
-        //   .then((response) => {
-        //     this.logAction('Add', 'Successfuly Added RPT PN Data', true, 'rpofficer-ri');
-        //     this.close();
-        //   })
-        //   .catch((error) => {
-
-        //   });
       }
       else {
         Swal.fire({
