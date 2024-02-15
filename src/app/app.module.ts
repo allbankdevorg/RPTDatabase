@@ -79,8 +79,8 @@ import { Keepalive } from '@ng-idle/keepalive';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { DIR2ndDegRelativesComponent } from './views/dir2nd-deg-relatives/dir2nd-deg-relatives.component';
 import { Officer2ndDegRelativesComponent } from './views/officer2nd-deg-relatives/officer2nd-deg-relatives.component'
-import { ResizableDirective } from './views/arp/other-related-parties/other-related-parties.component';
-import { DraggableDirective } from './views/arp/other-related-parties/other-related-parties.component';
+// import { ResizableDirective } from './views/arp/other-related-parties/other-related-parties.component';
+// import { DraggableDirective } from './views/arp/other-related-parties/other-related-parties.component';
 import { SettingsComponent} from './views/maintenance/settings/settings.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
@@ -160,8 +160,9 @@ const APP_CONTAINERS = [
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
-    BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,DraggableDirective,
-    ResizableDirective, LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
+    BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,
+    // DraggableDirective, ResizableDirective, 
+    LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective,
     DosriModalComponent,
     BankofficerModalComponent,
