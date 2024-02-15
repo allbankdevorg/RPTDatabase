@@ -193,19 +193,21 @@ export class SBLListComponent implements OnInit{
          
         // Update the MatTableDataSource
             this.dataSource.data = tempData;
+
+            console.log(tempData);
     
-          // Calculate sums and ratios based on the filtered data
-          const sumPrincipal = sblData.reduce((acc, obj) => {
-            acc.principal += parseFloat(obj.principal) || 0;
-            acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-            return acc;
-          }, { principal: 0, principal_bal: 0 });
+        //   // Calculate sums and ratios based on the filtered data
+        //   const sumPrincipal = sblData.reduce((acc, obj) => {
+        //     acc.principal += parseFloat(obj.principal) || 0;
+        //     acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+        //     return acc;
+        //   }, { principal: 0, principal_bal: 0 });
     
-          // Calculate ratios and other values using this.totalHoldOut
-          this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
-          const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
-        } else {
-          // Handle case where sblData is empty
+        //   // Calculate ratios and other values using this.totalHoldOut
+        //   this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
+        //   const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
+        // } else {
+        //   // Handle case where sblData is empty
         }
       });
     }
@@ -214,7 +216,8 @@ export class SBLListComponent implements OnInit{
     applyFilterLoanList(account: any): any[] | undefined {
       if (this.searchTextLoanList && this.searchTextLoanList.value) {
         const filterValue = this.searchTextLoanList.value.toLowerCase();
-      
+        
+        
         // Adjust the following logic based on your data structure and filter requirements
         return account.loan_list.filter((item: any) =>
           item.loan_no.toLowerCase().includes(filterValue) ||
@@ -223,8 +226,14 @@ export class SBLListComponent implements OnInit{
           // Add more fields as needed for your use case
           // ...
         );
+
+        
+      
       }
+      
       return undefined;
+
+      
     }
 
 

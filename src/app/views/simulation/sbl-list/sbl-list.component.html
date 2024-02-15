@@ -137,10 +137,10 @@
                                       <table cTable [responsive]="true" >
                                         <tbody>
                                            <tr>
-                                            <th>Total {{account.company_name}} GRP</th>
+                                            <th>Total {{account.account_name}} GRP</th>
                                             
                                             <td>
-                                              {{ calculateTotalNetHoldOut(account.loan_list) | currency:'PHP' }}
+                                              {{ calculateTotalNetHoldOut(account.loan_list| filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }}
                                             </td>
                                             
                                             <!-- Display the hidden element to trigger the calculation -->
@@ -157,7 +157,7 @@
                                            <tr cTableColor="info" [ngClass]="{'green-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
                                             <td> 
-                                              {{ sbl - calculateTotalNetHoldOut(account.loan_list) | currency:'PHP' }} 
+                                              {{ sbl - calculateTotalNetHoldOut(account.loan_list | filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }} 
                                             </td>
                                           </tr>                                          
                                            <tr>
@@ -165,8 +165,8 @@
                                             <td></td>
                                            </tr>
                                            <tr>
-                                            <th>TOTAL {{account.company_name}} GRP</th>
-                                            <td> {{ calculateTotalNetHoldOut(account.loan_list)  | currency:'PHP'}} </td>
+                                            <th>TOTAL {{account.account_name}} GRP</th>
+                                            <td> {{ calculateTotalNetHoldOut(account.loan_list| filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }} </td>
                                            </tr>
                                            
                                            <tr>
@@ -176,7 +176,7 @@
                                            
                                            <tr cTableColor="info" [ngClass]="{'green-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
-                                            <td>{{internalSBL - calculateTotalNetHoldOut(account.loan_list) | currency:'PHP'}}</td>
+                                            <td>{{internalSBL - calculateTotalNetHoldOut(account.loan_list| filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }}</td>
                                            </tr>
                                            
                                            
