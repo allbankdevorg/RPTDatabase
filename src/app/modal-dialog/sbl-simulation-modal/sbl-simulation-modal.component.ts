@@ -4,6 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
 import Swal from 'sweetalert2';
 
+//Simulate Loan for SBL
+import {SimulatedSBLDataService} from '../../services/simulatedSBLService/simulated-sbldata.service'
 
 // Functions Imports
 import {getManagingCompany} from '../../functions-files/getFunctions';
@@ -20,6 +22,29 @@ import {AddServicesService} from '../../services/add/add-services.service';
 import { AffiliatesService } from 'src/app/services/affiliates/affiliates.service';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import {SblLoanSimulateService} from '../../services/sblLoanSimulate/sbl-loan-simulate.service';
+import { SimulatedDataService } from '../../services/simulatedDataService/simulated-data-service.service';
+
+//Simulate Loan for SBL
+
+
+export interface Loan {
+  loan_no: number,
+  cis_no: number,
+  name: string,
+  principal: number,
+  principal_bal: number,
+  loan_security: string,
+  deposit_holdout: number,
+  date_granted: any,
+  net_holdout: number,
+  off_cisnumber: string,
+}
+
+export interface LoanWrapper {
+  loan: Loan;
+  index: number;
+}
+
 
 @Component({
   selector: 'app-sbl-simulation-modal',
@@ -41,6 +66,7 @@ export class SBLSimulationModalComponent implements OnInit{
   availBal: any;
   rptBal: any;  
   approvedCapital: any;  // => the Loan approved Limit
+  temporaryLoans: LoanWrapper[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,11 +77,17 @@ export class SBLSimulationModalComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService,
     private auditTrailService: AuditTrailService,
-    private get: FetchDataService) {
+    private get: FetchDataService,
+    private simulatedSBLDataService: SimulatedSBLDataService) {
     this.sblSimulateForm = this.formBuilder.group({
-      com_cis_number: [''],
-      com_account_name: [''],
-      amount: ['', [Validators.required]]
+      cis_no: [''],
+      name: [''],
+      principal: ['', [Validators.required]],
+      principal_bal: ['']
+      });
+      this.sblSimulateForm.get('principal')?.valueChanges.subscribe(principal => {
+        // Update the value of principal_bal whenever principal changes
+        this.sblSimulateForm.get('principal_bal')?.setValue(principal);
       });
       _dialogRef.disableClose = true;
   }
@@ -63,6 +95,7 @@ export class SBLSimulationModalComponent implements OnInit{
   ngOnInit(): void {
   // Attempt to patch the form
   this.sblSimulateForm.patchValue(this.data);
+  this.availBal = this.sblSimulateService.getAvailBal();
   }
 
 
@@ -71,26 +104,32 @@ export class SBLSimulationModalComponent implements OnInit{
     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
     const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
 
-    if (this.sblSimulateForm.valid) {
-      const sPNData = this.sblSimulateForm.value;
-      
-      if (this.simulatedRptTTL <= this.availBal) {
-        addSimulatedPNData(sPNData, session, userID)
-          .then((response) => {
-            this.logAction('Add', 'Successfuly Added SBL PN Data', true, 'rpofficer-ri');
-            this.close();
-          })
-          .catch((error) => {
-
+      if (this.sblSimulateForm.valid) {
+        const simulatedData = this.sblSimulateForm.value;
+        if (this.amount_Val <= this.availBal) {
+          // Here, you should get the index from somewhere and use it when adding temporary loans
+          const index = this.getIndex(); // Assuming you have a method to get the index
+          const loan: Loan = { ...simulatedData, net_holdout: simulatedData.principal_bal - simulatedData.deposit_holdout }; // Assuming you calculate net_holdout here
+          const loanWrapper: LoanWrapper = {index, loan  };
+          this.simulatedSBLDataService.addTemporaryLoan(index, loan);
+          this.simulatedSBLDataService.setSimulationPerformed();
+          this.close();
+          // addSimulatedPNData(sPNData, session, userID)
+          //   .then((response) => {
+          //     this.logAction('Add', 'Successfuly Added SBL PN Data', true, 'rpofficer-ri');
+          //     this.close();
+          //   })
+          //   .catch((error) => {
+  
+          //   });
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Loan Breached!',
+            text: 'Please Enter Amount not Greater than the Available Balance',
           });
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Loan Breached!',
-          text: 'Please Enter Amount not Greater than the Available Balance',
-        });
-      }
+        }
       
     }
 
@@ -103,12 +142,12 @@ export class SBLSimulationModalComponent implements OnInit{
       const dataLookup = this.sblSimulateForm.value;
       // Convert the values to numbers using parseFloat or the unary + operator
       const currentSttlValue = parseFloat(this.currentSttl) || 0;
-      const amountValue = parseFloat(dataLookup.amount) || 0;
+      const amountValue = parseFloat(dataLookup.principal) || 0;
 
       this.amount_Val = amountValue;
       // Perform the addition
       this.simulatedSttl = this.totalLoan + amountValue;
-
+      
       if (this.amount_Val > this.sblTotalRPT ) {
         Swal.fire({
           icon: 'error',
@@ -116,7 +155,7 @@ export class SBLSimulationModalComponent implements OnInit{
           text: 'Please Enter Amount not Greater than the Available Balance',
         });
       }
-      // this.simulatedRptTTL = amountValue;
+      this.simulatedRptTTL = amountValue;
       this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
   }
@@ -127,63 +166,75 @@ export class SBLSimulationModalComponent implements OnInit{
   }
 
 
+  
   CISlookup() {
     const dataLookup = this.sblSimulateForm.value;
-    
     this.sblTotalRPT = this.sblSimulateService.getAvailBal();
     this.totalLoan = this.sblSimulateService.getTotalLoan();
-    if (dataLookup.com_cis_number) {
-      let cis = dataLookup.com_cis_number;
+    if (dataLookup.cis_no) {
+      let cis = dataLookup.cis_no;
       cisLookUP(cis)
-      .then((response) => {
+        .then((response) => {
+          if (Array.isArray(response.data)) {
+            if (response.data.length > 0) {
+              let sumPrincipal = { principal: 0, principal_bal: 0 };
   
-        if (response.length > 0) {
-          // Use the first element of the response array
-          let accName = response[0].name;
+              response.data.forEach((item) => {
+                // Calculate the sum for each item
+                sumPrincipal.principal += parseFloat(item.principal) || 0;
+                sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+              });
 
-          // Update form controls with new values
-          this.sblSimulateForm.patchValue({
-            com_account_name: accName,
-            // Add other form controls if needed
-          });
+              // Assign the sum to the class variables
+              this.currentSttl = sumPrincipal.principal;
+              this.currentRptTTL = sumPrincipal.principal_bal;
 
-          if (Array.isArray(response)) {
-            // Initialize sumPrincipal outside the loop
-            let sumPrincipal = { principal: 0, principal_bal: 0 };
-
-            response.forEach((item) => {
-              // Calculate the sum for each item
-              sumPrincipal.principal += parseFloat(item.principal) || 0;
-              sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
-            });
-
-            // Assign the sum to the class variables
-            this.currentSttl = sumPrincipal.principal;
-            this.currentRptTTL = sumPrincipal.principal_bal;
+              // If response.data is an array and not empty, use the first element
+              const firstElement = response.data[0];
+              let accName = firstElement.name;
+  
+              this.updateFormControls(accName);
+            } else {
+              // Handle the case when response.data is an empty array
+              const accName = response.data.cisName || '';
+              
+              this.toggleInputReadOnly();
+            }
           } else {
-            
+            // Handle the case when response.data is not an array
+            const accName = response.cisName || '';
+            this.updateFormControls(accName);
+            this.toggleInputReadOnly();
           }
-        } else {
-          // Display an error message if no CIS is found
+        })
+        .catch((error) => {
           Swal.fire({
             icon: 'error',
             title: 'No CIS Found!',
-            text: 'Please Enter the Account and Company Name',
+            text: 'CIS Does Not Exist!',
           });
           this.toggleInputReadOnly();
-        }
-      })
-      .catch((error) => {
-        // Display an error message if an error occurs
-        Swal.fire({
-          icon: 'error',
-          title: 'No CIS Found!',
-          text: 'CIS Does Not Exist!',
         });
-        this.toggleInputReadOnly();
-      });
     }
   }
+  
+  // Function to update form controls
+  updateFormControls(accName: string) {
+    this.sblSimulateForm.patchValue({
+      name: accName // Assuming you have company_name in the response
+      // Add other form controls if needed
+    });
+  }
+
+
+  // Method to get the index
+  getIndex(): number {
+    // Here you should write the logic to determine the index based on your requirements
+    // For example, you could get it from a service or calculate it dynamically
+    const indexValue = this.simulatedSBLDataService.getindexValue();
+    // Return the index value if it's defined, otherwise return a default value (e.g., 0)
+    return indexValue !== undefined ? indexValue : 0;}
+  
 
   toggleInputReadOnly() {
     this.isReadOnly = !this.isReadOnly;
