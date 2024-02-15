@@ -9,7 +9,7 @@ export interface Loan {
   principal: number,
   principal_bal: number,
   loan_security: string,
-  deposit_holdout: number,
+  holdoutdata: number,
   date_granted: any,
   netBal: number
 }
@@ -45,6 +45,7 @@ export class SimulatedDataService {
 
   addTemporaryLoan(loan: Loan) {
     this.temporaryLoans.push(loan);
+    console.log(this.temporaryLoans);
   }
 
   removeTemporaryLoan(index: number) {
