@@ -32,7 +32,7 @@ export class PdfExportService {
 
     // Generate the table
     (doc as any).autoTable({
-      startY: 40, // Adjust startY value to leave space for the header text
+      startY: 25, // Adjust startY value to leave space for the header text
       head: [columnsToInclude],
       body: modifiedData,
     });

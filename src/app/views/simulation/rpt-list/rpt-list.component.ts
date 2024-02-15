@@ -387,7 +387,7 @@ export class RptListComponent {
         'BORROWER/GROUP': item.name,
         'ORIGINAL LOAN': item.principal,
         'OUTSTANDING BALANCE': item.principal_bal,
-        'DEPOSIT HOLDOUT': item.deposit_holdout,
+        'DEPOSIT HOLDOUT': item.holdoutdata,
         'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
         'LOAN SECURITY': item.loan_security,
         'INTEREST RATE': item.int_rate,
