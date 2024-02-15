@@ -123,7 +123,8 @@ export class SBLListComponent implements OnInit{
     loadData(): void {
       // Fetch data and initialize components
       this.getUnimpairedCap();
-      this.updateTableData();
+      this.updateTableData(['1480005220', '1480005206', '1480012730', '1480000958', '1480007708',
+      '1480012027', '1480009097', '1480006526']);
       this.temporaryLoans = this.SimulatedtempSBLloan.getTemporaryLoans();
       this.simulationPerformed = this.SimulatedtempSBLloan.isSimulationPerformed();  
       this.availBal = this.internalSBL 
@@ -144,7 +145,7 @@ export class SBLListComponent implements OnInit{
     }
 
 
-    updateTableData(): void {
+    updateTableData(cisNumbers: string[]): void {
       // Fetch SBL data and update table
       this.get.getSBL((sblData) => {
         if (sblData) {
@@ -163,54 +164,45 @@ export class SBLListComponent implements OnInit{
                 return true;
               }
             });
+    
+            // Filter the loan list based on the array of CIS numbers
+            entry.loan_list = entry.loan_list.filter((loan) => {
+              return cisNumbers.includes(loan.cis_no);
+            });
           });
-  
-  
+    
           // Push temporary loan data only once outside the forEach loop
           const tempData = sblData.slice(); // Create a shallow copy of sblData
           if (this.temporaryLoans && this.temporaryLoans.length > 0) {
-              // Iterate over each LoanWrapper object and its index
-              this.temporaryLoans.forEach((loanWrapper) => {
-                  const { index, loan } = loanWrapper;
-                  console.log(loanWrapper);
-                  if (index < tempData.length) { // Check if the index is within the bounds of tempData
-                      const account = tempData[index];
-                      account.loan_list.push(loan);
-          
-                      // Calculate net_holdout for each loan in the account's loan_list
-                      account.loan_list.forEach((loan) => {
-                          loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
-                      });
-                  } else {
-                      // console.error('Index out of bounds:', index);
-                  }
-              });
-          
-              this.calculateSimulatedData(tempData); // Calculate simulated data
+            // Iterate over each LoanWrapper object and its index
+            this.temporaryLoans.forEach((loanWrapper) => {
+              const { index, loan } = loanWrapper;
+              console.log(loanWrapper);
+              if (index < tempData.length) {
+                // Check if the index is within the bounds of tempData
+                const account = tempData[index];
+                account.loan_list.push(loan);
+    
+                // Calculate net_holdout for each loan in the account's loan_list
+                account.loan_list.forEach((loan) => {
+                  loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
+                });
+              } else {
+                // console.error('Index out of bounds:', index);
+              }
+            });
+    
+            this.calculateSimulatedData(tempData); // Calculate simulated data
           }
-          
-
-         
-        // Update the MatTableDataSource
-            this.dataSource.data = tempData;
-
-            console.log(tempData);
     
-        //   // Calculate sums and ratios based on the filtered data
-        //   const sumPrincipal = sblData.reduce((acc, obj) => {
-        //     acc.principal += parseFloat(obj.principal) || 0;
-        //     acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-        //     return acc;
-        //   }, { principal: 0, principal_bal: 0 });
+          // Update the MatTableDataSource
+          this.dataSource.data = tempData;
     
-        //   // Calculate ratios and other values using this.totalHoldOut
-        //   this.rptBal = sumPrincipal.principal_bal - this.totalHoldOut;
-        //   const percentage = `${((this.rptBal / 1214764186.16) * 100).toFixed(2)}%`;
-        // } else {
-        //   // Handle case where sblData is empty
+          console.log(tempData);
         }
       });
     }
+    
 
 
     applyFilterLoanList(account: any): any[] | undefined {
