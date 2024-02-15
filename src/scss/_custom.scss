@@ -10,7 +10,6 @@
     height: auto;
     overflow: auto;
     background: #eeeeee;
-    justify-content: center; /* Center the parent horizontally */
     align-items: flex-start;
   }
   
@@ -76,7 +75,7 @@
     cursor : default;
     border : 1px solid #e7e7e7;
     display : inline-block;
-    padding : 5px;
+    padding : 5px 5px;
     min-width : 180px;
     min-height : 90px;
     // max-height: 120px;
