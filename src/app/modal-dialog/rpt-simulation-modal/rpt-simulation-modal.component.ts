@@ -88,7 +88,6 @@ export class RPTSimulationModalComponent implements OnInit{
     if (this.rptSimulateForm.valid) {
       const simulatedData = this.rptSimulateForm.value;
       
-      console.log(simulatedData);
 
       if (this.simulatedRptTTL <= this.availBal) {
         this.simulatedDataService.addTemporaryLoan(simulatedData)
