@@ -180,7 +180,6 @@ export class UpdateManagingCompanyModalComponent {
           }
         })
         .catch((error) => {
-          console.log(error);
           Swal.fire({
             icon: 'error',
             title: 'No CIS Found!',
