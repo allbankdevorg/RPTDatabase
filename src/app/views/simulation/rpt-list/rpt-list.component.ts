@@ -168,7 +168,7 @@ export class RptListComponent {
       
       if (PNData) {
         const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
-        console.log(PNData);
+        
         uniqueCisNumbers.forEach((cisNumber) => {
           HoldOutValue(cisNumber)
             .then((response) => {
@@ -181,7 +181,7 @@ export class RptListComponent {
   
         // Push temporary loan data only once outside the forEach loop
         const tempData = PNData.slice();
-        console.log(tempData);
+        
          // Create a shallow copy of PNData
         if (this.temporaryLoans) {
           tempData.push(...this.temporaryLoans);
