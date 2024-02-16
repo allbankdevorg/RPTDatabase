@@ -364,14 +364,4 @@ print() {
 
 
 
-
-
-  
-  // exportPDF() {
-  //   // Call exportToPDF() or openPDF() as needed
-  //   // For example, to open PDF from HTML element with id 'htmlData'
-  //   this.pdfExportService.openPDF('htmlData');
-  // }
-
-
 }
