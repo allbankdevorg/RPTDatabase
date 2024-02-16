@@ -358,6 +358,16 @@ print() {
     this.pdfExportService.generateSBLPDF(data);
   }
 
+
+  generateCSV(): void {
+    const data = this.dataSource.data;
+    this.csvExportService.generateAndSaveCSV(data);
+  }
+
+
+
+
+
   
   // exportPDF() {
   //   // Call exportToPDF() or openPDF() as needed

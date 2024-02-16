@@ -74,4 +74,52 @@ export class CsvExportService {
   private isDate(value: any): boolean {
     return value instanceof Date && !isNaN(value.getTime());
   }
+
+
+
+
+
+  generateAndSaveCSV(data: any[]): void {
+    const csvData = this.generateCSVData(data);
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const filename = `SBL_List_${formattedDate}.csv`;
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+    saveAs(blob, filename);
+  }
+
+  private generateCSVData(data: any[]): string {
+    let csv = '';
+
+    // Add header row
+    const headerRow = ['PN/Loan Number', "Borrower's Name", 'Collateral', 'Amount Granted', 'Date Booked', 'Outstanding Balance', 'Hold-Out', 'Net of Hold-Out', 'Payment Status'];
+    csv += headerRow.join(',') + '\n';
+
+    // Add data rows
+    data.forEach(entry => {
+      const accountName = entry.account_name;
+      csv += `"${accountName}"\n`; // Add account name as a separate row
+      entry.loan_list.forEach(loan => {
+        const rowData = [
+          loan.loan_no,
+          `"${loan.name}"`,
+          loan.loan_security,
+          loan.principal,
+          new Date(loan.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+          loan.principal_bal,
+          loan.deposit_holdout,
+          loan.principal_bal - loan.deposit_holdout,
+          loan.payment_status ||  '',
+          // Add more properties as needed
+        ];
+        csv += rowData.join(',') + '\n';
+      });
+      csv += '\n'; // Add an empty row after each set of data
+    });
+
+    return csv;
 }
+
+
+}
+
