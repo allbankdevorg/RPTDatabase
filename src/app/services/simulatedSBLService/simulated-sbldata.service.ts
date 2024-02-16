@@ -52,7 +52,6 @@ export class SimulatedSBLDataService {
 
   addTemporaryLoan(index: number, loan: Loan) {
     this.temporaryLoans.push({ loan, index });
-    console.log(this.temporaryLoans);
   }
 
   setindexValue(indexValue: number) {
