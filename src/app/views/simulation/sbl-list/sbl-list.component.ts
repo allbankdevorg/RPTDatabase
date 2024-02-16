@@ -180,7 +180,6 @@ export class SBLListComponent implements OnInit{
             // Iterate over each LoanWrapper object and its index
             this.temporaryLoans.forEach((loanWrapper) => {
               const { index, loan } = loanWrapper;
-              console.log(loanWrapper);
               if (index < tempData.length) {
                 // Check if the index is within the bounds of tempData
                 const account = tempData[index];
@@ -284,14 +283,14 @@ print() {
 
 
   scrollToUser(name: string) {
-    console.log(name);
+    
     const lowerCaseName = name.toLowerCase();
     const elements = document.querySelectorAll('[id]');
-    console.log(elements);
+    
   
     for (const element of Array.from(elements)) {
       const elementId = element.id.toLowerCase();
-      console.log(elementId.includes(lowerCaseName));
+      
       if (elementId.includes(lowerCaseName)) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         break; // Stop searching after the first match
