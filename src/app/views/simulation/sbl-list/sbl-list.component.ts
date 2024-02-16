@@ -102,6 +102,7 @@ export class SBLListComponent implements OnInit{
   totalHoldOuts: number[] = [];
   result: ResultItem[] = [];
 
+  currentDate?: Date;
   constructor(
     private get: FetchDataService,
     public _dialog: MatDialog,
@@ -117,6 +118,7 @@ export class SBLListComponent implements OnInit{
     ngOnInit() {
       this.searchTextLoanList = new FormControl();
       this.loadData();
+      this.currentDate = new Date();
     }
 
 
@@ -351,12 +353,17 @@ print() {
 
 
 
+  exportPDF(): void {
+    const data: any[] = this.dataSource.data;
+    this.pdfExportService.generateSBLPDF(data);
+  }
 
   
-  exportPDF() {
-    // Call exportToPDF() or openPDF() as needed
-    // For example, to open PDF from HTML element with id 'htmlData'
-    this.pdfExportService.openPDF('htmlData');
-  }
+  // exportPDF() {
+  //   // Call exportToPDF() or openPDF() as needed
+  //   // For example, to open PDF from HTML element with id 'htmlData'
+  //   this.pdfExportService.openPDF('htmlData');
+  // }
+
 
 }

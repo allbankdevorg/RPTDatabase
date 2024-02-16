@@ -10,6 +10,8 @@ export class PdfExportService {
   constructor() {}
 
 
+
+  //RPT List PDF Report generation
   exportToPDF(data: any[], filename: string, columnsToInclude: string[], headerText: string): void {
     const doc = new jsPDF({
         orientation: 'landscape',
@@ -83,6 +85,12 @@ private formatCurrency(value: any): string {
 }
 
 
+
+
+
+
+
+//TEst sbl pdf generation
 openPDF(elementId: string): void {
   let DATA: any = document.getElementById(elementId);
   html2canvas(DATA, { scale: 2 }).then((canvas) => {
@@ -122,18 +130,85 @@ openPDF(elementId: string): void {
 
 
 
+// SBL PDF Report Generation
+generateSBLPDF(data: any[]): void {
+  const doc = new jsPDF({
+    orientation: 'landscape',
+    format: 'legal' // Set orientation to landscape
+});
 
+const currentDate = new Date();
 
+// Step 2: Format the date as needed
+const formattedDate = currentDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+});
 
+// Step 3: Add the header text with the formatted date
+// Step 3: Define header text
+const headerText = `SBL Report as of ${formattedDate}`;
+// Step 4: Add the header text with the formatted date
+const headerTextWidth = doc.getTextWidth(headerText); // Get the width of the header text
+const headerTextX = (doc.internal.pageSize.width - headerTextWidth) / 2; // Calculate the x-coordinate to center the text
+const headerTextY = 15; // Set the y-coordinate for the header text
+doc.text(headerText, headerTextX, headerTextY); // Center the header text vertically at y-coordinate 20
 
+let y = headerTextY + 15; // Adjust the starting y-coordinate for the first table to add a margin below the header
 
+const columns = [
+  'PN/Loan Number', 
+  "Borrower's Name", 
+  'Collateral', 
+  'Amount Granted', 
+  'Date Booked: ', 
+  'Outstanding Balance', 
+  'Hold-Out', 
+  'Net of Hold-Out', 
+  'Payment Status'
+];
 
+data.forEach(entry => {
+      doc.text(`${entry.account_name}`, 10, y, );
+      y += 3;
 
+      // Generate the table for each entry's loan list
+      (doc as any).autoTable({
+          startY: y,
+          head: [columns],
+          body: entry.loan_list.map(loan => [loan.loan_no, loan.name, loan.loan_security, loan.principal,
+            new Date(loan.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }), loan.principal_bal, loan.deposit_holdout, loan.principal_bal - loan.deposit_holdout]),
+      });
 
+      // Increase y position for the next entry
+      y += entry.loan_list.length * 10 + 10; // Adjust spacing as needed
+  });
 
+  
+
+  // Step 4: Append the current date to the filename
+  const filename = `SBL_Report_${formattedDate}.pdf`;
+
+  // Step 5: Save the PDF with the updated filename
+  doc.save(filename);
+}
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

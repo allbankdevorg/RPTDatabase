@@ -6,6 +6,8 @@
         <c-card class="mb-4">
           <c-card-header class="d-flex justify-content-between align-items-center"><h2>SBL Monitoring List as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</h2>
             
+          <!-- <c-card-header class="d-flex justify-content-between align-items-center"><h2>SBL Monitoring List as of {{currentDate | date: 'MMMM dd, yyyy'}}</h2> -->
+            
           </c-card-header>
           <c-card-body>
   
@@ -30,7 +32,7 @@
                         <mat-icon>refresh</mat-icon>
                         Reset Simulation
                       </button>
-                      <button (click)="exportPDF()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                      <button (click)="exportPDF()" mat-fab extended color="primary" style="margin-right: 10px;">
                         <mat-icon>file_download</mat-icon>
                         PDF
                       </button>
