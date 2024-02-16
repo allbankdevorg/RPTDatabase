@@ -83,42 +83,50 @@ private formatCurrency(value: any): string {
 }
 
 
-
 openPDF(elementId: string): void {
   let DATA: any = document.getElementById(elementId);
-  html2canvas(DATA).then((canvas) => {
-    let contentHeight = DATA.scrollHeight;
-
-    let fileWidth = 208;
-    let fileHeight = (contentHeight * fileWidth) / canvas.width;
-
-    // Add padding values
-    let paddingX = 10; // Adjust as needed
-    let paddingY = 10; // Adjust as needed
-
+  html2canvas(DATA, { scale: 2 }).then((canvas) => {
     const FILEURI = canvas.toDataURL('image/png');
     let PDF = new jsPDF('p', 'mm', 'a4');
-    let positionX = paddingX;
-    let positionY = paddingY;
+    let paddingX = 10; // Adjust as needed
+    let paddingY = 10; // Adjust as needed
+    let pageWidth = PDF.internal.pageSize.getWidth() - 2 * paddingX;
+    let pageHeight = PDF.internal.pageSize.getHeight() - 2 * paddingY;
+    
+    let scaleFactor = Math.min(1, pageHeight / canvas.height);
+    let scaledWidth = canvas.width * scaleFactor;
+    let scaledHeight = canvas.height * scaleFactor;
 
-    // Define function to add content to PDF
-    const addContentToPDF = (contentY: number) => {
-      PDF.addImage(FILEURI, 'PNG', positionX, positionY, fileWidth - 2 * paddingX, fileHeight - 2 * paddingY);
-      positionY += fileHeight - 2 * paddingY;
+    let currentY = paddingY;
+    let remainingHeight = scaledHeight;
 
-      // Check if remaining space on the page is not enough for another image
-      if (positionY + fileHeight - 2 * paddingY > PDF.internal.pageSize.getHeight()) {
-        PDF.addPage(); // Add new page
-        positionY = paddingY; // Reset Y position
+    while (remainingHeight > 0) {
+      if (remainingHeight > pageHeight) {
+        PDF.addPage();
+        currentY = paddingY;
+        remainingHeight -= pageHeight;
+      } else {
+        PDF.addImage(FILEURI, 'PNG', paddingX, currentY, scaledWidth, remainingHeight);
+        remainingHeight = 0;
       }
-    };
+    }
 
-    // Add content to PDF, possibly spanning multiple pages
-    addContentToPDF(positionY);
-
-    PDF.save('SBL.pdf');
+    PDF.save('SBL_Report.pdf');
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
