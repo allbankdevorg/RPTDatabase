@@ -201,7 +201,6 @@ export class SBLListComponent implements OnInit{
           // Update the MatTableDataSource
           this.dataSource.data = tempData;
     
-          console.log(tempData);
         }
       });
     }
