@@ -162,7 +162,7 @@ const columns = [
   "Borrower's Name", 
   'Collateral', 
   'Amount Granted', 
-  'Date Booked: ', 
+  'Date Booked ', 
   'Outstanding Balance', 
   'Hold-Out', 
   'Net of Hold-Out', 
