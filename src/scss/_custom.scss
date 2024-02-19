@@ -2,12 +2,12 @@
 
 #orgChart{
     width: auto;
-    height: auto;
+    height: 500px;
   }
   
   #orgChartContainer{
    width: 100%;
-    height: auto;
+    height: 60%;
     overflow: auto;
     background: #eeeeee;
     align-items: flex-start;
@@ -76,7 +76,7 @@
     border : 1px solid #e7e7e7;
     display : inline-block;
     padding : 5px 5px;
-    min-width : 180px;
+    width : 180px;
     min-height : 90px;
     // max-height: 120px;
     background: #f3d2c1; /* Old browsers */
