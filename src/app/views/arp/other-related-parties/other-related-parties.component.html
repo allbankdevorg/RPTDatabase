@@ -9,10 +9,16 @@
                 <c-row>
                   <c-container class="my-1 d-flex justify-content-between align-items-center">
                     <div></div>
-                    <button class="mx-1" (click)="openAddEditEmpForm()" mat-fab extended color="primary" (click)="onButtonClick('JMN')" *appHasPermission="'add'">
-                      <mat-icon>add</mat-icon>
-                      ADD
-                  </button>
+                    <div>
+                      <button class="mx-1" (click)="openAddEditEmpForm()" mat-fab extended color="primary" (click)="onButtonClick('JMN')" *appHasPermission="'add'">
+                        <mat-icon>add</mat-icon>
+                        ADD
+                    </button>
+                      <button (click)="generatePdf()" mat-fab extended color="primary" style="margin-right: 10px;">
+                        <mat-icon>picture_as_pdf</mat-icon>
+                        PDF
+                      </button>
+                    </div>
                   </c-container>
                 </c-row>
             </c-card>
@@ -20,8 +26,17 @@
     </c-row>
 </c-container>
 
-<div id="org-chart-container" appResizable class="org-chart-container">
+
+<div #orgChartContainer id="orgChartContainer" >
+  <div id="orgChart"></div>
+  <!-- <div id="org-chart-container" appResizable class="org-chart-container"></div> -->
 </div>
+<div id="consoleOutput"></div>
+
+
+
+
+
 <!--PopOver-->
 <div #nodePopover id="nodePopover" class="pop" style="display: none;">
     <h5>Node Details</h5>
@@ -35,7 +50,7 @@
                             <div class="modal-dialog" role="document">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="actionModalLabel">Select an Action</h5>
+                                  <h5 class="modal-title" id="actionModalLabel">Select an Action for {{datas}}</h5>
                                   <button (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>
