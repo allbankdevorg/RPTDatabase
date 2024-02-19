@@ -23,6 +23,7 @@ import {AffiliatesService} from '../../../services/affiliates/affiliates.service
 declare var $: any; // Declare $ to use jQuery
 
 interface CompData {
+  cis_id: string;
   id: string;
   name: string;
   parent: string;
@@ -79,10 +80,10 @@ export class OrgsDataChartComponent implements OnInit {
   drawOrgChart(dataArr) {
     // var OrgData = this.Dataorig;
 
-    console.log(dataArr);
 
     const testData = dataArr.map(originalJson => ({
       id: originalJson.id,
+      cis_id: originalJson.cis_id,
       name: originalJson.name,
       parent: originalJson.parent,
       manager: originalJson.manager,
@@ -113,8 +114,9 @@ export class OrgsDataChartComponent implements OnInit {
         this.showModal(); // now `this` refers to the component instance
         this.fetchTotalHoldOut();
       }
-    });
 
+      
+    });
     // Example log function
     function log(text: string) {
       $('#consoleOutput').append('<p>' + text + '</p>');
@@ -189,7 +191,10 @@ export class OrgsDataChartComponent implements OnInit {
       if (OtherComp) {
         const dataArr: CompData[] = [];
         OtherComp.forEach((item) => {
+          const id = (item.id !== undefined) ? item.id.toString() : "";
+          console.log(id);
           const company: CompData = {
+            cis_id: item.aff_com_cis_number,
             id: item.aff_com_cis_number,
             name: item.aff_com_account_name,
             parent: item.managing_company || "",
@@ -200,6 +205,7 @@ export class OrgsDataChartComponent implements OnInit {
             hold_out: item.hold_out
           };
           dataArr.push(company);
+
         });
         // this.Dataorig = dataArr;
         // console.log(this.Dataorig);
