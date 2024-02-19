@@ -91,8 +91,12 @@ private formatCurrency(value: any): string {
 
 
 //TEst sbl pdf generation
-openPDF(elementId: string): void {
-  let DATA: any = document.getElementById(elementId);
+openPDF(): void {
+  let DATA: any = document.getElementById('orgChartContainer');
+  
+  // Ensure all child elements are visible before capturing
+  DATA.style.visibility = 'visible';
+  
   html2canvas(DATA, { scale: 2 }).then((canvas) => {
     const FILEURI = canvas.toDataURL('image/png');
     let PDF = new jsPDF('p', 'mm', 'a4');
@@ -119,9 +123,10 @@ openPDF(elementId: string): void {
       }
     }
 
-    PDF.save('SBL_Report.pdf');
+    PDF.save('Org_Chart.pdf');
   });
 }
+
 
 
 
