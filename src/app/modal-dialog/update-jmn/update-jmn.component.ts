@@ -230,7 +230,29 @@ export class UpdateJMNComponent {
           });
         }
       })
-    } else if (moduleV === "PAVI") {
+    } else if (moduleV === "ORP") {
+      this.get.getManagingCompany((mngComp) => {
+        this.compData = mngComp;
+      this.commandGroups = []; // Clear the existing commandGroups
+      
+  
+        if (mngComp) {
+          const data = mngComp;
+          
+          data.forEach(item => {
+            // Create a commandGroup item with value and viewValue
+            const commandGroup = {
+              value: item.aff_com_cis_number,
+              viewValue: item.aff_com_company_name,
+            };
+  
+            // Add the command group to the array
+            this.commandGroups.push(commandGroup);
+          });
+        }
+      })
+    }
+    else if (moduleV === "PAVI") {
       this.get.getPavi((PaviComp) => {
         this.compData = PaviComp;
       this.commandGroups = []; // Clear the existing commandGroups
@@ -252,10 +274,9 @@ export class UpdateJMNComponent {
         }
       })
       
-    }
   }
 
-
+}
   
   
 
