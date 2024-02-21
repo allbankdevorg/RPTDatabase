@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageService } from 'ngx-webstorage';
 
+import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 
 
 // Functions imports
@@ -77,7 +78,7 @@ export class LoginComponent implements OnInit {
   };
 
 
-  constructor(public router: Router, 
+  constructor(public router: Router,
     public fb: FormBuilder,
     private renderer: Renderer2,
     private el: ElementRef,
@@ -86,6 +87,7 @@ export class LoginComponent implements OnInit {
     private storageService: SessionStorageService,
     // private addAPI: AddServicesService,
     private idle: SessionTimeoutService,
+    private IdleLib: Idle,
     private auditTrailService: AuditTrailService,
     private http: HttpClient ) {
       try {
@@ -102,8 +104,9 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-    });
 
+      
+    });
     // this.otpForm = this.fb.group({
     //   otp: [''],
     //   // Add more form controls as needed
@@ -224,6 +227,86 @@ async login() {
 }
 
 
+// async verifyOtp() {
+//   if (this.otp !== '') {
+//     const enteredOTP = this.otp;
+//     const user = this.userName;
+//     const userID = this.uD;
+//     const session = this.sID;
+//     const role = this.urole;
+//     const loadingModal = Swal.fire({
+//       title: 'Verifying...',
+//       allowOutsideClick: false,
+//       didOpen: () => {
+//         Swal.showLoading();
+//       }
+//     });
+
+//     try {
+//       // Perform OTP verification asynchronously
+//       const verificationPromise = await checkOTP(user, enteredOTP, userID, session);
+//       const sessionExpireTime = Date.now() + 300000;
+
+//       if (verificationPromise.result[0].message === 'success') {
+      
+      
+//       // OTP verification completed successfully
+
+//       // sessionStorage.setItem('user', JSON.stringify(this.uD));
+//       // sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
+//       // sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
+//       // sessionStorage.setItem('userID', JSON.stringify(this.userName));
+//       // sessionStorage.setItem('role', JSON.stringify(this.urole));
+
+//       localStorage.setItem('user', JSON.stringify(this.uD));
+//       localStorage.setItem('sessionID', JSON.stringify(this.sID));
+//       localStorage.setItem('userAcces', JSON.stringify(this.uA));
+//       localStorage.setItem('userID', JSON.stringify(this.userName));
+//       localStorage.setItem('role', JSON.stringify(this.urole));
+//       // localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
+
+
+//       // Navigate to the dashboard
+//       await this.router.navigate(['/dashboard']);
+
+//       // Close the loading modal
+//       Swal.close();
+//       }
+//       else {
+//           // Log unsuccessful OTP verification
+//           this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
+
+//           // Invalid OTP, show error 
+//           Swal.fire({        
+//             icon: 'error',
+//             title: 'Invalid OTP'
+//           });
+//       }
+//       // Wait for both OTP verification and the minimum duration
+      
+//     } catch (error) {
+//       // Handle OTP verification errors
+//       // console.error('Error during OTP verification:', error);
+//       this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Error',
+//         text: 'Invalid OTP verification. Please try again.',
+//       });
+//     } 
+//   } else {
+//     // Handle the case where the OTP is empty
+//     this.logAction('otpVerification', 'OTP is Empty', false, 'Login');
+
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'OTP is Empty!',
+//       text: 'OTP is required',
+//     });
+//   }
+// }
+
+
 async verifyOtp() {
   if (this.otp !== '') {
     const enteredOTP = this.otp;
@@ -245,56 +328,54 @@ async verifyOtp() {
       const sessionExpireTime = Date.now() + 300000;
 
       if (verificationPromise.result[0].message === 'success') {
-      
-      
-      // OTP verification completed successfully
+        // OTP verification completed successfully
 
-      // sessionStorage.setItem('user', JSON.stringify(this.uD));
-      // sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
-      // sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
-      // sessionStorage.setItem('userID', JSON.stringify(this.userName));
-      // sessionStorage.setItem('role', JSON.stringify(this.urole));
+         // Navigate to the dashboard
 
-      localStorage.setItem('user', JSON.stringify(this.uD));
-      localStorage.setItem('sessionID', JSON.stringify(this.sID));
-      localStorage.setItem('userAcces', JSON.stringify(this.uA));
-      localStorage.setItem('userID', JSON.stringify(this.userName));
-      localStorage.setItem('role', JSON.stringify(this.urole));
-      // localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
+        // Store user data in local storage
+        localStorage.setItem('user', JSON.stringify(this.uD));
+        localStorage.setItem('sessionID', JSON.stringify(this.sID));
+        localStorage.setItem('userAcces', JSON.stringify(this.uA));
+        localStorage.setItem('userID', JSON.stringify(this.userName));
+        localStorage.setItem('role', JSON.stringify(this.urole));
 
 
-      // Navigate to the dashboard
-      await this.router.navigate(['/dashboard']);
+        // Initialize ng2-idle
 
-      // Close the loading modal
-      Swal.close();
+        // Start watching for user activity
+        this.IdleLib.watch();
+
+        await this.router.navigate(['/dashboard']);
+       
+
+        // Close the loading modal
+        Swal.close();
+      } else {
+        // Log unsuccessful OTP verification
+        this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
+
+        // Invalid OTP, show error 
+        Swal.fire({        
+          icon: 'error',
+          title: 'Invalid OTP'
+        });
       }
-      else {
-          // Log unsuccessful OTP verification
-          this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
-
-          // Invalid OTP, show error 
-          Swal.fire({        
-            icon: 'error',
-            title: 'Invalid OTP'
-          });
-      }
-      // Wait for both OTP verification and the minimum duration
-      
     } catch (error) {
       // Handle OTP verification errors
-      // console.error('Error during OTP verification:', error);
-      this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
+      this.logAction('otpVerification', 'Error during OTP verification', false, 'Login');
+      console.error('Error during OTP verification:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'Invalid OTP verification. Please try again.',
       });
-    } 
+    } finally {
+      // Close the loading modal
+      Swal.close();
+    }
   } else {
     // Handle the case where the OTP is empty
     this.logAction('otpVerification', 'OTP is Empty', false, 'Login');
-
     Swal.fire({
       icon: 'error',
       title: 'OTP is Empty!',
