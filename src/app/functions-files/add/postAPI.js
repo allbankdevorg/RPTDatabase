@@ -626,15 +626,7 @@ function sendOTP(mobile, otpGen, userID, session) {
 */
 function checkOTP(user, enteredOTP, userID, session) {
   return new Promise((resolve, reject) => {
-      
-    Swal.fire({
-      title: 'Processing...',
-      allowOutsideClick: false,
-      didOpen: () => {
-          Swal.showLoading();
-      }
-    });
-
+    
       var settings = {
         "url": "http://10.232.236.15:8092/api/userManagement",
         "method": "POST",
