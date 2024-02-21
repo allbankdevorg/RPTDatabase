@@ -12,6 +12,11 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
   providedIn: 'root'
 })
 export class AuthSessionService {
+
+  
+  private intervalId: any;
+
+
   actualOTP: any
   lastAction = Date.now();
   private tokenKey = 'authToken';
@@ -24,29 +29,56 @@ export class AuthSessionService {
       public ngZone: NgZone,
       public usersService: DummyDataService,
       private userDataService: ShareddataService,
-      public _dialog: MatDialog, ) {}
+      public _dialog: MatDialog, ) {
+      // Start session expiration check interval
+      this.startSessionExpirationCheck();
+      }
 
-  // Returns true when the user is logged in and email is verified
-  get isLoggedIn(): boolean {
-    // const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
+      get isLoggedIn(): boolean {
+        const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
+        
+        // // Set session expiration time to 5 minutes from ng2Idle.main.expiry
+        let expiryTimestamp: number | null = null;
+        if (sessionExpireTime) {
+          expiryTimestamp = Number(sessionExpireTime) + (5 * 60 * 1000); // 5 minutes in milliseconds
+        }
+        
+        // Check if session has expired
+        if (expiryTimestamp !== null && Date.now() >= expiryTimestamp) {
+          // Clear relevant items from local storage
+          localStorage.clear();
+          sessionStorage.clear();
+        
+          // Simulate logout or call your logout function here
+          this.simulateLogout();
+        
+          return false;
+        }
+        
+        // Check if session is still valid
+        return !!localStorage.getItem('sessionID') && !!sessionExpireTime && Date.now() < Number(sessionExpireTime);
+      }
 
-    // if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
-    //   // Clear relevant items from local storage
-    //   localStorage.clear();
-    //   localStorage.clear();
-    //   // Redirect the user to the login page
-    //   // this.router.navigate(['/login']);
-    //   return false;
-    // }
+      
 
-  return !!localStorage.getItem('sessionID');
+      private startSessionExpirationCheck(): void {
+        // Check session expiration every 60 seconds
+        this.intervalId = setInterval(() => {
+          this.checkSessionExpiration();
+        }, 60000);
+      }
+    
+      private stopSessionExpirationCheck(): void {
+        clearInterval(this.intervalId);
+      }
+    
+      private checkSessionExpiration(): void {
+        const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
+        if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
+          this.simulateLogout();
+        }
+      }
 
-    // return !!sessionStorage.getItem('sessionID');
-    // return !!localStorage.getItem('sessionID');
-    // return !!localStorage.getItem('sessionID') && !!sessionExpireTime && Date.now() < Number(sessionExpireTime);
-
-
-  }
 
   setAuthToken(token: string): void {
     // sessionStorage.setItem(this.tokenKey, token);
@@ -56,6 +88,7 @@ export class AuthSessionService {
   getAuthToken(): string | null {
     // return sessionStorage.getItem(this.tokenKey);
     return localStorage.getItem(this.tokenKey)
+    // return localStorage.getItem('sessionID');
   }
   
   removeAuthToken(): void {
@@ -104,9 +137,6 @@ export class AuthSessionService {
   clearSession(): void {
     this.username = null;
     this.role = null;
-    // sessionStorage.removeItem('userData');
-    // sessionStorage.removeItem('user');
-    // sessionStorage.removeItem('sessionID');
     localStorage.clear();
     sessionStorage.clear();
   }
@@ -129,16 +159,6 @@ export class AuthSessionService {
     // return sessionStorage.getItem('role')!=null?sessionStorage.getItem('role')?.toString():'';
   }
 
-  // getRole(): string | null {
-  //   if (this.role === null) {
-  //     const storedUser = sessionStorage.getItem('role');
-  //     if (storedUser) {
-  //       const userObj = JSON.parse(storedUser);
-  //       this.role = userObj.role;
-  //     }
-  //   }
-  //   return this.role;
-  // }
 
   // Simulate generating and saving OTP
   generateAndSaveOtp(): string {
