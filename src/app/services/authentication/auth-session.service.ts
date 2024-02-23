@@ -65,7 +65,7 @@ export class AuthSessionService {
         // Check session expiration every 60 seconds
         this.intervalId = setInterval(() => {
           this.checkSessionExpiration();
-        }, 60000);
+        }, 30000);
       }
     
       private stopSessionExpirationCheck(): void {
