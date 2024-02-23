@@ -1,10 +1,9 @@
 <c-row>
   <c-col sm="6" xl="3">
     <c-widget-stat-a
-      class="mb-4"
+      class="mb-4 px-2 widget_card"
       color="primary"
-      title="Number of Loans"
-      class="px-2"
+      title="Number of RPT Loans"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
          {{numberLoans}}
@@ -12,7 +11,7 @@
           <!-- (-12.4% <svg cIcon name="cilArrowBottom"></svg>) -->
         </span>
       </ng-template>
-      <ng-template cTemplateId="widgetActionTemplate">
+      <!-- <ng-template cTemplateId="widgetActionTemplate">
         <c-dropdown alignment="end" variant="btn-group">
           <button [caret]="false" cButton cDropdownToggle class="p-0" color="transparent">
             <svg cIcon class="text-high-emphasis-inverse" name="cilOptions"></svg>
@@ -29,9 +28,11 @@
             </li>
           </ul>
         </c-dropdown>
-      </ng-template>
+      </ng-template> -->
       <ng-template cTemplateId="widgetChartTemplate">
-        <c-chart [data]="data[5]" [options]="options[5]" class="mt-3 mx-3" height="70" [type]="'line'"></c-chart>
+        <span class="fs-6 fw-normal">
+          (-23.6% <svg cIcon name="cilArrowBottom"></svg>)
+        </span>
       </ng-template>
     </c-widget-stat-a>
   </c-col>
@@ -39,12 +40,12 @@
   <c-col sm="6" xl="3">
     <c-widget-stat-a
       [title]="'RPT Balance'"
-      class="mb-4"
+      class="mb-4 px-2 widget_card"
       color="info"
-      class="px-2"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
         <span>{{rptBal | currency: 'PHP'}}</span>
+        
         <span class="fs-6 fw-normal">
           <!-- (40.9%<svg cIcon name="cilArrowTop"></svg>) -->
         </span>
@@ -63,16 +64,18 @@
         </c-dropdown>
       </ng-template> -->
       <ng-template cTemplateId="widgetChartTemplate">
-        <c-chart [data]="data[5]" [options]="options[4]" class="mt-3 mx-3" height="70" type="line"></c-chart>
+        <span class="fs-6 fw-normal">
+          {{ (((yesterdayrptBal - rptBal) / rptBal) * 100 ).toFixed(2) }}% 
+          <svg cIcon name="{{ (((yesterdayrptBal - rptBal) / rptBal) * 100 > 0) ? 'cilArrowBottom' : 'cilArrowTop' }}"></svg>
+        </span>
       </ng-template>
     </c-widget-stat-a>
   </c-col>
   <c-col sm="6" xl="3">
     <c-widget-stat-a
       [title]="'Available Balance'"
-      class="mb-4"
+      class="mb-4 px-2 widget_card"
       color="warning"
-      class="px-2"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
         <span>{{availBal | currency: 'PHP'}}</span>
@@ -94,22 +97,22 @@
         </c-dropdown>
       </ng-template> -->
       <ng-template cTemplateId="widgetChartTemplate">
-        <c-chart [data]="data[5]" [options]="options[5]" class="mt-3" height="70" type="line"></c-chart>
+        <span class="fs-6 fw-normal">
+          {{ (((yesterdayavailBal - availBal) / availBal) * 100 ).toFixed(2) }}% 
+          <svg cIcon name="{{ (((yesterdayavailBal - availBal) / availBal) * 100 < 0) ? 'cilArrowBottom' : 'cilArrowTop' }}"></svg>
+        </span>
       </ng-template>
     </c-widget-stat-a>
   </c-col>
   <c-col sm="6" xl="3">
     <c-widget-stat-a
       [title]="'Unimpaired Capital'"
-      class="mb-4"
+      class="mb-4 px-2 widget_card"
       color="danger"
-      class="px-2"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
         <span>{{unimpairedCap | currency: 'PHP'}}</span>
-        <span class="fs-6 fw-normal">
-          <!-- (-23.6% <svg cIcon name="cilArrowBottom"></svg>) -->
-        </span>
+       
       </ng-template>
       <!-- <ng-template cTemplateId="widgetActionTemplate">
         <c-dropdown alignment="end" variant="btn-group">
@@ -125,7 +128,9 @@
         </c-dropdown>
       </ng-template> -->
       <ng-template cTemplateId="widgetChartTemplate">
-        <c-chart [data]="data[5]" [options]="options[5]" class="mt-3 mx-3" height="70" type="bar"></c-chart>
+        <span class="fs-6 fw-normal">
+          (-23.6% <svg cIcon name="cilArrowBottom"></svg>)
+        </span>
       </ng-template>
     </c-widget-stat-a>
   </c-col>

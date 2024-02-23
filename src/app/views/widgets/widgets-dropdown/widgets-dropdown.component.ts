@@ -25,24 +25,27 @@ import { SimulatedDataService } from '../../../services/simulatedDataService/sim
 })
 export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
 
-
-  rptBal: any;      // => RPT Balance (Net of Hold-out)
+  yesterdayrptBal: number = 0;
+  rptBal: number = 0;      // => RPT Balance (Net of Hold-out)
   rptRatio: any;    // => RPT Ratio
   subtlOL: any;     // => SUB-TOTAL Original Loan
   subtlOB: any;     // => SUB-TOTAL Outstanding Balance
   ttlRPTOL: any;    // => TOTAL RPT Original Loan
   ttlRPTOB: any;    // => TOTAL RPT Outstanding Loan
-  availBal: any;    // => Remaining Balance of Possible Loan Amount
+  availBal: number = 0;    // => Remaining Balance of Possible Loan Amount
+  yesterdayavailBal: number = 0; // => Yesterday Remaining Balance of Possible Loan Amount
   unimpairedCap: number = 0;   //Unimpaired Capital
   definedRptRatio: number = 50;     //Pre defined Percentage
   availRptRatio: any;
-  approvedCapital: any;  // => the Loan approved Limit
+  approvedCapital: number = 0;  // => the Loan approved Limit
   totalHoldOut: number = 0;
   selectedPN: any;
   UnimpairedDate: any;
   //Variable to hold the selected date
   selectedDate: Date | null = null;
   numberLoans: number = 0;
+
+ balDiff: any;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -146,6 +149,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
     this.setData();
     this.updateTableData();
     this.getUnimpairedCap();
+    this.balDiff = this.rptBal - this.yesterdayrptBal;
   }
 
   ngAfterContentInit(): void {
@@ -202,38 +206,116 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   updateTableData(): void {
     let dateString: string;
     const currentDate = new Date();
+    // Get yesterday's date
+    const yesterday = new Date(currentDate);
+    yesterday.setDate(currentDate.getDate() - 1);
+
+    let ydate = yesterday.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     
-    if (this.selectedDate !== null) {
-      date = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-    } else {
-      date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-    }
-     
     this.get.getPNData(date, (PNData) => {
       
       if (PNData) {
         const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
-        console.log(PNData);
         uniqueCisNumbers.forEach((cisNumber) => {
           HoldOutValue(cisNumber)
             .then((response) => {
-              this.calculateactualData(PNData);
+                const sumPrincipal = PNData.reduce((acc, obj) => {
+                  acc.principal += parseFloat(obj.principal) || 0;
+                  acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+                  acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
+                  return acc;
+                }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
+                
+                this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata
+                // Calculate rptRatio only if unimpairedCap is not zero
+                if (this.unimpairedCap !== 0) {
+                  const percentage = `${((this.rptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
+                  this.rptRatio = percentage;
+                  this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+                } else {
+                  this.rptRatio = 'N/A';
+                  this.availRptRatio = 'N/A';
+                }
+              
+                this.ttlRPTOL = sumPrincipal.principal;
+                this.ttlRPTOB = sumPrincipal.principal_bal;
+                this.approvedCapital = this.unimpairedCap * 0.5;
+                
+                // Recalculate available balance only if approvedCapital is not zero
+                if (this.approvedCapital !== 0) {
+                  this.availBal = this.approvedCapital - this.rptBal || 0;
+                } else {
+                  this.availBal = 0;
+                }
+              
             })
             .catch((error) => {
               // Handle error
             });
         });
-  
-        // Push temporary loan data only once outside the forEach loop
+
         this.numberLoans = PNData.length;
-        console.log(this.unimpairedCap);
-        
-         // Create a shallow copy of PNData
         
       }
     });
-  }
+
+    // Getting yesterdays data
+    this.get.getPNData(ydate, (yPNData) => {
+      
+      if (yPNData) {
+        const uniqueCisNumbers = [...new Set(yPNData.map((entry) => entry.cis_no))];
+        uniqueCisNumbers.forEach((cisNumber) => {
+          HoldOutValue(cisNumber)
+            .then((response) => {
+                const sumPrincipal = yPNData.reduce((acc, obj) => {
+                  acc.principal += parseFloat(obj.principal) || 0;
+                  acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+                  acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
+                  return acc;
+                }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
+                
+                this.yesterdayrptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata
+
+                
+                // Calculate rptRatio only if unimpairedCap is not zero
+                if (this.unimpairedCap !== 0) {
+                  const percentage = `${((this.yesterdayrptBal / this.unimpairedCap) * 100).toFixed(2)}%`; // Use yesterdayrptBal here
+                  this.rptRatio = percentage;
+                  this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+                } else {
+                  this.rptRatio = 'N/A';
+                  this.availRptRatio = 'N/A';
+                }
+              
+                this.ttlRPTOL = sumPrincipal.principal;
+                this.ttlRPTOB = sumPrincipal.principal_bal;
+                this.approvedCapital = this.unimpairedCap * 0.5;
+                
+                // Recalculate available balance only if approvedCapital is not zero
+                if (this.approvedCapital !== 0) {
+                  this.yesterdayavailBal = (this.approvedCapital - this.yesterdayrptBal); // Use yesterdayrptBal here
+                } else {
+                  this.yesterdayavailBal = 0;
+                }
+
+                // Log the difference here
+               
+              
+            })
+            .catch((error) => {
+              // Handle error
+            });
+        });
+        
+        
+
+        
+      }
+    });
+    
+}
+
 
 
   getUnimpairedCap(): void {
@@ -246,37 +328,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   }
 
 
-  calculateactualData(actualData: any[]): void {
-    const sumPrincipal = actualData.reduce((acc, obj) => {
-      acc.principal += parseFloat(obj.principal) || 0;
-      acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
-      return acc;
-    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
-    
-    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
-  
-    // Calculate rptRatio only if unimpairedCap is not zero
-    if (this.unimpairedCap !== 0) {
-      const percentage = `${((this.rptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
-      this.rptRatio = percentage;
-      this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
-    } else {
-      this.rptRatio = 'N/A';
-      this.availRptRatio = 'N/A';
-    }
-  
-    this.ttlRPTOL = sumPrincipal.principal;
-    this.ttlRPTOB = sumPrincipal.principal_bal;
-    this.approvedCapital = this.unimpairedCap * 0.5;
-    
-    // Recalculate available balance only if approvedCapital is not zero
-    if (this.approvedCapital !== 0) {
-      this.availBal = this.approvedCapital - this.rptBal;
-    } else {
-      this.availBal = 0;
-    }
-  }
+ 
 }
 
 
