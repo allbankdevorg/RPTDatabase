@@ -207,61 +207,6 @@ export class DirectorsrelatedComponent {
     });
   }
   
-  // updateTableData(): void {
-  //   // Now that you have processed the data, you can fetch directors or perform any other operation
-  //   this.get.getDirectors().subscribe((directors) => {
-  //     if (directors) {
-        
-  //           const filteredDirectors = directors.filter((director) => director.com_related === this.compId);
-        
-  //           const relationColumn = ['MothersName', 'FathersName', 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
-        
-  //           const tableData = filteredDirectors.map((director) => {
-  //             const row: Record<string, any> = {
-  //               'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
-  //               'Company': this.Company,
-  //               'Position': director.position,
-  //               'dir_CisNumber': director.dir_cisnumber,
-  //               'comp_CIS': director.com_related,
-  //             };
-        
-  //             for (let index = 0; index < relationColumn.length; index++) {
-  //               const relationName = relationColumn[index];
-        
-  //               // Check if director.related_interest is not null or undefined
-  //               const relatedData = director.related_interest
-  //                 ? director.related_interest
-  //                     .filter((related) => related && related.relation === index + 1)
-  //                     .map((related) => ({
-  //                       id: related.id,
-  //                       fullName: `${related.fname || ''} ${related.mname || ''} ${related.lname || ''}`,
-  //                       cisNumber: related.cis_number || '',
-  //                       dirRelated: related.dir_related || '',
-  //                     }))
-  //                     .filter((data) => typeof data.fullName === 'string' && data.fullName.trim() !== '')
-  //                 : [];
-        
-  //               row[relationName] = relatedData;
-  //             }
-        
-  //             return row;
-  //           });
-        
-  //           this.dataSource = new MatTableDataSource(tableData);
-  //           // this.dataSource.sort = this.sort;
-  //           this.dataSource.paginator = this.paginator;
-        
-  //           // Trigger change detection
-  //           this.changeDetectorRef.detectChanges();
-  //     }
-  //     else {
-  //       directors = [];
-  //     }
-  //   });
-  // }
-  
-  
-
   
   setButtonId(id: number, dirCisNumber: number) {
     // Set values in the service

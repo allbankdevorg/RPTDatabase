@@ -107,14 +107,6 @@ export class LoginComponent implements OnInit {
 
       
     });
-    // this.otpForm = this.fb.group({
-    //   otp: [''],
-    //   // Add more form controls as needed
-    // });
-
-    // this.otpForm.valueChanges.subscribe(() => {
-    //   this.updateOtpValue();
-    // });
   }
 
   
@@ -225,86 +217,6 @@ async login() {
     }
   }
 }
-
-
-// async verifyOtp() {
-//   if (this.otp !== '') {
-//     const enteredOTP = this.otp;
-//     const user = this.userName;
-//     const userID = this.uD;
-//     const session = this.sID;
-//     const role = this.urole;
-//     const loadingModal = Swal.fire({
-//       title: 'Verifying...',
-//       allowOutsideClick: false,
-//       didOpen: () => {
-//         Swal.showLoading();
-//       }
-//     });
-
-//     try {
-//       // Perform OTP verification asynchronously
-//       const verificationPromise = await checkOTP(user, enteredOTP, userID, session);
-//       const sessionExpireTime = Date.now() + 300000;
-
-//       if (verificationPromise.result[0].message === 'success') {
-      
-      
-//       // OTP verification completed successfully
-
-//       // sessionStorage.setItem('user', JSON.stringify(this.uD));
-//       // sessionStorage.setItem('sessionID', JSON.stringify(this.sID));
-//       // sessionStorage.setItem('userAcces', JSON.stringify(this.uA));
-//       // sessionStorage.setItem('userID', JSON.stringify(this.userName));
-//       // sessionStorage.setItem('role', JSON.stringify(this.urole));
-
-//       localStorage.setItem('user', JSON.stringify(this.uD));
-//       localStorage.setItem('sessionID', JSON.stringify(this.sID));
-//       localStorage.setItem('userAcces', JSON.stringify(this.uA));
-//       localStorage.setItem('userID', JSON.stringify(this.userName));
-//       localStorage.setItem('role', JSON.stringify(this.urole));
-//       // localStorage.setItem('sessionExpireTime', sessionExpireTime.toString());
-
-
-//       // Navigate to the dashboard
-//       await this.router.navigate(['/dashboard']);
-
-//       // Close the loading modal
-//       Swal.close();
-//       }
-//       else {
-//           // Log unsuccessful OTP verification
-//           this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
-
-//           // Invalid OTP, show error 
-//           Swal.fire({        
-//             icon: 'error',
-//             title: 'Invalid OTP'
-//           });
-//       }
-//       // Wait for both OTP verification and the minimum duration
-      
-//     } catch (error) {
-//       // Handle OTP verification errors
-//       // console.error('Error during OTP verification:', error);
-//       this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Error',
-//         text: 'Invalid OTP verification. Please try again.',
-//       });
-//     } 
-//   } else {
-//     // Handle the case where the OTP is empty
-//     this.logAction('otpVerification', 'OTP is Empty', false, 'Login');
-
-//     Swal.fire({
-//       icon: 'error',
-//       title: 'OTP is Empty!',
-//       text: 'OTP is required',
-//     });
-//   }
-// }
 
 
 async verifyOtp() {
@@ -452,15 +364,6 @@ async verifyOtp() {
           text: 'Invalid username or password',
         });
       }
-      // Simulate OTP generation and saving
-      // try {
-      //   const sendotp = await sendOTP(mobile, otpGen, userID, session);
-      // } catch (error: any) {
-      //   const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // }
-  
-      
-    
   }
 
   onSubmit(){

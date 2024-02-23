@@ -103,18 +103,6 @@ export class UsersComponent {
   DdisplayedColumns: string[] = ['navigation_name', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
   permissionDataSource = new MatTableDataSource<Permissions>();
 
-  // userDataSource = new MatTableDataSource();
-  // displayedColumns: string[] =['view', 'access', 'add'];
-  // permiColumnsToDisplay: string[] =  ]
-  // columnsToDisplayWithExpand = [...this.permiColumnsToDisplay,];
-  // expandedElement: permissions | null = null;
-
-  // Use the sample data in your component
-  // dataSource = new MatTableDataSource<permissions>();
-  // private originalData: Users;
-  // userData: Users;
-  
-
   @ViewChild('usersModal') usersModal!: ElementRef;
   @ViewChild('paginator1') paginator1!: MatPaginator;
   @ViewChild('paginator2') paginator2!: MatPaginator;
