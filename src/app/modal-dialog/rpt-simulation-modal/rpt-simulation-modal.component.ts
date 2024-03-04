@@ -118,6 +118,8 @@ export class RPTSimulationModalComponent implements OnInit{
       this.simulatedSttl = currentSttlValue + amountValue;      
       this.simulatedRptTTL = amountValue;
 
+      console.log(this.availBal)
+
       if (amountValue > this.availBal) {
         Swal.fire({
           icon: 'error',
