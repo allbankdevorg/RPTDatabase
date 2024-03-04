@@ -96,7 +96,6 @@ export class SBLSimulationModalComponent implements OnInit{
   // Attempt to patch the form
   this.sblSimulateForm.patchValue(this.data);
   this.availBal = this.sblSimulateService.getAvailBal();
-  console.log(this.availBal);
   this.updateTableData();
   }
 
@@ -149,8 +148,6 @@ export class SBLSimulationModalComponent implements OnInit{
       this.amount_Val = amountValue;
       // Perform the addition
       this.simulatedSttl = this.totalLoan + amountValue;
-      console.log(this.simulatedSttl);
-      console.log(this.availBal);
 
       
 
