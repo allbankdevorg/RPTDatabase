@@ -120,7 +120,7 @@ export class RPTSimulationModalComponent implements OnInit{
 
       console.log(this.availBal)
 
-      if (amountValue > this.availBal) {
+      if (this.simulatedRptTTL > this.availBal) {
         Swal.fire({
           icon: 'error',
           title: 'Loan Breached!',
@@ -270,20 +270,36 @@ export class RPTSimulationModalComponent implements OnInit{
     this.get.getPNData(date, (PNData) => {
       if (PNData) {
         // Use reduce to calculate the sum of "principal" values
-        const sumPrincipal = PNData.reduce((acc, obj) => {
-          acc.principal += parseFloat(obj.principal) || 0;
-          acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-          acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
-          return acc;
-        }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+       
+        this.calculateactualData(PNData);
 
-        this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
-        this.approvedCapital = this.unimpairedCap * 0.5;
-        this.availBal = this.approvedCapital - this.rptBal;
       } else {
 
       }
     });
+  }
+
+  calculateactualData(actualData: any[]): void {
+    const sumPrincipal = actualData.reduce((acc, obj) => {
+      acc.principal += parseFloat(obj.principal) || 0;
+      acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
+      return acc;
+    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
+    
+    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
+  
+    // Calculate rptRatio only if unimpairedCap is not zero
+    
+    this.approvedCapital = this.unimpairedCap * 0.5;
+    
+    // Recalculate available balance only if approvedCapital is not zero
+    if (this.approvedCapital !== 0) {
+      this.availBal = this.approvedCapital - this.rptBal;
+      console.log(this.availBal);
+    } else {
+      this.availBal = 0;
+    }
   }
   
 

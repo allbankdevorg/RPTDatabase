@@ -972,6 +972,39 @@ function checkHoldOutValue(com_cis) {
 }
 
 
+function rptLookup(rpt) {
+  return new Promise((resolve, reject) => {
+      var settings = {
+          "url": "http://10.232.236.15:8092/api/dataTables",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+              "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+              "cmd": 200,
+              "fname": rpt.firstName,
+              "lname": rpt.lastName
+          }),
+      };
+
+      $.ajax(settings)
+          .done(function (response) {
+              if (response.result && response.result.length > 0) {
+                  console.log(response.result[0].message); // Log the message for debugging
+                  resolve(response); // Resolve the promise with the response
+              } else {
+                  reject("Invalid response structure");
+              }
+          })
+          .fail(function (jqXHR, textStatus, errorThrown) {
+              reject(errorThrown);
+          });
+  });
+}
+
+
+
  module.exports = {
     createDosri,
     createDirectors,
@@ -993,5 +1026,6 @@ function checkHoldOutValue(com_cis) {
     addPNData,
     addSimulatedPNData,
     HoldOutValue,
-    checkHoldOutValue
+    checkHoldOutValue,
+    rptLookup
  }
