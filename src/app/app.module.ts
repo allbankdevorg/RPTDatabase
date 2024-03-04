@@ -150,6 +150,7 @@ import { DeniedComponent } from './views/entry/denied/denied.component';
 import { AffiliatesRpmodalDetailsComponent } from './modal-dialog/affiliates-rpmodal-details/affiliates-rpmodal-details.component';
 import { AddChildModalComponent } from './modal-dialog/add-child-modal/add-child-modal.component';
 import { AddJMNChildModalComponent } from './modal-dialog/add-jmnchild-modal/add-jmnchild-modal.component';
+import { RptCheckerModalComponent } from './modal-dialog/rpt-checker-modal/rpt-checker-modal.component';
 
 
 const APP_CONTAINERS = [
@@ -191,7 +192,7 @@ const APP_CONTAINERS = [
     FilterPipe, 
     ForapprovalComponent, 
     ForreviewComponent, 
-    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent, PaviGroupComponent],
+    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent, PaviGroupComponent, RptCheckerModalComponent],
     
   imports: [
     BrowserModule,
