@@ -59,7 +59,7 @@ export class SBLSimulationModalComponent implements OnInit{
   currentRptTTL: any;               // => Current Rpt Total
   simulatedSttl: any;               // => Simulated Sub total
   simulatedRptTTL: any;             // => Simulated Rpt Total
-  unimpairedCap: number = 1214764186.16;  
+  unimpairedCap: number = 0;  
   sblTotalRPT: any; 
   totalLoan:  number = 0;                // => Avail Balance of SBL
   amount_Val: any;
@@ -67,6 +67,8 @@ export class SBLSimulationModalComponent implements OnInit{
   sblBal: any;  
   approvedCapital: any;  // => the Loan approved Limit
   temporaryLoans: LoanWrapper[] = [];
+  
+  UnimpairedDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -93,6 +95,8 @@ export class SBLSimulationModalComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    
+  this.getUnimpairedCap();
   // Attempt to patch the form
   this.sblSimulateForm.patchValue(this.data);
   this.availBal = this.sblSimulateService.getAvailBal();
@@ -267,6 +271,15 @@ export class SBLSimulationModalComponent implements OnInit{
 
       }
     });
+  }
+
+  getUnimpairedCap(): void {
+    this.get.getUnimpairedCapital((unimpairedCap) => {
+        
+        this.UnimpairedDate = unimpairedCap[0].date;
+        this.unimpairedCap = unimpairedCap[0].impared_capital;
+
+    })
   }
 
 

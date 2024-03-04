@@ -46,11 +46,13 @@ export class RPTSimulationModalComponent implements OnInit{
   currentRptTTL: any;               // => Current Rpt Total
   simulatedSttl: any;               // => Simulated Sub total
   simulatedRptTTL: any;             // => Simulated Rpt Total
-  unimpairedCap: number = 1214764186.16;   //Unimpaired Capital
+  unimpairedCap: number = 0;   //Unimpaired Capital
   availBal: any;    // => Remaining Balance of Possible Loan Amount
   rptBal: any;      // => RPT Balance (Net of Hold-out)
   approvedCapital: any;  // => the Loan approved Limit
   // temporaryLoans?: Loan[];
+  
+  UnimpairedDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,6 +80,7 @@ export class RPTSimulationModalComponent implements OnInit{
   ngOnInit(): void {
   this.rptSimulateForm.patchValue(this.data);
   this.updateTableData();
+  this.getUnimpairedCap();
   }
 
 
@@ -142,63 +145,7 @@ export class RPTSimulationModalComponent implements OnInit{
     return this.rptSimulateForm.get('amount');
   }
 
-  // CISlookup() {
-  //   const dataLookup = this.rptSimulateForm.value;
-  
-  //   // Check if cis_no is present and not empty
-  //   if (dataLookup.cis_no) {
-  //     let cis = dataLookup.cis_no;
-  
-  //     cisLookUP(cis)
-  //       .then((response) => {
-  
-  //         if (response.length > 0) {
-  //           // Use the first element of the response array
-  //           let accName = response[0].name;
-  
-  //           // Update form controls with new values
-  //           this.rptSimulateForm.patchValue({
-  //             name: accName,
-  //             // Add other form controls if needed
-  //           });
-  
-  //           if (Array.isArray(response)) {
-  //             // Initialize sumPrincipal outside the loop
-  //             let sumPrincipal = { principal: 0, principal_bal: 0 };
-  
-  //             response.forEach((item) => {
-  //               // Calculate the sum for each item
-  //               sumPrincipal.principal += parseFloat(item.principal) || 0;
-  //               sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
-  //             });
-  
-  //             // Assign the sum to the class variables
-  //             this.currentSttl = sumPrincipal.principal;
-  //             this.currentRptTTL = sumPrincipal.principal_bal;
-  //           } else {
-  //             console.error("Invalid resultData format");
-  //           }
-  //         } else {
-  //           // Display an error message if no CIS is found
-  //           Swal.fire({
-  //             icon: 'error',
-  //             title: 'No CIS Found!',
-  //             text: 'Please Enter the Account and Company Name',
-  //           });
-  //           this.toggleInputReadOnly();
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         // Display an error message if an error occurs
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Error',
-  //           text: 'An error occurred while fetching data.',
-  //         });
-  //         this.toggleInputReadOnly();
-  //       });
-  //   }
-  // }
+ 
 
 
   CISlookup() {
@@ -277,6 +224,16 @@ export class RPTSimulationModalComponent implements OnInit{
 
       }
     });
+  }
+
+
+  getUnimpairedCap(): void {
+    this.get.getUnimpairedCapital((unimpairedCap) => {
+        
+        this.UnimpairedDate = unimpairedCap[0].date;
+        this.unimpairedCap = unimpairedCap[0].impared_capital;
+
+    })
   }
 
   calculateactualData(actualData: any[]): void {
