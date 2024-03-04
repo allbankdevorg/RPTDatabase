@@ -226,13 +226,13 @@ async verifyOtp() {
     const userID = this.uD;
     const session = this.sID;
     const role = this.urole;
-    const loadingModal = Swal.fire({
-      title: 'Verifying...',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
+    // const loadingModal = Swal.fire({
+    //   title: 'Verifying...',
+    //   allowOutsideClick: false,
+    //   didOpen: () => {
+    //     Swal.showLoading();
+    //   }
+    // });
 
     try {
       // Perform OTP verification asynchronously
@@ -262,25 +262,28 @@ async verifyOtp() {
 
         // Close the loading modal
         Swal.close();
-      } else {
+      } else if (verificationPromise.result[0].status === 'failed') {
         // Log unsuccessful OTP verification
         this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
 
+        console.log("Invalid Otp")
         // Invalid OTP, show error 
-        Swal.fire({        
-          icon: 'error',
-          title: 'Invalid OTP'
-        });
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Invalid OTP verification. Please try again.',
+          });
       }
     } catch (error) {
+      // Swal.fire({
+      //   icon: 'error',
+      //   title: 'Error',
+      //   text: 'Invalid OTP verification. Please try again.',
+      // });
       // Handle OTP verification errors
       this.logAction('otpVerification', 'Error during OTP verification', false, 'Login');
       console.error('Error during OTP verification:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Invalid OTP verification. Please try again.',
-      });
+      
     } finally {
       // Close the loading modal
       Swal.close();
