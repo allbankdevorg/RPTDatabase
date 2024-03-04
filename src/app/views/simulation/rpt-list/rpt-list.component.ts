@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 // Import for Simulation Modal
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { RPTSimulationModalComponent } from 'src/app/modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
+import { RptCheckerModalComponent } from 'src/app/modal-dialog/rpt-checker-modal/rpt-checker-modal.component'
 import {HoldoutAllocationModalComponent} from '../../../modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component'
 
 //Import for API Function
@@ -299,6 +300,23 @@ export class RptListComponent {
     openSimulation() {
       const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
         width: '50%', // Set the width as per your requirement
+        // Other MatDialog options can be specified here
+      });
+      dialogRef.afterClosed().subscribe({
+        next: (val) => {
+          if (val) {
+            this.ngOnInit();
+            
+            this.calculateSimulatedData(this.dataSource.data);
+          }
+        },
+      });
+    }
+
+
+    openChecker() {
+      const dialogRef = this._dialog.open(RptCheckerModalComponent, {
+        width: '40%', // Set the width as per your requirement
         // Other MatDialog options can be specified here
       });
       dialogRef.afterClosed().subscribe({
