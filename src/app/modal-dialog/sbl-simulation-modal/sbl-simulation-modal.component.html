@@ -80,7 +80,7 @@
                                         <div><strong>TOTAL RPT</strong></div>
                                     </c-col>
                                     <c-col [sm]="6" class="border p-2">
-                                        <div [ngClass]="{'green-text': amount_Val < sblTotalRPT, 'red-text': amount_Val >= sblTotalRPT}">
+                                        <div [ngClass]="{'green-text': simulatedSttl < sblTotalRPT, 'red-text': amount_Val >= sblTotalRPT}">
                                             Php {{simulatedSttl | number: '1.2-2'}}
                                         </div>
                                     </c-col>
@@ -99,9 +99,9 @@
         <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!affForm.valid">{{data ? 'Update': 'Save'}}</button> -->
     
         
-        <button mat-raised-button color="primary" *ngIf="amount_Val < sblTotalRPT" (click)="onSubmit()" [disabled]="!sblSimulateForm.valid">Submit</button>
+        <button mat-raised-button color="primary" *ngIf="simulatedSttl < sblTotalRPT" (click)="onSubmit()" [disabled]="!sblSimulateForm.valid">Submit</button>
         <!-- Show the Simulate button if simulatedRptTTL is not greater than currentSttl -->
-        <button mat-raised-button color="accent" *ngIf="!(amount_Val < sblTotalRPT)" (click)="simulateSBL()" [disabled]="!sblSimulateForm.valid">Simulate</button>
+        <button mat-raised-button color="accent" *ngIf="!(simulatedSttl < sblTotalRPT)" (click)="simulateSBL()" [disabled]="!sblSimulateForm.valid">Simulate</button>
     
     </div>
 </form>

@@ -82,7 +82,7 @@ export class SBLSimulationModalComponent implements OnInit{
     this.sblSimulateForm = this.formBuilder.group({
       cis_no: [''],
       name: [''],
-      principal: ['', [Validators.required]],
+      principal: [''],
       principal_bal: ['']
       });
       this.sblSimulateForm.get('principal')?.valueChanges.subscribe(principal => {
@@ -146,8 +146,11 @@ export class SBLSimulationModalComponent implements OnInit{
 
       this.amount_Val = amountValue;
       // Perform the addition
-      this.simulatedSttl = this.totalLoan + amountValue;
+      this.simulatedSttl = currentSttlValue + amountValue;
       
+      
+    
+
       if (this.amount_Val > this.sblTotalRPT ) {
         Swal.fire({
           icon: 'error',
@@ -156,9 +159,11 @@ export class SBLSimulationModalComponent implements OnInit{
         });
       }
       this.simulatedRptTTL = amountValue;
+      console.log(this.simulatedSttl);
       this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
   }
+
 
 
   close() {
