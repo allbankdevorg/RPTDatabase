@@ -61,10 +61,10 @@ export class SBLSimulationModalComponent implements OnInit{
   simulatedRptTTL: any;             // => Simulated Rpt Total
   unimpairedCap: number = 1214764186.16;  
   sblTotalRPT: any; 
-  totalLoan: any;                // => Avail Balance of SBL
+  totalLoan:  number = 0;                // => Avail Balance of SBL
   amount_Val: any;
   availBal: any;
-  rptBal: any;  
+  sblBal: any;  
   approvedCapital: any;  // => the Loan approved Limit
   temporaryLoans: LoanWrapper[] = [];
 
@@ -82,7 +82,7 @@ export class SBLSimulationModalComponent implements OnInit{
     this.sblSimulateForm = this.formBuilder.group({
       cis_no: [''],
       name: [''],
-      principal: [''],
+      principal: ['', [Validators.required]],
       principal_bal: ['']
       });
       this.sblSimulateForm.get('principal')?.valueChanges.subscribe(principal => {
@@ -96,6 +96,8 @@ export class SBLSimulationModalComponent implements OnInit{
   // Attempt to patch the form
   this.sblSimulateForm.patchValue(this.data);
   this.availBal = this.sblSimulateService.getAvailBal();
+  console.log(this.availBal);
+  this.updateTableData();
   }
 
 
@@ -146,12 +148,13 @@ export class SBLSimulationModalComponent implements OnInit{
 
       this.amount_Val = amountValue;
       // Perform the addition
-      this.simulatedSttl = currentSttlValue + amountValue;
-      
-      
-    
+      this.simulatedSttl = this.totalLoan + amountValue;
+      console.log(this.simulatedSttl);
+      console.log(this.availBal);
 
-      if (this.amount_Val > this.sblTotalRPT ) {
+      
+
+      if (this.simulatedSttl > this.availBal ) {
         Swal.fire({
           icon: 'error',
           title: 'Loan Breached!',
@@ -159,11 +162,9 @@ export class SBLSimulationModalComponent implements OnInit{
         });
       }
       this.simulatedRptTTL = amountValue;
-      console.log(this.simulatedSttl);
       this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
   }
-
 
 
   close() {
@@ -253,19 +254,18 @@ export class SBLSimulationModalComponent implements OnInit{
     let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
    
 
-    this.get.getPNData(date, (PNData) => {
-      if (PNData) {
+    this.get.getSBL((sblData) => {
+      if (sblData) {
         // Use reduce to calculate the sum of "principal" values
-        const sumPrincipal = PNData.reduce((acc, obj) => {
+        const sumPrincipal = sblData.reduce((acc, obj) => {
           acc.principal += parseFloat(obj.principal) || 0;
           acc.principal_bal += parseFloat(obj.principal_bal) || 0;
           acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
           return acc;
         }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
 
-        this.rptBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
+        this.sblBal = sumPrincipal.principal_bal - sumPrincipal.deposit_holdout;
         this.approvedCapital = this.unimpairedCap * 0.5;
-        this.availBal = this.approvedCapital - this.rptBal;
       } else {
 
       }
