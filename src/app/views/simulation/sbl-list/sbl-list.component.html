@@ -167,7 +167,8 @@
                                            <tr cTableColor="info" [ngClass]="{'green-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
                                             <td> 
-                                              {{ sbl - calculateTotalNetHoldOut(account.loan_list | filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }} 
+                                              <!-- {{ sbl - calculateTotalNetHoldOut(account.loan_list | filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }}  -->
+                                               {{NetBal | currency: 'PHP'}}
                                             </td>
                                           </tr>                                          
                                            <tr>

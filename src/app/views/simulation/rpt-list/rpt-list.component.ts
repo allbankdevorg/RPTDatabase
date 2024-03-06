@@ -19,6 +19,9 @@ import { SimulatedDataService } from '../../../services/simulatedDataService/sim
 import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
 import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
 
+
+
+
 export interface RPTlist_model {
   loantype: string;
   cis_no: number;
@@ -100,6 +103,9 @@ export class RptListComponent {
     private simulatedDataService: SimulatedDataService,
     private csvExportService: CsvExportService,
     private pdfExportService: PdfExportService) {
+      this.simulatedDataService.functionCall$.subscribe(() => {
+        this.openSimulation();
+      });
        
     }
 
@@ -296,37 +302,41 @@ export class RptListComponent {
     }
 
 
-   
     openSimulation() {
-      const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
-        width: '50%', // Set the width as per your requirement
-        // Other MatDialog options can be specified here
-      });
-      dialogRef.afterClosed().subscribe({
-        next: (val) => {
-          if (val) {
-            this.ngOnInit();
-            
-            this.calculateSimulatedData(this.dataSource.data);
-          }
-        },
-      });
+      this.simulatedDataService.openSimulation(this.ngOnInit.bind(this), this.calculateSimulatedData.bind(this), this.dataSource.data, this.availBal);
     }
+
+   
+    // openSimulation() {
+    //   console.log(this.availBal);
+    //   const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
+    //     width: '50%', // Set the width as per your requirement
+    //     // Other MatDialog options can be specified here
+    //   });
+    //   dialogRef.afterClosed().subscribe({
+    //     next: (val) => {
+    //       if (val) {
+    //         this.ngOnInit();
+            
+    //         this.calculateSimulatedData(this.dataSource.data);
+    //       }
+    //     },
+    //   });
+    // }
 
 
     openChecker() {
       const dialogRef = this._dialog.open(RptCheckerModalComponent, {
+        data: {
+          rptListComponentInstance: this // Pass the instance of RPTListComponent to ModalComponent3
+        },
         width: '40%', // Set the width as per your requirement
         // Other MatDialog options can be specified here
       });
-      dialogRef.afterClosed().subscribe({
-        next: (val) => {
-          if (val) {
-            this.ngOnInit();
-            
-            this.calculateSimulatedData(this.dataSource.data);
-          }
-        },
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'openSimulation') {
+          this.openSimulation();
+        }
       });
     }
 

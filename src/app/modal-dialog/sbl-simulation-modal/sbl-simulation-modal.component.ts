@@ -69,6 +69,7 @@ export class SBLSimulationModalComponent implements OnInit{
   temporaryLoans: LoanWrapper[] = [];
   
   UnimpairedDate: any;
+  currentLoan: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -108,10 +109,15 @@ export class SBLSimulationModalComponent implements OnInit{
     
     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
     const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const dataLookup = this.sblSimulateForm.value;
 
+    console.log(this.availBal);
+    console.log(this.amount_Val);
       if (this.sblSimulateForm.valid) {
         const simulatedData = this.sblSimulateForm.value;
-        if (this.amount_Val <= this.availBal) {
+        let amount = this.sblSimulateForm.value.principal;
+      
+        if (amount <= this.availBal) {
           // Here, you should get the index from somewhere and use it when adding temporary loans
           const index = this.getIndex(); // Assuming you have a method to get the index
           const loan: Loan = { ...simulatedData, net_holdout: simulatedData.principal_bal - simulatedData.deposit_holdout }; // Assuming you calculate net_holdout here
@@ -129,6 +135,12 @@ export class SBLSimulationModalComponent implements OnInit{
           //   });
         }
         else {
+          const currentSttlValue = parseFloat(this.currentSttl) || 0;
+          const amountValue = parseFloat(dataLookup.principal) || 0;
+
+          // Perform the addition
+          this.simulatedSttl = this.currentLoan + amountValue;
+          this.simulatedRptTTL = amountValue;
           Swal.fire({
             icon: 'error',
             title: 'Loan Breached!',
@@ -149,13 +161,13 @@ export class SBLSimulationModalComponent implements OnInit{
       const currentSttlValue = parseFloat(this.currentSttl) || 0;
       const amountValue = parseFloat(dataLookup.principal) || 0;
 
-      this.amount_Val = amountValue;
       // Perform the addition
-      this.simulatedSttl = this.totalLoan + amountValue;
+      this.simulatedSttl = this.currentLoan + amountValue;
+      this.simulatedRptTTL = amountValue;
 
-      
+      console.log(this.availBal);
 
-      if (this.simulatedSttl > this.availBal ) {
+      if (this.simulatedRptTTL > this.availBal ) {
         Swal.fire({
           icon: 'error',
           title: 'Loan Breached!',
@@ -177,24 +189,29 @@ export class SBLSimulationModalComponent implements OnInit{
   CISlookup() {
     const dataLookup = this.sblSimulateForm.value;
     this.sblTotalRPT = this.sblSimulateService.getAvailBal();
-    this.totalLoan = this.sblSimulateService.getTotalLoan();
+    // this.totalLoan = this.sblSimulateService.getTotalLoan();
     if (dataLookup.cis_no) {
       let cis = dataLookup.cis_no;
       cisLookUP(cis)
         .then((response) => {
           if (Array.isArray(response.data)) {
             if (response.data.length > 0) {
-              let sumPrincipal = { principal: 0, principal_bal: 0 };
+              let sumPrincipal = { principal: 0, principal_bal: 0, deposit_holdout: 0 };
   
               response.data.forEach((item) => {
                 // Calculate the sum for each item
                 sumPrincipal.principal += parseFloat(item.principal) || 0;
                 sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+                sumPrincipal.deposit_holdout += parseFloat(item.deposit_holdout) || 0;
               });
 
               // Assign the sum to the class variables
               this.currentSttl = sumPrincipal.principal;
               this.currentRptTTL = sumPrincipal.principal_bal;
+
+              let outstandingBal = sumPrincipal.principal_bal;
+
+              this.currentLoan = outstandingBal - sumPrincipal.deposit_holdout
 
               // If response.data is an array and not empty, use the first element
               const firstElement = response.data[0];

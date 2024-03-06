@@ -54,7 +54,7 @@ export class AuthSessionService {
         
           return false;
         }
-        
+
         // Check if session is still valid
         return !!localStorage.getItem('sessionID') && !!sessionExpireTime && Date.now() < Number(sessionExpireTime);
       }
@@ -65,7 +65,8 @@ export class AuthSessionService {
         // Check session expiration every 60 seconds
         this.intervalId = setInterval(() => {
           this.checkSessionExpiration();
-        }, 30000);
+          // console.log('checking');
+        }, 5000);
       }
     
       private stopSessionExpirationCheck(): void {
@@ -74,7 +75,10 @@ export class AuthSessionService {
     
       private checkSessionExpiration(): void {
         const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
-        if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
+        // if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
+        //   this.simulateLogout();
+        // }
+        if (Date.now() >= Number(sessionExpireTime)) {
           this.simulateLogout();
         }
       }

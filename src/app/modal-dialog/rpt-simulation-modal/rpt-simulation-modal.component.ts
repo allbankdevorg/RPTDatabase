@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
 import Swal from 'sweetalert2';
-
+  
 
 // Functions Imports
 import {getManagingCompany} from '../../functions-files/getFunctions';
@@ -53,6 +53,8 @@ export class RPTSimulationModalComponent implements OnInit{
   // temporaryLoans?: Loan[];
   
   UnimpairedDate: any;
+  currentLoan: any;
+  receivedData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,30 +76,68 @@ export class RPTSimulationModalComponent implements OnInit{
         // Update the value of principal_bal whenever principal changes
         this.rptSimulateForm.get('principal_bal')?.setValue(principal);
       });
+
+      this.simulatedDataService.data$.subscribe(data => {
+        this.receivedData = data;
+        // Handle the received data as needed
+        // this.ngOnInit(); // Call your ngOnInit method
+        // this.calculateSimulatedData(this.dataSource.data); // Call your calculateSimulatedData method
+      });
       _dialogRef.disableClose = true;
   }
 
   ngOnInit(): void {
-  this.rptSimulateForm.patchValue(this.data);
   this.updateTableData();
   this.getUnimpairedCap();
+  this.patchForm();
+  this.RPTCheckLookUp();
   }
+
+  
+  patchForm() {
+    if (this.receivedData) {
+      // Update the form controls with the received data
+      this.rptSimulateForm.patchValue({
+        name: this.receivedData[0].fullname,
+        cis_no: this.receivedData[0].cis
+        // Add any other form controls you need to update
+      });
+    }
+  }
+
+  // patchForm() {
+  //   if (this.data) {
+  //   this.rptSimulateForm.patchValue({
+  //     name: this.data[0].fullname,
+  //     cis_no: this.data[0].cis
+      
+  //   });
+  // }
+  // }
 
 
   onSubmit() {
     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
     const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const dataLookup = this.rptSimulateForm.value;
 
     if (this.rptSimulateForm.valid) {
       const simulatedData = this.rptSimulateForm.value;
+      let amount = this.rptSimulateForm.value.principal;
       
-
-      if (this.simulatedRptTTL <= this.availBal) {
+      
+      if (amount <= this.availBal) {
         this.simulatedDataService.addTemporaryLoan(simulatedData)
         this.simulatedDataService.setSimulationPerformed();
         this.close();
       }
       else {
+        const currentSttlValue = parseFloat(this.currentLoan) || 0;
+        const amountValue = parseFloat(dataLookup.principal) || 0;
+      // Perform the addition
+        this.simulatedSttl = currentSttlValue + amountValue;      
+        this.simulatedRptTTL = amountValue;
+
         Swal.fire({
           icon: 'error',
           title: 'Loan Breached!',
@@ -114,14 +154,13 @@ export class RPTSimulationModalComponent implements OnInit{
       const dataLookup = this.rptSimulateForm.value;
   
       // Convert the values to numbers using parseFloat or the unary + operator
-      const currentSttlValue = parseFloat(this.currentSttl) || 0;
+      const currentSttlValue = parseFloat(this.currentLoan) || 0;
       const amountValue = parseFloat(dataLookup.principal) || 0;
   
       // Perform the addition
       this.simulatedSttl = currentSttlValue + amountValue;      
       this.simulatedRptTTL = amountValue;
 
-      console.log(this.availBal)
 
       if (this.simulatedRptTTL > this.availBal) {
         Swal.fire({
@@ -145,12 +184,14 @@ export class RPTSimulationModalComponent implements OnInit{
     return this.rptSimulateForm.get('amount');
   }
 
- 
 
 
-  CISlookup() {
-    const dataLookup = this.rptSimulateForm.value;
+  RPTCheckLookUp() {
+    if (this.data) {
+
+      const dataLookup = this.rptSimulateForm.value;
   
+
     if (dataLookup.cis_no) {
       let cis = dataLookup.cis_no;
       cisLookUP(cis)
@@ -168,6 +209,68 @@ export class RPTSimulationModalComponent implements OnInit{
               // Assign the sum to the class variables
               this.currentSttl = sumPrincipal.principal;
               this.currentRptTTL = sumPrincipal.principal_bal;
+
+              // If response.data is an array and not empty, use the first element
+              const firstElement = response.data[0];
+              let accName = firstElement.name;
+  
+              this.rptSimulateForm.patchValue({
+                name: accName
+              });
+            } else {
+              // Handle the case when response.data is an empty array
+              const accName = response.data.cisName || '';
+              this.updateFormControls(accName);
+              this.toggleInputReadOnly();
+            }
+          } else {
+            // Handle the case when response.data is not an array
+            const accName = response.cisName || '';
+            this.updateFormControls(accName);
+            this.toggleInputReadOnly();
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'No CIS Found!',
+            text: 'CIS Does Not Exist!',
+          });
+          this.toggleInputReadOnly();
+        });
+    }
+    }
+    
+  }
+ 
+
+
+  CISlookup() {
+    const dataLookup = this.rptSimulateForm.value;
+  
+    if (dataLookup.cis_no) {
+      let cis = dataLookup.cis_no;
+      cisLookUP(cis)
+        .then((response) => {
+          if (Array.isArray(response.data)) {
+            if (response.data.length > 0) {
+              let sumPrincipal = { principal: 0, principal_bal: 0, deposit_holdout: 0  };
+  
+              response.data.forEach((item) => {
+                // Calculate the sum for each item
+                sumPrincipal.principal += parseFloat(item.principal) || 0;
+                sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+                sumPrincipal.deposit_holdout += parseFloat(item.deposit_holdout) || 0;
+              });
+
+              // Assign the sum to the class variables
+              this.currentSttl = sumPrincipal.principal;
+              this.currentRptTTL = sumPrincipal.principal_bal;
+
+              let outstandingBal = sumPrincipal.principal_bal;
+
+              this.currentLoan = outstandingBal - sumPrincipal.deposit_holdout
+
 
               // If response.data is an array and not empty, use the first element
               const firstElement = response.data[0];
@@ -253,7 +356,6 @@ export class RPTSimulationModalComponent implements OnInit{
     // Recalculate available balance only if approvedCapital is not zero
     if (this.approvedCapital !== 0) {
       this.availBal = this.approvedCapital - this.rptBal;
-      console.log(this.availBal);
     } else {
       this.availBal = 0;
     }

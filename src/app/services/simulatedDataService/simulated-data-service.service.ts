@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
+import { MatDialog } from '@angular/material/dialog';
 import { Router, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
+
+import { RPTSimulationModalComponent } from '../../modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
+
 
 export interface Loan {
   loan_no: number,
@@ -21,7 +27,16 @@ export class SimulatedDataService {
   private temporaryLoans: Loan[] = [];
   private simulationPerformed: boolean = false;
 
-  constructor(private router: Router) {
+  private functionCallSource = new Subject<any>();
+  functionCall$ = this.functionCallSource.asObservable();
+
+  
+  private dataSource = new Subject<any>();
+  data$ = this.dataSource.asObservable();
+
+
+
+  constructor(private router: Router, private _dialog: MatDialog) {
     // Subscribe to router events to reset the state on navigation start
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart)
@@ -57,5 +72,32 @@ export class SimulatedDataService {
 
   getTemporaryLoans(): Loan[] {
     return this.temporaryLoans;
+  }
+
+
+  openSimulation(onInitFn: () => void, calculateFn: (data: any) => void, dataSource: any, availBal: any) {
+    
+    const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
+      width: '50%',
+      // Other MatDialog options can be specified here
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          onInitFn(); // Call the onInit function passed as a parameter
+          calculateFn(dataSource); // Call the calculate function passed as a parameter
+        }
+      },
+    });
+  }
+
+
+  triggerFunction(data?: any) {
+    this.functionCallSource.next(data);
+  }
+
+
+  sendData(data: any) {
+    this.dataSource.next(data);
   }
 }

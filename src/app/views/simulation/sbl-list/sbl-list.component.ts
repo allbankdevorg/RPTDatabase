@@ -87,7 +87,7 @@ export class SBLListComponent implements OnInit{
   available_bal: any;
   selectedPN: any;
   UnimpairedDate: any;
-
+  NetBal: number = 0;       // Total Balance minus the hold out
   sblIsPositive: boolean = false;
   sblIsNegative: boolean = false;
   totalHoldOut: number = 0;
@@ -240,6 +240,7 @@ export class SBLListComponent implements OnInit{
     for (const element of loanList) {
       sum += (element.principal_bal || 0) - (element.deposit_holdout || 0);
     }
+    this.NetBal = this.sbl - sum;
     return sum;
   }
 
@@ -339,7 +340,7 @@ print() {
 
   // Setting the Available Balance
   calculateAvailable(Avail: any, totalLoan: any) {
-    this.sblSimulateService.setAvailBal(Avail);
+    this.sblSimulateService.setAvailBal(this.NetBal);
     this.sblSimulateService.setTotalLoan(totalLoan)
   }
 
