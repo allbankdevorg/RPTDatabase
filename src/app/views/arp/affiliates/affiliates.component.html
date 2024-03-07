@@ -10,10 +10,11 @@
           <c-card-body>
             
               <c-container fluid class="mb-1 d-flex justify-content-between align-items-center">
-                <button (click)="downloadCSV()" mat-fab extended color="primary">
+                <!-- <button (click)="downloadCSV()" mat-fab extended color="primary">
                   <mat-icon>download</mat-icon>
                   CSV
-                </button>
+                </button> -->
+                <div></div>
                 <div class="d-flex justify-content-between align-items-center">  
                   <mat-form-field  class="mx-2 mt-3">
                     <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Search">
