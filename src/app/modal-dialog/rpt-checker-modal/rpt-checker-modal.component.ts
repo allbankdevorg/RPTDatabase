@@ -55,6 +55,7 @@ export class RptCheckerModalComponent {
                 if (data && data.length > 0) {
                     const officerRelated = data[0].officer_related;
                     this.RptCheckdata = data;
+
                     if (officerRelated.startsWith("148")) {
                         // Show success message for RPT
                         Swal.fire({
@@ -66,13 +67,13 @@ export class RptCheckerModalComponent {
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // Handle the user's confirmation
+                                this.RptCheckdata = data;
                                 this.openSimulation();
                                 this.close();
                                 // Optionally, perform any actions based on the user's confirmation
                             } else {
                                 // Handle the user's cancellation (if necessary)
-                                console.log('User cancelled.');
-                                // Optionally, perform any actions based on the user's cancellation
+                                                               // Optionally, perform any actions based on the user's cancellation
                             }
                         });
                     } else {
@@ -85,12 +86,14 @@ export class RptCheckerModalComponent {
                             confirmButtonText: 'Simulate'
                         }).then((result) => {
                             if (result.isConfirmed) {
+                                this.openSimulation();
+                                this.close();
                                 // Handle the user's confirmation
                                 // this.openSimulation();
                                 // Optionally, perform any actions based on the user's confirmation
                             } else {
                                 // Handle the user's cancellation (if necessary)
-                                console.log('User cancelled.');
+                                
                                 // Optionally, perform any actions based on the user's cancellation
                             }
                         });
@@ -105,11 +108,12 @@ export class RptCheckerModalComponent {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Handle the user's confirmation
-                        // this.openSimulation();
+                        this.openSimulation();
+                        this.close();
                         // Optionally, perform any actions based on the user's confirmation
                     } else {
                         // Handle the user's cancellation (if necessary)
-                        console.log('User cancelled.');
+                               
                         // Optionally, perform any actions based on the user's cancellation
                     }
                 });
@@ -124,11 +128,12 @@ export class RptCheckerModalComponent {
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Handle the user's confirmation
-                    // this.openSimulation(re);
+                    this.openSimulation();
+                    this.close();
                     // Optionally, perform any actions based on the user's confirmation
                 } else {
                     // Handle the user's cancellation (if necessary)
-                    console.log('User cancelled.');
+                             
                     // Optionally, perform any actions based on the user's cancellation
                 }
             });
@@ -139,7 +144,20 @@ export class RptCheckerModalComponent {
             Swal.fire({
                 icon: 'error',
                 title: 'Not RPT!',
-                text: 'This is Not RPT'
+                text: 'This is not RPT!',
+                showCancelButton: true,
+                confirmButtonText: 'Simulate'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Handle the user's confirmation
+                    this.openSimulation();
+                    this.close();
+                    // Optionally, perform any actions based on the user's confirmation
+                } else {
+                    // Handle the user's cancellation (if necessary)
+                               
+                    // Optionally, perform any actions based on the user's cancellation
+                }
             });
         });
 }
@@ -168,9 +186,26 @@ export class RptCheckerModalComponent {
 // }
 
 openSimulation() {
-    this.simulatedDataService.triggerFunction(this.RptCheckdata);
-    this.simulatedDataService.sendData(this.RptCheckdata);
-    // this._dialogRef.close('openSimulation');
-    // this.simulatedDataService.openSimulation(this.ngOnInit.bind(this), this.calculateSimulatedData.bind(this), this.dataSource.data, this.availBal);
-  }
+        if (this.RptCheckdata && this.RptCheckdata.length > 0) { // Check if RptCheckdata is not null/undefined and has elements
+            
+            this.simulatedDataService.triggerFunction(this.RptCheckdata);
+            this.simulatedDataService.sendData(this.RptCheckdata);
+        } else {
+            let formData = this.checkRPTForm.value;
+
+            let IndiData = [
+                {
+                cis_number: "",
+                fname: formData.firstName,
+                lname: formData.lastName,
+                fullname: formData.firstName + ' ' + formData.lastName,
+                officer_related: ""
+                }
+            ]
+
+            this.simulatedDataService.triggerFunction(IndiData);
+            this.simulatedDataService.sendData(IndiData);
+        }
+    }
+
 }
