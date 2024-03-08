@@ -99,7 +99,7 @@ export class RPTSimulationModalComponent implements OnInit{
       // Update the form controls with the received data
       this.rptSimulateForm.patchValue({
         name: this.receivedData[0].fullname,
-        cis_no: this.receivedData[0].cis
+        cis_no: this.receivedData[0].cis_number
         // Add any other form controls you need to update
       });
     }
@@ -187,36 +187,43 @@ export class RPTSimulationModalComponent implements OnInit{
 
 
   RPTCheckLookUp() {
-    if (this.data) {
+    if (this.receivedData) {
 
-      const dataLookup = this.rptSimulateForm.value;
-  
+      const dataLookup = this.receivedData[0];
+      
+      console.log(dataLookup);
 
-    if (dataLookup.cis_no) {
-      let cis = dataLookup.cis_no;
+    if (dataLookup.cis_number) {
+      let cis = dataLookup.cis_number;
       cisLookUP(cis)
         .then((response) => {
           if (Array.isArray(response.data)) {
             if (response.data.length > 0) {
-              let sumPrincipal = { principal: 0, principal_bal: 0 };
+              let sumPrincipal = { principal: 0, principal_bal: 0, deposit_holdout: 0  };
   
               response.data.forEach((item) => {
                 // Calculate the sum for each item
                 sumPrincipal.principal += parseFloat(item.principal) || 0;
                 sumPrincipal.principal_bal += parseFloat(item.principal_bal) || 0;
+                sumPrincipal.deposit_holdout += parseFloat(item.deposit_holdout) || 0;
               });
 
               // Assign the sum to the class variables
               this.currentSttl = sumPrincipal.principal;
               this.currentRptTTL = sumPrincipal.principal_bal;
 
+              let outstandingBal = sumPrincipal.principal_bal;
+
+              this.currentLoan = outstandingBal - sumPrincipal.deposit_holdout
+
+
               // If response.data is an array and not empty, use the first element
               const firstElement = response.data[0];
               let accName = firstElement.name;
   
-              this.rptSimulateForm.patchValue({
-                name: accName
-              });
+              // this.rptSimulateForm.patchValue({
+              //   name: accName
+              // });
             } else {
               // Handle the case when response.data is an empty array
               const accName = response.data.cisName || '';
@@ -231,11 +238,11 @@ export class RPTSimulationModalComponent implements OnInit{
           }
         })
         .catch((error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'No CIS Found!',
-            text: 'CIS Does Not Exist!',
-          });
+          // Swal.fire({
+          //   icon: 'error',
+          //   title: 'No CIS Found!',
+          //   text: 'CIS Does Not Exist!',
+          // });
           this.toggleInputReadOnly();
         });
     }

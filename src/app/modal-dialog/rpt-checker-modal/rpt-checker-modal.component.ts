@@ -34,7 +34,7 @@ export class RptCheckerModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,) {
       this.checkRPTForm = this.formBuilder.group({
           firstName: ['', [Validators.required]],
-          lastName: ['', [Validators.required]]
+          lastName: ['', [Validators.required, Validators.pattern(/\S+/)]]
         });
 
   }
@@ -186,8 +186,22 @@ export class RptCheckerModalComponent {
 // }
 
 openSimulation() {
+        // console.log("fdsd")
         if (this.RptCheckdata && this.RptCheckdata.length > 0) { // Check if RptCheckdata is not null/undefined and has elements
             
+            let formData = this.RptCheckdata[0];
+
+            console.log(formData);
+            let IndiData = [
+                {
+                cis_no: formData.cis_number,
+                fname: formData.fname,
+                lname: formData.lname,
+                fullname: formData.firstName + ' ' + formData.lastName,
+                officer_related: ""
+                }
+            ]
+
             this.simulatedDataService.triggerFunction(this.RptCheckdata);
             this.simulatedDataService.sendData(this.RptCheckdata);
         } else {
@@ -195,7 +209,7 @@ openSimulation() {
 
             let IndiData = [
                 {
-                cis_number: "",
+                cis_no: "",
                 fname: formData.firstName,
                 lname: formData.lastName,
                 fullname: formData.firstName + ' ' + formData.lastName,
