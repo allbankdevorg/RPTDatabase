@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, NgZone, Renderer2} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, NgZone, Renderer2} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
@@ -19,12 +19,30 @@ import { AuditTrailService } from '../../services/auditTrail/audit-trail.service
 import {AuditTrail} from '../../model/audit-trail.model';
 
 // Services
+import {EditUserAccessService} from '../../services/editUserAccess/edit-user-access.service';
 import {AddServicesService} from '../../services/add/add-services.service';
 import { AffiliatesService } from 'src/app/services/affiliates/affiliates.service';
 import Swal from 'sweetalert2';
 
 import {createUser} from '../../functions-files/add/postAPI';
 
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+
+import { userAccess} from '../../functions-files/add/postAPI';
+
+export  interface Permissions {
+  view: boolean;
+  add: boolean;
+  edit: boolean;
+  delete: boolean;
+  maker: boolean;
+  approver: boolean;
+  reviewer: boolean;
+  update: boolean;
+  // Add the 'navigation_name' property
+  navigation_name: string;
+}
 
 @Component({
   selector: 'app-view-users-modal',
@@ -60,13 +78,21 @@ export class ViewUsersModalComponent {
   eUserForm: any = [];
   matSelect: any;
 
+  DdisplayedColumns: string[] = ['navigation_name', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
+  permissionDataSource = new MatTableDataSource<Permissions>();
+  userAccess: [] = [];
+
+  
+  @ViewChild(MatPaginator) paginator1!: MatPaginator;
+
   constructor(private formBuilder: FormBuilder,
     private _dialogRef: MatDialogRef<ViewUsersModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private auditTrailService: AuditTrailService,
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
-    private renderer: Renderer2) 
+    private renderer: Renderer2,
+    private userAccessService: EditUserAccessService,) 
   {
     this.userForm = this.formBuilder.group({
       fName: [{value: '', disabled: true}],
@@ -95,10 +121,19 @@ export class ViewUsersModalComponent {
     _dialogRef.disableClose = true;
   }
 
+  updateCheckboxValue(event: any, controlName: string, access: any): void {
+    access[controlName] = event.checked ? 1 : 0;
+  }
+
+  editdata: any;
 
   ngOnInit(): void {
   // Attempt to patch the form
-  this.userForm.patchValue(this.data);
+  if (this.data != '' && this.data != null) {
+    this.userForm.patchValue(this.data);
+    }
+  this.getUserAccess();
+
 
   this.renderer.listen('document', 'click', (event: MouseEvent) => {
     const targetElement = event.target as HTMLElement;
@@ -138,12 +173,26 @@ export class ViewUsersModalComponent {
       this.changeDetectorRef.detectChanges();
   }
 
+  getUserAccess(): void {
+    const userid = this.userAccessService.getUserID();
+  
+    userAccess(userid)
+      .then((response) => {
+        this.userAccess = response.result[0].user_access;
+        this.permissionDataSource.data = [...this.userAccess]; // Ensure that you are copying the data
+      })
+      .catch((error) => {
+        // Handle Eror here
+      });
+  }
 
 
   close() {
     this._dialogRef.close(true); 
   }
 
+
+  updateDatabase(permission: Permissions, propertyName: any) {}
 
 
   // Start of Functions for Audit Trail

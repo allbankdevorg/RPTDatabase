@@ -132,31 +132,29 @@
                             </thead>
                             <tbody>
                               <!-- Loop through each item in the user's list -->
-                              <tr *ngFor="let access of data.authority; let j = index">
-                                <!-- Display item-related information -->
-                                <td>{{access.access}}</td>
-                                <td><input type="checkbox"  [checked]="access.view" ></td>
-                                <td><input type="checkbox"  [checked]="access.add" ></td>
-                                <td><input type="checkbox"  [checked]="access.update" ></td>
-                                <td><input type="checkbox"  [checked]="access.delete"></td>
-                                <td><input type="checkbox"  [checked]="access.maker" ></td>
-                                <td><input type="checkbox"  [checked]="access.approver" ></td>
-                                <td><input type="checkbox"  [checked]="access.reviewer"></td>
-                                <!-- Add more columns for other properties -->
-                  
-                                <!-- Add more rows for additional items if needed -->
-                              </tr>
+                              <tr *ngFor="let access of permissionDataSource.data; let j = index">
+                                <td>{{ access.navigation_name }}</td>                              
+                                <td><mat-checkbox [checked]="+access.view === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.add === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.update === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.delete === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.maker === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.approver === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.reviewer === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                            </tr>
+                            
                             </tbody>
                           </table>
               </c-row>
 
         </c-modal-body>
     </div>
-    <div mat-dialog-actions class="action">
-        <button mat-raised-button type="button" mat-dialog-close>Close</button>
-        <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
-        
-        <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">{{data ? 'Update': 'Save'}}</button> -->
-    </div>
+    
 </form>
 
+<div mat-dialog-actions class="action">
+  <button mat-raised-button type="button" mat-dialog-close>Close</button>
+  <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+  
+  <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">{{data ? 'Update': 'Save'}}</button> -->
+</div>
