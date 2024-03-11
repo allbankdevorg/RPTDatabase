@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { MatSort } from '@angular/material/sort';
+import Swal from 'sweetalert2';
 
 // service
 // import { SessionTimeoutService } from '../../../services/useridle/session-timeout.service';
@@ -252,11 +253,26 @@ openEditForm(data: any, event: any) {
     this.editvisible = event;
   }
 
-  delRelationship(): void {
-    // deleteRelationship()
-    deleteDosri((dosriId) => {
-  
+  delUser(): void {
+    // delete User
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to Delete this User?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'User has been deleted.',
+          'success'
+        )
+      }
     })
+    
   }
 
 
