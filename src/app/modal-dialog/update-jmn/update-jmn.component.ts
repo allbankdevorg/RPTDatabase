@@ -47,7 +47,7 @@ export class UpdateJMNComponent {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: ['', [Validators.required]],
+      aff_com_cis_number: [''],
       aff_com_comp_name: ['', [Validators.required]],
       managing_company: [''],
       // commandControl: [''],
