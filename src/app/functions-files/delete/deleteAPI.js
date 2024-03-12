@@ -259,7 +259,7 @@ function delBankOff(cis_id) {
 function delBankOffRI(data_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Remove this Officer's Related Interest?",
+    text: "Do you want to Unlink this Officer's Related Interest?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -310,7 +310,7 @@ function delBankOffRI(data_id) {
 function delAffilComp(cis_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Remove this Officer's Related Interest?",
+    text: "Do you want to Remove this Company?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -358,7 +358,7 @@ function delAffilComp(cis_id) {
 function delAffilComDIR(cis_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Remove this Officer's Related Interest?",
+    text: "Do you want to Unassign this Director?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -453,7 +453,7 @@ function delAffilComDIR(cis_id) {
 function delAffilOffRI(data_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Remove this Officer's Related Interest?",
+    text: "Do you want to Unlink this Officer's Related Interest?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
