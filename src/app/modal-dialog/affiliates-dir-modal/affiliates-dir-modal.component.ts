@@ -6,6 +6,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { patternValidator } from '../../validator/pattern.validator'
+
 // Imports for Functions
 import {createAffilDir, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
 
@@ -18,6 +20,7 @@ import {AuditTrail} from '../../model/audit-trail.model';
 import { DataTransferService } from '../../services/data-transfer.service';
 import { SharedService } from '../../../app/views/dosri/dataintegration/shared.service';
 import {AffiliatesService} from '../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
+
 
 
 @Component({
@@ -44,13 +47,25 @@ export class AffiliatesDirModalComponent implements OnInit{
     private ngZone: NgZone,
     private auditTrailService: AuditTrailService)
     {
-        this.affilDrctrForm = this.formBuilder.group({
-          affildcisNumber: [''],
-          affildFirstName: ['', [Validators.required]],
-          affildMiddleName: [''],
-          affildLastName: ['', [Validators.required]],
-          affildPosition: ['', [Validators.required]],
-        });
+      this.affilDrctrForm = this.formBuilder.group({
+        affildcisNumber: [''],
+        affildFirstName: ['', [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(/\S+/),
+        ]],
+        affildMiddleName: [''],
+        affildLastName: ['', [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(/\S+/),
+        ]],
+        affildPosition: ['', [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(/\S+/),
+        ]],
+      });
     }
 
 
@@ -58,6 +73,8 @@ export class AffiliatesDirModalComponent implements OnInit{
       this.affilDrctrForm.patchValue(this.data);
     }
 
+
+  
 
 
     // Functions
