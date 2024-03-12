@@ -31,8 +31,13 @@
           aria-describedby="passwordHelpInline-3" matInput
           id="affildFirstName" name="affildFirstName"
           placeholder="First Name"
-          type="text" formControlName="affildFirstName" appTitleCase>
-          <mat-error *ngIf="affilDrctrForm.get('affildFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+          type="text" formControlName="affildFirstName" appTitleCase appLetters>
+          <mat-error *ngIf="affilDrctrForm.get('affildFirstName')?.hasError('required')" class="error-msg">
+            First Name is Required
+          </mat-error>
+          <mat-error *ngIf="affilDrctrForm.get('affildFirstName')?.hasError('pattern')" class="error-msg">
+            Field cannot be just whitespace
+          </mat-error>
         </mat-form-field>
       </c-col>
     
@@ -43,7 +48,7 @@
                 aria-describedby="passwordHelpInline-3" matInput
                 id="affildMiddleName" name="affildMiddleName"
                 placeholder="Middle Name"
-                type="text" formControlName="affildMiddleName" appTitleCase>
+                type="text" formControlName="affildMiddleName" appTitleCase appLetters>
             </mat-form-field>
         </c-col>
     </c-row>
@@ -57,7 +62,7 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="affildLastName" name="affildLastName"
               placeholder="Last Name"
-              type="text" formControlName="affildLastName" appTitleCase>
+              type="text" formControlName="affildLastName" appTitleCase appLetters>
               <mat-error *ngIf="affilDrctrForm.get('affildLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
             </mat-form-field>
         </c-col>
