@@ -138,6 +138,7 @@ import { AffiliatesOffRIModalComponent } from './modal-dialog/affiliates-off-ri-
 import { UsersModalComponent } from './modal-dialog/users-modal/users-modal.component';
 import { StockholdersModalComponent } from './modal-dialog/stockholders-modal/stockholders-modal.component';
 import { LowerCaseDirective } from './directives/lower-case.directive';
+import { LettersOnlyDirective } from './directives/lettersOnly.directive';
 import { UsersAddModalComponent } from './modal-dialog/users-add-modal/users-add-modal.component';
 import { ViewUsersModalComponent } from './modal-dialog/view-users-modal/view-users-modal.component';
 import { UpdateManagingCompanyModalComponent } from './modal-dialog/update-managing-company-modal/update-managing-company-modal.component';
@@ -163,7 +164,7 @@ const APP_CONTAINERS = [
   declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
     BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,
     // DraggableDirective, ResizableDirective, 
-    LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
+    LettersOnlyDirective,LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective,
     DosriModalComponent,
     BankofficerModalComponent,
