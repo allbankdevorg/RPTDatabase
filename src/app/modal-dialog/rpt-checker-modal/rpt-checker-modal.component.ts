@@ -33,8 +33,10 @@ export class RptCheckerModalComponent {
     public _dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,) {
       this.checkRPTForm = this.formBuilder.group({
-          firstName: ['', [Validators.required]],
-          lastName: ['', [Validators.required, Validators.pattern(/\S+/)]]
+          firstName: ['', [Validators.required, 
+            Validators.maxLength(50), Validators.pattern(/\S+/)]],
+          lastName: ['', [Validators.required, 
+            Validators.maxLength(50), Validators.pattern(/\S+/)]]
         });
 
   }
