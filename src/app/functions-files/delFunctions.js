@@ -220,7 +220,7 @@ function deleteAffilOffRI(directorId) {
   // Code to delete a Affiliate Officer from the database
   Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Delete this Affiliate's Officer Relationship?",
+    text: "Do you want to Unlink this Affiliate's Director Related Interest?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
