@@ -40,7 +40,7 @@
                   <!-- <mat-label>Last Name</mat-label> -->
                   <input matInput #accDinput id="shares"  name="shares"
                   type="text" placeholder="Shares" formControlName="shares" appNum>
-                  <mat-error *ngIf="stockHoldersForm.get('shares')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                  <mat-error *ngIf="stockHoldersForm.get('shares')?.hasError('required')" class="error-msg">Shares is Required</mat-error>
                   
                 </mat-form-field>
               </c-col>
@@ -55,7 +55,7 @@
                   <!-- <mat-label>Last Name</mat-label> -->
                   <input matInput #accDinput id="amount"  name="amount"
                   type="text" placeholder="Amount" formControlName="amount" appNum>
-                  <mat-error *ngIf="stockHoldersForm.get('amount')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                  <mat-error *ngIf="stockHoldersForm.get('amount')?.hasError('required')" class="error-msg">Amount is Required</mat-error>
                   
                 </mat-form-field>
             </c-col>
@@ -66,7 +66,7 @@
                   <!-- <mat-label>Last Name</mat-label> -->
                   <input matInput #accDinput id="percentage"  name="percentage"
                   type="text" placeholder="Percentage" formControlName="percentage">
-                  <mat-error *ngIf="stockHoldersForm.get('com_company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+                  <mat-error *ngIf="stockHoldersForm.get('percentage')?.hasError('required')" class="error-msg">Percentage is Required</mat-error>
                   
                 </mat-form-field>
             </c-col>
