@@ -29,7 +29,7 @@
                   aria-describedby="passwordHelpInline-3" matInput
                   id="boFirstName" name="boFirstName"
                   placeholder="First Name"
-                  type="text" formControlName="boFirstName" appTitleCase>
+                  type="text" formControlName="boFirstName" appTitleCase appLetters maxlength="50">
                   <mat-error *ngIf="boForm.get('boFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
                 </mat-form-field>
             </c-col>
@@ -41,7 +41,7 @@
                   aria-describedby="passwordHelpInline-3" matInput
                   id="boMiddleName" name="boMiddleName"
                   placeholder="Middle Name"
-                  type="text" formControlName="boMiddleName" appTitleCase>
+                  type="text" formControlName="boMiddleName" appTitleCase appLetters maxlength="50">
                 </mat-form-field>
             </c-col>
         </c-row>
@@ -54,7 +54,7 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="boLastName" name="boLastName"
               placeholder="Last Name"
-              type="text" formControlName="boLastName" appTitleCase>
+              type="text" formControlName="boLastName" appTitleCase appLetters maxlength="50">
               <mat-error *ngIf="boForm.get('boLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
             </mat-form-field>
         </c-col>
