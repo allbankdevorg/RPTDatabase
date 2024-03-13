@@ -15,7 +15,7 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>First Name</mat-label> -->
                       <input matInput #accDinput id="fName" name="fName"
-                      type="text" placeholder="First Name" formControlName="fName" appTitleCase>
+                      type="text" placeholder="First Name" formControlName="fName" appTitleCase appLetters maxlength="50">
                       <mat-error *ngIf="userForm.get('fName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
                     </mat-form-field>
                 </c-col>
@@ -25,7 +25,7 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Middle Name</mat-label> -->
                       <input matInput #accDinput id="mName"  name="mName"
-                      type="text" placeholder="Middle Name" formControlName="mName" appTitleCase>
+                      type="text" placeholder="Middle Name" formControlName="mName" appTitleCase appLetters maxlength="50">
                       <mat-error *ngIf="userForm.get('mName')?.hasError('required')" class="error-msg">Niddle Name is Required</mat-error>
                     </mat-form-field>
                 </c-col>
@@ -35,7 +35,7 @@
                     <mat-form-field appearance="fill" [style.width.%]=100>
                       <!-- <mat-label>Last Name</mat-label> -->
                       <input matInput #accDinput id="lName"  name="lName"
-                      type="text" placeholder="Last Name" formControlName="lName" appTitleCase>
+                      type="text" placeholder="Last Name" formControlName="lName" appTitleCase appLetters maxlength="50">
                       <mat-error *ngIf="userForm.get('lName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
                     </mat-form-field>
                 </c-col>
