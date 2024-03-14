@@ -17,6 +17,9 @@
                 placeholder="CIS Number"
                 type="text" formControlName="affildcisNumber" (keyup.enter)="CISlookup()">
                 <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('pattern')" class="error-msg">
+                  Field cannot be just whitespace
+                </mat-error>
               </mat-form-field>
 
           </c-col>  
@@ -49,7 +52,9 @@
                 id="affildMiddleName" name="affildMiddleName"
                 placeholder="Middle Name"
                 type="text" formControlName="affildMiddleName" appTitleCase appLetters maxlength="50">
-            </mat-form-field>
+                <mat-error *ngIf="affilDrctrForm.get('affildMiddleName')?.hasError('pattern')" class="error-msg">
+                  Field cannot be just whitespace
+                </mat-error></mat-form-field>
         </c-col>
     </c-row>
     
@@ -64,7 +69,9 @@
               placeholder="Last Name"
               type="text" formControlName="affildLastName" appTitleCase appLetters maxlength="50">
               <mat-error *ngIf="affilDrctrForm.get('affildLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-            </mat-form-field>
+              <mat-error *ngIf="affilDrctrForm.get('affildLastName')?.hasError('pattern')" class="error-msg">
+                Field cannot be just whitespace
+              </mat-error></mat-form-field>
         </c-col>
 
         <c-col [sm]="6">
@@ -76,6 +83,9 @@
               placeholder="Position"
               type="text" formControlName="affildPosition" appTitleCase>
               <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
+              <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('pattern')" class="error-msg">
+                Field cannot be just whitespace
+              </mat-error>
             </mat-form-field>
           </c-col>
 

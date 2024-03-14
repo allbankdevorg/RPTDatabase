@@ -48,13 +48,13 @@ export class AffiliatesDirModalComponent implements OnInit{
     private auditTrailService: AuditTrailService)
     {
       this.affilDrctrForm = this.formBuilder.group({
-        affildcisNumber: [''],
+        affildcisNumber: ['', [Validators.pattern(/\S+/)]],
         affildFirstName: ['', [
           Validators.required,
           Validators.maxLength(50),
           Validators.pattern(/\S+/),
         ]],
-        affildMiddleName: [''],
+        affildMiddleName: ['', [Validators.pattern(/\S+/)]],
         affildLastName: ['', [
           Validators.required,
           Validators.maxLength(50),
