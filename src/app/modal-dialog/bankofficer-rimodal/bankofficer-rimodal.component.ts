@@ -46,10 +46,10 @@ export class BankofficerRIModalComponent implements OnInit{
     private auditTrailService: AuditTrailService)
     {
       this.boRIForm = this.formBuilder.group({
-        boRICisNumber: [''],
-        boRIFirstName: ['', [Validators.required]],
-        boRIMiddleName: [''],
-        boRILastName: ['', [Validators.required]],
+        boRICisNumber: ['', [Validators.pattern(/\S+/)]],
+        boRIFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        boRIMiddleName: ['', [Validators.pattern(/\S+/)]],
+        boRILastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
     });
     _dialogRef.disableClose = true;
     }

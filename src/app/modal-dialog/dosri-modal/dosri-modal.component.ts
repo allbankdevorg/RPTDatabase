@@ -44,9 +44,9 @@ export class DosriModalComponent implements OnInit {
     private auditTrailService: AuditTrailService
   ) {
     this.dosriForm = this._fb.group({
-      com_cis_number: ['', [Validators.required]],
-      com_account_name: ['', [Validators.required]],
-      com_company_name: ['', [Validators.required]]
+      com_cis_number: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]]
       });
     _dialogRef.disableClose = true;
   }

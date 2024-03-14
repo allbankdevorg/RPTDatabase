@@ -22,8 +22,10 @@
             placeholder="CIS Number"
             type="text" formControlName="riCisNumber">
             <mat-error *ngIf="affilOfficerRIForm.get('riCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-      
-        </mat-form-field>
+            <mat-error *ngIf="affilOfficerRIForm.get('riCisNumber')?.hasError('pattern')" class="error-msg">
+              Field cannot be just whitespace
+            </mat-error>
+          </mat-form-field>
       </c-col>
 
       <c-col [sm]="6">
@@ -35,6 +37,9 @@
           placeholder="First Name"
           type="text" formControlName="riFirstName" appTitleCase appLetters maxlength="50">
           <mat-error *ngIf="affilOfficerRIForm.get('riFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+          <mat-error *ngIf="affilOfficerRIForm.get('riFirstName')?.hasError('pattern')" class="error-msg">
+            Field cannot be just whitespace
+          </mat-error>
         </mat-form-field>
     </c-col>
     </c-row>
@@ -48,7 +53,10 @@
                 id="riMiddleName" name="riMiddleName"
                 placeholder="Middle Name"
                 type="text" formControlName="riMiddleName" appTitleCase appLetters maxlength="50">
-            </mat-form-field>
+                <mat-error *ngIf="affilOfficerRIForm.get('riMiddleName')?.hasError('pattern')" class="error-msg">
+                  Field cannot be just whitespace
+                </mat-error>
+              </mat-form-field>
         </c-col>
 
         <c-col [sm]="6">
@@ -60,6 +68,9 @@
               placeholder="Last Name"
               type="text" formControlName="riLastName" appTitleCase appLetters maxlength="50">
               <mat-error *ngIf="affilOfficerRIForm.get('riLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+              <mat-error *ngIf="affilOfficerRIForm.get('riLastName')?.hasError('pattern')" class="error-msg">
+                Field cannot be just whitespace
+              </mat-error>
             </mat-form-field>
         </c-col>
     </c-row>

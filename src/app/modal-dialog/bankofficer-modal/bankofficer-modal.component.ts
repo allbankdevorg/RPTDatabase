@@ -32,11 +32,11 @@ export class BankofficerModalComponent implements OnInit{
     private get: FetchDataService,) {
       
         this.boForm = this.formBuilder.group({
-          boCisNumber: [''],
-          boFirstName: ['', [Validators.required]],
-          boMiddleName: [''],
-          boLastName: ['', [Validators.required]],
-          boPosition: ['', [Validators.required]],
+          boCisNumber: ['', [Validators.pattern(/\S+/)]],
+          boFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+          boMiddleName: ['', [Validators.pattern(/\S+/)]],
+          boLastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+          boPosition: ['', [Validators.required, Validators.pattern(/\S+/)]],
       });
     _dialogRef.disableClose = true;
   }

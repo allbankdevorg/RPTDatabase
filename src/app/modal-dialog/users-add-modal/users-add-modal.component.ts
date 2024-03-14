@@ -69,15 +69,15 @@ export class UsersAddModalComponent {
     private renderer: Renderer2) 
   {
     this.userForm = this.formBuilder.group({
-      fName: ['', [Validators.required]],
-      mName: ['', [Validators.required]],
-      lName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      fName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      mName: ['', [Validators.pattern(/\S+/)]],
+      lName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/\S+/)]],
+      mobile: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern(/\S+/)]],
       role: ['', [Validators.required]],
       commandControl: [''],
-      userName: ['', [Validators.required]],
-      uPass: ['', [Validators.required, this.passwordValidator()]],
+      userName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      uPass: ['', [Validators.required, this.passwordValidator(), Validators.pattern(/\S+/)]],
       
     });
     _dialogRef.disableClose = true;

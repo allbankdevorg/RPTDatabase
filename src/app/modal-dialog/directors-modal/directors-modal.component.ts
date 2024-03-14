@@ -47,11 +47,11 @@ export class DirectorsModalComponent implements OnInit{
       private auditTrailService: AuditTrailService)
   {
       this.drctrForm = this.formBuilder.group({
-        cisNumber: ['', [Validators.required]],
-        dFirstName: ['', [Validators.required]],
-        dMiddleName: [''],
-        dLastName: ['', [Validators.required]],
-        dPosition: ['', [Validators.required]],
+        cisNumber: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        dFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        dMiddleName: ['', [Validators.pattern(/\S+/)]],
+        dLastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        dPosition: ['', [Validators.required, Validators.pattern(/\S+/)]],
       });
       
   _dialogRef.disableClose = true;

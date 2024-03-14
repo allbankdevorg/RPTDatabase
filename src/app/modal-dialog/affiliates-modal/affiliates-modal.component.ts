@@ -40,9 +40,9 @@ export class AffiliatesModalComponent implements OnInit {
     private _coreService: CoreService,
     private auditTrailService: AuditTrailService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: [''],
-      aff_com_account_name: ['', [Validators.required]],
-      aff_com_company_name: ['', [Validators.required]],
+      aff_com_cis_number: ['', [Validators.pattern(/\S+/)]],
+      aff_com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      aff_com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       // commandControl: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;

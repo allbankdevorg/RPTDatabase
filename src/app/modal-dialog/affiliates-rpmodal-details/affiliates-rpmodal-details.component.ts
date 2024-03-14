@@ -47,6 +47,7 @@ export class AffiliatesRpmodalDetailsComponent {
     this.affForm = this.formBuilder.group({
       aff_com_cis_number: [''],
       aff_com_comp_name: [''],
+      aff_com_account_name: [''],
       managing_company: [{value: '', disabled: true}],
       // commandControl: [''],
       deposit_holdout: ['']
@@ -58,9 +59,10 @@ export class AffiliatesRpmodalDetailsComponent {
   ngOnInit(): void {
     this.getParentCompany();//load dropdown Company list
 
+    console.log(this.data);
   // Attempt to patch the form
     this.affForm.patchValue({ aff_com_cis_number: this.data.selectedData.aff_com_cis_number,
-    aff_com_comp_name: this.data.selectedData.aff_com_comp_name, managing_company: this.data.selectedData.managing_company,
+    aff_com_comp_name: this.data.selectedData.aff_com_comp_name, aff_com_account_name: this.data.selectedData.aff_com_account_name, managing_company: this.data.selectedData.managing_company,
     deposit_holdout: this.data.totalHoldOut})
   
   }

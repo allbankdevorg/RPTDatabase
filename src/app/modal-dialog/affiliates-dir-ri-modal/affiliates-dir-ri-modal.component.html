@@ -16,7 +16,10 @@
             id="riCisNumber" name="riCisNumber"
             placeholder="CIS Number"
             type="text" formControlName="riCisNumber" (keyup.enter)="CISlookup()">
-        </mat-form-field>
+            <mat-error *ngIf="affilDirRiForm.get('riCisNumber')?.hasError('pattern')" class="error-msg">
+              Field cannot be just whitespace
+            </mat-error>
+          </mat-form-field>
       </c-col>
 
       <c-col [sm]="6">
@@ -28,6 +31,9 @@
           placeholder="First Name"
           type="text" formControlName="riFirstName" appTitleCase appLetters maxlength="50">
           <mat-error *ngIf="affilDirRiForm.get('riFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+          <mat-error *ngIf="affilDirRiForm.get('riFirstName')?.hasError('pattern')" class="error-msg">
+            Field cannot be just whitespace
+          </mat-error>
         </mat-form-field>
     </c-col>
     </c-row>
@@ -41,7 +47,10 @@
                 id="riMiddleName" name="riMiddleName"
                 placeholder="Middle Name"
                 type="text" formControlName="riMiddleName" appTitleCase appLetters maxlength="50">
-            </mat-form-field>
+                <mat-error *ngIf="affilDirRiForm.get('riMiddleName')?.hasError('pattern')" class="error-msg">
+                  Field cannot be just whitespace
+                </mat-error>
+              </mat-form-field>
         </c-col>
 
         <c-col [sm]="6">
@@ -53,6 +62,9 @@
               placeholder="Last Name"
               type="text" formControlName="riLastName" appTitleCase appLetters maxlength="50">
               <mat-error *ngIf="affilDirRiForm.get('riLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+              <mat-error *ngIf="affilDirRiForm.get('riLastName')?.hasError('pattern')" class="error-msg">
+                Field cannot be just whitespace
+              </mat-error>
             </mat-form-field>
         </c-col>
     </c-row>

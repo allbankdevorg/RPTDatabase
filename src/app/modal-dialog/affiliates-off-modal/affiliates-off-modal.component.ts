@@ -44,11 +44,11 @@ export class AffiliatesOffModalComponent implements OnInit {
     private auditTrailService: AuditTrailService)
     {
       this.affilOfficerForm = this.formBuilder.group({
-        off_CisNumber: [''],
-        off_fname: ['', [Validators.required]],
-        off_mname: [''],
-        off_lname: ['', [Validators.required]],
-        Position: ['', [Validators.required]],
+        off_CisNumber: ['', [Validators.pattern(/\S+/)]],
+        off_fname: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        off_mname: ['', [Validators.pattern(/\S+/)]],
+        off_lname: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        Position: ['', [Validators.required, Validators.pattern(/\S+/)]],
       });
     }
 

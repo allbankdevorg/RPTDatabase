@@ -43,11 +43,11 @@ export class OtherRPModalComponent implements OnInit {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: [''],
-      aff_com_account_name: ['', [Validators.required]],
-      aff_com_company_name: ['', [Validators.required]],
-      managing_company: [''],
-      hold_out: ['']
+      aff_com_cis_number: ['',Validators.pattern(/\S+/)],
+      aff_com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      aff_com_company_name: ['', [Validators.required,Validators.pattern(/\S+/)]],
+      managing_company: ['', Validators.pattern(/\S+/)],
+      hold_out: ['', Validators.pattern(/\S+/)]
       });
       _dialogRef.disableClose = true;
   }

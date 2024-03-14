@@ -17,7 +17,8 @@
                 <input matInput id="cisNumber" name="cisNumber" (keyup.enter)="CISlookup()"
                 type="text" placeholder="CIS Number" formControlName="cis_number">
                  <mat-error *ngIf="stockHoldersForm.get('cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-              </mat-form-field>
+                 <mat-error *ngIf="stockHoldersForm.get('cis_number')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
+                </mat-form-field>
             </c-col>
           </c-row>
 
@@ -31,6 +32,7 @@
                 <input matInput id="name"  name="name"
                 type="text" placeholder="Name" formControlName="name" appCaps >
                 <mat-error *ngIf="stockHoldersForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
+                <mat-error *ngIf="stockHoldersForm.get('name')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
               </mat-form-field>
             </c-col>
 
@@ -41,7 +43,7 @@
                   <input matInput #accDinput id="shares"  name="shares"
                   type="text" placeholder="Shares" formControlName="shares" appNum>
                   <mat-error *ngIf="stockHoldersForm.get('shares')?.hasError('required')" class="error-msg">Shares is Required</mat-error>
-                  
+                  <mat-error *ngIf="stockHoldersForm.get('shares')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
                 </mat-form-field>
               </c-col>
           </c-row>
@@ -56,7 +58,7 @@
                   <input matInput #accDinput id="amount"  name="amount"
                   type="text" placeholder="Amount" formControlName="amount" appNum>
                   <mat-error *ngIf="stockHoldersForm.get('amount')?.hasError('required')" class="error-msg">Amount is Required</mat-error>
-                  
+                  <mat-error *ngIf="stockHoldersForm.get('amount')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
                 </mat-form-field>
             </c-col>
 
@@ -67,7 +69,7 @@
                   <input matInput #accDinput id="percentage"  name="percentage"
                   type="text" placeholder="Percentage" formControlName="percentage">
                   <mat-error *ngIf="stockHoldersForm.get('percentage')?.hasError('required')" class="error-msg">Percentage is Required</mat-error>
-                  
+                  <mat-error *ngIf="stockHoldersForm.get('percentage')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
                 </mat-form-field>
             </c-col>
 

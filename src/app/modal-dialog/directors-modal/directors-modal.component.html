@@ -15,6 +15,7 @@
               <input matInput id="cisNumber" name="cisNumber" (keyup.enter)="CISlookup()"
               type="text" placeholder="CIS Number" formControlName="cisNumber">
               <mat-error *ngIf="drctrForm.get('cisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+              <mat-error *ngIf="drctrForm.get('cisNumber')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
             </mat-form-field>
 
             <!-- <input
@@ -36,7 +37,8 @@
                 placeholder="First Name"
                 type="text" formControlName="dFirstName" appTitleCase appLetters maxlength="50">
                 <mat-error *ngIf="drctrForm.get('dFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
-            </mat-form-field>
+                <mat-error *ngIf="drctrForm.get('dFirstName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
+              </mat-form-field>
       </c-col>
     
         <c-col [sm]="6">
@@ -47,6 +49,7 @@
                     id="dMiddleName" name="dMiddleName"
                     placeholder="Middle Name"
                     type="text" formControlName="dMiddleName" appTitleCase appLetters maxlength="50">
+                    <mat-error *ngIf="drctrForm.get('dMiddleName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
                   </mat-form-field>
         </c-col>
     </c-row>
@@ -62,6 +65,7 @@
                 placeholder="Last Name"
                 type="text" formControlName="dLastName" appTitleCase appLetters maxlength="50">
                 <mat-error *ngIf="drctrForm.get('dLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+                <mat-error *ngIf="drctrForm.get('dLastName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
               </mat-form-field>
         </c-col>
 
@@ -74,6 +78,7 @@
               placeholder="Position"
               type="text" formControlName="dPosition" appTitleCase>
               <mat-error *ngIf="drctrForm.get('dPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
+              <mat-error *ngIf="drctrForm.get('dPosition')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
             </mat-form-field>
           </c-col>
 

@@ -44,9 +44,9 @@ export class UpdateManagingCompanyModalComponent {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: [''] ,
-      aff_com_comp_name: ['', [Validators.required]],
-      managing_company: [''],
+      aff_com_cis_number: ['', [Validators.pattern(/\S+/)]] ,
+      aff_com_comp_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      managing_company: ['', [Validators.pattern(/\S+/)]],
       // commandControl: [''],
       hold_out: ['']
       });

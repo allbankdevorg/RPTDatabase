@@ -17,6 +17,9 @@
                       <input matInput #accDinput id="fName" name="fName"
                       type="text" placeholder="First Name" formControlName="fName" appTitleCase appLetters maxlength="50">
                       <mat-error *ngIf="userForm.get('fName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+                      <mat-error *ngIf="userForm.get('fName')?.hasError('pattern')" class="error-msg">
+                        Field cannot be just whitespace
+                      </mat-error>
                     </mat-form-field>
                 </c-col>
         
@@ -27,6 +30,9 @@
                       <input matInput #accDinput id="mName"  name="mName"
                       type="text" placeholder="Middle Name" formControlName="mName" appTitleCase appLetters maxlength="50">
                       <mat-error *ngIf="userForm.get('mName')?.hasError('required')" class="error-msg">Niddle Name is Required</mat-error>
+                      <mat-error *ngIf="userForm.get('mName')?.hasError('pattern')" class="error-msg">
+                        Field cannot be just whitespace
+                      </mat-error>
                     </mat-form-field>
                 </c-col>
 
@@ -37,6 +43,9 @@
                       <input matInput #accDinput id="lName"  name="lName"
                       type="text" placeholder="Last Name" formControlName="lName" appTitleCase appLetters maxlength="50">
                       <mat-error *ngIf="userForm.get('lName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+                      <mat-error *ngIf="userForm.get('lName')?.hasError('pattern')" class="error-msg">
+                        Field cannot be just whitespace
+                      </mat-error>
                     </mat-form-field>
                 </c-col>
       
@@ -51,7 +60,7 @@
                     type="text" placeholder="Email Address" formControlName="email">
                     <mat-error *ngIf="userForm.get('email')?.hasError('required')" class="error-msg">Email is Required</mat-error>
                     <mat-error *ngIf="userForm.get('email')?.hasError('email')" class="error-msg">Invalid Email Format</mat-error>
-                  </mat-form-field>
+                    </mat-form-field>
                 </c-col>
 
                 <c-col [sm]="6">
@@ -60,9 +69,12 @@
                       <!-- <mat-label>Company Name</mat-label> -->
                       <input matInput #accDinput id="uMobile" name="uMobile"
                       type="text" placeholder="Mobile Number" formControlName="mobile" appNum>
-                      <mat-error *ngIf="userForm.get('mobile')?.hasError('required')" class="error-msg">Mobile # is Required</mat-error>
-                      <mat-error *ngIf="userForm.get('mobile')?.hasError('minLength')" class="error-msg">Mobile # must be 11 digit long</mat-error>
-                      <mat-error *ngIf="userForm.get('mobile')?.hasError('maxLength')" class="error-msg">Mobile # must be only 11 digit long</mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('required')" class="error-msg">Mobile Number is Required</mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('minLength')" class="error-msg">Mobile Number must be 11 digit long</mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('maxLength')" class="error-msg">Mobile Number must be only 11 digit long</mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('pattern')" class="error-msg">
+                        Field cannot be just whitespace
+                      </mat-error>
                     </mat-form-field>
                 </c-col>
               </c-row>
@@ -104,7 +116,10 @@
                     <input matInput #accDinput id="userName" name="userName"
                     type="text" placeholder="User Name" formControlName="userName">
                     
-                    <mat-error *ngIf="userForm.get('userName')?.hasError('required')" class="error-msg">User Name is Required</mat-error>
+                    <mat-error *ngIf="userForm.get('userName')?.hasError('required')" class="error-msg">Username is Required</mat-error>
+                    <mat-error *ngIf="userForm.get('userName')?.hasError('pattern')" class="error-msg">
+                      Field cannot be just whitespace
+                    </mat-error>
                   </mat-form-field>
                 </c-col>
 
@@ -121,8 +136,7 @@
                         <mat-error *ngIf="userForm.get('uPass')?.hasError('number')" class="error-msg">Password must contain at least one number!</mat-error>
                         <mat-error *ngIf="userForm.get('uPass')?.hasError('specialCharacter')" class="error-msg">Password must contain at least one special character.</mat-error>
                         <mat-error *ngIf="userForm.get('uPass')?.hasError('minLength')" class="error-msg">Password must be at least 8 characters long.</mat-error>
-                      
-                      </mat-form-field>
+                        </mat-form-field>
                   </c-col>
               </c-row>
 

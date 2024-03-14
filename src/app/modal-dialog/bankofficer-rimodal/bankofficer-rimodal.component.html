@@ -16,6 +16,7 @@
               id="boRICisNumber" name="boRICisNumber"
               placeholder="CIS Number"
               type="text" formControlName="boRICisNumber" (keyup.enter)="CISlookup()">
+              <mat-error *ngIf="boRIForm.get('boRICisNumber')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
             </mat-form-field>
           </c-col>
       
@@ -28,6 +29,7 @@
                   placeholder="First Name"
                   type="text" formControlName="boRIFirstName" appTitleCase appLetters maxlength="50">
                   <mat-error *ngIf="boRIForm.get('boRIFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+                  <mat-error *ngIf="boRIForm.get('boRIFirstName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
                 </mat-form-field>
             </c-col>
     </c-row>
@@ -41,6 +43,7 @@
               id="boRIMiddleName" name="boRIMiddleName"
               placeholder="Middle Name"
               type="text" formControlName="boRIMiddleName" appTitleCase appLetters maxlength="50">
+              <mat-error *ngIf="boRIForm.get('boRIMiddleName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
             </mat-form-field>
         </c-col>
 
@@ -53,6 +56,7 @@
               placeholder="Last Name"
               type="text" formControlName="boRILastName" appTitleCase appLetters maxlength="50">
               <mat-error *ngIf="boRIForm.get('boRILastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+              <mat-error *ngIf="boRIForm.get('boRILastName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
             </mat-form-field>
         </c-col>
     </c-row>

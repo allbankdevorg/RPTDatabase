@@ -17,6 +17,9 @@
                 placeholder="CIS Number"
                 type="text" formControlName="off_CisNumber" (keyup.enter)="CISlookup()">
                 <mat-error *ngIf="affilOfficerForm.get('off_CisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                <mat-error *ngIf="affilOfficerForm.get('off_CisNumber')?.hasError('pattern')" class="error-msg">
+                  Field cannot be just whitespace
+                </mat-error>
               </mat-form-field>
 
             
@@ -34,6 +37,9 @@
           placeholder="First Name"
           type="text" formControlName="off_fname" appTitleCase appLetters maxlength="50">
           <mat-error *ngIf="affilOfficerForm.get('off_fname')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
+          <mat-error *ngIf="affilOfficerForm.get('off_fname')?.hasError('pattern')" class="error-msg">
+            Field cannot be just whitespace
+          </mat-error>
         </mat-form-field>
       </c-col>
     
@@ -45,7 +51,10 @@
                 id="off_mname" name="off_mname"
                 placeholder="Middle Name"
                 type="text" formControlName="off_mname" appTitleCase appLetters maxlength="50">
-            </mat-form-field>
+                <mat-error *ngIf="affilOfficerForm.get('off_mname')?.hasError('pattern')" class="error-msg">
+                  Field cannot be just whitespace
+                </mat-error>
+              </mat-form-field>
         </c-col>
     </c-row>
     
@@ -60,6 +69,9 @@
               placeholder="Last Name"
               type="text" formControlName="off_lname" appTitleCase appLetters maxlength="50">
               <mat-error *ngIf="affilOfficerForm.get('off_lname')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+              <mat-error *ngIf="affilOfficerForm.get('off_lname')?.hasError('pattern')" class="error-msg">
+                Field cannot be just whitespace
+              </mat-error>
             </mat-form-field>
         </c-col>
 
@@ -72,6 +84,9 @@
               placeholder="Position"
               type="text" formControlName="Position" appTitleCase>
               <mat-error *ngIf="affilOfficerForm.get('Position')?.hasError('required')" class="error-msg">Position is Required</mat-error>
+              <mat-error *ngIf="affilOfficerForm.get('Position')?.hasError('pattern')" class="error-msg">
+                Field cannot be just whitespace
+              </mat-error>
             </mat-form-field>
           </c-col>
 

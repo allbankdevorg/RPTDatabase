@@ -49,10 +49,10 @@ export class DirectorsRIModalComponent implements OnInit {
       private auditTrailService: AuditTrailService)
   {
       this.riForm = this.formBuilder.group({
-        riCisNumber: [''],
-        riFirstName: ['', [Validators.required]],
-        riMiddleName: [''],
-        riLastName: ['', [Validators.required]],
+        riCisNumber: ['', [Validators.pattern(/\S+/)]],
+        riFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        riMiddleName: ['', [Validators.pattern(/\S+/)]],
+        riLastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
       });
       _dialogRef.disableClose = true;
       // Subscribe to changes in buttonId and selectedDirCisNumber
