@@ -44,11 +44,11 @@ export class AddChildModalComponent implements OnInit {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: [''],
+      aff_com_cis_number: ['', [Validators.pattern(/\S+/)]],
       aff_com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       aff_com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       managing_company: [{value: '', disabled: true}],
-      parent_company: [''],
+      parent_company: ['', [Validators.pattern(/\S+/)]],
       // commandControl: [''],
       });
       _dialogRef.disableClose = true;
