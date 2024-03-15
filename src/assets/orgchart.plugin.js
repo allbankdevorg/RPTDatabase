@@ -24,7 +24,17 @@
         var self = this;
 
         this.draw = function(){
-            $container.empty().append(rootNodes[0].render(opts));
+            // $container.empty().append(rootNodes[0].render(opts));
+            // $container.find('.node').click(function(){
+            //     if(self.opts.onClickNode !== null){
+            //         self.opts.onClickNode(nodes[$(this).attr('node-id')]);
+            //     }
+            // });
+
+            $container.empty();
+            for (var i = 0; i < rootNodes.length; i++) {
+                $container.append(rootNodes[i].render(opts));
+            }
             $container.find('.node').click(function(){
                 if(self.opts.onClickNode !== null){
                     self.opts.onClickNode(nodes[$(this).attr('node-id')]);
@@ -134,7 +144,7 @@
 
         // generate parent child tree
         for(var i in nodes){
-            if(nodes[i].data.parent == 0){
+            if(nodes[i].data.parent == 0 || nodes[i].data.parent == ""){
                 rootNodes.push(nodes[i]);
             }
             else{
@@ -210,6 +220,8 @@
             mainTable += '</table>';
             return mainTable;
         }
+
+        
 
         this.formatNode = function(opts){
             var nameString = '',
