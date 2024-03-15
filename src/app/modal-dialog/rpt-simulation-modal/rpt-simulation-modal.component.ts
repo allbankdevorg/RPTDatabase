@@ -190,8 +190,6 @@ export class RPTSimulationModalComponent implements OnInit{
     if (this.receivedData) {
 
       const dataLookup = this.receivedData[0];
-      
-      console.log(dataLookup);
 
     if (dataLookup.cis_number) {
       let cis = dataLookup.cis_number;
