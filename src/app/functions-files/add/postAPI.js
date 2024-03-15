@@ -991,7 +991,6 @@ function rptLookup(rpt) {
       $.ajax(settings)
           .done(function (response) {
               if (response.result && response.result.length > 0) {
-                  console.log(response.result[0].message); // Log the message for debugging
                   resolve(response); // Resolve the promise with the response
               } else {
                   reject("Invalid response structure");
