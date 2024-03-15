@@ -27,6 +27,7 @@ interface CompData {
   id: string;
   comCisNum: string;
   name: string;
+  compName: string;
   parent_cis: string,
   parent: string;
   manager: string;
@@ -88,6 +89,7 @@ export class PaviGroupComponent {
       id: originalJson.id,
       comCisNum: originalJson.comCisNum,
       name: originalJson.name,
+      compName: originalJson.compName,
       parent_cis: originalJson.parent_cis,
       parent: originalJson.parent,
       manager: originalJson.manager,
@@ -133,6 +135,7 @@ export class PaviGroupComponent {
     
     const transformedData = {
       aff_com_comp_name: selectedItem.name,
+      aff_com_account_name: selectedItem.compName,
       manager: selectedItem.manager,
       aff_com_cis_number: selectedItem.comCisNum,
       managing_company: selectedItem.parent_cis, 
@@ -233,6 +236,7 @@ export class PaviGroupComponent {
             id: item.id,
             comCisNum: item.aff_com_cis_number,
             name: item.aff_com_account_name,
+            compName: item.aff_com_account_name,
             parent_cis: item.managing_company,
             // Update parent field to use the corresponding ID from the map
             parent: cisToIdMap[item.managing_company]?.toString() || "",

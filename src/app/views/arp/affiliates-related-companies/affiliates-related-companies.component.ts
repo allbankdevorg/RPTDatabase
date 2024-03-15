@@ -26,6 +26,7 @@ interface CompData {
   id: string;
   comCisNum: string;
   name: string;
+  compName: string;
   parent_cis: string,
   parent: string;
   manager: string;
@@ -77,14 +78,97 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     this.fetchAssocCompany();
   }
 
+  testdataArr = [
+    
+    { comCisNum: "1480009826",
+      date_inserted: "2024-01-23T16:38:33.397",
+      hold_out: 0,
+      id: 71,
+      manager: "",
+      module: "ORP",
+      name: "GOLDEN MV HOLDINGS, INC",
+      parent: "",
+      parent_cis: "",
+      status: 0
+    },
+    { comCisNum: "1480004447",
+      date_inserted: "2024-01-23T16:35:56.193",
+      hold_out: 0,
+      id: 72,
+      manager: "",
+      module: "ORP",
+      name: "FINE PROPERTIES, INC",
+      parent: "69",
+      parent_cis: "1480004447",
+      status: 1,
+    },
+    { comCisNum: "1480004447",
+      date_inserted: "2024-01-23T16:35:56.193",
+      hold_out: 0,
+      id: 73,
+      manager: "",
+      module: "ORP",
+      name: "FINE PROPERTIES, INC",
+      parent: "69",
+      parent_cis: "1480004447",
+      status: 1,
+    },
+    { comCisNum: "1480004447",
+      date_inserted: "2024-01-23T16:35:56.193",
+      hold_out: 0,
+      id: 69,
+      manager: "",
+      module: "ORP",
+      name: "FINE PROPERTIES, INC",
+      parent: "",
+      parent_cis: "",
+      status: 0,
+    }
+  ]
+
   
+//   drawOrgChart(testdataArr) {
+//     // Transform data
+//     const testData = testdataArr.map(originalJson => ({
+//         id: originalJson.id,
+//         comCisNum: originalJson.comCisNum,
+//         name: originalJson.name,
+//         parent_cis: originalJson.parent_cis,
+//         parent: originalJson.parent,
+//         manager: originalJson.manager,
+//         date_inserted: originalJson.date_inserted,
+//         status: originalJson.status,
+//         module: originalJson.module,
+//         hold_out: originalJson.hold_out
+//     }));
+
+//     $('#orgChart').orgChart({
+//         data: testData,
+//         showControls: true,
+//         allowEdit: false,
+//         onClickNode: (node: any) => {
+//             const selectedNode = node.data;
+//             this.updateNodeDetails(selectedNode);
+//             this.com_cis = node.data.id;
+//             this.showModal();
+//             this.fetchTotalHoldOut();
+//         }
+//     });
+// }
+
+
+
+
+
   drawOrgChart(dataArr) {
+
     // var OrgData = this.Dataorig;
 
     const testData = dataArr.map(originalJson => ({
       id: originalJson.id,
       comCisNum: originalJson.comCisNum,
       name: originalJson.name,
+      compName: originalJson.compName,
       parent_cis: originalJson.parent_cis,
       parent: originalJson.parent,
       manager: originalJson.manager,
@@ -129,6 +213,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     
     const transformedData = {
       aff_com_comp_name: selectedItem.name,
+      aff_com_account_name: selectedItem.compName,
       manager: selectedItem.manager,
       aff_com_cis_number: selectedItem.comCisNum,
       managing_company: selectedItem.parent_cis,  
@@ -186,6 +271,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
             id: item.id,
             comCisNum: item.aff_com_cis_number,
             name: item.aff_com_account_name,
+            compName: item.aff_com_account_name,
             parent_cis: item.managing_company,
             // Update parent field to use the corresponding ID from the map
             parent: cisToIdMap[item.managing_company]?.toString() || "",
@@ -202,6 +288,8 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
         
         this.dataLoaded = true;
         this.drawOrgChart(dataArr);
+        // this.drawOrgChart(this.testdataArr);
+
         
       }
     });
