@@ -18,12 +18,25 @@
               </ng-container>
 
                 <!-- FullName Column -->
-                <ng-container matColumnDef="FullName">
+                <!-- <ng-container matColumnDef="FullName">
+                  <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                  <td mat-cell *matCellDef="let element">
+                    <ng-container>
+                      <div>
+                          {{element.FullName}}
+                      </div>
+                    </ng-container> 
+                      <mat-icon *appHasPermission="'delete'" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" >link_off</mat-icon>
+                  </td>
+                </ng-container> -->
+
+                <ng-container matColumnDef="FullName" class="position-reative">
                     <th mat-header-cell *matHeaderCellDef> Full Name </th>
                     <td mat-cell *matCellDef="let element"> {{element.FullName}} 
-                      <button *appHasPermission="'delete'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
-                        <mat-icon>link_off</mat-icon>
-                      </button>
+                      <mat-icon *appHasPermission="'delete'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
+                        <!-- <mat-icon>link_off</mat-icon> -->
+                        link_off
+                      </mat-icon>
                     </td>
                 </ng-container>
         

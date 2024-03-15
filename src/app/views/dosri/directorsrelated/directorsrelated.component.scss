@@ -95,10 +95,10 @@ tr.example-detail-row {
 // }
 
 .add-button {
-    padding: 3px;
-    font-size: 10px;
-    right: 2px;
-    top: 2px;
+    padding: 0;
+    font-size: 23px;
+    right: 0;
+    top: 0;
     position: absolute;
 }
 
@@ -141,6 +141,8 @@ tr.example-detail-row {
  .mat-column-Spouse, .mat-column-Children, .mat-column-MotherinLaw, .mat-column-FatherinLaw {
     width: 11%;
     position: relative;
+    white-space: nowrap;
+    padding: 20px 20px;
     // display: flex;
     text-align: left;
     border-left: 1px solid #d3d3d3;
