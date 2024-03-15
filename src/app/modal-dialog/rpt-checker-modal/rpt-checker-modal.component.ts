@@ -193,7 +193,7 @@ openSimulation() {
             
             let formData = this.RptCheckdata[0];
 
-            console.log(formData);
+            // console.log(formData);
             let IndiData = [
                 {
                 cis_no: formData.cis_number,
