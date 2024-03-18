@@ -87,10 +87,10 @@ export class RPTSimulationModalComponent implements OnInit{
   }
 
   ngOnInit(): void {
-  this.updateTableData();
-  this.getUnimpairedCap();
-  this.patchForm();
-  this.RPTCheckLookUp();
+    this.getUnimpairedCap();
+    this.updateTableData();
+    this.patchForm();
+    this.RPTCheckLookUp();
   }
 
   
@@ -148,31 +148,7 @@ export class RPTSimulationModalComponent implements OnInit{
     }
   }
 
-  simulateRPT() {
-    if (this.rptSimulateForm.valid) {
-      this.ngOnInit();
-      const dataLookup = this.rptSimulateForm.value;
   
-      // Convert the values to numbers using parseFloat or the unary + operator
-      const currentSttlValue = parseFloat(this.currentLoan) || 0;
-      const amountValue = parseFloat(dataLookup.principal) || 0;
-  
-      // Perform the addition
-      this.simulatedSttl = currentSttlValue + amountValue;      
-      this.simulatedRptTTL = amountValue;
-
-
-      if (this.simulatedRptTTL > this.availBal) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Loan Breached!',
-          text: 'Please Enter Amount not Greater than the Available Balance',
-        });
-      }
-
-      this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
-    }
-  }
 
 
   close() {
@@ -344,6 +320,8 @@ export class RPTSimulationModalComponent implements OnInit{
     })
   }
 
+    
+
   calculateactualData(actualData: any[]): void {
     const sumPrincipal = actualData.reduce((acc, obj) => {
       acc.principal += parseFloat(obj.principal) || 0;
@@ -364,8 +342,35 @@ export class RPTSimulationModalComponent implements OnInit{
     } else {
       this.availBal = 0;
     }
+
   }
   
+
+
+  simulateRPT() {
+    if (this.rptSimulateForm.valid) {
+      this.ngOnInit();
+      const dataLookup = this.rptSimulateForm.value;
+      
+      // Convert the values to numbers using parseFloat or the unary + operator
+      const currentSttlValue = parseFloat(this.currentLoan) || 0;
+      const amountValue = parseFloat(dataLookup.principal) || 0;
+  
+      // Perform the addition
+      this.simulatedSttl = currentSttlValue + amountValue;      
+      this.simulatedRptTTL = amountValue;
+
+      if (this.simulatedRptTTL > this.availBal) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Loan Breached!',
+          text: 'Please Enter Amount not Greater than the Available Balance',
+        });
+      }
+
+      this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
+    }
+  }
 
   toggleInputReadOnly() {
     this.isReadOnly = !this.isReadOnly;
