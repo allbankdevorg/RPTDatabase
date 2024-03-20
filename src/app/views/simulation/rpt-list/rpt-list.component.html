@@ -26,10 +26,11 @@
 
                           <div style="display: flex; align-items: center;">
                             <div>
+                              
                               <button (click)="openChecker()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
                               <mat-icon>search</mat-icon>
                               RPT LookUp
-                            </button>
+                              </button>
                               <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
                                 <mat-icon>file_download</mat-icon>
                                 CSV
@@ -290,3 +291,8 @@
       </c-col>
     </c-row>
 </c-container>
+
+
+
+
+
