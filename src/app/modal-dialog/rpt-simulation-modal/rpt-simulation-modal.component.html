@@ -16,7 +16,7 @@
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="cis_no" name="cis_no"
                 type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
-                formControlName="cis_no">
+                formControlName="cis_no" appAlphanumeric>
                 <mat-error *ngIf="rptSimulateForm.get('cis_no')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             </mat-form-field>
         </c-col>
@@ -27,7 +27,7 @@
                 <!-- <mat-label>Account Name</mat-label> -->
                 <input matInput #accDinput id="name"  name="name"
                 type="text" placeholder="Name"
-                formControlName="name">
+                formControlName="name" appLetters>
                 <mat-error *ngIf="rptSimulateForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
             </mat-form-field>
         </c-col>
@@ -42,7 +42,7 @@
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="principal" name="principal"
                 type="text" placeholder="Amount" 
-                formControlName="principal" appNum>
+                formControlName="principal" appNum required>
                 <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error>
             </mat-form-field>
         </c-col>

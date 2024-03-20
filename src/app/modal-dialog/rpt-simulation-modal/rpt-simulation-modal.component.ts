@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
 import Swal from 'sweetalert2';
   
@@ -20,6 +20,8 @@ import {AddServicesService} from '../../services/add/add-services.service';
 import { AffiliatesService } from 'src/app/services/affiliates/affiliates.service';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { SimulatedDataService } from '../../services/simulatedDataService/simulated-data-service.service';
+
+
 
 
 // export interface Loan {
@@ -57,10 +59,12 @@ export class RPTSimulationModalComponent implements OnInit{
   receivedData: any;
 
   constructor(
+    private ngZone: NgZone,
     private formBuilder: FormBuilder,
     private _dosriService: AddServicesService,
     private dataService: AffiliatesService,
     private _dialogRef: MatDialogRef<RPTSimulationModalComponent>,
+    public _dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService,
     private auditTrailService: AuditTrailService,
@@ -68,7 +72,7 @@ export class RPTSimulationModalComponent implements OnInit{
     private simulatedDataService: SimulatedDataService) {
     this.rptSimulateForm = this.formBuilder.group({
       cis_no: [''],
-      name: [''],
+      name: ['', [Validators.required]],
       principal: ['', [Validators.required]],
       principal_bal: ['']
       });
@@ -83,7 +87,7 @@ export class RPTSimulationModalComponent implements OnInit{
         // this.ngOnInit(); // Call your ngOnInit method
         // this.calculateSimulatedData(this.dataSource.data); // Call your calculateSimulatedData method
       });
-      _dialogRef.disableClose = true;
+      _dialogRef.disableClose = false;
   }
 
   ngOnInit(): void {
@@ -116,43 +120,14 @@ export class RPTSimulationModalComponent implements OnInit{
   // }
 
 
-  onSubmit() {
-    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
-    const dataLookup = this.rptSimulateForm.value;
-
-    if (this.rptSimulateForm.valid) {
-      const simulatedData = this.rptSimulateForm.value;
-      let amount = this.rptSimulateForm.value.principal;
-      
-      
-      if (amount <= this.availBal) {
-        this.simulatedDataService.addTemporaryLoan(simulatedData)
-        this.simulatedDataService.setSimulationPerformed();
-        this.close();
-      }
-      else {
-        const currentSttlValue = parseFloat(this.currentLoan) || 0;
-        const amountValue = parseFloat(dataLookup.principal) || 0;
-      // Perform the addition
-        this.simulatedSttl = currentSttlValue + amountValue;      
-        this.simulatedRptTTL = amountValue;
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Loan Breached!',
-          text: 'Please Enter Amount not Greater than the Available Balance',
-        });
-      }
-      
-    }
-  }
-
+ 
   
 
 
-  close() {
-    this._dialogRef.close(true); 
+  close(): void {
+    this.ngZone.run(() => {
+        this._dialog.closeAll();
+    }); 
   }
 
 
@@ -344,6 +319,8 @@ export class RPTSimulationModalComponent implements OnInit{
     }
 
   }
+
+
   
 
 
@@ -371,6 +348,43 @@ export class RPTSimulationModalComponent implements OnInit{
       this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
     }
   }
+
+
+  onSubmit() {
+    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const dataLookup = this.rptSimulateForm.value;
+
+    if (this.rptSimulateForm.valid) {
+      const simulatedData = this.rptSimulateForm.value;
+      let amount = this.rptSimulateForm.value.principal;
+      
+      console.log(this.availBal);
+      console.log(amount <= this.availBal);
+      if (amount <= this.availBal) {
+        this.simulatedDataService.addTemporaryLoan(simulatedData)
+        this.simulatedDataService.setSimulationPerformed();
+        this.close();
+        this.close();
+        
+      }
+      else {
+        const currentSttlValue = parseFloat(this.currentLoan) || 0;
+        const amountValue = parseFloat(dataLookup.principal) || 0;
+      // Perform the addition
+        this.simulatedSttl = currentSttlValue + amountValue;      
+        this.simulatedRptTTL = amountValue;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Loan Breached!',
+          text: 'Please Enter Amount not Greater than the Available Balance',
+        });
+      }
+      
+    }
+  }
+
 
   toggleInputReadOnly() {
     this.isReadOnly = !this.isReadOnly;
