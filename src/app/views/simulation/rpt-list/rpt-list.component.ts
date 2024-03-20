@@ -1,25 +1,32 @@
-import { Component, AfterViewInit, ViewChild, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, QueryList, ElementRef, Renderer2 } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, TemplateRef, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import { MatSort } from '@angular/material/sort';
 
 // Import for Simulation Modal
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RPTSimulationModalComponent } from 'src/app/modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
 import { RptCheckerModalComponent } from 'src/app/modal-dialog/rpt-checker-modal/rpt-checker-modal.component'
 import {HoldoutAllocationModalComponent} from '../../../modal-dialog/holdout-allocation-modal/holdout-allocation-modal.component'
 
+import {rptLookup} from '../../../functions-files/add/postAPI.js'
 //Import for API Function
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { HoldOutValue } from '../../../functions-files/add/postAPI';
 import { SimulatedDataService } from '../../../services/simulatedDataService/simulated-data-service.service';
+import Swal from 'sweetalert2';
 
 // Save CSV
 import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
 import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
 
 
+import { customRequiredValidator } from './../../../validator/myValidators';
+
+import { LettersOnlyDirective } from './../../../directives/lettersOnly.directive';
 
 
 export interface RPTlist_model {
@@ -77,12 +84,15 @@ export class RptListComponent {
   temporaryLoans?: Loan[];
 
   events: string[] = [];
+  RptCheckdata: any[] = [];
 
   //Variable to hold the selected date
   selectedDate: Date | null = null;
 
   // Variable to determine whether to display real-time or historical data
   displayHistoricalData: boolean = false;
+  
+  checkRPTForm: FormGroup;
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.events.push(`${type}: ${event.value}`);
@@ -95,18 +105,26 @@ export class RptListComponent {
 
   
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
+
 
 
   constructor(
     private get: FetchDataService,
     public _dialog: MatDialog,
+    private formBuilder: FormBuilder,
     private simulatedDataService: SimulatedDataService,
     private csvExportService: CsvExportService,
     private pdfExportService: PdfExportService) {
       this.simulatedDataService.functionCall$.subscribe(() => {
+        
+      console.log("Trigger open Simulation from RPT-List constructor");
         this.openSimulation();
       });
-       
+      this.checkRPTForm = this.formBuilder.group({
+        firstName: ['', [Validators.required]],
+        lastName: ['']
+      });
     }
 
 
@@ -302,43 +320,30 @@ export class RptListComponent {
     }
 
 
-    openSimulation() {
-      this.simulatedDataService.openSimulation(this.ngOnInit.bind(this), this.calculateSimulatedData.bind(this), this.dataSource.data, this.availBal);
-    }
-
-   
     // openSimulation() {
-    //   console.log(this.availBal);
-    //   const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
-    //     width: '50%', // Set the width as per your requirement
-    //     // Other MatDialog options can be specified here
-    //   });
-    //   dialogRef.afterClosed().subscribe({
-    //     next: (val) => {
-    //       if (val) {
-    //         this.ngOnInit();
-            
-    //         this.calculateSimulatedData(this.dataSource.data);
-    //       }
-    //     },
-    //   });
+    //   this.simulatedDataService.openSimulation(this.ngOnInit.bind(this), 
+    //   this.calculateSimulatedData.bind(this), 
+    //   this.dataSource.data, this.availBal);
     // }
 
+   
+    
 
-    openChecker() {
-      const dialogRef = this._dialog.open(RptCheckerModalComponent, {
-        data: {
-          rptListComponentInstance: this // Pass the instance of RPTListComponent to ModalComponent3
-        },
-        width: '40%', // Set the width as per your requirement
-        // Other MatDialog options can be specified here
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result === 'openSimulation') {
-          this.openSimulation();
-        }
-      });
-    }
+
+    // openChecker() {
+    //   const dialogRef = this._dialog.open(RptCheckerModalComponent, {
+    //     data: {
+    //       rptListComponentInstance: this // Pass the instance of RPTListComponent to ModalComponent3
+    //     },
+    //     width: '40%', // Set the width as per your requirement
+    //     // Other MatDialog options can be specified here
+    //   });
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     if (result === 'openSimulation') {
+    //       this.openSimulation();
+    //     }
+    //   });
+    // }
 
   
     allocateHoldOut(data: any) {
@@ -439,17 +444,110 @@ export class RptListComponent {
       }
     }
 
-    
-    
+source: any;
+  
+
+  openSimulation() {
+      console.log("Opening Simulation from RPT-List");
+      this.simulatedDataService.openSimulation(this.ngOnInit.bind(this), 
+      this.calculateSimulatedData.bind(this), 
+      this.dataSource.data, this.availBal, this.source );
+    }
+
+
+    openChecker() {
+      const dialogRef = this._dialog.open(RptCheckerModalComponent, {
+        data: {
+          rptListComponentInstance: this // Pass the instance of RPTListComponent to ModalComponent3
+        },
+        width: '40%', // Set the width as per your requirement
+        // Other MatDialog options can be specified here
+      });
+      dialogRef.afterClosed().subscribe(result => {
+
+      });
+    }
+
+
+
+    // openSimulationinLookup(dataToPass: any) {
+    //     if (this.RptCheckdata && this.RptCheckdata.length > 0) { // Check if RptCheckdata is not null/undefined and has elements
+                
+    //       let formData = this.RptCheckdata[0];
+  
+    //       // console.log(formData);
+    //       let IndiData = [
+    //           {
+    //           cis_no: formData.cis_number,
+    //           fname: formData.fname,
+    //           lname: formData.lname,
+    //           fullname: formData.firstName + ' ' + formData.lastName,
+    //           officer_related: ""
+    //           }
+    //       ]
+  
+    //       this.simulatedDataService.triggerFunction(this.RptCheckdata);
+    //       this.simulatedDataService.sendData(this.RptCheckdata);
+    //   } else {
+    //       let formData = this.checkRPTForm.value;
+  
+    //       let IndiData = [
+    //           {
+    //           cis_no: "",
+    //           fname: formData.firstName,
+    //           lname: formData.lastName,
+    //           fullname: formData.firstName + ' ' + formData.lastName,
+    //           officer_related: ""
+    //           }
+    //       ]
+  
+    //       this.simulatedDataService.triggerFunction(IndiData);
+    //       this.simulatedDataService.sendData(IndiData);
+    //   }
+    // }
     
     
 
+
+  // openSimulation() {
+  //   console.log(this.availBal);
+  //   const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
+  //     width: '50%', // Set the width as per your requirement
+  //     // Other MatDialog options can be specified here
+  //   });
+  //   dialogRef.afterClosed().subscribe({
+  //     next: (val) => {
+  //       if (val) {
+  //         this.ngOnInit();
+          
+  //         this.calculateSimulatedData(this.dataSource.data);
+  //       }
+  //     },
+  //   });
+  // }
+    
+  
 
     resetSimulation(): void {
       this.simulationPerformed = false;   
       this.simulatedDataService.resetSimulationPerformed();
       this.ngOnInit();
     }
-}
 
+
+    public visible = false;
+
+    toggleLiveDemo() {
+      this.visible = !this.visible;
+    }
+
+    resetForm() {
+      this.checkRPTForm.reset();
+    }
+  
+    handleLiveDemoChange(event: any) {
+      this.visible = event;
+    }
+
+}
 
