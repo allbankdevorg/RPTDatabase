@@ -16,7 +16,7 @@
                             
                             <mat-form-field style="width: 380px;">
                               <mat-label>MM/DD/YYYY</mat-label>
-                              <input matInput [matDatepicker]="picker" 
+                              <input matInput [matDatepicker]="picker" [max]="maxDate" 
                                      (dateInput)="addEvent('input', $event); onDateSelected($event)" (dateChange)="addEvent('change', $event)">
                               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-datepicker #picker></mat-datepicker>

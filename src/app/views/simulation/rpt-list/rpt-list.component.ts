@@ -94,6 +94,8 @@ export class RptListComponent {
   
   checkRPTForm: FormGroup;
 
+  maxDate = new Date();
+
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.events.push(`${type}: ${event.value}`);
   }
@@ -125,6 +127,8 @@ export class RptListComponent {
         firstName: ['', [Validators.required]],
         lastName: ['']
       });
+
+      this.maxDate.setHours(0, 0, 0, 0);
     }
 
 
