@@ -27,13 +27,13 @@ export class DosriModalComponent implements OnInit {
   disabled: boolean = true;
   dosriForm: FormGroup;
   cisLookUpResult: [] = [];
-  education: string[] = [
-    'Matric',
-    'Diploma',
-    'Intermediate',
-    'Graduate',
-    'Post Graduate',
-  ];
+  // education: string[] = [
+  //   'Matric',
+  //   'Diploma',
+  //   'Intermediate',
+  //   'Graduate',
+  //   'Post Graduate',
+  // ];
 
   constructor(
     private _fb: FormBuilder,
@@ -44,9 +44,9 @@ export class DosriModalComponent implements OnInit {
     private auditTrailService: AuditTrailService
   ) {
     this.dosriForm = this._fb.group({
-      com_cis_number: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]]
+      com_cis_number: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
+      com_account_name: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
+      com_company_name: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]]
       });
     _dialogRef.disableClose = true;
   }
