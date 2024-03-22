@@ -46,7 +46,7 @@
                 formControlName="principal" appDecimalOnly>
                 <!-- <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error> -->
                 <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error>
-                <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('pattern')" class="error-msg">Please ensure that the field contains only numeric characters.</mat-error>
+                <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('pattern')" class="error-msg">Please ensure that the field contains proper amount format.</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>

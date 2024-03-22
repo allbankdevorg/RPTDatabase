@@ -34,11 +34,11 @@ export class StockholdersModalComponent {
     private auditTrailService: AuditTrailService
   ) {
     this.stockHoldersForm = this._fb.group({
-      cis_number: ['', [Validators.pattern(/\S+/)]],
-      name: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      shares: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      amount: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      percentage: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      cis_number: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
+      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
+      shares: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
+      amount: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
+      percentage: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
       });
     _dialogRef.disableClose = true;
   }

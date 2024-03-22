@@ -76,7 +76,7 @@ export class RPTSimulationModalComponent implements OnInit{
         name: ['', [
           Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
         principal: ['', [
-          Validators.required, Validators.pattern(/^[\d.]+$/)
+          Validators.required, Validators.pattern(/^[\d]*(\.[\d]+)?$/)
          
         ]],
         principal_bal: ['']
