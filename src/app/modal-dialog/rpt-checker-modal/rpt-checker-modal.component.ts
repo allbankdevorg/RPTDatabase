@@ -44,8 +44,8 @@ export class RptCheckerModalComponent {
     //         Validators.maxLength(50), Validators.pattern(/\S+/)]]
     //     });
     this.checkRPTForm = this.formBuilder.group({
-        firstName: [''],
-        lastName: ['', [customRequiredValidator()]]
+        firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
+        lastName: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]]
       });
 
   }
