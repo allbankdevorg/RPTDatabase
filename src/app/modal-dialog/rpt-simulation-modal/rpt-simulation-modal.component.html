@@ -16,8 +16,8 @@
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="cis_no" name="cis_no"
                 type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
-                formControlName="cis_no" appAlphanumeric>
-                <mat-error *ngIf="rptSimulateForm.get('cis_no')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                formControlName="cis_no">
+                <mat-error *ngIf="rptSimulateForm.get('cis_no')?.hasError('pattern')" class="error-msg">Please ensure that the field contains only numeric characters</mat-error>
             </mat-form-field>
         </c-col>
 
@@ -25,10 +25,11 @@
             <label cLabel="col" for="name"></label>
             <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Account Name</mat-label> -->
-                <input matInput #accDinput id="name"  name="name"
+                <input matInput #accDinput id="name"  name="name" 
                 type="text" placeholder="Name"
-                formControlName="name" appLetters>
+                formControlName="name">
                 <mat-error *ngIf="rptSimulateForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
+                <mat-error *ngIf="rptSimulateForm.get('name')?.hasError('pattern')" class="error-msg">Please ensure that the field contains only alphabetic characters</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>
@@ -42,8 +43,10 @@
                 <!-- <mat-label>CIS Number</mat-label> -->
                 <input matInput #accDinput id="principal" name="principal"
                 type="text" placeholder="Amount" 
-                formControlName="principal" appNum required>
+                formControlName="principal" appDecimalOnly>
+                <!-- <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error> -->
                 <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('required')" class="error-msg">Please Enter Amount</mat-error>
+                <mat-error *ngIf="rptSimulateForm.get('principal')?.hasError('pattern')" class="error-msg">Please ensure that the field contains only numeric characters.</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>

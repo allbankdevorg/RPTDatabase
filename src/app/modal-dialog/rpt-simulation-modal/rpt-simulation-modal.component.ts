@@ -21,7 +21,8 @@ import { AffiliatesService } from 'src/app/services/affiliates/affiliates.servic
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { SimulatedDataService } from '../../services/simulatedDataService/simulated-data-service.service';
 
-
+import { lettersOnly } from './../../validator/alphanumReq.validator'; // Import the patternValidator function
+import { amount } from './../../validator/amount.validator';
 
 
 // export interface Loan {
@@ -70,12 +71,17 @@ export class RPTSimulationModalComponent implements OnInit{
     private auditTrailService: AuditTrailService,
     private get: FetchDataService,
     private simulatedDataService: SimulatedDataService) {
-    this.rptSimulateForm = this.formBuilder.group({
-      cis_no: [''],
-      name: ['', [Validators.required]],
-      principal: ['', [Validators.required]],
-      principal_bal: ['']
+      this.rptSimulateForm = this.formBuilder.group({
+        cis_no: ['', [ Validators.pattern(/^[\d]+$/)]],
+        name: ['', [
+          Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
+        principal: ['', [
+          Validators.required, Validators.pattern(/^[\d.]+$/)
+         
+        ]],
+        principal_bal: ['']
       });
+  
       this.rptSimulateForm.get('principal')?.valueChanges.subscribe(principal => {
         // Update the value of principal_bal whenever principal changes
         this.rptSimulateForm.get('principal_bal')?.setValue(principal);
@@ -419,5 +425,19 @@ logAction(actionType: string, details: string, success: boolean, page: string, e
   });
   
   }
+
+
+
+  // Validators Error Message
+
+  getPrincipalErrorMessage(): string {
+    const principalControl = this.rptSimulateForm.get('principal');
+
+    if (principalControl?.hasError('patternMismatch')) {
+        return 'Please Enter Amount';
+    }
+
+    return '';
+}
 
 }
