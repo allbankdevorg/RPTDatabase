@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { RptListComponent } from './rpt-list/rpt-list.component';
 import { SBLListComponent } from './sbl-list/sbl-list.component';
+import { RptTransactionComponent } from './rpt-transaction/rpt-transaction.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,13 @@ const routes: Routes = [
                     title: 'SBL List ',
                 },
             },
+            {
+              path: 'rpt-transaction',
+              component: RptTransactionComponent,
+              data: {
+                  title: 'RPT Transaction Lookup ',
+              },
+          },
             
           ]
         },

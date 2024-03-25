@@ -1,0 +1,59 @@
+<c-container fluid class="mb-3 p-0">
+    <c-row>
+      <c-col xs>
+        <c-card class="mb-4">
+          <c-card-header class="d-flex justify-content-between align-items-center"><h2>RPT Transaction</h2>
+          </c-card-header>
+          <c-card-body>
+                <c-container fluid class="my-3">
+                      
+                    <c-container fluid class="px-0 d-flex justify-content-between align-items-center">
+                        <!-- <c-row> -->
+                          <div>
+
+                            <button (click)="openChecker()" mat-fab extended color="primary"  style="margin-right: 10px;">
+                                <mat-icon>search</mat-icon>
+                                RPT Transaction LookUp
+                                </button>
+                          </div>
+                        <!-- </c-row> -->
+                    </c-container>
+
+                    <c-container fluid class="px-0">
+                        <c-row class="my-1 d-flex justify-content-between align-items-end">
+                          <c-col>
+                            <c-card>
+                              <c-card-body>
+
+                                <!-- <table>
+                                    <thead>
+                                      <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Age</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let row of rowData">
+                                        <td>{{ row.id }}</td>
+                                        <td>{{ row.name }}</td>
+                                        <td>{{ row.age }}</td>
+                                      </tr>
+                                    </tbody>
+                                </table> -->
+
+                              </c-card-body>
+                            </c-card>
+                          </c-col>
+                        </c-row>
+                    </c-container>
+
+
+
+                 
+                </c-container>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+</c-container>
