@@ -19,9 +19,7 @@
                   type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
                   formControlName="aff_com_cis_number">
                   <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-                  <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('pattern')" class="error-msg">
-                    Field cannot be just whitespace
-                  </mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_cis_number')?.hasError('pattern')" class="error-msg">Only AlphaNumeric characters allowed</mat-error>
                 </mat-form-field>
             </c-col>
     
@@ -33,9 +31,7 @@
                   type="text" placeholder="Account Name"
                   formControlName="aff_com_account_name" appCaps>
                   <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
-                  <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('pattern')" class="error-msg">
-                    Field cannot be just whitespace
-                  </mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('pattern')" class="error-msg">Only Alphabetic characters allowed</mat-error>
                 </mat-form-field>
             </c-col>
           </c-row>
@@ -50,9 +46,7 @@
                   type="text" placeholder="Company Name"
                   formControlName="aff_com_company_name" appCaps>
                   <mat-error *ngIf="affForm.get('aff_com_company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
-                  <mat-error *ngIf="affForm.get('aff_com_company_name')?.hasError('pattern')" class="error-msg">
-                    Field cannot be just whitespace
-                  </mat-error>
+                  <mat-error *ngIf="affForm.get('aff_com_company_name')?.hasError('pattern')" class="error-msg">Only Alphabetic characters allowed</mat-error>
                 </mat-form-field>
               </c-col>
       
