@@ -110,6 +110,8 @@ import { NumericOnlyDirective } from './directives/numeric.directive';
 import { CapsLockFormatDirective } from './directives/upperCase.directive';
 import { ShowIfPermissionDirective } from './directives/authority.directive';
 import { HasPermissionDirective} from './directives/permission.directive';
+import { PreventSpecialCharactersDirective } from './directives/preventSpeChar.directive';
+import { AlphanumericOnlyDirective } from './directives/alphaNumeric.directive';
 
 
 // Modal
@@ -164,7 +166,8 @@ const APP_CONTAINERS = [
   declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
     BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,
     // DraggableDirective, ResizableDirective, 
-    LettersOnlyDirective,LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
+    LettersOnlyDirective, PreventSpecialCharactersDirective, AlphanumericOnlyDirective,
+    LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective,
     DosriModalComponent,
     BankofficerModalComponent,
