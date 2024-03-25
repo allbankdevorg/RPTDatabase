@@ -1,19 +1,49 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
+import { AbstractControl, ControlContainer, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
 @Directive({
-  selector: '[appAlphanumeric]'
-})
-export class AlphanumericDirective {
-
-  constructor(private elementRef: ElementRef) { }
-
-  @HostListener('input', ['$event']) onInputChange(event: any) {
-    const initialValue = this.elementRef.nativeElement.value;
-    const alphanumericValue = initialValue.replace(/[^a-zA-Z0-9]/g, ''); // Add comma (,) to the regular expression
-
-    if (initialValue !== alphanumericValue) {
-      this.elementRef.nativeElement.value = alphanumericValue;
-      this.elementRef.nativeElement.dispatchEvent(new Event('input'));
+  selector: '[appAlphanumericOnly]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: AlphanumericOnlyDirective,
+      multi: true
     }
+  ]
+})
+export class AlphanumericOnlyDirective implements Validator {
+  private regex: RegExp = /^[a-zA-Z0-9]*$/;
+  private control!: AbstractControl;
+  private previousValue: string = '';
+
+  constructor(private el: ElementRef, private controlContainer: ControlContainer) {}
+
+  ngAfterViewInit() {
+    this.control = this.controlContainer.control!.get(this.el.nativeElement.getAttribute('formControlName'))!;
+  }
+
+  @HostListener('input', ['$event'])
+  onInput(event: any) {
+    const currentValue = this.el.nativeElement.value;
+    
+    // Check if the current value matches the pattern
+    if (this.regex.test(currentValue)) {
+      this.previousValue = currentValue; // Update the previous value
+    } else {
+      // If the current value doesn't match the pattern, revert to the previous value
+      this.el.nativeElement.value = this.previousValue;
+    }
+
+    // Set the value to null if it doesn't match the pattern
+    if (currentValue !== this.el.nativeElement.value) {
+      this.control.markAsUntouched();
+      this.control.markAsPristine();
+      event.stopPropagation();
+    }
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    const isValid = this.regex.test(control.value);
+    return isValid ? null : { 'onlyAlphanumeric': true };
   }
 }
