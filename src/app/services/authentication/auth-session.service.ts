@@ -50,7 +50,7 @@ export class AuthSessionService {
           sessionStorage.clear();
         
           // Simulate logout or call your logout function here
-          this.simulateLogout();
+          // this.simulateLogout();
         
           return false;
         }
@@ -66,7 +66,7 @@ export class AuthSessionService {
         this.intervalId = setInterval(() => {
           this.checkSessionExpiration();
           // console.log('checking');
-        }, 5000);
+        }, 30000);
       }
     
       private stopSessionExpirationCheck(): void {
@@ -75,12 +75,12 @@ export class AuthSessionService {
     
       private checkSessionExpiration(): void {
         const sessionExpireTime = localStorage.getItem('ng2Idle.main.expiry');
-        // if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
-        //   this.simulateLogout();
-        // }
-        if (Date.now() >= Number(sessionExpireTime)) {
+        if (sessionExpireTime && Date.now() >= Number(sessionExpireTime)) {
           this.simulateLogout();
         }
+        // if (Date.now() >= Number(sessionExpireTime)) {
+        //   this.simulateLogout();
+        // }
       }
 
 

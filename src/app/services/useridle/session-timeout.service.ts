@@ -28,7 +28,7 @@ export class SessionTimeoutService {
 }
 
 ngOninit () {
-  if (this.authService.isAuthenticated()) {
+  if (this.authService.isLoggedIn) {
     this.setIdleConfig();
   }
 }
