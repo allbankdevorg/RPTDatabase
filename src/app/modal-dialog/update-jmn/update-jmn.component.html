@@ -31,7 +31,7 @@
                   <!-- <mat-label>Account Name</mat-label> -->
                   <input matInput #accDinput id="accountName"  name="accountName"
                   type="text" placeholder="Account Name"
-                  formControlName="aff_com_comp_name" appCaps>
+                  formControlName="aff_com_comp_name" appCaps appLetters>
                   <mat-error *ngIf="affForm.get('aff_com_comp_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
                   <mat-error *ngIf="affForm.get('aff_com_comp_name')?.hasError('pattern')" class="error-msg">
                     Field cannot be just whitespace
@@ -47,7 +47,7 @@
                 <mat-form-field appearance="fill" [style.width.%]=100>
                   <!-- <mat-label>Company Name</mat-label> -->
                   <input matInput #accDinput id="companyName" name="companyName"
-                  type="text" placeholder="Company Name" formControlName="aff_com_account_name" appCaps>
+                  type="text" placeholder="Company Name" formControlName="aff_com_account_name" appCaps appLetters>
                   <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                   <mat-error *ngIf="affForm.get('aff_com_account_name')?.hasError('pattern')" class="error-msg">
                     Field cannot be just whitespace

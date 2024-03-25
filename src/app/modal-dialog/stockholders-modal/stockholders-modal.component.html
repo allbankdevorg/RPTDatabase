@@ -30,7 +30,7 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Middle Name</mat-label> -->
                 <input matInput id="name"  name="name"
-                type="text" placeholder="Name" formControlName="name" appCaps >
+                type="text" placeholder="Name" formControlName="name" appCaps appLetters>
                 <mat-error *ngIf="stockHoldersForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
                 <mat-error *ngIf="stockHoldersForm.get('name')?.hasError('pattern')" class="error-msg">Only alphabetic characters allowed</mat-error>
               </mat-form-field>

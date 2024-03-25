@@ -21,8 +21,7 @@
             id="riCisNumber" name="riCisNumber"
             placeholder="CIS Number"
             type="text" formControlName="riCisNumber" (keyup.enter)="CISlookup()">
-          <mat-error *ngIf="riForm.get('riCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-          <mat-error *ngIf="riForm.get('riCisNumber')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
+          <mat-error *ngIf="riForm.get('riCisNumber')?.hasError('pattern')" class="error-msg">Only AlphaNumeric characters allowed</mat-error>
         </mat-form-field>
       </c-col>
 

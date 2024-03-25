@@ -16,8 +16,7 @@
               id="boCisNumber" name="boCisNumber"
               placeholder="CIS Number" 
               type="text" formControlName="boCisNumber" (keyup.enter)="CISlookup()">
-              <mat-error *ngIf="boForm.get('boCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-              <mat-error *ngIf="boForm.get('boCisNumber')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
+              <mat-error *ngIf="boForm.get('boCisNumber')?.hasError('pattern')" class="error-msg">Only AlphaNumeric characters allowed</mat-error>
             </mat-form-field>
           </c-col>
         </c-row>
@@ -30,7 +29,7 @@
                   aria-describedby="passwordHelpInline-3" matInput
                   id="boFirstName" name="boFirstName"
                   placeholder="First Name"
-                  type="text" formControlName="boFirstName" appTitleCase appLetters maxlength="50">
+                  type="text" formControlName="boFirstName" appTitleCase appLetters maxlength="100">
                   <mat-error *ngIf="boForm.get('boFirstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
                   <mat-error *ngIf="boForm.get('boFirstName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
                 </mat-form-field>
@@ -43,7 +42,7 @@
                   aria-describedby="passwordHelpInline-3" matInput
                   id="boMiddleName" name="boMiddleName"
                   placeholder="Middle Name"
-                  type="text" formControlName="boMiddleName" appTitleCase appLetters maxlength="50">
+                  type="text" formControlName="boMiddleName" appTitleCase appLetters maxlength="100">
                   <mat-error *ngIf="boForm.get('boMiddleName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
                 </mat-form-field>
             </c-col>
@@ -57,7 +56,7 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="boLastName" name="boLastName"
               placeholder="Last Name"
-              type="text" formControlName="boLastName" appTitleCase appLetters maxlength="50">
+              type="text" formControlName="boLastName" appTitleCase appLetters maxlength="100">
               <mat-error *ngIf="boForm.get('boLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
               <mat-error *ngIf="boForm.get('boLastName')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
             </mat-form-field>
@@ -70,7 +69,7 @@
               matInput
               id="boPosition" name="boPosition"
               placeholder="Position"
-              type="text" formControlName="boPosition" appTitleCase>
+              type="text" formControlName="boPosition" appTitleCase appLetters maxlength="100">
               <mat-error *ngIf="boForm.get('boPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
               <mat-error *ngIf="boForm.get('boPosition')?.hasError('pattern')" class="error-msg">Please Input proper characters</mat-error>
             </mat-form-field>

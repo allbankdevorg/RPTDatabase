@@ -46,7 +46,7 @@ export class BankofficerRIModalComponent implements OnInit{
     private auditTrailService: AuditTrailService)
     {
       this.boRIForm = this.formBuilder.group({
-        boRICisNumber: ['', [Validators.pattern(/\S+/)]],
+        boRICisNumber: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
         boRIFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
         boRIMiddleName: ['', [Validators.pattern(/\S+/)]],
         boRILastName: ['', [Validators.required, Validators.pattern(/\S+/)]],

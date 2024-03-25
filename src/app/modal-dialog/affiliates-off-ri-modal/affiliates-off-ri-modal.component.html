@@ -23,7 +23,7 @@
             type="text" formControlName="riCisNumber">
             <mat-error *ngIf="affilOfficerRIForm.get('riCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
             <mat-error *ngIf="affilOfficerRIForm.get('riCisNumber')?.hasError('pattern')" class="error-msg">
-              Field cannot be just whitespace
+              Only AlphaNumeric characters allowed
             </mat-error>
           </mat-form-field>
       </c-col>

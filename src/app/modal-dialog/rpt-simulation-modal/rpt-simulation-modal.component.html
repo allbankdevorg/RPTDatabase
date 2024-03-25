@@ -17,7 +17,7 @@
                 <input matInput #accDinput id="cis_no" name="cis_no"
                 type="text" placeholder="CIS" (keyup.enter)="CISlookup()"
                 formControlName="cis_no">
-                <mat-error *ngIf="rptSimulateForm.get('cis_no')?.hasError('pattern')" class="error-msg">Please ensure that the field contains only numeric characters</mat-error>
+                <mat-error *ngIf="rptSimulateForm.get('cis_no')?.hasError('pattern')" class="error-msg">Only numeric characters allowed</mat-error>
             </mat-form-field>
         </c-col>
 
@@ -27,9 +27,9 @@
                 <!-- <mat-label>Account Name</mat-label> -->
                 <input matInput #accDinput id="name"  name="name" 
                 type="text" placeholder="Name"
-                formControlName="name">
+                formControlName="name" appCaps appLetters>
                 <mat-error *ngIf="rptSimulateForm.get('name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
-                <mat-error *ngIf="rptSimulateForm.get('name')?.hasError('pattern')" class="error-msg">Please ensure that the field contains only alphabetic characters</mat-error>
+                <mat-error *ngIf="rptSimulateForm.get('name')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
             </mat-form-field>
         </c-col>
         </c-row>

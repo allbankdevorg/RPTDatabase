@@ -84,7 +84,7 @@ export class SBLSimulationModalComponent implements OnInit{
     private simulatedSBLDataService: SimulatedSBLDataService) {
     this.sblSimulateForm = this.formBuilder.group({
       cis_no: ['',  [ Validators.pattern(/^[\d]+$/)]],
-      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
+      name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       principal: ['', [Validators.required, Validators.pattern(/^[\d]*(\.[\d]+)?$/)]],
       principal_bal: ['']
       });

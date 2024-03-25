@@ -35,7 +35,7 @@ export class StockholdersModalComponent {
   ) {
     this.stockHoldersForm = this._fb.group({
       cis_number: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
-      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
+      name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       shares: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
       amount: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
       percentage: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],

@@ -18,7 +18,7 @@
                 type="text" formControlName="off_CisNumber" (keyup.enter)="CISlookup()">
                 <mat-error *ngIf="affilOfficerForm.get('off_CisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 <mat-error *ngIf="affilOfficerForm.get('off_CisNumber')?.hasError('pattern')" class="error-msg">
-                  Field cannot be just whitespace
+                  Only AlphaNumeric characters allowed
                 </mat-error>
               </mat-form-field>
 
@@ -35,7 +35,7 @@
           aria-describedby="passwordHelpInline-3" matInput
           id="off_fname" name="off_fname"
           placeholder="First Name"
-          type="text" formControlName="off_fname" appTitleCase appLetters maxlength="50">
+          type="text" formControlName="off_fname" appTitleCase appLetters maxlength="150">
           <mat-error *ngIf="affilOfficerForm.get('off_fname')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
           <mat-error *ngIf="affilOfficerForm.get('off_fname')?.hasError('pattern')" class="error-msg">
             Field cannot be just whitespace
@@ -50,7 +50,7 @@
                 aria-describedby="passwordHelpInline-3" matInput
                 id="off_mname" name="off_mname"
                 placeholder="Middle Name"
-                type="text" formControlName="off_mname" appTitleCase appLetters maxlength="50">
+                type="text" formControlName="off_mname" appTitleCase appLetters maxlength="150">
                 <mat-error *ngIf="affilOfficerForm.get('off_mname')?.hasError('pattern')" class="error-msg">
                   Field cannot be just whitespace
                 </mat-error>
@@ -67,7 +67,7 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="off_lname" name="off_lname"
               placeholder="Last Name"
-              type="text" formControlName="off_lname" appTitleCase appLetters maxlength="50">
+              type="text" formControlName="off_lname" appTitleCase appLetters maxlength="150">
               <mat-error *ngIf="affilOfficerForm.get('off_lname')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
               <mat-error *ngIf="affilOfficerForm.get('off_lname')?.hasError('pattern')" class="error-msg">
                 Field cannot be just whitespace
@@ -82,7 +82,7 @@
               matInput
               id="Position" name="Position"
               placeholder="Position"
-              type="text" formControlName="Position" appTitleCase>
+              type="text" formControlName="Position" appTitleCase appLetters>
               <mat-error *ngIf="affilOfficerForm.get('Position')?.hasError('required')" class="error-msg">Position is Required</mat-error>
               <mat-error *ngIf="affilOfficerForm.get('Position')?.hasError('pattern')" class="error-msg">
                 Field cannot be just whitespace

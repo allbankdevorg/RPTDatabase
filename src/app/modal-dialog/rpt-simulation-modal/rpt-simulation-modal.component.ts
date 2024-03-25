@@ -74,7 +74,7 @@ export class RPTSimulationModalComponent implements OnInit{
       this.rptSimulateForm = this.formBuilder.group({
         cis_no: ['', [ Validators.pattern(/^[\d]+$/)]],
         name: ['', [
-          Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
+          Validators.required, Validators.pattern(/\S+/)]],
         principal: ['', [
           Validators.required, Validators.pattern(/^[\d]*(\.[\d]+)?$/)
          

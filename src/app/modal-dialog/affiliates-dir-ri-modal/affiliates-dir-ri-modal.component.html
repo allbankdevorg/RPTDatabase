@@ -17,7 +17,7 @@
             placeholder="CIS Number"
             type="text" formControlName="riCisNumber" (keyup.enter)="CISlookup()">
             <mat-error *ngIf="affilDirRiForm.get('riCisNumber')?.hasError('pattern')" class="error-msg">
-              Field cannot be just whitespace
+              Only AlphaNumeric characters allowed
             </mat-error>
           </mat-form-field>
       </c-col>

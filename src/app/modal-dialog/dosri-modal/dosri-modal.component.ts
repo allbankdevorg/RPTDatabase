@@ -45,8 +45,8 @@ export class DosriModalComponent implements OnInit {
   ) {
     this.dosriForm = this._fb.group({
       com_cis_number: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
-      com_account_name: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]],
-      com_company_name: ['', [Validators.required, Validators.pattern(/^[A-Za-z,.\s]+$/)]]
+      com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]]
       });
     _dialogRef.disableClose = true;
   }

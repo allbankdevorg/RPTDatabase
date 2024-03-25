@@ -47,8 +47,8 @@ export class AffiliatesRPModalComponent implements OnInit{
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
       aff_com_cis_number: [''],
-      aff_com_account_name: ['', [Validators.required]],
-      aff_com_company_name: ['', [Validators.required]],
+      aff_com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      aff_com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       managing_company: [''],
       // commandControl: [''],
       depoHoldOut: ['']

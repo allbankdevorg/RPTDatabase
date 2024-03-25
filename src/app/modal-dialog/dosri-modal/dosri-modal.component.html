@@ -26,9 +26,9 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Middle Name</mat-label> -->
                 <input matInput id="accountName"  name="accountName"
-                type="text" placeholder="Account Name" formControlName="com_account_name" appCaps>
+                type="text" placeholder="Account Name" formControlName="com_account_name" appCaps appLetters>
                 <mat-error *ngIf="dosriForm.get('com_account_name')?.hasError('required')" class="error-msg">Account Name is Required</mat-error>
-                <mat-error *ngIf="dosriForm.get('com_account_name')?.hasError('pattern')" class="error-msg">Only Alphabetic characters allowed</mat-error>
+                <mat-error *ngIf="dosriForm.get('com_account_name')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
                 
               </mat-form-field>
             </c-col>
@@ -42,9 +42,9 @@
               <mat-form-field appearance="fill" [style.width.%]=100>
                 <!-- <mat-label>Last Name</mat-label> -->
                 <input matInput #accDinput id="companyName"  name="companyName"
-                type="text" placeholder="Company Name" formControlName="com_company_name" appCaps>
+                type="text" placeholder="Company Name" formControlName="com_company_name" appCaps appLetters>
                 <mat-error *ngIf="dosriForm.get('com_company_name')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
-                <mat-error *ngIf="dosriForm.get('com_company_name')?.hasError('pattern')" class="error-msg">Only Alphabetic characters allowed</mat-error>
+                <mat-error *ngIf="dosriForm.get('com_company_name')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
               </mat-form-field>
             </c-col>
           </c-row>

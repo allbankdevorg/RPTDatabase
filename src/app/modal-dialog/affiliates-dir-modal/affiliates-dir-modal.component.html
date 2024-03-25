@@ -18,7 +18,7 @@
                 type="text" formControlName="affildcisNumber" (keyup.enter)="CISlookup()">
                 <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('pattern')" class="error-msg">
-                  Field cannot be just whitespace
+                  Only AlphaNumeric characters allowed
                 </mat-error>
               </mat-form-field>
 
@@ -81,7 +81,7 @@
               matInput
               id="affildPosition" name="affildPosition"
               placeholder="Position"
-              type="text" formControlName="affildPosition" appTitleCase>
+              type="text" formControlName="affildPosition" appTitleCase appLetters>
               <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
               <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('pattern')" class="error-msg">
                 Field cannot be just whitespace

@@ -42,7 +42,7 @@ export class AffiliatesDirRIModalComponent implements OnInit {
     private auditTrailService: AuditTrailService)
     {
       this.affilDirRiForm = this.formBuilder.group({
-        riCisNumber: ['', [Validators.pattern(/\S+/)]],
+        riCisNumber: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
         riFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
         riMiddleName: ['', [Validators.pattern(/\S+/)]],
         riLastName: ['', [Validators.required, Validators.pattern(/\S+/)]],

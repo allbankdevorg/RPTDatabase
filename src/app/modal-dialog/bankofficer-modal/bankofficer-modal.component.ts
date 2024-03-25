@@ -32,7 +32,7 @@ export class BankofficerModalComponent implements OnInit{
     private get: FetchDataService,) {
       
         this.boForm = this.formBuilder.group({
-          boCisNumber: ['', [Validators.pattern(/\S+/)]],
+          boCisNumber: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
           boFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
           boMiddleName: ['', [Validators.pattern(/\S+/)]],
           boLastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
