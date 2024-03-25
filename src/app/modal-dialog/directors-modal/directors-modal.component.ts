@@ -47,7 +47,7 @@ export class DirectorsModalComponent implements OnInit{
       private auditTrailService: AuditTrailService)
   {
       this.drctrForm = this.formBuilder.group({
-        cisNumber: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        cisNumber: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
         dFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
         dMiddleName: ['', [Validators.pattern(/\S+/)]],
         dLastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
