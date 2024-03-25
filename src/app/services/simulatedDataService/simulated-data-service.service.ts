@@ -34,6 +34,9 @@ export class SimulatedDataService {
   private dataSource = new Subject<any>();
   data$ = this.dataSource.asObservable();
 
+  private Source = new Subject<any>();
+  source$ = this.Source.asObservable();
+
 
 
   constructor(private router: Router, private _dialog: MatDialog) {
@@ -46,6 +49,7 @@ export class SimulatedDataService {
   }
 
   setSimulationPerformed() {
+    
     this.simulationPerformed = true;
   }
 
@@ -63,6 +67,7 @@ export class SimulatedDataService {
   }
 
   removeTemporaryLoan(index: number) {
+    
     this.temporaryLoans.splice(index, 1);
   }
 
@@ -75,29 +80,82 @@ export class SimulatedDataService {
   }
 
 
-  openSimulation(onInitFn: () => void, calculateFn: (data: any) => void, dataSource: any, availBal: any) {
+  openSimulation(onInitFn: () => void, calculateFn: (data: any) => void, dataSource: any, availBal: any, source: any) {
     
     const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
       width: '50%',
       // Other MatDialog options can be specified here
     });
     dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
-          onInitFn(); // Call the onInit function passed as a parameter
-          calculateFn(dataSource); // Call the calculate function passed as a parameter
-        }
+      next: (result) => {
+       
+        onInitFn(); // Call the onInit function passed as a parameter
+        
+        calculateFn(dataSource); // Call the calculate function passed as a parameter
+        // Handle the result or perform any necessary actions
       },
+      error: (error) => {
+        
+      },
+      complete: () => {
+
+      }
     });
-  }
+}
+
+
+
+//   openSimulation(onInitFn: () => void, calculateFn: (data: any) => void, dataSource: any, availBal: any) {
+//     console.log("Opening RPTSimulationModalComponent...");
+    
+//     const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
+//       width: '50%',
+//       // Other MatDialog options can be specified here
+//     });
+//     dialogRef.afterClosed().subscribe({
+//       next: (result) => {
+//         console.log('Dialog closed with result:', result);
+//         console.log("Executing onInitFn...");
+//           onInitFn(); // Call the onInit function passed as a parameter
+          
+//           console.log("Executing calculateFn...");
+//           calculateFn(dataSource); // Call the calculate function passed as a parameter
+//         // Handle the result or perform any necessary actions
+//       },
+//       error: (error) => {
+//         console.error('Error occurred while subscribing to afterClosed:', error);
+//       },
+//       complete: () => {
+//         console.log('Subscription to afterClosed completed.');
+//       }
+//     });
+    
+
+//     // dialogRef.afterClosed().subscribe({
+//     //   next: (val) => {
+//     //     console.log("Dialog closed with result:", val);
+//     //     if (val) {
+//     //       console.log("Executing onInitFn...");
+//     //       onInitFn(); // Call the onInit function passed as a parameter
+          
+//     //       console.log("Executing calculateFn...");
+//     //       calculateFn(dataSource); // Call the calculate function passed as a parameter
+//     //     }
+//     //   },
+//     // });
+// }
+
 
 
   triggerFunction(data?: any) {
+    
     this.functionCallSource.next(data);
+    this.dataSource.next(data);
   }
 
 
   sendData(data: any) {
+    
     this.dataSource.next(data);
   }
 }
