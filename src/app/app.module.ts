@@ -27,6 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
+
 import { LocalStorageService, SessionStorageService, NgxWebstorageModule } from 'ngx-webstorage';
 
 
@@ -157,6 +158,11 @@ import { RptCheckerModalComponent } from './modal-dialog/rpt-checker-modal/rpt-c
 import { RptTransactionComponent } from './../app/views/simulation/rpt-transaction/rpt-transaction.component';
 import { RptTransactionModalComponent } from './modal-dialog/rpt-transaction-modal/rpt-transaction-modal.component';
 
+import { LeaseContractsComponent } from './../app/views/simulation/lease-contracts/lease-contracts.component';
+import { BondsInvestmentComponent } from './../app/views/simulation/bonds-investment/bonds-investment.component';
+
+
+
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -183,7 +189,9 @@ const APP_CONTAINERS = [
     OtherRPModalComponent, 
     RptListComponent, 
     SBLListComponent,
-    RptTransactionComponent, 
+    RptTransactionComponent,
+    BondsInvestmentComponent,
+    LeaseContractsComponent, 
     AffiliatesDirModalComponent, 
     AffiliatesDirRIModalComponent, 
     AffiliatesOffModalComponent, 

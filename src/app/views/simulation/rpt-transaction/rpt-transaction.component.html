@@ -19,11 +19,86 @@
                         <!-- </c-row> -->
                     </c-container>
 
-                    <c-container fluid class="px-0">
+                    <c-container fluid class="px-0 mt-3">
                         <c-row class="my-1 d-flex justify-content-between align-items-end">
                           <c-col>
                             <c-card>
                               <c-card-body>
+
+
+                                
+                                <mat-accordion class="example-headers-align" multi>
+                                  <!-- Data_RI panel -->
+                                  <mat-expansion-panel *ngIf="(selectedData)">
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title class="title">Related Interests</mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                  
+                                    <table mat-table [dataSource]="selectedData[0].Data_RI" class="mat-elevation-z8">
+                                      <!-- Column Definitions -->
+                                      <ng-container *ngFor="let column of displayedColumns2" [matColumnDef]="column">
+                                        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                                        <td mat-cell *matCellDef="let item">{{ item[column] }}</td>
+                                      </ng-container>
+
+
+                                      <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell text-center" colspan="12">No Data Available</td>
+                                      </tr>
+                                  
+                                      <!-- Header Row -->
+                                      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                  
+                                      <!-- Data Rows -->
+                                      <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                                    </table>
+                                  </mat-expansion-panel>
+                                
+                                  <!-- Data_PN panel -->
+                                  <mat-expansion-panel *ngIf="(selectedData)">
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title class="title">Personal Loans</mat-panel-title>
+                                    </mat-expansion-panel-header>
+
+                                    <table mat-table [dataSource]="selectedData[0].Data_PN" class="mat-elevation-z8">
+                                      <!-- Column Definitions -->
+                                      <ng-container *ngFor="let column of displayedColumns2" [matColumnDef]="column">
+                                        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                                        <td mat-cell *matCellDef="let item">{{ item[column] }}</td>
+                                      </ng-container>
+                                  
+                                      <!-- Header Row -->
+                                      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                  
+                                      <!-- Data Rows -->
+                                      <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                                    </table>
+                                  </mat-expansion-panel>
+                                
+                                  <!-- Data_Bonds panel -->
+                                  <mat-expansion-panel *ngIf="(selectedData)">
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title class="title">Corporate Bonds</mat-panel-title>
+                                    </mat-expansion-panel-header>
+
+                                    <table mat-table [dataSource]="selectedData[0].Data_Bonds" class="mat-elevation-z8">
+                                      <!-- Column Definitions -->
+                                      <ng-container *ngFor="let column of displayedColumns3"  [matColumnDef]="column">
+                                        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                                        <td mat-cell *matCellDef="let item">{{ item[column] }}</td>
+                                      </ng-container>
+                                      
+                                      <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell text-center" colspan="11">No Data Available</td>
+                                      </tr>
+                                      <!-- Header Row -->
+                                      <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                                  
+                                      <!-- Data Rows -->
+                                      <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+                                    </table>
+                                  </mat-expansion-panel>
+                                </mat-accordion>
 
                                 <!-- <table>
                                     <thead>

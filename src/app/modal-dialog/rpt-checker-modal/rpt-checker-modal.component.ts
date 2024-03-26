@@ -58,8 +58,7 @@ export class RptCheckerModalComponent {
 
 
   rptCheck() {
-    console.log("rptCheck function called"); // Add logging statement to check if rptCheck function is called
-    
+   
     const rpt = this.checkRPTForm.value;
     rptLookup(rpt)
         .then((response) => {

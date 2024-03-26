@@ -8,10 +8,12 @@ import Swal from 'sweetalert2';
 // Import for Simulation Modal
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { RPTSimulationModalComponent } from 'src/app/modal-dialog/rpt-simulation-modal/rpt-simulation-modal.component';
-import {rptLookup} from '../../functions-files/add/postAPI.js'
+import {rptIndividualLookup, rptCompanyLookup, rptTransactionLookup} from '../../functions-files/add/postAPI.js'
 
 import { SimulatedDataService } from '../../services/simulatedDataService/simulated-data-service.service';
 
+// MAT-TABLE
+import { MatTableDataSource } from '@angular/material/table';
 
 // Custom Validators
 import { customRequiredValidator } from './../../validator/myValidators';
@@ -26,32 +28,24 @@ import { LettersOnlyDirective } from './../../directives/lettersOnly.directive';
 })
 export class RptTransactionModalComponent {
 
-  DummyData = [
-    { "cisNo": 1234, "firstName": "John", "middleName": "A.", "lastName": "Doe" },
-    { "cisNo": 5678, "firstName": "Alice", "middleName": "B.", "lastName": "Smith" },
-    { "cisNo": 9012, "firstName": "Bob", "middleName": "C.", "lastName": "Johnson" },
-    { "cisNo": 3456, "firstName": "Emma", "middleName": "D.", "lastName": "Brown" },
-    
-    { "cisNo": 1235, "firstName": "John", "middleName": "A.", "lastName": "Doe" },
-    { "cisNo": 1236, "firstName": "John", "middleName": "A.", "lastName": "Doe" },
-    
-    { "cisNo": 5679, "firstName": "Alice", "middleName": "A.", "lastName": "Smith" },
-    { "cisNo": 5680, "firstName": "Alice", "middleName": "A.", "lastName": "Smith" },
-    
-    { "cisNo": 9013, "firstName": "Bob", "middleName": "A.", "lastName": "Johnson" },
-    { "cisNo": 9014, "firstName": "Bob", "middleName": "A.", "lastName": "Johnson" },
-    
-    { "cisNo": 3457, "firstName": "Emma", "middleName": "A.", "lastName": "Brown" },
-    { "cisNo": 3458, "firstName": "Emma", "middleName": "A.", "lastName": "Brown" }
-  ]
-
-
-  checkRPTForm: FormGroup;
-  RptCheckdata: any[] = [];
-
-
+ 
   
-  @Output() simulateRPT = new EventEmitter<any>();
+
+  RptCheckdata: any[] = [];
+  checkRPTForm: FormGroup;
+  selectedOption: string = 'individual'; // default option
+  selectedData: any[] = [];
+
+
+  @Output() rowDataSelected = new EventEmitter<any>();
+
+  displayedColumns1: string[] = ['cis_number', 'fname', 'lname'];
+  dataSource1 = new MatTableDataSource<any>([]);
+  ToDisplay1: string[] = [];
+
+  displayedColumns2: string[] = ['cis_number', 'fullname'];
+  dataSource2 = new MatTableDataSource<any>([]);
+  ToDisplay2: string[] = [];
 
   constructor(
     // private rptListComponent: RptListComponent,
@@ -59,7 +53,8 @@ export class RptTransactionModalComponent {
     private formBuilder: FormBuilder,
     private simulatedDataService: SimulatedDataService,
     public _dialog: MatDialog, private elementRef: ElementRef,
-    @Inject(MAT_DIALOG_DATA) public data: any,) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private fb: FormBuilder) {
     //   this.checkRPTForm = this.formBuilder.group({
     //       firstName: ['', [customRequiredValidator(), 
     //         Validators.maxLength(50), Validators.pattern(/\S+/)]],
@@ -68,14 +63,31 @@ export class RptTransactionModalComponent {
     //     });
     this.checkRPTForm = this.formBuilder.group({
         firstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
-        lastName: ['', [Validators.required, Validators.pattern(/\S+/)]]
+        lastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        companyName: ['', [Validators.required, Validators.pattern(/\S+/)]]
       });
+
+    
 
   }
 
+  ngOnInit() {
+    this.checkRPTForm = this.fb.group({
+      selectedOption: ['individual'],
+      firstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      lastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      companyName: ['', [Validators.required, Validators.pattern(/\S+/)]]
+    });
 
-  close() {
-    this._dialogRef.close(true); 
+    // Listen to the selectedOption form control value changes
+    this.checkRPTForm.get('selectedOption')?.valueChanges.subscribe(value => {
+      this.selectedOption = value;
+     });
+  }
+
+
+  close(dataPass) {
+    this._dialogRef.close(dataPass); 
   }
 
 
@@ -87,13 +99,89 @@ export class RptTransactionModalComponent {
   lastNameQuery: string = '';
 
   search() {
-    this.filteredData = this.DummyData.filter(item => {
-      const firstNameMatch = item.firstName.toLowerCase().includes(this.firstNameQuery.toLowerCase());
-      const lastNameMatch = item.lastName.toLowerCase().includes(this.lastNameQuery.toLowerCase());
-      return firstNameMatch && lastNameMatch;
-    });
+    // this.filteredData = this.dummyData.filter(item => {
+    //   const firstNameMatch = item.firstName.toLowerCase().includes(this.firstNameQuery.toLowerCase());
+    //   const lastNameMatch = item.lastName.toLowerCase().includes(this.lastNameQuery.toLowerCase());
+    //   return firstNameMatch && lastNameMatch;
+    // });
   }
 
+
+
+  checkRPT() {
+    const rpt = this.checkRPTForm.value;
+
+    if (this.selectedOption == 'individual') {
+
+      rptIndividualLookup(rpt)
+        .then((response) => {
+
+            if (response.result && response.result.length > 0) {
+                const data = response.result[0].Data[0];
+                
+                    this.dataSource1.data = [data];
+
+            } else {
+                
+            }
+  
+        })
+        .catch((error) => {
+            
+           
+        });
+    }
+
+    else if (this.selectedOption == 'company') {
+      rptCompanyLookup(rpt)
+        .then((response) => {
+
+            if (response.result && response.result.length > 0) {
+                const data = response.result[0].Data[0];
+
+                    this.dataSource2.data = [data];
+
+            } else {
+                
+            }
+  
+        })
+        .catch((error) => {
+            
+           
+        });
+    }
+    
+
+  }
+
+
+  selectRow(row: any) {
+    let yesterdayDate: string;
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterdayDate = yesterday.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+    rptTransactionLookup(row, yesterdayDate)
+        .then((response) => {
+
+            if (response.result && response.result.length > 0) {
+                const data = response.result;
+
+                   this.close(data);
+
+            } else {
+                
+            }
+  
+        })
+        .catch((error) => {
+            
+           
+        });
+    }
+  
+  
 
  
 

@@ -1,79 +1,171 @@
 <!-- ADD DOSRI FORM -->
-<h1 mat-dialog-title>RPT Transaction</h1>
+
+<mat-card-header mat-dialog-title>
+  <c-modal-header>
+    <h5 cModalTitle>RPT Transaction</h5>
+    <button cButtonClose mat-dialog-close></button>
+  </c-modal-header>
+</mat-card-header>
+
+
 <mat-dialog-content [formGroup]="checkRPTForm">
+  <c-modal-body>
+
     <c-row class="align-items-center">
+      <c-col [sm]="12">
+        <label cLabel="col" for="companyName">
+            Select Type
+          </label>
+        <mat-form-field appearance="fill" [style.width.%]=100> 
+            <mat-select formControlName="selectedOption">
+              <mat-option value="individual">Individual</mat-option>
+              <mat-option value="company">Company</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </c-col> 
+    </c-row>
+
+
+    <div *ngIf="checkRPTForm.get('selectedOption')?.value === 'individual'; else companyForm">
+      <c-row class="align-items-center">
         <c-col [sm]="6">
           <label cLabel="col" for="firstName">
              First Name
            </label>
            <mat-error *ngIf="checkRPTForm.get('firstName')?.hasError('LettersOnlyDirective')" class="error-msg">*</mat-error>
           <mat-form-field appearance="fill" [style.width.%]=100>
-            <!-- <mat-label>Middle Name</mat-label> -->
             <input matInput id="firstName"  name="firstName"
-            type="text" placeholder="First Name" formControlName="firstName" appLetters maxlength="150">
+            type="text" placeholder="First Name" formControlName="firstName" appCaps appLetters maxlength="150">
             <mat-error *ngIf="checkRPTForm.get('firstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
             <mat-error *ngIf="checkRPTForm.get('firstName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
           </mat-form-field>
         </c-col>
+  
+        <c-col [sm]="6">
+          <label cLabel="col" for="lastName">
+              Last Name
+            </label>
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('customRequired')" class="error-msg">*</mat-error>
+          <mat-form-field appearance="fill" [style.width.%]=100> 
+            <input matInput id="lastName"  name="lastName"
+            type="text" placeholder="Last Name" formControlName="lastName" appCaps appLetters maxlength="150">
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
+          </mat-form-field>
+        </c-col> 
+      </c-row>
+    </div>
 
-            <c-col [sm]="6">
-              <label cLabel="col" for="lastName">
-                 Last Name
-               </label>
-               <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('customRequired')" class="error-msg">*</mat-error>
-              <mat-form-field appearance="fill" [style.width.%]=100>
-                <!-- <mat-label>Middle Name</mat-label> -->
-                <input matInput id="lastName"  name="lastName"
-                type="text" placeholder="Last Name" formControlName="lastName" appLetters maxlength="150">
-                <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-               <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
-              </mat-form-field>
-            </c-col>
-        
+    <ng-template #companyForm>
+      <c-row class="align-items-center">
+        <c-col [sm]="12">
+          <label cLabel="col" for="companyName">
+              Company Name
+            </label>
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('customRequired')" class="error-msg">*</mat-error>
+          <mat-form-field appearance="fill" [style.width.%]=100> 
+            <input matInput id="companyName"  name="companyName"
+            type="text" placeholder="Company Name" formControlName="companyName" appCaps appLetters maxlength="150">
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
+          </mat-form-field>
+        </c-col> 
+      </c-row>
+    </ng-template>
 
-        
-    </c-row>
-
-
-
-    
+  </c-modal-body>
 </mat-dialog-content>
 
-<mat-dialog-actions class="action">
-    <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
-    <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
-    
-    <button mat-raised-button color="primary" (click)="search()">Search</button>
 
+<mat-dialog-actions class="action">
+  <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+  <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+  
+  <button mat-raised-button color="primary" (click)="checkRPT()" >Search</button>
 </mat-dialog-actions>
 
 
-<mat-dialog-content>
+<mat-dialog-content >
 
-    <c-row>
+  <div *ngIf="checkRPTForm.get('selectedOption')?.value === 'individual'; else companyTable">
+      <section class="example-container mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="dataSource1" class="DRI-table">
+              <ng-container matColumnDef="cis_number">
+              <th mat-header-cell *matHeaderCellDef>CIS Number</th>
+              <td mat-cell *matCellDef="let element"><a>{{element.cis_number}}</a></td>
+              </ng-container>
+              <ng-container matColumnDef="fname">
+              <th mat-header-cell *matHeaderCellDef>First Name</th>
+              <td mat-cell *matCellDef="let element">{{element.fname}}</td>
+              </ng-container>
+              <ng-container matColumnDef="lname">
+              <th mat-header-cell *matHeaderCellDef>Last Name</th>
+              <td mat-cell *matCellDef="let element">{{element.lname}}</td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns1, sticky: true" ></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+          </table>
+      </section>
+  </div>
 
-        <table mat-table [dataSource]="filteredData">
-            <ng-container matColumnDef="cisNo">
-            <th mat-header-cell *matHeaderCellDef>CIS No</th>
-            <td mat-cell *matCellDef="let element">{{element.cisNo}}</td>
-            </ng-container>
-            <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef>First Name</th>
-            <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
-            </ng-container>
-            <ng-container matColumnDef="middleName">
-            <th mat-header-cell *matHeaderCellDef>Middle Name</th>
-            <td mat-cell *matCellDef="let element">{{element.middleName}}</td>
-            </ng-container>
-            <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef>Last Name</th>
-            <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
-            </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="['cisNo', 'firstName', 'middleName', 'lastName']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['cisNo', 'firstName', 'middleName', 'lastName'];"></tr>
-        </table>
 
-    </c-row>
-</mat-dialog-content>
+  <ng-template #companyTable>
+
     
+    <section class="example-container mat-elevation-z8" tabindex="0">
+      <table mat-table [dataSource]="dataSource2" class="DRI-table">
+          <ng-container matColumnDef="cis_number">
+          <th mat-header-cell *matHeaderCellDef>CIS Number</th>
+          <td mat-cell *matCellDef="let element"><a>{{element.cis_number}}</a></td>
+          </ng-container>
+          <ng-container matColumnDef="fullname">
+          <th mat-header-cell *matHeaderCellDef>Company Name</th>
+          <td mat-cell *matCellDef="let element">{{element.fullname}}</td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns2, sticky: true" ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="selectRow(row)"></tr>
+      </table>
+  </section>
+  </ng-template>
+</mat-dialog-content>
+
+
+
+
+<!-- <mat-dialog-content >
+
+  <div *ngIf="checkRPTForm.get('selectedOption')?.value === 'individual'; else companyTable">
+      <section class="example-container mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="filteredData" class="DRI-table">
+              <ng-container matColumnDef="cisNo">
+              <th mat-header-cell *matHeaderCellDef>CIS No</th>
+              <td mat-cell *matCellDef="let element"><a>{{element.cisNo}}</a></td>
+              </ng-container>
+              <ng-container matColumnDef="firstName">
+              <th mat-header-cell *matHeaderCellDef>First Name</th>
+              <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
+              </ng-container>
+              <ng-container matColumnDef="lastName">
+              <th mat-header-cell *matHeaderCellDef>Last Name</th>
+              <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="['cisNo', 'firstName', 'lastName'], sticky: true" ></tr>
+              <tr mat-row *matRowDef="let row; columns: ['cisNo', 'firstName', 'lastName'];" (click)="selectRow(row)"></tr>
+          </table>
+      </section>
+  </div>
+
+
+  <ng-template #companyTable>
+
+    
+  <p>This is the Company Table</p>
+  </ng-template>
+</mat-dialog-content> -->
+
+  
+
+

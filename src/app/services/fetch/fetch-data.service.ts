@@ -16,6 +16,8 @@
  * 113 - getPNData                       => fetch PN Data
  * 114 - getSBL                          => fetch PN Data
  * 117 - getUnimpairedCapital            => fetch the Unimpaired Capital and Date as Of
+ * 119 - getBonds                        => fetch the Bonds and Investments
+ * 120 - getLease                        => fetch the Lease and Contracts
  */
 
 
@@ -459,6 +461,87 @@ getUserList(callback: (data: any) => void): void {
         });
         }
 
+  
+
+  getBonds(callback: (data: any) => void): void {
+    const settings = {
+      url: 'http://10.232.236.15:8092/api/dataTables',
+      method: 'POST',
+      timeout: 0,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      data: {
+        cmd: 119,
+        // userid: userid,
+      },
+    };
+    
+    this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+      next: (response: any) => {
+    
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          const bondsInvestment = response.result[0].Data;
+        
+          if (callback) {
+            callback(bondsInvestment);
+          }
+        } else {
+        
+          if (callback) {
+            callback(null);
+          }
+        }
+      },
+      error: (error) => {
+    
+        if (callback) {
+          callback(null);
+        }
+      },
+    });
+    }
+
+
+        
+  getLease(callback: (data: any) => void): void {
+    const settings = {
+      url: 'http://10.232.236.15:8092/api/dataTables',
+      method: 'POST',
+      timeout: 0,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      data: {
+        cmd: 120,
+        // userid: userid,
+      },
+    };
+    
+    this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+      next: (response: any) => {
+    
+        if (response && response.result && response.result.length > 0 && response.result[0].Data) {
+          const LeaseData = response.result[0].Data;
+        
+          if (callback) {
+            callback(LeaseData);
+          }
+        } else {
+        
+          if (callback) {
+            callback(null);
+          }
+        }
+      },
+      error: (error) => {
+    
+        if (callback) {
+          callback(null);
+        }
+      },
+    });
+    }
   // getAuditLogs(): Observable<any> {
   //   const userid = this.userID
   //   return this.makeLogRequest(901, "Admin").pipe(

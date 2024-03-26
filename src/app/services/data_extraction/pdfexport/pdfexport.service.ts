@@ -200,7 +200,74 @@ data.forEach(entry => {
 }
 
 
+
+
+generateBondsPDF(data: any[], filename: string, columnsToInclude: string[], headerText: string): void {
+    const doc = new jsPDF({
+        orientation: 'landscape',
+        format: 'legal'
+    });
+
+    // Calculate the width of the header text
+    const textWidth = doc.getTextWidth(`BONDS AND INVESTMENTS`);
+
+    // Calculate the x-coordinate to center the text
+    const centerX = (doc.internal.pageSize.width - textWidth) / 2;
+
+    // Format the date in "MMMM d, yyyy" format
+    const formattedDate = new Date(headerText).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    // Add the header text with the formatted date
+    doc.text(`BONDS AND INVESTMENTS`, centerX, 20);
+
+    // Modify data to include PHP currency symbol
+    const modifiedData = this.formatPDFBody(data, columnsToInclude);
+
+    // Generate the table
+    (doc as any).autoTable({
+      startY: 25, // Adjust startY value to leave space for the header text
+      head: [columnsToInclude],
+      body: modifiedData,
+    });
+
+    doc.save(filename);
+  }
+
+
+  generateLeasePDF(data: any[], filename: string, columnsToInclude: string[], headerText: string): void {
+    const doc = new jsPDF({
+        orientation: 'landscape',
+        format: 'legal'
+    });
+
+    // Calculate the width of the header text
+    const textWidth = doc.getTextWidth(`LEASE AND CONTRACTS`);
+
+    // Calculate the x-coordinate to center the text
+    const centerX = (doc.internal.pageSize.width - textWidth) / 2;
+
+    // Format the date in "MMMM d, yyyy" format
+    const formattedDate = new Date(headerText).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    // Add the header text with the formatted date
+    doc.text(`LEASE AND CONTRACTS`, centerX, 20);
+
+    // Modify data to include PHP currency symbol
+    const modifiedData = this.formatPDFBody(data, columnsToInclude);
+
+    // Generate the table
+    (doc as any).autoTable({
+      startY: 25, // Adjust startY value to leave space for the header text
+      head: [columnsToInclude],
+      body: modifiedData,
+    });
+
+    doc.save(filename);
+  }
 }
+
+
+
 
 
 

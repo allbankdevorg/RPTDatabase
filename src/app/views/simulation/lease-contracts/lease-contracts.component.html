@@ -1,0 +1,101 @@
+<c-container fluid class="mb-3 p-0">
+    <c-row>
+      <c-col xs>
+        <c-card class="mb-4">
+          <c-card-header class="d-flex justify-content-between align-items-center"><h2>LEASE AND CONTRACTS</h2>
+          </c-card-header>
+          <c-card-body>
+                <c-container fluid class="my-3">
+
+                    <c-container fluid class="px-0 d-flex justify-content-between align-items-center">
+                        <div class="d-flex w-100">
+                          <div class="w-50">
+                            <mat-form-field [style.width.%]="100">
+                              <input matInput #filterInput (input)="applyFilter(filterInput.value)" placeholder="Search">
+                              <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                          </div>
+                          <div class="d-flex justify-content-end w-50">
+                            <div style="display: flex; align-items: center;">
+                              <!-- <button (click)="downloadCSV()" mat-fab extended color="primary" style="margin-right: 10px;">
+                                <mat-icon>file_download</mat-icon>
+                                CSV
+                              </button> -->
+                              <button (click)="generatePDF()" mat-fab extended color="primary" style="margin-right: 10px;">
+                                <mat-icon>file_download</mat-icon>
+                                PDF
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </c-container>
+                    
+                    <section class="example-container mat-elevation-z8" tabindex="0">
+                      <mat-table cTable  id="htmlData" [responsive]="true" [dataSource]="dataSource"  matSort>
+                  
+                            <ng-container matColumnDef="id">
+                                    <mat-header-cell *matHeaderCellDef> SEQ </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="branch">
+                                    <mat-header-cell *matHeaderCellDef> BRANCH </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.branch}} </mat-cell>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="lessor">
+                                    <mat-header-cell *matHeaderCellDef> LESSOR </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.lessor}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="address">
+                                    <mat-header-cell *matHeaderCellDef> ADDRESS </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="payee">
+                                    <mat-header-cell *matHeaderCellDef> PAYEE </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.payee}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="floor_area">
+                                <mat-header-cell *matHeaderCellDef> FLOOR AREA </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.floor_area}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="rent_vat">
+                                <mat-header-cell *matHeaderCellDef> RENT (VAT inclusive) </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.rent_vat}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cusa_vat">
+                                <mat-header-cell *matHeaderCellDef>  CUSA (VAT inclusive) </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.cusa_vat}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="mktg_support">
+                                <mat-header-cell *matHeaderCellDef>  Mktg Support Fee (VAT Inclusive) </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.mktg_support}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="monthly">
+                                <mat-header-cell *matHeaderCellDef> Monthly Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.monthly}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="annual">
+                                <mat-header-cell *matHeaderCellDef>  Annual Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.annual}} </mat-cell>
+                            </ng-container>
+                  
+                      <mat-header-row *matHeaderRowDef="displayedColumns, sticky: true" ></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                      </mat-table>
+                    </section>
+
+                </c-container>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+</c-container>

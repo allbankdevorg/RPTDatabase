@@ -2,3 +2,34 @@ h1 {
     font-weight: 800;
     font-size: 12px;
 }
+
+
+.example-container {
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+
+
+  .content {
+    padding-top: 10px;
+  }
+  
+  .action {
+    padding: 0px 25px 20px;
+    button {
+      flex: 1;
+    }
+  }
+  
+  a {
+    text-decoration: underline;
+  }
+
+
+  .mat-mdc-row .mat-mdc-cell {
+    cursor: pointer;
+  }

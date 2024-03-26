@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import { MatSort } from '@angular/material/sort';
+import {MatAccordion} from '@angular/material/expansion';
 
 
 // Import for Simulation Modal
@@ -18,15 +19,17 @@ import { RptTransactionModalComponent } from 'src/app/modal-dialog/rpt-transacti
 })
 export class RptTransactionComponent {
 
-  rowData = [
-    { id: 1, name: 'John', age: 30 },
-    { id: 2, name: 'Alice', age: 25 },
-    { id: 3, name: 'Bob', age: 35 }
-  ];
+ selectedData: any;
 
 
+ @ViewChild(MatAccordion) accordion?: MatAccordion;
+ dialogRef?: MatDialogRef<RptTransactionModalComponent>;
 
-
+ displayedColumns2: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security', 'deposit_holdout', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate']; // Define your columns here
+ 
+ displayedColumns3: string[] = ['id', 'branch', 'lessor', 'address', 'payee', 'floor_area', 'rent_vat', 'cusa_vat', 'mktg_support', 'monthly', 'annual']
+ toDisplay3: string[] = ['Seq', 'Branch', 'Lessor', 'Address', 'Payee', 'Floor Area', 'Rent VAT', 'CUSA VAT', 'MKTG Support', 'Monthly', 'Annual']
+  
   constructor(
     public _dialog: MatDialog
   ) {
@@ -35,18 +38,22 @@ export class RptTransactionComponent {
 
 
 
-
   openChecker() {
-    const dialogRef = this._dialog.open(RptTransactionModalComponent, {
-      data: {
-        rptListComponentInstance: this // Pass the instance of RPTListComponent to ModalComponent3
-      },
-      width: '40%', // Set the width as per your requirement
+    this.dialogRef = this._dialog.open(RptTransactionModalComponent, {
+      data: { rptListComponentInstance: this },
+      width: '40%',
       position: { top: '3%' }
-      // Other MatDialog options can be specified here
     });
-    dialogRef.afterClosed().subscribe(result => {
 
+    // this.dialogRef.componentInstance.selectRow.subscribe((data) => {
+    //   this.selectedData = data;
+    //   // Update your parent table with the selected data
+    // });
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      this.selectedData = result;
+      console.log(this.selectedData);
+      // Handle any additional logic after the dialog is closed
     });
   }
 }
