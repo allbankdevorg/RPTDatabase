@@ -47,6 +47,22 @@ export class RptTransactionModalComponent {
   dataSource2 = new MatTableDataSource<any>([]);
   ToDisplay2: string[] = [];
 
+
+  isFormValid(): boolean {
+    const selectedOptionControl = this.checkRPTForm.get('selectedOption');
+    if (selectedOptionControl && selectedOptionControl.value === 'individual') {
+      const firstNameControl = this.checkRPTForm.get('firstName');
+      const lastNameControl = this.checkRPTForm.get('lastName');
+      return !!firstNameControl && !!lastNameControl && firstNameControl.valid && lastNameControl.valid;
+    } else {
+      const companyNameControl = this.checkRPTForm.get('companyName');
+      return !!companyNameControl && companyNameControl.valid;
+    }
+  }
+  
+  
+  
+
   constructor(
     // private rptListComponent: RptListComponent,
     private _dialogRef: MatDialogRef<RptTransactionModalComponent>,
@@ -116,13 +132,28 @@ export class RptTransactionModalComponent {
       rptIndividualLookup(rpt)
         .then((response) => {
 
+              
+
             if (response.result && response.result.length > 0) {
                 const data = response.result[0].Data[0];
-                
-                    this.dataSource1.data = [data];
 
+                  if (data) {
+                    this.dataSource1.data = [data];
+                  }
+                  else {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'NO Data Found!',
+                        text: 'There is NO Data Matching the Search'
+                      });  
+                  }
+              
             } else {
-                
+              Swal.fire({
+                icon: 'error',
+                title: 'NO Data Found!',
+                text: 'There is NO Data Matching the Search'
+              });  
             }
   
         })
@@ -139,10 +170,22 @@ export class RptTransactionModalComponent {
             if (response.result && response.result.length > 0) {
                 const data = response.result[0].Data[0];
 
-                    this.dataSource2.data = [data];
-
+                    if (data) {
+                      this.dataSource2.data = [data];
+                    }
+                    else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'NO Data Found!',
+                          text: 'There is NO Data Matching the Search'
+                        });  
+                    }
             } else {
-                
+              Swal.fire({
+                icon: 'error',
+                title: 'NO Data Found!',
+                text: 'There is NO Data Matching the Search'
+              }); 
             }
   
         })
@@ -167,7 +210,6 @@ export class RptTransactionModalComponent {
 
             if (response.result && response.result.length > 0) {
                 const data = response.result;
-
                    this.close(data);
 
             } else {
