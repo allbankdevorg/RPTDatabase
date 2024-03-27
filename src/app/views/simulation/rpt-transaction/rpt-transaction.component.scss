@@ -14,5 +14,20 @@
 
   .title {
     font-weight: 500;
-    font-size: 22px;
+    font-size: 20px;
+  }
+
+
+  .example-container {
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+
+  .No-data {
+    color: #ff1234;
+    font-size: 18px;;
   }
