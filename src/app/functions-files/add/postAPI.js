@@ -1069,7 +1069,6 @@ function rptCompanyLookup(rpt) {
 
 
 function rptTransactionLookup(row, yesterdayDate) {
-  console.log(row)
   return new Promise((resolve, reject) => {
       var settings = {
           "url": "http://10.232.236.15:8092/api/dataTables",
@@ -1082,7 +1081,7 @@ function rptTransactionLookup(row, yesterdayDate) {
               "cmd": 203,
               "date": yesterdayDate,
               "cis_number": row.cis_number,
-              "name": row.fname
+              "name": row.fullname
           }),
       };
 
