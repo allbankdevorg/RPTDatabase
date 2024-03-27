@@ -25,10 +25,15 @@ export class RptTransactionComponent {
  @ViewChild(MatAccordion) accordion?: MatAccordion;
  dialogRef?: MatDialogRef<RptTransactionModalComponent>;
 
- displayedColumns2: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security', 'deposit_holdout', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate']; // Define your columns here
- 
- displayedColumns3: string[] = ['id', 'branch', 'lessor', 'address', 'payee', 'floor_area', 'rent_vat', 'cusa_vat', 'mktg_support', 'monthly', 'annual']
- toDisplay3: string[] = ['Seq', 'Branch', 'Lessor', 'Address', 'Payee', 'Floor Area', 'Rent VAT', 'CUSA VAT', 'MKTG Support', 'Monthly', 'Annual']
+ displayedColumns1: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security',
+ 'deposit_holdout', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate', 'int_rate1', 'int_rate2', 'int_rate3'];
+
+
+ displayedColumns2: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security',
+  'deposit_holdout', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate'];
+
+ displayedColumns3: string[] = ['id', 'branch', 'lessor', 'address', 'payee', 
+ 'floor_area', 'rent_vat', 'cusa_vat', 'mktg_support', 'monthly', 'annual'];
   
   constructor(
     public _dialog: MatDialog
@@ -52,7 +57,6 @@ export class RptTransactionComponent {
 
     this.dialogRef.afterClosed().subscribe(result => {
       this.selectedData = result;
-      console.log(this.selectedData);
       // Handle any additional logic after the dialog is closed
     });
   }
