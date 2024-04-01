@@ -158,7 +158,7 @@ async login() {
     const sessionId = uuidv4();
     const otpGen = this.authService.generateAndSaveOtp()
 
-    
+    console.log(otpGen);
     // this.otpGene = otpGen;
 
     

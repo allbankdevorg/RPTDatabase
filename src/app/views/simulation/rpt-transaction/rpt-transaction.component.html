@@ -1,0 +1,348 @@
+<c-container fluid class="mb-3 p-0">
+    <c-row>
+      <c-col xs>
+        <c-card class="mb-4">
+          <c-card-header class="d-flex justify-content-between align-items-center"><h2>RPT Transaction</h2>
+          </c-card-header>
+          <c-card-body>
+                <c-container fluid class="my-3">
+                      
+                    <c-container fluid class="px-0 d-flex justify-content-between align-items-center">
+                        <!-- <c-row> -->
+                          <div>
+
+                            <button (click)="openChecker()" mat-fab extended color="primary"  style="margin-right: 10px;">
+                                <mat-icon>search</mat-icon>
+                                RPT Transaction LookUp
+                                </button>
+                          </div>
+                        <!-- </c-row> -->
+                    </c-container>
+
+                    <c-container fluid class="px-0 mt-3">
+                        <c-row class="my-1 d-flex justify-content-between align-items-end">
+                          <c-col>
+                            <c-card>
+                              <c-card-body>
+
+
+
+                                <c-accordion>
+
+                                  <c-accordion-item #item0="cAccordionItem" *ngIf="(selectedData)" [visible]="false">
+                                    <ng-template cTemplateId="accordionHeaderTemplate">
+                                      <button class="title" (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
+                                        Related Interest
+                                      </button>
+                                    </ng-template>
+                                    <ng-template cTemplateId="accordionBodyTemplate">
+                                      <div class="accordion-body">
+                                        <section class="example-container mat-elevation-z8" tabindex="0">
+                                          <table mat-table [dataSource]="selectedData[0].Data_RI" class="DRI-table">
+                                            <!-- CIS Column -->
+                                            <ng-container matColumnDef="cis_no">
+                                              <th mat-header-cell *matHeaderCellDef> Mother </th>
+                                              <td mat-cell *matCellDef="let item"> {{item.cis_no}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Loan/PN Column -->
+                                            <ng-container matColumnDef="loan_no">
+                                              <th mat-header-cell *matHeaderCellDef> Father </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.loan_no}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Borrower Column -->
+                                            <ng-container matColumnDef="name">
+                                              <th mat-header-cell *matHeaderCellDef> Siblings </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Original Loan Column -->
+                                            <ng-container matColumnDef="principal">
+                                              <th mat-header-cell *matHeaderCellDef> Spouse </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.principal | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Outstanding Balance Column -->
+                                            <ng-container matColumnDef="principal_bal">
+                                              <th mat-header-cell *matHeaderCellDef> Children </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.principal_bal | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Loan Security Column -->
+                                            <ng-container matColumnDef="loan_security">
+                                              <th mat-header-cell *matHeaderCellDef> Mother-in-Law </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.loan_security}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Deposit Hold-out Column -->
+                                            <ng-container matColumnDef="deposit_holdout">
+                                              <th mat-header-cell *matHeaderCellDef> Father-in-Law </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.deposit_holdout | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Net Balance Column -->
+                                            <ng-container matColumnDef="net_bal">
+                                              <th mat-header-cell *matHeaderCellDef> Name of Stepchildren </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.principal_bal - element.deposit_holdout | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Transaction Date Column -->
+                                            <ng-container matColumnDef="date_granted">
+                                              <th mat-header-cell *matHeaderCellDef> Name of Son/Daughter-In-Law </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.date_granted | date: 'MM/dd/yyyy'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Term Column -->
+                                            <ng-container matColumnDef="term">
+                                              <th mat-header-cell *matHeaderCellDef> Grandparents </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.term}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Purpose Column -->
+                                            <ng-container matColumnDef="purpose">
+                                              <th mat-header-cell *matHeaderCellDef> Grandparents-In-Law </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.purpose}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Interest Rate Column -->
+                                            <ng-container matColumnDef="int_rate">
+                                              <th mat-header-cell *matHeaderCellDef> Sisters-In-Law </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
+                                            </ng-container>
+
+                                            <!-- Interest Rate Column -->
+                                            <ng-container matColumnDef="int_rate1">
+                                              <th mat-header-cell *matHeaderCellDef> Brothers-In-Law </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
+                                            </ng-container>
+
+                                            <!-- Interest Rate Column -->
+                                            <ng-container matColumnDef="int_rate2">
+                                              <th mat-header-cell *matHeaderCellDef> GrandChildren </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
+                                            </ng-container>
+
+                                            <!-- Interest Rate Column -->
+                                            <ng-container matColumnDef="int_rate3">
+                                              <th mat-header-cell *matHeaderCellDef> Grandchildren-in-Law </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
+                                            </ng-container>
+
+                                            <tr class="mat-row" *matNoDataRow>
+                                              <td class="mat-cell text-center No-data" colspan="15">No Data Available</td>
+                                            </tr>
+                                          
+                                            <!-- Header Row -->
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns1, sticky: true"></tr>
+                                          
+                                            <!-- Data Rows -->
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+                                          </table>
+                                        </section>
+                                      </div>
+                                    </ng-template>
+                                  </c-accordion-item>
+
+
+                                  <c-accordion-item #item1="cAccordionItem" *ngIf="(selectedData)" [visible]="false">
+                                    <ng-template cTemplateId="accordionHeaderTemplate">
+                                      <button class="title" (click)="item1.toggleItem()" [collapsed]="!item1.visible" cAccordionButton>
+                                        Personal Loans
+                                      </button>
+                                    </ng-template>
+                                    <ng-template cTemplateId="accordionBodyTemplate">
+                                      <div class="accordion-body">
+
+                                        <section class="example-container mat-elevation-z8" tabindex="0">
+                                          <table mat-table [dataSource]="selectedData[0].Data_PN" class="DRI-table">
+                                            <!-- CIS Column -->
+                                            <ng-container matColumnDef="cis_no">
+                                              <th mat-header-cell *matHeaderCellDef> CIS Number </th>
+                                              <td mat-cell *matCellDef="let item"> {{item.cis_no}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Loan/PN Column -->
+                                            <ng-container matColumnDef="loan_no">
+                                              <th mat-header-cell *matHeaderCellDef> Loan/PN Number </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.loan_no}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Borrower Column -->
+                                            <ng-container matColumnDef="name">
+                                              <th mat-header-cell *matHeaderCellDef> Borrower </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Original Loan Column -->
+                                            <ng-container matColumnDef="principal">
+                                              <th mat-header-cell *matHeaderCellDef> Original Loan </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.principal | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Outstanding Balance Column -->
+                                            <ng-container matColumnDef="principal_bal">
+                                              <th mat-header-cell *matHeaderCellDef> Outstanding Balance </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.principal_bal | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Loan Security Column -->
+                                            <ng-container matColumnDef="loan_security">
+                                              <th mat-header-cell *matHeaderCellDef> Loan Security </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.loan_security}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Deposit Hold-out Column -->
+                                            <ng-container matColumnDef="deposit_holdout">
+                                              <th mat-header-cell *matHeaderCellDef> Deposit Hold-out </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.deposit_holdout | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Net Balance Column -->
+                                            <ng-container matColumnDef="net_bal">
+                                              <th mat-header-cell *matHeaderCellDef> Net Balance </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.principal_bal - element.deposit_holdout | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Transaction Date Column -->
+                                            <ng-container matColumnDef="date_granted">
+                                              <th mat-header-cell *matHeaderCellDef> Transaction Date </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.date_granted | date: 'MM/dd/yyyy'}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Term Column -->
+                                            <ng-container matColumnDef="term">
+                                              <th mat-header-cell *matHeaderCellDef> Term(mos) </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.term}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Purpose Column -->
+                                            <ng-container matColumnDef="purpose">
+                                              <th mat-header-cell *matHeaderCellDef> Purpose </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.purpose}} </td>
+                                            </ng-container>
+                                          
+                                            <!-- Interest Rate Column -->
+                                            <ng-container matColumnDef="int_rate">
+                                              <th mat-header-cell *matHeaderCellDef> Interest Rate </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
+                                            </ng-container>
+
+                                            <tr class="mat-row" *matNoDataRow>
+                                              <td class="mat-cell text-center No-data" colspan="12">No Data Available</td>
+                                            </tr>
+                                          
+                                            <!-- Header Row -->
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns2, sticky: true"></tr>
+                                          
+                                            <!-- Data Rows -->
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                                          </table>
+                                        </section>
+
+                                      </div>
+                                    </ng-template>
+                                  </c-accordion-item>
+
+
+                                  <c-accordion-item #item2="cAccordionItem" *ngIf="(selectedData)" [visible]="false">
+                                    <ng-template cTemplateId="accordionHeaderTemplate">
+                                      <button class="title" (click)="item2.toggleItem()" [collapsed]="!item2.visible" cAccordionButton>
+                                        Corporate Bonds
+                                      </button>
+                                    </ng-template>
+                                    <ng-template cTemplateId="accordionBodyTemplate">
+                                      <div class="accordion-body">
+                                        <section class="example-container mat-elevation-z8" tabindex="0">
+                                          <table mat-table [dataSource]="selectedData[0].Data_Bonds" class="DRI-table">
+                                  
+                                            <ng-container matColumnDef="id">
+                                              <th mat-header-cell *matHeaderCellDef> Seq </th>
+                                              <td mat-cell *matCellDef="let item"> {{item.id}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="branch">
+                                              <th mat-header-cell *matHeaderCellDef> Branch </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.branch}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="lessor">
+                                              <th mat-header-cell *matHeaderCellDef> Lessor </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.lessor}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="address">
+                                              <th mat-header-cell *matHeaderCellDef> Address </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="payee">
+                                              <th mat-header-cell *matHeaderCellDef> Payee </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.payee}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="floor_area">
+                                              <th mat-header-cell *matHeaderCellDef> Floor Area </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.floor_area}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="rent_vat">
+                                              <th mat-header-cell *matHeaderCellDef> Rent (VAT Inclusive) </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.rent_vat | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="cusa_vat">
+                                              <th mat-header-cell *matHeaderCellDef> CUSA VAT </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.cusa_vat | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="mktg_support">
+                                              <th mat-header-cell *matHeaderCellDef> MKTG Support Fee</th>
+                                              <td mat-cell *matCellDef="let element"> {{element.mktg_support | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="monthly">
+                                              <th mat-header-cell *matHeaderCellDef> Monthly Amount </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.monthly | currency:'PHP'}} </td>
+                                            </ng-container>
+                                          
+                                            <ng-container matColumnDef="annual">
+                                              <th mat-header-cell *matHeaderCellDef> Annual Amount </th>
+                                              <td mat-cell *matCellDef="let element"> {{element.annual | currency:'PHP'}} </td>
+                                            </ng-container>
+
+                                            <tr class="mat-row" *matNoDataRow>
+                                              <td class="mat-cell text-center No-data" colspan="11">No Data Available</td>
+                                            </tr>
+                                          
+                                          
+                                            <!-- Header Row -->
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns3, sticky: true"></tr>
+                                          
+                                            <!-- Data Rows -->
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+                                          </table>
+                                        </section>
+                                      </div>
+                                    </ng-template>
+                                  </c-accordion-item>
+                                  
+                                </c-accordion>
+
+                                
+
+                              </c-card-body>
+                            </c-card>
+                          </c-col>
+                        </c-row>
+                    </c-container>
+
+
+
+                 
+                </c-container>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+</c-container>

@@ -3,7 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { RptListComponent } from './rpt-list/rpt-list.component';
 import { SBLListComponent } from './sbl-list/sbl-list.component';
-
+import { RptTransactionComponent } from './rpt-transaction/rpt-transaction.component';
+import { LeaseContractsComponent } from './lease-contracts/lease-contracts.component';
+import { BondsInvestmentComponent } from './bonds-investment/bonds-investment.component';
 
 const routes: Routes = [
         {
@@ -30,6 +32,27 @@ const routes: Routes = [
                 data: {
                     title: 'SBL List ',
                 },
+            },
+            {
+              path: 'rpt-transaction',
+              component: RptTransactionComponent,
+              data: {
+                  title: 'RPT Transaction Lookup ',
+              },
+            },
+            {
+              path: 'lease-contracts',
+              component: LeaseContractsComponent,
+              data: {
+                  title: 'Lease and Contracts ',
+              },
+            },
+            {
+              path: 'bonds-investment',
+              component: BondsInvestmentComponent,
+              data: {
+                  title: 'Bonds And Investment ',
+              },
             },
             
           ]

@@ -19,6 +19,10 @@
  *  - userAccess
  *  - addPNData
  *  - checkHoldOutValue
+ *  - rptLookup
+ *  - rptIndividualLookup
+ *  - rptCompanyLookup
+ *  - rptTransactionLookup
  */
  
 
@@ -1003,6 +1007,98 @@ function rptLookup(rpt) {
 }
 
 
+function rptIndividualLookup(rpt) {
+  return new Promise((resolve, reject) => {
+      var settings = {
+          "url": "http://10.232.236.15:8092/api/dataTables",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+              "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+              "cmd": 201,
+              "fname": rpt.firstName,
+              "lname": rpt.lastName
+          }),
+      };
+
+      $.ajax(settings)
+          .done(function (response) {
+              if (response.result && response.result.length > 0) {
+                  resolve(response); // Resolve the promise with the response
+              } else {
+                  reject("Invalid response structure");
+              }
+          })
+          .fail(function (jqXHR, textStatus, errorThrown) {
+              reject(errorThrown);
+          });
+  });
+}
+
+
+function rptCompanyLookup(rpt) {
+  return new Promise((resolve, reject) => {
+      var settings = {
+          "url": "http://10.232.236.15:8092/api/dataTables",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+              "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+              "cmd": 202,
+              "companyName": rpt.companyName
+          }),
+      };
+
+      $.ajax(settings)
+          .done(function (response) {
+              if (response.result && response.result.length > 0) {
+                  resolve(response); // Resolve the promise with the response
+              } else {
+                  reject("Invalid response structure");
+              }
+          })
+          .fail(function (jqXHR, textStatus, errorThrown) {
+              reject(errorThrown);
+          });
+  });
+}
+
+
+function rptTransactionLookup(row, yesterdayDate) {
+  return new Promise((resolve, reject) => {
+      var settings = {
+          "url": "http://10.232.236.15:8092/api/dataTables",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+              "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+              "cmd": 203,
+              "date": yesterdayDate,
+              "cis_number": row.cis_number,
+              "name": row.fullname
+          }),
+      };
+
+      $.ajax(settings)
+          .done(function (response) {
+              if (response.result && response.result.length > 0) {
+                  resolve(response); // Resolve the promise with the response
+              } else {
+                  reject("Invalid response structure");
+              }
+          })
+          .fail(function (jqXHR, textStatus, errorThrown) {
+              reject(errorThrown);
+          });
+  });
+}
+
 
  module.exports = {
     createDosri,
@@ -1026,5 +1122,8 @@ function rptLookup(rpt) {
     addSimulatedPNData,
     HoldOutValue,
     checkHoldOutValue,
-    rptLookup
+    rptLookup,
+    rptCompanyLookup,
+    rptIndividualLookup,
+    rptTransactionLookup
  }

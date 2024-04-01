@@ -27,6 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
+
 import { LocalStorageService, SessionStorageService, NgxWebstorageModule } from 'ngx-webstorage';
 
 
@@ -154,6 +155,13 @@ import { AffiliatesRpmodalDetailsComponent } from './modal-dialog/affiliates-rpm
 import { AddChildModalComponent } from './modal-dialog/add-child-modal/add-child-modal.component';
 import { AddJMNChildModalComponent } from './modal-dialog/add-jmnchild-modal/add-jmnchild-modal.component';
 import { RptCheckerModalComponent } from './modal-dialog/rpt-checker-modal/rpt-checker-modal.component';
+import { RptTransactionComponent } from './../app/views/simulation/rpt-transaction/rpt-transaction.component';
+import { RptTransactionModalComponent } from './modal-dialog/rpt-transaction-modal/rpt-transaction-modal.component';
+
+import { LeaseContractsComponent } from './../app/views/simulation/lease-contracts/lease-contracts.component';
+import { BondsInvestmentComponent } from './../app/views/simulation/bonds-investment/bonds-investment.component';
+
+
 
 
 const APP_CONTAINERS = [
@@ -180,7 +188,10 @@ const APP_CONTAINERS = [
     RPTSimulationModalComponent,
     OtherRPModalComponent, 
     RptListComponent, 
-    SBLListComponent, 
+    SBLListComponent,
+    RptTransactionComponent,
+    BondsInvestmentComponent,
+    LeaseContractsComponent, 
     AffiliatesDirModalComponent, 
     AffiliatesDirRIModalComponent, 
     AffiliatesOffModalComponent, 
@@ -196,7 +207,7 @@ const APP_CONTAINERS = [
     FilterPipe, 
     ForapprovalComponent, 
     ForreviewComponent, 
-    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent, PaviGroupComponent, RptCheckerModalComponent],
+    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent, PaviGroupComponent, RptCheckerModalComponent, RptTransactionModalComponent],
     
   imports: [
     BrowserModule,
