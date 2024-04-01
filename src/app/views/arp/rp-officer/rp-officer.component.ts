@@ -27,6 +27,10 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import { AffiliatesRPModalComponent } from 'src/app/modal-dialog/affiliates-rpmodal/affiliates-rpmodal.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
+// Save CSV
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
 
 export interface Child {
   name: string;
@@ -130,14 +134,14 @@ export class RpOfficerComponent implements AfterViewInit {
   public editAffilvisible = false;
   editAffilData: any = [];
 
-  dataSource = new MatTableDataSource();
+  dataSource = new MatTableDataSource<any>();
   columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'manager', 'officerCount', 'date_inserted', 'view'];
   // columnsToDisplay: string[] = ['FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: affiliatesData | null = null;
 
   DdisplayedColumns: string[] = ['aff_com_cis_number', 'fullname', 'position'];
-  affilOffdataSource = new MatTableDataSource<OffData>([]);
+  affilOffdataSource = new MatTableDataSource<any>([]);
   // dataSource = new MatTableDataSource<Data>(ELEMENT_DATA);
 
   @ViewChild('editAffilModal') editAffilModal!: ElementRef;
@@ -154,7 +158,9 @@ export class RpOfficerComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
     private sharedService: SharedservicesService,
-    private get: FetchDataService )
+    private get: FetchDataService,
+    private csvExportService: CsvExportService,
+    private pdfExportService: PdfExportService )
     {
       this.boForm = this.formBuilder.group({
         boCisNumber: [''],
@@ -423,5 +429,68 @@ openEditForm(data: any, event: any) {
 
   handleChange(event: any) {
     this.editAffilvisible = event;
+  }
+
+
+
+  downloadCSV(): void {
+    const currentDate = new Date();
+    let selectedDateFormatted: string = '';
+    
+    
+    const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const filename = `BankOfficer_RelatedInterest.csv`;
+   
+    const data = this.dataSource.data.map(item => {
+      // Loop through each array and concatenate full names
+      const mothersNames = item.MothersName.map(mother => mother.fullName).join(', ');
+      const fathersNames = item.FathersName.map(father => father.fullName).join(', ');
+      const spouses = item.Spouse.map(spouse => spouse.fullName).join(', ');
+      const childrenNames = item.Children.map(child => child.fullName).join(', ');
+      const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join(', ');
+      const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join(', ');
+  
+      return {
+        'CIS Number': item.cis_num,
+        'Full Name': item.FullName,
+        'Company': item.Company,
+        'Position': item.Position,
+        "Mother's Name": mothersNames,
+        "Father's Name": fathersNames,
+        'Spouse': spouses,
+        'Children': childrenNames,
+        'Mother-In-Law': motherInLaws,
+        'Father-In-Law': fatherInLaws
+      };
+    });
+  
+    // Specify the columns to include in the CSV
+    const columnsToInclude = [
+      'CIS Number', 'Full Name', 'Company', 'Position', "Mother's Name",
+      "Father's Name", 'Spouse', 'Children', 'Mother-In-Law', 'Father-In-Law'
+    ];
+    this.csvExportService.BankOfficerRIToCSV(data, filename, columnsToInclude);
+  }
+
+
+  generatePDF(): void {
+    const currentDate = new Date();
+    let selectedDateFormatted: string = '';
+  
+    const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const filename = `RelatedPartyOfficer.pdf`;
+    const headerText = formattedDate;
+  
+    const data = this.dataSource.data.map(item => ({
+      'CIS NUMBER': item.aff_com_cis_number,
+      'Company Name': item.aff_com_company_name,
+      'Managing Company': item.manager,
+      'Number of Officer': item.officerCount,
+      'Date Added': item.date_inserted ? new Date(item.date_inserted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+    }));
+
+    const columnsToInclude = ['CIS NUMBER', 'Company Name', 'Managing Company',
+     'Number of Officer', 'Date Added'];
+    this.pdfExportService.exportRPOfficerToPDF(data, filename, columnsToInclude, headerText);
   }
 }

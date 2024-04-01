@@ -121,5 +121,19 @@ export class CsvExportService {
 }
 
 
+BankOfficerRIToCSV(data: any[], filename: string, columnsToInclude: string[]): void {
+  const csvData = this.convertToCSV(data, columnsToInclude);
+  const csvContent = new Blob(['\uFEFF', csvData], { type: 'text/csv;charset=utf-8' }); // Add BOM for UTF-8
+  saveAs(csvContent, filename);
+}
+
+
+BankStockHoldersToCSV(data: any[], filename: string, columnsToInclude: string[]): void {
+  const csvData = this.convertToCSV(data, columnsToInclude);
+  const csvContent = new Blob(['\uFEFF', csvData], { type: 'text/csv;charset=utf-8' }); // Add BOM for UTF-8
+  saveAs(csvContent, filename);
+}
+
+
 }
 
