@@ -25,6 +25,7 @@ import { DashboardCardsComponent } from './modules/dashboard-cards/dashboard-car
 import { DashboardTrafficComponent } from './modules/dashboard-traffic/dashboard-traffic.component';
 import { DashboardTrafficSalesComponent } from './modules/dashboard-traffic-sales/dashboard-traffic-sales.component';
 import { DashboardUsersComponent } from './modules/dashboard-users/dashboard-users.component';
+import { RptTransactionComponent } from '../simulation/rpt-transaction/rpt-transaction.component';
 
 @NgModule({
   imports: [
