@@ -7,11 +7,28 @@
           </c-card-header>
           <c-card-body>
 
-            <c-container class="mt-2">
-              <mat-form-field [style.width.%]=100>
-                <input matInput #filterInput (input)="applyFilter(['aff_com_cis_number', 'aff_com_company_name'], filterInput.value)" placeholder="Search">
-                    <mat-icon matSuffix>search</mat-icon>
-              </mat-form-field>
+
+            <c-container fluid class=" d-flex justify-content-between align-items-center mt-2">
+              <div class="d-flex w-100">
+                <div class="w-50">
+                  <mat-form-field [style.width.%]=100>
+                    <input matInput #filterInput (input)="applyFilter(['aff_com_cis_number', 'aff_com_company_name'], filterInput.value)" placeholder="Search">
+                        <mat-icon matSuffix>search</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div class="d-flex justify-content-end w-50">
+                  <div style="display: flex; align-items: center;">
+                    <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                      <mat-icon>file_download</mat-icon>
+                      CSV
+                    </button>
+                    <button (click)="generatePDF()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                      <mat-icon>file_download</mat-icon>
+                      PDF
+                    </button>
+                  </div>
+                </div>
+              </div>
             </c-container>
             
             <c-container fluid class="my-3">

@@ -21,6 +21,10 @@ import { StockholdersModalComponent } from 'src/app/modal-dialog/stockholders-mo
 // Audit Trail
 import { AuditTrailService } from '../../../services/auditTrail/audit-trail.service';
 
+// For Exporting to CSV and PDF
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
 
 export interface Data {
   fullname: string;
@@ -42,7 +46,7 @@ export class BankstockholdersComponent {
 
   displayedColumns: string[] = ['name', 'shares', 'amount', 'percentage', 'date_insert', 'action'];
   displayedColumns1: string[] = ['name'];
-  dataSource = new MatTableDataSource<Data>;
+  dataSource = new MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -55,7 +59,9 @@ export class BankstockholdersComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
     private get: FetchDataService,
-    private auditTrailService: AuditTrailService)
+    private auditTrailService: AuditTrailService,
+    private pdfExportService: PdfExportService,
+    private csvExportService: CsvExportService,)
     {   
 }
 
@@ -96,6 +102,73 @@ export class BankstockholdersComponent {
       }
     });
   }
+
+
+
+  downloadCSV(): void {
+    const currentDate = new Date();
+    let selectedDateFormatted: string = '';
+    
+    
+    const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const filename = `BankStockholders.csv`;
+   
+    const data = this.dataSource.data.map(item => {
+      // Format amount to currency
+      const formattedShares = item.shares.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' }) // Remove currency sign
+      const formattedAmount = item.amount.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' }) // Remove currency sign
+
+      return {
+        'Company Name': item.name,
+        'Shares': formattedShares,
+        'Total Amount': formattedAmount,
+        'Percentage': item.percentage + '%',
+        'Date Added': item.date_insert ? new Date(item.date_insert).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '',
+      };
+    });
+  
+    // Specify the columns to include in the CSV
+    const columnsToInclude = [
+      'Company Name', 'Shares', 'Total Amount', 'Percentage', 'Date Added'];
+    this.csvExportService.BankStockHoldersToCSV(data, filename, columnsToInclude);
+  }
+
+  
+  
+  
+  generatePDF(): void {
+    const currentDate = new Date();
+    let selectedDateFormatted: string = '';
+  
+    const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const filename = `BankStockholders.pdf`;
+    const headerText = formattedDate;
+  
+    const data = this.dataSource.data.map(item => {
+      // Format amount to currency
+      const formattedShares = item.shares.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' }).replace(/^(\D+)/, ''); // Remove currency sign
+      const formattedAmount = item.amount.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' }).replace(/^(\D+)/, ''); // Remove currency sign
+
+      return {
+        'Company Name': item.name,
+        'Shares': formattedShares,
+        'Total Amount': formattedAmount,
+        'Percentage': item.percentage + '%',
+        'Date Added': item.date_insert ? new Date(item.date_insert).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '',
+      };
+    });
+    
+   
+    const columnsToInclude = [
+      'Company Name', 'Shares', 'Total Amount', 'Percentage', 'Date Added'
+    ];
+    this.pdfExportService.generateBankStockholderPDF(data, filename, columnsToInclude, headerText);
+  }
+  
+  
+
+
+
 
 
   openAddEditForm() {
