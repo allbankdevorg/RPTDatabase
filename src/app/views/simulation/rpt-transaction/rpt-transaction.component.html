@@ -29,6 +29,8 @@
 
                                 <c-accordion>
 
+                                  
+
                                   <c-accordion-item #item0="cAccordionItem" *ngIf="(selectedData)" [visible]="false">
                                     <ng-template cTemplateId="accordionHeaderTemplate">
                                       <button class="title" (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
@@ -37,112 +39,32 @@
                                     </ng-template>
                                     <ng-template cTemplateId="accordionBodyTemplate">
                                       <div class="accordion-body">
-                                        <section class="example-container mat-elevation-z8" tabindex="0">
-                                          <table mat-table [dataSource]="selectedData[0].Data_RI" class="DRI-table">
-                                            <!-- CIS Column -->
-                                            <ng-container matColumnDef="cis_no">
-                                              <th mat-header-cell *matHeaderCellDef> Mother </th>
-                                              <td mat-cell *matCellDef="let item"> {{item.cis_no}} </td>
+                                        <section class="example-container mat-elevation-z8" tabindex="0" *ngIf="selectedData && relatedInterests.length > 0">
+                                          <table mat-table [dataSource]="relatedInterests" class="DRI-table">
+                                            <!-- Define columns -->
+                                            <ng-container matColumnDef="relation">
+                                              <th mat-header-cell *matHeaderCellDef>Relation</th>
+                                              <td mat-cell *matCellDef="let element">{{ element.relation }}</td>
                                             </ng-container>
-                                          
-                                            <!-- Loan/PN Column -->
-                                            <ng-container matColumnDef="loan_no">
-                                              <th mat-header-cell *matHeaderCellDef> Father </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.loan_no}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Borrower Column -->
                                             <ng-container matColumnDef="name">
-                                              <th mat-header-cell *matHeaderCellDef> Siblings </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                              <th mat-header-cell *matHeaderCellDef>Name</th>
+                                              <td mat-cell *matCellDef="let element">{{ element.fname }} {{ element.mname }} {{ element.lname }}</td>
                                             </ng-container>
-                                          
-                                            <!-- Original Loan Column -->
-                                            <ng-container matColumnDef="principal">
-                                              <th mat-header-cell *matHeaderCellDef> Spouse </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.principal | currency:'PHP'}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Outstanding Balance Column -->
-                                            <ng-container matColumnDef="principal_bal">
-                                              <th mat-header-cell *matHeaderCellDef> Children </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.principal_bal | currency:'PHP'}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Loan Security Column -->
-                                            <ng-container matColumnDef="loan_security">
-                                              <th mat-header-cell *matHeaderCellDef> Mother-in-Law </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.loan_security}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Deposit Hold-out Column -->
-                                            <ng-container matColumnDef="deposit_holdout">
-                                              <th mat-header-cell *matHeaderCellDef> Father-in-Law </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.deposit_holdout | currency:'PHP'}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Net Balance Column -->
-                                            <ng-container matColumnDef="net_bal">
-                                              <th mat-header-cell *matHeaderCellDef> Name of Stepchildren </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.principal_bal - element.deposit_holdout | currency:'PHP'}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Transaction Date Column -->
-                                            <ng-container matColumnDef="date_granted">
-                                              <th mat-header-cell *matHeaderCellDef> Name of Son/Daughter-In-Law </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.date_granted | date: 'MM/dd/yyyy'}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Term Column -->
-                                            <ng-container matColumnDef="term">
-                                              <th mat-header-cell *matHeaderCellDef> Grandparents </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.term}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Purpose Column -->
-                                            <ng-container matColumnDef="purpose">
-                                              <th mat-header-cell *matHeaderCellDef> Grandparents-In-Law </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.purpose}} </td>
-                                            </ng-container>
-                                          
-                                            <!-- Interest Rate Column -->
-                                            <ng-container matColumnDef="int_rate">
-                                              <th mat-header-cell *matHeaderCellDef> Sisters-In-Law </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
-                                            </ng-container>
-
-                                            <!-- Interest Rate Column -->
-                                            <ng-container matColumnDef="int_rate1">
-                                              <th mat-header-cell *matHeaderCellDef> Brothers-In-Law </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
-                                            </ng-container>
-
-                                            <!-- Interest Rate Column -->
-                                            <ng-container matColumnDef="int_rate2">
-                                              <th mat-header-cell *matHeaderCellDef> GrandChildren </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
-                                            </ng-container>
-
-                                            <!-- Interest Rate Column -->
-                                            <ng-container matColumnDef="int_rate3">
-                                              <th mat-header-cell *matHeaderCellDef> Grandchildren-in-Law </th>
-                                              <td mat-cell *matCellDef="let element"> {{element.int_rate}}% </td>
-                                            </ng-container>
-
-                                            <tr class="mat-row" *matNoDataRow>
-                                              <td class="mat-cell text-center No-data" colspan="15">No Data Available</td>
-                                            </tr>
-                                          
+                                        
                                             <!-- Header Row -->
-                                            <tr mat-header-row *matHeaderRowDef="displayedColumns1, sticky: true"></tr>
-                                          
-                                            <!-- Data Rows -->
-                                            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+                                            <tr mat-header-row *matHeaderRowDef="['relation', 'name']; sticky: true"></tr>
+                                            <!-- Data Row -->
+                                            <tr mat-row *matRowDef="let row; columns: ['relation', 'name'];"></tr>
                                           </table>
                                         </section>
+                                        
+                                        
+                                        
                                       </div>
                                     </ng-template>
                                   </c-accordion-item>
+                                  
+                                  
 
 
                                   <c-accordion-item #item1="cAccordionItem" *ngIf="(selectedData)" [visible]="false">
