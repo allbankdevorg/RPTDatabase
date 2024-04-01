@@ -30,8 +30,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { LocalStorageService, SessionStorageService, NgxWebstorageModule } from 'ngx-webstorage';
 
-
-
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
 
@@ -174,7 +172,7 @@ const APP_CONTAINERS = [
   declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
     BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,
     // DraggableDirective, ResizableDirective, 
-    LettersOnlyDirective, PreventSpecialCharactersDirective, AlphanumericOnlyDirective,
+    LettersOnlyDirective, PreventSpecialCharactersDirective, AlphanumericOnlyDirective, 
     LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
     HasPermissionDirective,
     DosriModalComponent,
@@ -265,7 +263,7 @@ const APP_CONTAINERS = [
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCardModule
+    MatCardModule,
     
     
   ],
