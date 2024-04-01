@@ -316,12 +316,6 @@ downloadCSV(): void {
 }
 
 
-// generatePDF(): void {
-//   const elementId = 'htmlData'; // Replace 'htmlData' with the ID of the element you want to convert to PDF
-//   const fileName = 'your-file-name.pdf'; // Replace 'your-file-name' with the desired file name
-
-//   this.pdfExportService.generatePDF(elementId, fileName);
-// }
 
 generatePDF(): void {
   const currentDate = new Date();
