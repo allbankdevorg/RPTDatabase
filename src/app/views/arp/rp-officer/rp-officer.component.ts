@@ -241,6 +241,7 @@ this.updateTableData();
   
         // Set the data source for your MatTable
         this.dataSource.data = companiesWithDirectors;
+        console.log(this.dataSource.data);
       }
     });
   
@@ -432,65 +433,160 @@ openEditForm(data: any, event: any) {
   }
 
 
-
   downloadCSV(): void {
     const currentDate = new Date();
     let selectedDateFormatted: string = '';
-    
-    
+      
     const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-    const filename = `BankOfficer_RelatedInterest.csv`;
-   
-    const data = this.dataSource.data.map(item => {
-      // Loop through each array and concatenate full names
-      const mothersNames = item.MothersName.map(mother => mother.fullName).join(', ');
-      const fathersNames = item.FathersName.map(father => father.fullName).join(', ');
-      const spouses = item.Spouse.map(spouse => spouse.fullName).join(', ');
-      const childrenNames = item.Children.map(child => child.fullName).join(', ');
-      const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join(', ');
-      const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join(', ');
+    const filename = `RelatedPartyOfficert.csv`;
   
-      return {
-        'CIS Number': item.cis_num,
-        'Full Name': item.FullName,
-        'Company': item.Company,
-        'Position': item.Position,
-        "Mother's Name": mothersNames,
-        "Father's Name": fathersNames,
-        'Spouse': spouses,
-        'Children': childrenNames,
-        'Mother-In-Law': motherInLaws,
-        'Father-In-Law': fatherInLaws
+    const rowData = this.dataSource.data.flatMap(item => {
+      const companyRow = {
+        'CIS NUMBER': item.aff_com_cis_number,
+        'COMPANY NAME': item.aff_com_company_name,
+        'MANAGING COMPANY': item.manager,
+        'Number of Officer': item.officerCount,
       };
+  
+      const officerHeaderRow = {
+        'CIS NUMBER': '', 
+        'COMPANY NAME': 'CIS Number',
+        'MANAGING COMPANY': 'Officers Name',
+        'Number of Officer': 'Position'// Empty cell for alignment
+      };
+  
+      const officerRows = item.officers.map((officer, index) => ({
+         'CIS NUMBER': '',
+        'COMPANY NAME': officer.off_cisnumber, 
+        'MANAGING COMPANY': `${officer.fname} ${officer.mname} ${officer.lname}`, // Empty cell for alignment
+        'Number of Officer': officer.position
+      }));
+  
+      return [companyRow, officerHeaderRow, ...officerRows];
     });
   
-    // Specify the columns to include in the CSV
-    const columnsToInclude = [
-      'CIS Number', 'Full Name', 'Company', 'Position', "Mother's Name",
-      "Father's Name", 'Spouse', 'Children', 'Mother-In-Law', 'Father-In-Law'
-    ];
-    this.csvExportService.BankOfficerRIToCSV(data, filename, columnsToInclude);
+    const columnsToInclude = ['CIS NUMBER', 'COMPANY NAME', 'MANAGING COMPANY', 'Number of Officer'];
+    this.csvExportService.RPOfficerRIToCSV(rowData, filename, columnsToInclude);
   }
+  
+  
+  
+  
+  
+  
+  // downloadCSV(): void {
+  //   const filename = `RelatedPartyOfficers.csv`;
+  //   let csvData = 'CIS NUMBER,ACCOUNT NAME,COMPANY NAME,MANAGING COMPANY,# OF OFFICER,DATE ADDED\n';
+  
+  //   // Iterate over each data item
+  //   this.dataSource.data.forEach(item => {
+  //     // Append company details to CSV data
+  //     csvData += `${item.aff_com_cis_number},${item.aff_com_account_name},${item.aff_com_company_name},${item.manager},${item.officerCount},${item.date_inserted}\n`;
+  
+  //     // Append officers' details to CSV data
+  //     item.officers.forEach(officer => {
+  //       csvData += `,${officer.off_cisnumber},${officer.fname} ${officer.mname} ${officer.lname},${officer.position}\n`;
+  //     });
+  //   });
+  
+  //   // Create a Blob from the CSV data
+  //   const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+  
+  //   // Create a URL for the Blob
+  //   const url = URL.createObjectURL(blob);
+  
+  //   // Create a link element and trigger the download
+  //   const link = document.createElement('a');
+  //   link.setAttribute('href', url);
+  //   link.setAttribute('download', filename);
+  //   link.style.visibility = 'hidden';
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  
+  //   // Clean up the URL object
+  //   URL.revokeObjectURL(url);
+  // }
+  
+  
 
+  // downloadCSV(): void {
+  //   const currentDate = new Date();
+  //   let selectedDateFormatted: string = '';
+    
+    
+  //   const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  //   const filename = `RelatedPartyOfficert.csv`;
+   
+  //   const data = this.dataSource.data.map(item => ({
+  //     'CIS NUMBER': item.aff_com_cis_number,
+  //     'Company Name': item.aff_com_company_name,
+  //     'Managing Company': item.manager,
+  //     'Number of Officer': item.officerCount,
+  //     'Date Added': item.date_inserted ? new Date(item.date_inserted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+  //   }));
+
+  //   const columnsToInclude = ['CIS NUMBER', 'Company Name', 'Managing Company',
+  //    'Number of Officer', 'Date Added'];
+  //   this.csvExportService.RPOfficerRIToCSV(data, filename, columnsToInclude);
+  // }
 
   generatePDF(): void {
     const currentDate = new Date();
     let selectedDateFormatted: string = '';
+    
   
     const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     const filename = `RelatedPartyOfficer.pdf`;
     const headerText = formattedDate;
   
-    const data = this.dataSource.data.map(item => ({
-      'CIS NUMBER': item.aff_com_cis_number,
-      'Company Name': item.aff_com_company_name,
-      'Managing Company': item.manager,
-      'Number of Officer': item.officerCount,
-      'Date Added': item.date_inserted ? new Date(item.date_inserted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-    }));
-
-    const columnsToInclude = ['CIS NUMBER', 'Company Name', 'Managing Company',
-     'Number of Officer', 'Date Added'];
-    this.pdfExportService.exportRPOfficerToPDF(data, filename, columnsToInclude, headerText);
+    const rowData = this.dataSource.data.flatMap(item => {
+      const companyRow = {
+        'CIS NUMBER': item.aff_com_cis_number,
+        'COMPANY NAME': item.aff_com_company_name,
+        'MANAGING COMPANY': item.manager,
+        'Number of Officer': item.officerCount,
+      };
+  
+      const officerHeaderRow = {
+        'CIS NUMBER': '', 
+        'COMPANY NAME': 'CIS Number',
+        'MANAGING COMPANY': 'Officers Name',
+        'Number of Officer': 'Position'
+      };
+  
+      const officerRows = item.officers.map((officer, index) => ({
+         'CIS NUMBER': '',
+        'COMPANY NAME': officer.off_cisnumber, 
+        'MANAGING COMPANY': `${officer.fname} ${officer.mname} ${officer.lname}`, // Empty cell for alignment
+        'Number of Officer': officer.position
+      }));
+  
+      return [companyRow, officerHeaderRow, ...officerRows];
+    });
+  
+    const columnsToInclude = ['CIS NUMBER', 'COMPANY NAME', 'MANAGING COMPANY', 'Number of Officer'];
+    
+    this.pdfExportService.exportRPOfficerToPDF(rowData, filename, columnsToInclude, headerText);
   }
+  // generatePDF(): void {
+  //   const currentDate = new Date();
+  //   let selectedDateFormatted: string = '';
+  
+  //   const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  //   const filename = `RelatedPartyOfficer.pdf`;
+  //   const headerText = formattedDate;
+  
+  //   const data = this.dataSource.data.map(item => ({
+  //     'CIS NUMBER': item.aff_com_cis_number,
+  //     'Company Name': item.aff_com_company_name,
+  //     'Managing Company': item.manager,
+  //     'Number of Officer': item.officerCount,
+  //     'Date Added': item.date_inserted ? new Date(item.date_inserted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+  //   }));
+
+  //   const columnsToInclude = ['CIS NUMBER', 'Company Name', 'Managing Company',
+  //    'Number of Officer', 'Date Added'];
+  //   this.pdfExportService.exportRPOfficerToPDF(data, filename, columnsToInclude, headerText);
+  // }
 }
