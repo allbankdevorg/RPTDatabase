@@ -13,7 +13,7 @@
 
                             <button (click)="openChecker()" mat-fab extended color="primary"  style="margin-right: 10px;">
                                 <mat-icon>search</mat-icon>
-                                RPT Transaction LookUp
+                                RPT Database Search
                                 </button>
                           </div>
                         <!-- </c-row> -->
@@ -44,18 +44,24 @@
                                             <!-- Define columns -->
                                             <ng-container matColumnDef="relation">
                                               <th mat-header-cell *matHeaderCellDef>Relation</th>
-                                              <td mat-cell *matCellDef="let element">{{ element.relation }}</td>
+                                              <td mat-cell *matCellDef="let element">{{ getRelationName(element.relation) }}</td>
                                             </ng-container>
                                             <ng-container matColumnDef="name">
                                               <th mat-header-cell *matHeaderCellDef>Name</th>
-                                              <td mat-cell *matCellDef="let element">{{ element.fname }} {{ element.mname }} {{ element.lname }}</td>
+                                              <td mat-cell *matCellDef="let element">
+                                                <!-- Display names with line breaks -->
+                                                <div *ngIf="element.names">
+                                                  <div *ngFor="let name of element.names">{{ name }}</div>
+                                                </div>
+                                              </td>
                                             </ng-container>
-                                        
+                                          
                                             <!-- Header Row -->
                                             <tr mat-header-row *matHeaderRowDef="['relation', 'name']; sticky: true"></tr>
                                             <!-- Data Row -->
                                             <tr mat-row *matRowDef="let row; columns: ['relation', 'name'];"></tr>
                                           </table>
+                                          
                                         </section>
                                         
                                         
@@ -70,7 +76,7 @@
                                   <c-accordion-item #item1="cAccordionItem" *ngIf="(selectedData)" [visible]="false">
                                     <ng-template cTemplateId="accordionHeaderTemplate">
                                       <button class="title" (click)="item1.toggleItem()" [collapsed]="!item1.visible" cAccordionButton>
-                                        Personal Loans
+                                        Loans
                                       </button>
                                     </ng-template>
                                     <ng-template cTemplateId="accordionBodyTemplate">
@@ -170,7 +176,7 @@
                                   <c-accordion-item #item2="cAccordionItem" *ngIf="(selectedData)" [visible]="false">
                                     <ng-template cTemplateId="accordionHeaderTemplate">
                                       <button class="title" (click)="item2.toggleItem()" [collapsed]="!item2.visible" cAccordionButton>
-                                        Corporate Bonds
+                                        Other Transaction
                                       </button>
                                     </ng-template>
                                     <ng-template cTemplateId="accordionBodyTemplate">
