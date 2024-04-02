@@ -40,6 +40,13 @@ import {AuditTrail} from '../../../model/audit-trail.model';
 
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { forkJoin, of } from 'rxjs';
+
+
+// Save CSV
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
+
 // Interfaces
 export interface compData {
   com_cis_number: string;
@@ -96,7 +103,7 @@ export class DriComponent {
   expandedElement: compData | null = null;
 
   DdisplayedColumns: string[] = ['dir_cisnumber', 'directorName', 'position'];
-  dDataSource = new MatTableDataSource<DData>([]);
+  dDataSource = new MatTableDataSource<any>([]);
 
   
   @ViewChild('editModal') editModal!: ElementRef;
@@ -132,6 +139,8 @@ export class DriComponent {
     private renderer: Renderer2,
     private el: ElementRef,
     private get: FetchDataService,
+    private csvExportService: CsvExportService,
+    private pdfExportService: PdfExportService,
     private auditTrailService: AuditTrailService) {
     this.postForm = this.formBuilder.group({
     title: ['', Validators.required],
@@ -161,7 +170,7 @@ export class DriComponent {
           return { ...company, directorCount, directors };
         });
 
-        this.compDataSource.data = companiesWithDirectors; 
+        this.compDataSource.data = companiesWithDirectors;
       }
     });
 
@@ -291,6 +300,84 @@ private logAuditTrail(auditTrailEntry: AuditTrail) {
     
   });
   
+}
+
+
+
+
+downloadCSV(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+    
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `DOSRIandDirectors.csv`;
+
+  const rowData = this.compDataSource.data.flatMap(item => {
+    const companyRow = {
+      'CIS NUMBER': item.com_cis_number,
+      'COMPANY NAME': item.com_company_name,
+      'NUMBER OF DIRECTORS': item.directorCount,
+      'DATE ADDED': item.date_inserted,
+    };
+
+    const directorsHeaderRow = {
+      'CIS NUMBER': '', 
+      'COMPANY NAME': 'CIS Number',
+      'NUMBER OF DIRECTORS': 'Officers Name',
+      'DATE ADDED': 'Position'// Empty cell for alignment
+    };
+
+    const officerRows = item.directors.map((directors) => ({
+       'CIS NUMBER': '',
+      'COMPANY NAME': directors.dir_cisnumber, 
+      'NUMBER OF DIRECTORS': `${directors.fname} ${directors.mname} ${directors.lname}`, // Empty cell for alignment
+      'DATE ADDED': directors.position
+    }));
+
+    return [companyRow, directorsHeaderRow, ...officerRows];
+  });
+
+  const columnsToInclude = ['CIS NUMBER', 'COMPANY NAME', 'NUMBER OF DIRECTORS', 'DATE ADDED'];
+  this.csvExportService.DirectorsOfficerRIToCSV(rowData, filename, columnsToInclude);
+}
+
+
+generatePDF(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const headerText = formattedDate;
+  const filename = `DOSRIandDirectors.pdf`;
+
+  const rowData = this.compDataSource.data.flatMap(item => {
+    const companyRow = {
+      'CIS NUMBER': item.com_cis_number,
+      'COMPANY NAME': item.com_company_name,
+      'NUMBER OF DIRECTORS': item.directorCount,
+      'DATE ADDED': item.date_inserted,
+    };
+
+    const directorsHeaderRow = {
+      'CIS NUMBER': '', 
+      'COMPANY NAME': 'CIS Number',
+      'NUMBER OF DIRECTORS': 'Officers Name',
+      'DATE ADDED': 'Position'// Empty cell for alignment
+    };
+
+    const officerRows = item.directors.map((directors) => ({
+       'CIS NUMBER': '',
+      'COMPANY NAME': directors.dir_cisnumber, 
+      'NUMBER OF DIRECTORS': `${directors.fname} ${directors.mname} ${directors.lname}`, // Empty cell for alignment
+      'DATE ADDED': directors.position
+    }));
+
+    return [companyRow, directorsHeaderRow, ...officerRows];
+  });
+
+  const columnsToInclude = ['CIS NUMBER', 'COMPANY NAME', 'NUMBER OF DIRECTORS', 'DATE ADDED'];
+  this.pdfExportService.exportDOSRIandOfficerToPDF(rowData, filename, columnsToInclude, headerText);
 }
 
 }

@@ -20,9 +20,18 @@
                     <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Search">
                                   <mat-icon matSuffix>search</mat-icon>
                   </mat-form-field>
-                  <button (click)="openAddEditEmpForm()" mat-fab extended color="primary" (click)="onButtonClick('A')" *appHasPermission="'add'">
+                  <button (click)="openAddEditEmpForm()" mat-fab extended color="primary" (click)="onButtonClick('A')" *appHasPermission="'add'"  style="margin-right: 10px;">
                       <mat-icon>add</mat-icon>
                       ADD
+                  </button>
+
+                  <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                    <mat-icon>file_download</mat-icon>
+                    CSV
+                  </button>
+                  <button (click)="generatePDF()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                    <mat-icon>file_download</mat-icon>
+                    PDF
                   </button>
                 </div>
               </c-container>

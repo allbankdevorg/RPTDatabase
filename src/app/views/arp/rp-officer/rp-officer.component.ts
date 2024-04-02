@@ -466,70 +466,9 @@ openEditForm(data: any, event: any) {
     });
   
     const columnsToInclude = ['CIS NUMBER', 'COMPANY NAME', 'MANAGING COMPANY', 'Number of Officer'];
-    this.csvExportService.RPOfficerRIToCSV(rowData, filename, columnsToInclude);
+    this.csvExportService.DirectorsOfficerRIToCSV(rowData, filename, columnsToInclude);
   }
   
-  
-  
-  
-  
-  
-  // downloadCSV(): void {
-  //   const filename = `RelatedPartyOfficers.csv`;
-  //   let csvData = 'CIS NUMBER,ACCOUNT NAME,COMPANY NAME,MANAGING COMPANY,# OF OFFICER,DATE ADDED\n';
-  
-  //   // Iterate over each data item
-  //   this.dataSource.data.forEach(item => {
-  //     // Append company details to CSV data
-  //     csvData += `${item.aff_com_cis_number},${item.aff_com_account_name},${item.aff_com_company_name},${item.manager},${item.officerCount},${item.date_inserted}\n`;
-  
-  //     // Append officers' details to CSV data
-  //     item.officers.forEach(officer => {
-  //       csvData += `,${officer.off_cisnumber},${officer.fname} ${officer.mname} ${officer.lname},${officer.position}\n`;
-  //     });
-  //   });
-  
-  //   // Create a Blob from the CSV data
-  //   const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-  
-  //   // Create a URL for the Blob
-  //   const url = URL.createObjectURL(blob);
-  
-  //   // Create a link element and trigger the download
-  //   const link = document.createElement('a');
-  //   link.setAttribute('href', url);
-  //   link.setAttribute('download', filename);
-  //   link.style.visibility = 'hidden';
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  
-  //   // Clean up the URL object
-  //   URL.revokeObjectURL(url);
-  // }
-  
-  
-
-  // downloadCSV(): void {
-  //   const currentDate = new Date();
-  //   let selectedDateFormatted: string = '';
-    
-    
-  //   const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-  //   const filename = `RelatedPartyOfficert.csv`;
-   
-  //   const data = this.dataSource.data.map(item => ({
-  //     'CIS NUMBER': item.aff_com_cis_number,
-  //     'Company Name': item.aff_com_company_name,
-  //     'Managing Company': item.manager,
-  //     'Number of Officer': item.officerCount,
-  //     'Date Added': item.date_inserted ? new Date(item.date_inserted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-  //   }));
-
-  //   const columnsToInclude = ['CIS NUMBER', 'Company Name', 'Managing Company',
-  //    'Number of Officer', 'Date Added'];
-  //   this.csvExportService.RPOfficerRIToCSV(data, filename, columnsToInclude);
-  // }
 
   generatePDF(): void {
     const currentDate = new Date();
@@ -569,24 +508,4 @@ openEditForm(data: any, event: any) {
     
     this.pdfExportService.exportRPOfficerToPDF(rowData, filename, columnsToInclude, headerText);
   }
-  // generatePDF(): void {
-  //   const currentDate = new Date();
-  //   let selectedDateFormatted: string = '';
-  
-  //   const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-  //   const filename = `RelatedPartyOfficer.pdf`;
-  //   const headerText = formattedDate;
-  
-  //   const data = this.dataSource.data.map(item => ({
-  //     'CIS NUMBER': item.aff_com_cis_number,
-  //     'Company Name': item.aff_com_company_name,
-  //     'Managing Company': item.manager,
-  //     'Number of Officer': item.officerCount,
-  //     'Date Added': item.date_inserted ? new Date(item.date_inserted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-  //   }));
-
-  //   const columnsToInclude = ['CIS NUMBER', 'Company Name', 'Managing Company',
-  //    'Number of Officer', 'Date Added'];
-  //   this.pdfExportService.exportRPOfficerToPDF(data, filename, columnsToInclude, headerText);
-  // }
 }

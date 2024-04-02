@@ -38,6 +38,12 @@ import {AuditTrail} from '../../../model/audit-trail.model';
 import { AffiliatesModalComponent } from 'src/app/modal-dialog/affiliates-modal/affiliates-modal.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
+
+// Save CSV
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
+
 export interface Child {
   name: string;
 }
@@ -107,7 +113,7 @@ export class AffiliatesComponent implements AfterViewInit {
   'Sisters-in-law', 'Brothers-in-law', 'Grandchildren', 'Grandchildren-in-law']
 
   displayedData: affiliatesData[] = [];
-  affDataSource = new MatTableDataSource<affiliatesData>([]);
+  affDataSource = new MatTableDataSource<any>([]);
   ToDisplay: string[] = [];
   columnsToDisplay: string[] = ['expand', 'aff_com_cis_number', 'aff_com_account_name', 'aff_com_company_name', 'directorCount', 'date_inserted', 'view'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
@@ -154,7 +160,9 @@ export class AffiliatesComponent implements AfterViewInit {
     private renderer: Renderer2,
     private el: ElementRef,
     private get: FetchDataService,
-    private auditTrailService: AuditTrailService) {
+    private auditTrailService: AuditTrailService, 
+    private csvExportService: CsvExportService,
+    private pdfExportService: PdfExportService,) {
 
 // Initialize the commandGroups array based on your data
 this.initializeCommandGroups();
@@ -181,7 +189,8 @@ updateTableData() {
       });
 
       // Set the data source for your MatTable
-      this.affDataSource.data = companiesWithOfficers;
+      this.affDataSource.data = companiesWithOfficers; 
+      console.log(this.affDataSource.data);
     }
   });
 
@@ -323,12 +332,6 @@ return csvContent.join('\n');
 }
 
 
-downloadCSV(): void {}
-
-
-
-
-
 
 
 // Show Modal Form
@@ -392,4 +395,82 @@ openEditForm(data: any, event: any) {
     });
     
   }
+
+
+
+  
+downloadCSV(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+    
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `AffiliatesandDirectors.csv`;
+
+  const rowData = this.affDataSource.data.flatMap(item => {
+    const companyRow = {
+      'CIS NUMBER': item.aff_com_cis_number,
+      'COMPANY NAME': item.aff_com_company_name,
+      'NUMBER OF DIRECTORS': item.directorCount,
+      'DATE ADDED': item.date_inserted,
+    };
+
+    const directorsHeaderRow = {
+      'CIS NUMBER': '', 
+      'COMPANY NAME': 'CIS Number',
+      'NUMBER OF DIRECTORS': 'Officers Name',
+      'DATE ADDED': 'Position'// Empty cell for alignment
+    };
+
+    const officerRows = item.directors.map((directors) => ({
+       'CIS NUMBER': '',
+      'COMPANY NAME': directors.dir_cisnumber, 
+      'NUMBER OF DIRECTORS': `${directors.fname} ${directors.mname} ${directors.lname}`, // Empty cell for alignment
+      'DATE ADDED': directors.position
+    }));
+
+    return [companyRow, directorsHeaderRow, ...officerRows];
+  });
+
+  const columnsToInclude = ['CIS NUMBER', 'COMPANY NAME', 'NUMBER OF DIRECTORS', 'DATE ADDED'];
+  this.csvExportService.DirectorsOfficerRIToCSV(rowData, filename, columnsToInclude);
+}
+
+
+generatePDF(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const headerText = formattedDate;
+  const filename = `AffiliatesandDirectors.pdf`;
+
+  const rowData = this.affDataSource.data.flatMap(item => {
+    const companyRow = {
+      'CIS NUMBER': item.aff_com_cis_number,
+      'COMPANY NAME': item.aff_com_company_name,
+      'NUMBER OF DIRECTORS': item.directorCount,
+      'DATE ADDED': item.date_inserted,
+    };
+
+    const directorsHeaderRow = {
+      'CIS NUMBER': '', 
+      'COMPANY NAME': 'CIS Number',
+      'NUMBER OF DIRECTORS': 'Officers Name',
+      'DATE ADDED': 'Position'// Empty cell for alignment
+    };
+
+    const officerRows = item.directors.map((directors) => ({
+       'CIS NUMBER': '',
+      'COMPANY NAME': directors.dir_cisnumber, 
+      'NUMBER OF DIRECTORS': `${directors.fname} ${directors.mname} ${directors.lname}`, // Empty cell for alignment
+      'DATE ADDED': directors.position
+    }));
+
+    return [companyRow, directorsHeaderRow, ...officerRows];
+  });
+
+  const columnsToInclude = ['CIS NUMBER', 'COMPANY NAME', 'NUMBER OF DIRECTORS', 'DATE ADDED'];
+  this.pdfExportService.exportAffiliateandOfficerToPDF(rowData, filename, columnsToInclude, headerText);
+}
 }
