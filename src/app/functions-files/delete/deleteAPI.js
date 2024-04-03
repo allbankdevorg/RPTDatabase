@@ -401,50 +401,53 @@ function delAffilComDIR(cis_id) {
 
 /**
  * Remove Affiliates Director
- * @param {any} cis_id - Contain the cisNumber as reference for the unlinking
+ * @param {any} data_id - Contain the cisNumber as reference for the unlinking
  */
-// function delAffilOff(cis_id) {
-//   return Swal.fire({
-//     title: 'Are you sure?',
-//     text: "Do you want to Remove this Officer's Related Interest?",
-//     icon: 'warning',
-//     showCancelButton: true,
-//     confirmButtonColor: '#3085d6',
-//     cancelButtonColor: '#d33',
-//     confirmButtonText: 'Yes!'
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       // Returning the promise here
-//       return new Promise((resolve, reject) => {
-//         var settings = {
-//           "url": "http://10.232.236.15:8092/api/updateData",
-//           "method": "POST",
-//           "timeout": 0,
-//           "headers": {
-//             "Content-Type": "application/json"
-//           },
-//           "data": JSON.stringify({
-//             // "cmd": 7, no command yet
-//             "request": {
-//               "cis_number": cis_id
-//             }
-//           }),
-//         };
+function delAffilOff(data_id, session, userID) {
+  return Swal.fire({
+    title: 'Are you sure?',
+    text: "Do you want to Remove this Officer's Related Interest?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Returning the promise here
+      return new Promise((resolve, reject) => {
+        var settings = {
+          "url": "http://10.232.236.15:8092/api/updateData",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            "cmd": 71,
+            // "session": session,
+            // "userid": userID, 
+            "request": {
+              "cis_number": data_id
+            }
+          }),
+        };
         
 
-//         $.ajax(settings).done(function (response) {
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+          Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+          if (response.result[0].status === 'success') {
+            resolve(response);
+          } else {
+            reject(response);
+          }
+        });
+      });
+    }
+  });
+}
 
-//           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-//           if (response.result[0].status === 'success') {
-//             resolve(response);
-//           } else {
-//             reject(response);
-//           }
-//         });
-//       });
-//     }
-//   });
-// }
 
 /**
  * Remove Affiliates Officers Related Interest
@@ -492,6 +495,7 @@ function delAffilOffRI(data_id) {
     }
   });
 }
+
   
 
 
@@ -501,12 +505,12 @@ function delAffilOffRI(data_id) {
     delDosriDIR,
     delDosriDRI,
     delBankOff,
-    
     delBankOffRI,
+    
     delAffilComp,
     delAffilComDIR,
 
-    // delAffilOff,
+    delAffilOff,
     delAffilOffRI
 
   }
