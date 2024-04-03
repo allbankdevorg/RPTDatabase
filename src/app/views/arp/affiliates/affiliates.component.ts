@@ -189,8 +189,7 @@ updateTableData() {
       });
 
       // Set the data source for your MatTable
-      this.affDataSource.data = companiesWithOfficers; 
-      console.log(this.affDataSource.data);
+      this.affDataSource.data = companiesWithOfficers;
     }
   });
 
