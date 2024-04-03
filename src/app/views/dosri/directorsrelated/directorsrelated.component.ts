@@ -38,6 +38,11 @@ import { DirectorsModalComponent } from 'src/app/modal-dialog/directors-modal/di
 import { forkJoin } from 'rxjs';
 
 
+// For Exporting to CSV and PDF
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
+
 export interface Child {
   name: string;
 }
@@ -93,7 +98,7 @@ export class DirectorsrelatedComponent {
 
   
   // Populating the dataSource
-  dataSource = new MatTableDataSource();
+  dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = [ 'cis_num', 'FullName', 'Company', 'Position', "MothersName", "FathersName", 'Spouse', 'Children', 'MotherinLaw', 'FatherinLaw'];
 
    directorData: Director[] = [];
@@ -114,6 +119,8 @@ export class DirectorsrelatedComponent {
               private changeDetectorRef: ChangeDetectorRef,
               private ngZone: NgZone,
               private get: FetchDataService,
+              private pdfExportService: PdfExportService,
+              private csvExportService: CsvExportService,
               private auditTrailService: AuditTrailService)
   {
     
@@ -195,7 +202,7 @@ export class DirectorsrelatedComponent {
         // Sort tableData array by 'id' property from lowest to highest
         tableData.sort((a, b) => a['id'] - b['id']);
 
-        this.dataSource = new MatTableDataSource(tableData);
+        this.dataSource = new MatTableDataSource<any>(tableData);
         // this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
   
@@ -342,6 +349,89 @@ private logAuditTrail(auditTrailEntry: AuditTrail) {
     
   });
   
+}
+
+
+
+downloadCSV(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+  
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `DOSRIDIrectorRelatedInterest.csv`;
+ 
+  const data = this.dataSource.data.map(item => {
+    // Loop through each array and concatenate full names
+    const mothersNames = item.MothersName.map(mother => mother.fullName).join('\n');
+    const fathersNames = item.FathersName.map(father => father.fullName).join('\n');
+    const spouses = item.Spouse.map(spouse => spouse.fullName).join('\n');
+    const childrenNames = item.Children.map(child => child.fullName).join('\n');
+    const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join('\n');
+    const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join('\n');
+  
+
+    return {
+      'CIS Number': item.cis_num,
+      'Full Name': item.FullName,
+      'Company': item.Company,
+      'Position': item.Position,
+      "Mother's Name": mothersNames,
+      "Father's Name": fathersNames,
+      'Spouse': spouses,
+      'Children': childrenNames,
+      'Mother-In-Law': motherInLaws,
+      'Father-In-Law': fatherInLaws
+    };
+  });
+
+  // Specify the columns to include in the CSV
+  const columnsToInclude = [
+    'CIS Number', 'Full Name', 'Company', 'Position', "Mother's Name",
+    "Father's Name", 'Spouse', 'Children', 'Mother-In-Law', 'Father-In-Law'
+  ];
+  this.csvExportService.DirectorOfficerRIToCSV(data, filename, columnsToInclude);
+}
+
+
+generatePDF(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `BankOfficer_RelatedInterest.pdf`;
+  const headerText = formattedDate;
+
+  const data = this.dataSource.data.map(item => {
+    // Loop through each array and concatenate full names
+    const mothersNames = item.MothersName.map(mother => mother.fullName).join('\n');
+    const fathersNames = item.FathersName.map(father => father.fullName).join('\n');
+    const spouses = item.Spouse.map(spouse => spouse.fullName).join('\n');
+    const childrenNames = item.Children.map(child => child.fullName).join('\n');
+    const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join('\n');
+    const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join('\n');
+  
+    return {
+      'CIS Number': item.cis_num,
+      'Full Name': item.FullName,
+      'Company': item.Company,
+      'Position': item.Position,
+      "Mother's Name": mothersNames,
+      "Father's Name": fathersNames,
+      'Spouse': spouses,
+      'Children': childrenNames,
+      'Mother-In-Law': motherInLaws,
+      'Father-In-Law': fatherInLaws
+    };
+  });
+
+  console.log(data);
+
+  const columnsToInclude = [
+    'CIS Number', 'Full Name', 'Company', 'Position', "Mother's Name",
+    "Father's Name", 'Spouse', 'Children', 'Mother-In-Law', 'Father-In-Law'
+  ];
+  this.pdfExportService.generateBankOffPDF(data, filename, columnsToInclude, headerText);
 }
 
 }

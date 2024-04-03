@@ -7,184 +7,206 @@
           </c-card-header>
           <c-card-body>
             <c-container fluid class="my-3">
+
+              <c-container fluid class="px-0 d-flex justify-content-between align-items-center">
+                <div class="d-flex w-100">
+                  <div class="w-50">
+                    
+                  </div>
+                  <div class="d-flex justify-content-end w-50">
+                    <div style="display: flex; align-items: center;">
+                      <button (click)="downloadCSV()" mat-fab extended color="primary" style="margin-right: 10px;">
+                        <mat-icon>file_download</mat-icon>
+                        CSV
+                      </button>
+                      <button (click)="generatePDF()" mat-fab extended color="primary" style="margin-right: 10px;">
+                        <mat-icon>file_download</mat-icon>
+                        PDF
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </c-container>
               
-              <!-- Data Table -->
-              <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table table table-bordered" mat-table [dataSource]="dataSource" >
-                
-                <!-- CIS Number Column -->
-                <ng-container matColumnDef="cis_num">
-                  <th mat-header-cell *matHeaderCellDef> CIS Number </th>
-                  <td mat-cell *matCellDef="let element"> {{element.cis_num}} </td>
-              </ng-container>
+              <c-container fluid class="my-3">
+                  <!-- Data Table -->
+                  <table cTable [responsive]="true" class="mat-elevation-z8 DRI-table table table-bordered" mat-table [dataSource]="dataSource" >
+                    
+                    <!-- CIS Number Column -->
+                    <ng-container matColumnDef="cis_num">
+                      <th mat-header-cell *matHeaderCellDef> CIS Number </th>
+                      <td mat-cell *matCellDef="let element"> {{element.cis_num}} </td>
+                  </ng-container>
 
-                <!-- FullName Column -->
-                <!-- <ng-container matColumnDef="FullName">
-                  <th mat-header-cell *matHeaderCellDef> Full Name </th>
-                  <td mat-cell *matCellDef="let element">
-                    <ng-container>
-                      <div>
-                          {{element.FullName}}
-                      </div>
-                    </ng-container> 
-                      <mat-icon *appHasPermission="'delete'" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" >link_off</mat-icon>
-                  </td>
-                </ng-container> -->
-
-                <ng-container matColumnDef="FullName" class="position-reative">
-                    <th mat-header-cell *matHeaderCellDef> Full Name </th>
-                    <td mat-cell *matCellDef="let element"> {{element.FullName}} 
-                      <mat-icon *appHasPermission="'delete'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
-                        <!-- <mat-icon>link_off</mat-icon> -->
-                        link_off
-                      </mat-icon>
-                    </td>
-                </ng-container>
-        
-                <!-- Company Name Column -->
-                <ng-container matColumnDef="Company">
-                    <th mat-header-cell *matHeaderCellDef> Company </th>
-                    <td mat-cell *matCellDef="let element"> {{element.Company}} </td>
-                </ng-container>
-        
-                <!-- Position Column -->
-                <ng-container matColumnDef="Position">
-                    <th mat-header-cell *matHeaderCellDef> Position </th>
-                    <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
-                </ng-container>
-        
-                <!-- Mother's Name Column -->
-                <ng-container matColumnDef="MothersName" class="position-reative">
-                    <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
-                    <td mat-cell *matCellDef="let element">
-                      <ng-container *ngFor="let motherName of element['MothersName']">
-                        <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherName.id, motherName.dirRelated)" *ngIf="element.MothersName">
-                                  remove_circle
-                                </mat-icon>
-                              </ng-container>
-                            {{motherName.fullName}}
-                        </div>
-                        <br>
-                      </ng-container> 
-                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(1, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                    <!-- FullName Column -->
+                    <!-- <ng-container matColumnDef="FullName">
+                      <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                      <td mat-cell *matCellDef="let element">
+                        <ng-container>
+                          <div>
+                              {{element.FullName}}
+                          </div>
+                        </ng-container> 
+                          <mat-icon *appHasPermission="'delete'" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" >link_off</mat-icon>
                       </td>
-                </ng-container>
-        
-                <!-- Father's Name -->
-                <ng-container matColumnDef="FathersName">
-                    <th mat-header-cell *matHeaderCellDef> Father's Name </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ng-container *ngFor="let fatherName of element['FathersName']">
-                          <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
-                              <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherName.id, fatherName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
-                            </ng-container>
-                              {{fatherName.fullName}}
-                          </div>
-                          <br>
-                        </ng-container>
-                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(2, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
-                    </td>
-                </ng-container>
-                
-                <!-- Spouse -->
-                <ng-container matColumnDef="Spouse">
-                    <th mat-header-cell *matHeaderCellDef> Spouse  </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ng-container *ngFor="let spouse of element['Spouse']">
-                          <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, spouse.id, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
-                            </ng-container>
-                                {{spouse.fullName}}
-                          </div>
-                            <br>
-                        </ng-container>
-                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(3, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
-                    </td>
-                </ng-container>
-        
-                <!-- Children -->
-                <ng-container matColumnDef="Children">
-                    <th mat-header-cell *matHeaderCellDef> Children </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ng-container *ngFor="let child of element['Children']">
-                          <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, child.id, child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
-                            </ng-container>
-                                {{ child.fullName }}
-                          </div>
-                            <br>
-                        </ng-container>
-                        <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(4, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
-                    </td>
-                </ng-container>
-        
-                <!-- Mother in Law -->
-                <ng-container matColumnDef="MotherinLaw">
-                    <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
-                    <td mat-cell *matCellDef="let element"> 
-                        <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
-                          <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
-                              <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherinlaw.id, motherinlaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
-                            </ng-container>
-                              {{motherinlaw.fullName}}
-                          </div>
-                              <br>
-                        </ng-container>
-                          <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(5, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
-                </ng-container>
-        
-                <!-- Father in Law -->
-                <ng-container matColumnDef="FatherinLaw">
-                    <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
-                          <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
-                                <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherinlaw.id, fatherinlaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon> 
-                            </ng-container>
-                                {{fatherinlaw.fullName}}
-                          </div>
-                          <br>
-                        </ng-container>  
-                          <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(6, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
-                </ng-container>
-        
-                <!-- Header row first group -->
-                <ng-container matColumnDef="header-row-first-group">
-                    <th  *matHeaderCellDef cTableColor class="cTableCol position-relative"
-                        
-                        [attr.colspan]="3"> 
-                    Directors  
-                    <button (click)="openDirectorsForm()" mat-fab extended color="primary" class="add-btn-icon" (click)="setComp()" *appHasPermission="'add'">
-                      <mat-icon>add</mat-icon>
-                      ADD
-                    </button>   
-                    </th>
-                </ng-container>
-                
-                <!-- Header row second group -->
-                <ng-container matColumnDef="header-row-second-group">
-                    <th class="cTableCols" *matHeaderCellDef [attr.colspan]="7"> Related Interest </th>
-                </ng-container>
-        
-                <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cTableCol1"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cTableRow"></tr>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="FullName" class="position-reative">
+                        <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.FullName}} 
+                          <mat-icon *appHasPermission="'delete'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
+                            <!-- <mat-icon>link_off</mat-icon> -->
+                            link_off
+                          </mat-icon>
+                        </td>
+                    </ng-container>
             
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell text-center" colspan="4">No Data Available</td>
-              </tr>
-              </table>
-              <!-- Paginator for Data Table -->
-              <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                    showFirstLastButtons
-                    aria-label="Select page of data">
-                </mat-paginator>
+                    <!-- Company Name Column -->
+                    <ng-container matColumnDef="Company">
+                        <th mat-header-cell *matHeaderCellDef> Company </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Company}} </td>
+                    </ng-container>
+            
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="Position">
+                        <th mat-header-cell *matHeaderCellDef> Position </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
+                    </ng-container>
+            
+                    <!-- Mother's Name Column -->
+                    <ng-container matColumnDef="MothersName" class="position-reative">
+                        <th mat-header-cell *matHeaderCellDef> Mother's Name </th>
+                        <td mat-cell *matCellDef="let element">
+                          <ng-container *ngFor="let motherName of element['MothersName']">
+                            <div class="d-flex d-sub-icon">
+                                <ng-container *appHasPermission="'delete'">
+                                    <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherName.id, motherName.dirRelated)" *ngIf="element.MothersName">
+                                      remove_circle
+                                    </mat-icon>
+                                  </ng-container>
+                                {{motherName.fullName}}
+                            </div>
+                            <br>
+                          </ng-container> 
+                            <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(1, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                          </td>
+                    </ng-container>
+            
+                    <!-- Father's Name -->
+                    <ng-container matColumnDef="FathersName">
+                        <th mat-header-cell *matHeaderCellDef> Father's Name </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let fatherName of element['FathersName']">
+                              <div class="d-flex d-sub-icon">
+                                <ng-container *appHasPermission="'delete'">
+                                  <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherName.id, fatherName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
+                                </ng-container>
+                                  {{fatherName.fullName}}
+                              </div>
+                              <br>
+                            </ng-container>
+                            <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(2, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        </td>
+                    </ng-container>
+                    
+                    <!-- Spouse -->
+                    <ng-container matColumnDef="Spouse">
+                        <th mat-header-cell *matHeaderCellDef> Spouse  </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let spouse of element['Spouse']">
+                              <div class="d-flex d-sub-icon">
+                                <ng-container *appHasPermission="'delete'">
+                                    <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, spouse.id, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
+                                </ng-container>
+                                    {{spouse.fullName}}
+                              </div>
+                                <br>
+                            </ng-container>
+                            <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(3, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        </td>
+                    </ng-container>
+            
+                    <!-- Children -->
+                    <ng-container matColumnDef="Children">
+                        <th mat-header-cell *matHeaderCellDef> Children </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let child of element['Children']">
+                              <div class="d-flex d-sub-icon">
+                                <ng-container *appHasPermission="'delete'">
+                                    <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, child.id, child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
+                                </ng-container>
+                                    {{ child.fullName }}
+                              </div>
+                                <br>
+                            </ng-container>
+                            <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(4, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
+                        </td>
+                    </ng-container>
+            
+                    <!-- Mother in Law -->
+                    <ng-container matColumnDef="MotherinLaw">
+                        <th mat-header-cell *matHeaderCellDef> Mother-In-Law  </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
+                              <div class="d-flex d-sub-icon">
+                                <ng-container *appHasPermission="'delete'">
+                                  <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherinlaw.id, motherinlaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
+                                </ng-container>
+                                  {{motherinlaw.fullName}}
+                              </div>
+                                  <br>
+                            </ng-container>
+                              <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(5, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
+                    </ng-container>
+            
+                    <!-- Father in Law -->
+                    <ng-container matColumnDef="FatherinLaw">
+                        <th mat-header-cell *matHeaderCellDef> Father-In-Law </th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
+                              <div class="d-flex d-sub-icon">
+                                <ng-container *appHasPermission="'delete'">
+                                    <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherinlaw.id, fatherinlaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon> 
+                                </ng-container>
+                                    {{fatherinlaw.fullName}}
+                              </div>
+                              <br>
+                            </ng-container>  
+                              <mat-icon *appHasPermission="'add'" (click)="openAddEditEmpForm()" (click)="setButtonId(6, element.dir_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon></td>
+                    </ng-container>
+            
+                    <!-- Header row first group -->
+                    <ng-container matColumnDef="header-row-first-group">
+                        <th  *matHeaderCellDef cTableColor class="cTableCol position-relative"
+                            
+                            [attr.colspan]="3"> 
+                        Directors  
+                        <button (click)="openDirectorsForm()" mat-fab extended color="primary" class="add-btn-icon" (click)="setComp()" *appHasPermission="'add'">
+                          <mat-icon>add</mat-icon>
+                          ADD
+                        </button>   
+                        </th>
+                    </ng-container>
+                    
+                    <!-- Header row second group -->
+                    <ng-container matColumnDef="header-row-second-group">
+                        <th class="cTableCols" *matHeaderCellDef [attr.colspan]="7"> Related Interest </th>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group']"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="cTableCol1"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cTableRow"></tr>
+                
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell text-center" colspan="4">No Data Available</td>
+                  </tr>
+                  </table>
+                  <!-- Paginator for Data Table -->
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                      showFirstLastButtons
+                      aria-label="Select page of data">
+                  </mat-paginator>
+              </c-container>
             </c-container>
           </c-card-body>
         </c-card>
