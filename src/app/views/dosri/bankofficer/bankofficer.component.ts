@@ -335,7 +335,7 @@ export class BankofficerComponent implements AfterViewInit{
       'CIS Number', 'Full Name', 'Company', 'Position', "Mother's Name",
       "Father's Name", 'Spouse', 'Children', 'Mother-In-Law', 'Father-In-Law'
     ];
-    this.csvExportService.BankOfficerRIToCSV(data, filename, columnsToInclude);
+    this.csvExportService.DirectorOfficerRIToCSV(data, filename, columnsToInclude);
   }
 
 
@@ -349,12 +349,12 @@ export class BankofficerComponent implements AfterViewInit{
   
     const data = this.dataSource.data.map(item => {
       // Loop through each array and concatenate full names
-      const mothersNames = item.MothersName.map(mother => mother.fullName).join(', ');
-      const fathersNames = item.FathersName.map(father => father.fullName).join(', ');
-      const spouses = item.Spouse.map(spouse => spouse.fullName).join(', ');
-      const childrenNames = item.Children.map(child => child.fullName).join(', ');
-      const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join(', ');
-      const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join(', ');
+      const mothersNames = item.MothersName.map(mother => mother.fullName).join('\n');
+      const fathersNames = item.FathersName.map(father => father.fullName).join('\n');
+      const spouses = item.Spouse.map(spouse => spouse.fullName).join('\n');
+      const childrenNames = item.Children.map(child => child.fullName).join('\n');
+      const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join('\n');
+      const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join('\n');
   
       return {
         'CIS Number': item.cis_num,
@@ -370,7 +370,6 @@ export class BankofficerComponent implements AfterViewInit{
       };
     });
   
-    console.log(data);
   
     const columnsToInclude = [
       'CIS Number', 'Full Name', 'Company', 'Position', "Mother's Name",
