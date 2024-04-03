@@ -251,6 +251,7 @@ export class LeaseContractsComponent {
 
   constructor(
     private pdfExportService: PdfExportService,
+    private csvExportService: CsvExportService,
     private get: FetchDataService,
   ) {
 
@@ -293,7 +294,7 @@ downloadCSV(): void {
   
   
   const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-  const filename = `RPT_List_${formattedDate}.csv`;
+  const filename = `LeaseAndContracts.csv`;
  
   const data = this.dataSource.data.map(item => ({
     'SEQ': item.id,
@@ -310,9 +311,11 @@ downloadCSV(): void {
   }));
 
   // Specify the columns to include in the CSV
-  const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'INTEREST RATE', 'TRANSACTION DATE'];
-
-  // this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+  const columnsToInclude = [
+    'SEQ', 'BRANCH', 'LESSOR', 'ADDRESS', 'PAYEE', 'FLOOR AREA',
+    'RENT (VAT inclusive)', 'CUSA (VAT inclusive)', 'Mktg Support Fee (VAT Inclusive)',
+    'Monthly Amount', 'Annual Amount'];
+  this.csvExportService.exportToCSV(data, filename, columnsToInclude);
 }
 
 
