@@ -25,6 +25,7 @@ export class BondsInvestmentComponent {
 
   constructor(
     private pdfExportService: PdfExportService,
+    private csvExportService: CsvExportService,
     private get: FetchDataService,
   ) {
 
@@ -67,25 +68,18 @@ downloadCSV(): void {
   
   
   const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-  const filename = `RPT_List_${formattedDate}.csv`;
+  const filename = `BondsAndInvestment.csv`;
  
   const data = this.dataSource.data.map(item => ({
-    'CIS NUMBER': item.cis_no,
-    'PN/LOAN NUMBER': item.loan_no,
-    'BORROWER/GROUP': item.name,
-    'ORIGINAL LOAN': item.principal,
-    'OUTSTANDING BALANCE': item.principal_bal,
-    'DEPOSIT HOLDOUT': item.holdoutdata,
-    'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
-    'LOAN SECURITY': item.loan_security,
-    'INTEREST RATE': item.int_rate,
-    'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-  }));
+    'CORPORATE BONDS': item.type,
+    'LISTING DATE': item.listing_date,
+    'AMOUNT PLACED': item.amount_placed,
+    'MATURITY DATE': item.maturity,
+    'COUPON RATE': item.coupon
+   }));
 
-  // Specify the columns to include in the CSV
-  const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'INTEREST RATE', 'TRANSACTION DATE'];
-
-  // this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+  const columnsToInclude = ['CORPORATE BONDS', 'LISTING DATE', 'AMOUNT PLACED', 'MATURITY DATE', 'COUPON RATE'];
+ this.csvExportService.exportToCSV(data, filename, columnsToInclude);
 }
 
 
@@ -106,11 +100,11 @@ generatePDF(): void {
   const headerText = formattedDate;
 
   const data = this.dataSource.data.map(item => ({
-    'CORPORATE BONDS': item.name,
-    'LISTING DATE': item.listingDate,
-    'AMOUNT PLACED': item.amountPlaced,
-    'MATURITY DATE': item.maturityDate,
-    'COUPON RATE': item.couponRate
+    'CORPORATE BONDS': item.type,
+    'LISTING DATE': item.listing_date,
+    'AMOUNT PLACED': item.amount_placed,
+    'MATURITY DATE': item.maturity,
+    'COUPON RATE': item.coupon
    }));
 
   const columnsToInclude = ['CORPORATE BONDS', 'LISTING DATE', 'AMOUNT PLACED', 'MATURITY DATE', 'COUPON RATE'];
