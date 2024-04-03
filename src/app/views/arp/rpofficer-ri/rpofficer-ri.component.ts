@@ -22,7 +22,7 @@ import {AffiliatesService} from '../../../services/affiliates/affiliates.service
 import {createAffilDir, createAffilOff, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getManagingCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilOff, deleteAffilOffRI} from '../../../functions-files/delFunctions'
-import { delAffilOffRI } from '../../../functions-files/delete/deleteAPI';
+import { delAffilOff, delAffilOffRI } from '../../../functions-files/delete/deleteAPI';
 // For Modals
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { AffiliatesDirModalComponent } from 'src/app/modal-dialog/affiliates-dir-modal/affiliates-dir-modal.component';
@@ -30,6 +30,11 @@ import { DirectorsModalComponent } from 'src/app/modal-dialog/directors-modal/di
 import {AffiliatesOffModalComponent} from '../../../modal-dialog/affiliates-off-modal/affiliates-off-modal.component'
 import {AffiliatesOffRIModalComponent} from '../../../modal-dialog/affiliates-off-ri-modal/affiliates-off-ri-modal.component'
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
+
+
+// For Exporting to CSV and PDF
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
 
 @Component({
   selector: 'app-rpofficer-ri',
@@ -71,7 +76,9 @@ export class RPOfficerRIComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
-    private get: FetchDataService)
+    private get: FetchDataService,
+    private pdfExportService: PdfExportService,
+    private csvExportService: CsvExportService,)
     {
         this.route.params.subscribe(params => {
           this.compId = params['id'];
@@ -245,9 +252,18 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
 
   // Delete Functions
-  delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
-    deleteAffilOff((dosriId) => {
-  
+  delAffilOfficer(element: any): void {
+    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+    
+    const data_id = element.off_CisNumber;
+    console.log(data_id);
+    delAffilOffRI(data_id, session, userID)
+    .then((response) => {
+      this.ngOnInit();
+    })
+    .catch((error) => {
+     
     })
   }
   
@@ -265,4 +281,130 @@ export class RPOfficerRIComponent implements AfterViewInit {
     })
   }
   
+
+
+  downloadCSV(): void {
+    const currentDate = new Date();
+    let selectedDateFormatted: string = '';
+    
+    
+    const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const filename = `${this.Company}DirectorsRelatedInterest.csv`;
+   
+    const data = this.OffdataSource.data.map(item => {
+      // Loop through each array and concatenate full names
+      const mothersNames = item.MothersName.map(mother => mother.fullName).join(', ');
+      const fathersNames = item.FathersName.map(father => father.fullName).join(', ');
+      const siblings = item.Siblings.map(siblings => siblings.fullName).join(', ');
+      const spouses = item.Spouse.map(spouse => spouse.fullName).join(', ');
+      const childrenNames = item.Children.map(child => child.fullName).join(', ');
+      const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join(', ');
+      const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join(', ');
+      const stepchild = item.stepChild.map(stepchild => stepchild.fullName).join(', ');
+      const sondaughterinlaw = item.sonDaughterInLaw.map(sondaughterinlaw => sondaughterinlaw.fullName).join(', ');
+      const grandparents = item.grandParents.map(grandparents => grandparents.fullName).join(', ');
+      const grandparentsinlaw = item.grandParentsInLaw.map(grandparentsinlaw => grandparentsinlaw.fullName).join(', ');
+      const sistersinlaw = item.sistersInLaw.map(sistersinlaw => sistersinlaw.fullName).join(', ');
+      const brothersinlaw = item.brothersInLaw.map(brothersinlaw => brothersinlaw.fullName).join(', ');
+      const grandchildren = item.grandChildren.map(grandchildren => grandchildren.fullName).join(', ');
+      const grandchildreninlaw = item.grandChildrenInLaw.map(grandchildreninlaw => grandchildreninlaw.fullName).join(', ');
+      
+      
+      
+      return {
+        'CIS Number': item.off_CisNumber,
+        'Full Name': item.FullName,
+        'Position': item.Position,
+        "Mother's Name": mothersNames,
+        "Father's Name": fathersNames,
+        "Siblings": siblings,
+        'Spouse': spouses,
+        'Children': childrenNames,
+        'Mother-In-Law': motherInLaws,
+        'Father-In-Law': fatherInLaws,
+        'Name of Stepchildren': stepchild,
+        'Name of Son/Daughter-In-Law': sondaughterinlaw,
+        'Grandparents': grandparents,
+        'Grandparents-In-Law': grandparentsinlaw,
+        'Sisters-In-Law': sistersinlaw,
+        'Brothers-In-Law': brothersinlaw,
+        'Grandchildren': grandchildren,
+        'Grandchildren-In-Law': grandchildreninlaw
+      };
+    });
+  
+    // Specify the columns to include in the CSV
+    const columnsToInclude = [
+      'CIS Number', 'Full Name', 'Position', "Mother's Name",
+      "Father's Name", 'Siblings', 'Spouse', 'Children', 'Mother-In-Law', 'Father-In-Law',
+      'Name of Stepchildren', 'Name of Son/Daughter-In-Law', 'Grandparents', 'Grandparents-In-Law',
+      'Sisters-In-Law', 'Brothers-In-Law', 'Grandchildren', 'Grandchildren-In-Law'
+    ];
+    this.csvExportService.DirectorOfficerRIToCSV(data, filename, columnsToInclude);
+  }
+  
+  
+  
+  
+  
+  
+  generatePDF(): void {
+    const currentDate = new Date();
+    let selectedDateFormatted: string = '';
+  
+    const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const filename = `${this.Company}DirectorsRelatedInterest.pdf`;
+    // const headerText = formattedDate;
+    const headerText = this.Company;
+  
+    const data = this.OffdataSource.data.map(item => {
+      // Loop through each array and concatenate full names
+      const mothersNames = item.MothersName.map(mother => mother.fullName).join('\n');
+      const fathersNames = item.FathersName.map(father => father.fullName).join('\n');
+      const siblings = item.Siblings.map(siblings => siblings.fullName).join('\n');
+      const spouses = item.Spouse.map(spouse => spouse.fullName).join('\n');
+      const childrenNames = item.Children.map(child => child.fullName).join('\n');
+      const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join('\n');
+      const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join('\n');
+      const stepchild = item.stepChild.map(stepchild => stepchild.fullName).join('\n');
+      const sondaughterinlaw = item.sonDaughterInLaw.map(sondaughterinlaw => sondaughterinlaw.fullName).join('\n');
+      const grandparents = item.grandParents.map(grandparents => grandparents.fullName).join('\n');
+      const grandparentsinlaw = item.grandParentsInLaw.map(grandparentsinlaw => grandparentsinlaw.fullName).join('\n');
+      const sistersinlaw = item.sistersInLaw.map(sistersinlaw => sistersinlaw.fullName).join('\n');
+      const brothersinlaw = item.brothersInLaw.map(brothersinlaw => brothersinlaw.fullName).join('\n');
+      const grandchildren = item.grandChildren.map(grandchildren => grandchildren.fullName).join('\n');
+      const grandchildreninlaw = item.grandChildrenInLaw.map(grandchildreninlaw => grandchildreninlaw.fullName).join('\n');
+      
+      
+      return {
+        'CIS Number': item.off_CisNumber,
+        'Full Name': item.FullName,
+        'Position': item.Position,
+        "Mother's Name": mothersNames,
+        "Father's Name": fathersNames,
+        "Siblings": siblings,
+        'Spouse': spouses,
+        'Children': childrenNames,
+        'Mother-In-Law': motherInLaws,
+        'Father-In-Law': fatherInLaws,
+        'Name of Stepchildren': stepchild,
+        'Name of Son/Daughter-In-Law': sondaughterinlaw,
+        'Grandparents': grandparents,
+        'Grandparents-In-Law': grandparentsinlaw,
+        'Sisters-In-Law': sistersinlaw,
+        'Brothers-In-Law': brothersinlaw,
+        'Grandchildren': grandchildren,
+        'Grandchildren-In-Law': grandchildreninlaw
+      };
+    });
+  
+    // Specify the columns to include in the CSV
+    const columnsToInclude = [
+      'CIS Number', 'Full Name', 'Position', "Mother's Name",
+      "Father's Name", 'Siblings', 'Spouse', 'Children', 'Mother-In-Law', 'Father-In-Law',
+      'Name of Stepchildren', 'Name of Son/Daughter-In-Law', 'Grandparents', 'Grandparents-In-Law',
+      'Sisters-In-Law', 'Brothers-In-Law', 'Grandchildren', 'Grandchildren-In-Law'
+    ];
+    this.pdfExportService.generateAffDirRI(data, filename, columnsToInclude, headerText);
+  }
 }
