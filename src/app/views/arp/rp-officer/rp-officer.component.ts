@@ -241,7 +241,6 @@ this.updateTableData();
   
         // Set the data source for your MatTable
         this.dataSource.data = companiesWithDirectors;
-        console.log(this.dataSource.data);
       }
     });
   
