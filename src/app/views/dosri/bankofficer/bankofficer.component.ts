@@ -345,7 +345,7 @@ export class BankofficerComponent implements AfterViewInit{
   
     const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     const filename = `BankOfficer_RelatedInterest.pdf`;
-    const headerText = formattedDate;
+    const headerText = "Bank Officer and Related Interest";
   
     const data = this.dataSource.data.map(item => {
       // Loop through each array and concatenate full names
