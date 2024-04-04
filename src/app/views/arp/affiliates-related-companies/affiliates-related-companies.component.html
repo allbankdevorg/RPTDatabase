@@ -9,11 +9,29 @@
                 
                 <c-row>
                   <c-container class="my-1 d-flex justify-content-between align-items-center">
-                    <div></div>
-                    <button class="mx-1" (click)="openAddEditEmpForm()" mat-fab extended color="primary" (click)="onButtonClick('ORP')" *appHasPermission="'add'">
-                      <mat-icon>add</mat-icon>
-                      ADD
-                    </button>
+                    <div class="d-flex w-100">
+                      <div class="w-50">
+                       
+                      </div>
+                      <div class="d-flex justify-content-end w-50">
+                        <div style="display: flex; align-items: center;">
+                          <button class="mx-1" (click)="openAddEditEmpForm()" mat-fab extended color="primary" (click)="onButtonClick('ORP')" *appHasPermission="'add'"  style="margin-right: 10px;">
+                            <mat-icon>add</mat-icon>
+                            ADD
+                          </button>
+                          <button (click)="downloadCSV()" mat-fab extended color="primary" style="margin-right: 10px;">
+                            <mat-icon>file_download</mat-icon>
+                            CSV
+                          </button>
+                          <button (click)="generatePDF()" mat-fab extended color="primary" style="margin-right: 10px;">
+                            <mat-icon>file_download</mat-icon>
+                            PDF
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
                   </c-container>
                 </c-row>
             </c-card>

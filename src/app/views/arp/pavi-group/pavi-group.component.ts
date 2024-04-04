@@ -20,6 +20,10 @@ import {AuditTrail} from '../../../model/audit-trail.model';
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
+// For Exporting to CSV and PDF
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
 
 declare var $: any; // Declare $ to use jQuery
 
@@ -61,13 +65,17 @@ export class PaviGroupComponent {
   com_cis: any;
   orgsData: Company[] = [];
   datas: any;
+  
+  exportData: any[] = [];
 
   constructor(
     public _dialog: MatDialog,
     private fetchDataService: FetchDataService,
     private dataService: AffiliatesService,
     private el: ElementRef, 
-    private renderer: Renderer2) {}
+    private renderer: Renderer2, 
+    private pdfExportService: PdfExportService,
+    private csvExportService: CsvExportService,) {}
 
 
   @ViewChild('actionModal') actionModal!: ElementRef;
@@ -193,33 +201,6 @@ export class PaviGroupComponent {
 
   }
 
-  // fetchAssocCompany() {
-  //   this.fetchDataService.getPavi((PaviComp) => {
-  //     if (PaviComp) {
-  //       console.log(PaviComp);
-  //       const dataArr: CompData[] = [];
-  //       PaviComp.forEach((item) => {
-  //         const company: CompData = {
-  //           id: item.aff_com_cis_number,
-  //           name: item.aff_com_account_name,
-  //           parent: item.managing_company || "",
-  //           manager: item.manager,
-  //           date_inserted: item.date_inserted,
-  //           status: item.status,
-  //           module: item.module,
-  //           hold_out: item.hold_out || 0.00,
-  //         };
-  //         dataArr.push(company);
-          
-  //       });
-  //       // this.Dataorig = dataArr;
-  //       console.log(dataArr);
-        
-  //       this.dataLoaded = true;
-  //       this.drawOrgChart(dataArr);
-  //     }
-  //   });
-  // }
 
   fetchAssocCompany() {
     this.fetchDataService.getPavi((PaviComp) => {
@@ -249,61 +230,15 @@ export class PaviGroupComponent {
           dataArr.push(company);
         });
   
-        
-  
         this.dataLoaded = true;
         this.drawOrgChart(dataArr);
+        this.exportData = dataArr;
+        console.log(this.exportData);
         
       }
     });
   }
   
-
-  // dataArr2: CompData[] = [
-  //   {
-  //     "id": "1480004447",
-  //     "name": "FINE PROPERTIES, INC",
-  //     "parent": "",
-  //     "manager": "",
-  //     "date_inserted": "2024-01-23T16:35:56.193",
-  //     "status": 0,
-  //     "module": "ORP",
-  //     "hold_out": 0.00
-  // },
-  // {
-  //     "id": "1480012683",
-  //     "name": "ALLVALUE HOLDINGS CORP.",
-  //     "parent": "1480004447",
-  //     "manager": "FINE PROPERTIES, INC",
-  //     "date_inserted": "2024-01-23T16:37:23.870",
-  //     "status": 0,
-  //     "module": "ORP",
-  //     "hold_out": 0.00
-  // },
-  // {
-  //     "id": "1480009826",
-  //     "name": "GOLDEN MV HOLDINGS, INC",
-  //     "parent": "1480004447",
-  //     "manager": "FINE PROPERTIES, INC",
-  //     "date_inserted": "2024-01-23T16:38:33.397",
-  //     "status": 0,
-  //     "module": "ORP",
-  //     "hold_out": 0.00
-  // },
-  // // {
-  // //     "id": "1480014079",
-  // //     "name": "EMPRESA HOMES, INC",
-  // //     "parent": "00010",
-  // //     "manager": "JMN GROUP",
-  // //     "date_inserted": "2024-01-23T17:21:50.040",
-  // //     "status": 0,
-  // //     "module": "JMN",
-  // //     "hold_out": 0.00,
-  // // },
-  // ]
-
-
-
 
   onButtonClick(module: any) {
     this.dataService.setmoduleV(module);
@@ -414,6 +349,51 @@ openEditForm(event: any) {
     },
   });
 }
+
+
+downloadCSV(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+  
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `OtherRelatedParties-PAVI.csv`;
+ 
+  const data = this.exportData.map(item => ({
+    'CIS NUMBER': item.comCisNum,
+    'COMPANY NAME': item.compName,
+    'MANAGING COMPANY': item.manager,
+   }));
+
+  const columnsToInclude = [
+    'CIS NUMBER', 'COMPANY NAME', 'MANAGING COMPANY'
+    ];
+  this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+}
+
+
+
+generatePDF(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+  
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `OtherRelatedParties-PAVI.pdf`;
+  const headerText = 'Other Related Parties - PAVI';
+
+  const data = this.exportData.map(item => ({
+    'CIS NUMBER': item.comCisNum,
+    'COMPANY NAME': item.compName,
+    'MANAGING COMPANY': item.manager,
+   }));
+
+  const columnsToInclude = [
+    'CIS NUMBER', 'COMPANY NAME', 'MANAGING COMPANY'
+    ];
+  this.pdfExportService.exportORPCompany(data, filename, columnsToInclude, headerText);
+}
+
 }
 
 

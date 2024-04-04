@@ -20,6 +20,11 @@ import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 import {AffiliatesService} from '../../../services/affiliates/affiliates.service'; //Service to set the value of the DirCIS and buttonID in adding RI of Directors
 
 
+// For Exporting to CSV and PDF
+import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
+import { PdfExportService } from './../../../services/data_extraction/pdfexport/pdfexport.service';
+
+
 declare var $: any; // Declare $ to use jQuery
 
 interface CompData {
@@ -60,13 +65,18 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
   com_cis: any;
   orgsData: Company[] = [];
   datas: any;
+  exportData: any[] = [];
+
 
   constructor(
     public _dialog: MatDialog,
     private fetchDataService: FetchDataService,
     private dataService: AffiliatesService,
     private el: ElementRef, 
-    private renderer: Renderer2) {}
+    private renderer: Renderer2,
+    private pdfExportService: PdfExportService,
+    private csvExportService: CsvExportService,
+    ) {}
 
 
   @ViewChild('actionModal') actionModal!: ElementRef;
@@ -301,6 +311,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
         
         this.dataLoaded = true;
         this.drawOrgChart(dataArr);
+        this.exportData = dataArr;
         // this.drawOrgChart(this.testdataArr);
 
         
@@ -419,6 +430,51 @@ openEditForm(event: any) {
       }
     },
   });
+}
+
+
+
+downloadCSV(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+  
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `OtherRelatedParties-Fines.csv`;
+ 
+  const data = this.exportData.map(item => ({
+    'CIS NUMBER': item.comCisNum,
+    'COMPANY NAME': item.compName,
+    'MANAGING COMPANY': item.manager,
+   }));
+
+  const columnsToInclude = [
+    'CIS NUMBER', 'COMPANY NAME', 'MANAGING COMPANY'
+    ];
+  this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+}
+
+
+
+generatePDF(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+  
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `OtherRelatedParties-Fines.pdf`;
+  const headerText = 'Other Related Parties - FINE';
+
+  const data = this.exportData.map(item => ({
+    'CIS NUMBER': item.comCisNum,
+    'COMPANY NAME': item.compName,
+    'MANAGING COMPANY': item.manager,
+   }));
+
+  const columnsToInclude = [
+    'CIS NUMBER', 'COMPANY NAME', 'MANAGING COMPANY'
+    ];
+  this.pdfExportService.exportORPCompany(data, filename, columnsToInclude, headerText);
 }
 }
 
