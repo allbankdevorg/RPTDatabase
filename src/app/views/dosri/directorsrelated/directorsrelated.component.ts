@@ -363,12 +363,12 @@ downloadCSV(): void {
  
   const data = this.dataSource.data.map(item => {
     // Loop through each array and concatenate full names
-    const mothersNames = item.MothersName.map(mother => mother.fullName).join('\n');
-    const fathersNames = item.FathersName.map(father => father.fullName).join('\n');
-    const spouses = item.Spouse.map(spouse => spouse.fullName).join('\n');
-    const childrenNames = item.Children.map(child => child.fullName).join('\n');
-    const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join('\n');
-    const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join('\n');
+    const mothersNames = item.MothersName.map(mother => mother.fullName).join(', ');
+    const fathersNames = item.FathersName.map(father => father.fullName).join(', ');
+    const spouses = item.Spouse.map(spouse => spouse.fullName).join(', ');
+    const childrenNames = item.Children.map(child => child.fullName).join(', ');
+    const motherInLaws = item.MotherinLaw.map(motherInLaw => motherInLaw.fullName).join(', ');
+    const fatherInLaws = item.FatherinLaw.map(fatherInLaw => fatherInLaw.fullName).join(', ');
   
 
     return {
@@ -399,8 +399,8 @@ generatePDF(): void {
   let selectedDateFormatted: string = '';
 
   const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-  const filename = `BankOfficer_RelatedInterest.pdf`;
-  const headerText = formattedDate;
+  const filename = `Director_RelatedInterest.pdf`;
+  const headerText = "Directors and Related Interest" ;
 
   const data = this.dataSource.data.map(item => {
     // Loop through each array and concatenate full names
@@ -424,8 +424,6 @@ generatePDF(): void {
       'Father-In-Law': fatherInLaws
     };
   });
-
-  console.log(data);
 
   const columnsToInclude = [
     'CIS Number', 'Full Name', 'Company', 'Position', "Mother's Name",
