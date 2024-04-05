@@ -137,7 +137,7 @@ export class RptTransactionModalComponent {
             if (response.result && response.result.length > 0) {
                 const data = response.result[0].Data;
                 console.log(response.result[0].Data);
-                  if (data) {
+                  if (data && data.length > 0) {
                     this.dataSource1.data = data;
                   }
                   else {
@@ -168,10 +168,10 @@ export class RptTransactionModalComponent {
         .then((response) => {
 
             if (response.result && response.result.length > 0) {
-                const data = response.result[0].Data[0];
+                const data = response.result[0].Data;
 
-                    if (data) {
-                      this.dataSource2.data = [data];
+                    if (data && data.length > 0) {
+                      this.dataSource2.data = data;
                     }
                     else {
                         Swal.fire({
