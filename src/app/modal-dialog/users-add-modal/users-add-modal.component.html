@@ -136,6 +136,7 @@
                         <mat-error *ngIf="userForm.get('uPass')?.hasError('number')" class="error-msg">Password must contain at least one number!</mat-error>
                         <mat-error *ngIf="userForm.get('uPass')?.hasError('specialCharacter')" class="error-msg">Password must contain at least one special character.</mat-error>
                         <mat-error *ngIf="userForm.get('uPass')?.hasError('minLength')" class="error-msg">Password must be at least 8 characters long.</mat-error>
+                        <mat-error *ngIf="userForm.get('uPass')?.hasError('maxLength')" class="error-msg">Password max of 20 characters long.</mat-error>
                         </mat-form-field>
                   </c-col>
               </c-row>

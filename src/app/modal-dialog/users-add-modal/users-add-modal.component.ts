@@ -171,28 +171,36 @@ passwordValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const value: string = control.value;
 
-    // Check for at least one capital letter
-    const capitalLetterRegex = /[A-Z]/;
-    if (!capitalLetterRegex.test(value)) {
-      return { 'capitalLetter': true };
-    }
+    if (value && value.length > 0 ) {
+        // Check for at least one capital letter
+        const capitalLetterRegex = /[A-Z]/;
+        if (!capitalLetterRegex.test(value)) {
+          return { 'capitalLetter': true };
+        }
 
-    // Check for at least one number
-    const numberRegex = /\d/;
-    if (!numberRegex.test(value)) {
-      return { 'number': true };
-    }
+        // Check for at least one number
+        const numberRegex = /\d/;
+        if (!numberRegex.test(value)) {
+          return { 'number': true };
+        }
 
-    // Check for at least one special character
-    const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    if (!specialCharacterRegex.test(value)) {
-      return { 'specialCharacter': true };
-    }
+        // Check for at least one special character
+        const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
+        if (!specialCharacterRegex.test(value)) {
+          return { 'specialCharacter': true };
+        }
 
-    // Check for the minimum length (8 characters)
-    if (value.length < 8) {
-      return { 'minLength': true };
+        // Check for the minimum length (8 characters)
+        if (value.length < 8) {
+          return { 'minLength': true };
+        }
+
+        //Check for the Maximum Length (20 characters)
+        if (value.length > 20) {
+          return { 'maxLength': true };
+        }
     }
+    
 
     // Password is valid
     return null;
