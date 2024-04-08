@@ -435,7 +435,6 @@ function delAffilOff(data_id, session, userID) {
         
 
         $.ajax(settings).done(function (response) {
-          console.log(response);
           Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
           if (response.result[0].status === 'success') {
             resolve(response);

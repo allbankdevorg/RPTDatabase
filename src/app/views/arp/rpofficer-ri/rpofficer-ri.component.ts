@@ -258,7 +258,7 @@ export class RPOfficerRIComponent implements AfterViewInit {
     
     const data_id = element.off_CisNumber;
     console.log(data_id);
-    delAffilOffRI(data_id, session, userID)
+    delAffilOff(data_id, session, userID)
     .then((response) => {
       this.ngOnInit();
     })
