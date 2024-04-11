@@ -93,7 +93,8 @@ export class RptListComponent {
   displayHistoricalData: boolean = false;
   
   checkRPTForm: FormGroup;
-
+  source: any;
+  
   maxDate = new Date();
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -133,326 +134,287 @@ export class RptListComponent {
 
 
   
-    ngAfterViewInit() {
-  
-      this.dataSource.sort = this.sort;
-  
-      this.sort.sort({
-        id: 'cis_no',
-        start: 'desc',
-        disableClear: false
-      });
-    }
+ngAfterViewInit() {
+
+  this.dataSource.sort = this.sort;
+
+  this.sort.sort({
+    id: 'cis_no',
+    start: 'desc',
+    disableClear: false
+  });
+}
 
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim().toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  
-    // Calculate sums and ratios based on the filtered data
-    const filteredData = this.dataSource.filteredData;
-    const sumPrincipal = filteredData.reduce((acc, obj) => {
-      acc.principal += parseFloat(obj.principal) || 0;
-      acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
-      return acc;
-    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
-  
-    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
-    const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
-    this.rptRatio = percentage;
-    this.subtlOL = sumPrincipal.principal;
-    this.subtlOB = this.rptBal
-    this.ttlRPTOL = sumPrincipal.principal;
-    this.ttlRPTOB = sumPrincipal.principal_bal;
+applyFilter(filterValue: string) {
+  filterValue = filterValue.trim().toLowerCase(); // Datasource defaults to lowercase matches
+  this.dataSource.filter = filterValue;
 
-    // this.availBal = this.approvedCapital - this.rptBal;
+  // Calculate sums and ratios based on the filtered data
+  const filteredData = this.dataSource.filteredData;
+  const sumPrincipal = filteredData.reduce((acc, obj) => {
+    acc.principal += parseFloat(obj.principal) || 0;
+    acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+    acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
+    return acc;
+  }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
+
+  this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
+  const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
+  this.rptRatio = percentage;
+  this.subtlOL = sumPrincipal.principal;
+  this.subtlOB = this.rptBal
+  this.ttlRPTOL = sumPrincipal.principal;
+  this.ttlRPTOB = sumPrincipal.principal_bal;
+
+  // this.availBal = this.approvedCapital - this.rptBal;
+}
+
+
+
+
+ngOnInit() {
+  this.updateTableData();
+  this.getUnimpairedCap();
+  this.temporaryLoans = this.simulatedDataService.getTemporaryLoans();
+  this.simulationPerformed = this.simulatedDataService.isSimulationPerformed();
+  // this.pushTemporaryLoans();
+}
+
+
+
+updateTableData(): void {
+  let dateString: string;
+  const currentDate = new Date();
+  let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  
+  if (this.selectedDate !== null) {
+    date = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  } else {
+    date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
   }
-
-  
-
-  
-  ngOnInit() {
-    this.updateTableData();
-    this.getUnimpairedCap();
-    this.temporaryLoans = this.simulatedDataService.getTemporaryLoans();
-    this.simulationPerformed = this.simulatedDataService.isSimulationPerformed();
-    // this.pushTemporaryLoans();
-  }
-
-
-
-  updateTableData(): void {
-    let dateString: string;
-    const currentDate = new Date();
-    let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     
-    if (this.selectedDate !== null) {
-      date = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-    } else {
-      date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-    }
-     
-    this.get.getPNData(date, (PNData) => {
+  this.get.getPNData(date, (PNData) => {
+    
+    if (PNData) {
+      const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
       
-      if (PNData) {
-        const uniqueCisNumbers = [...new Set(PNData.map((entry) => entry.cis_no))];
-        
-        uniqueCisNumbers.forEach((cisNumber) => {
-          HoldOutValue(cisNumber)
-            .then((response) => {
-              this.calculateactualData(PNData);
-            })
-            .catch((error) => {
-              // Handle error
-            });
-        });
-  
-        // Push temporary loan data only once outside the forEach loop
-        const tempData = PNData.slice();
-        
-         // Create a shallow copy of PNData
-        if (this.temporaryLoans) {
-          tempData.push(...this.temporaryLoans);
-          tempData.forEach((loan) => {
-            // get the Value for netBal
-            loan.netBal = (loan.principal_bal || 0) - (loan.holdoutdata || 0);
+      uniqueCisNumbers.forEach((cisNumber) => {
+        HoldOutValue(cisNumber)
+          .then((response) => {
+            this.calculateactualData(PNData);
+          })
+          .catch((error) => {
+            // Handle error
           });
-            this.calculateSimulatedData(tempData); // Spread the temporary loans array to push each loan individually
-           // Only calculate simulated data if temporary loan data is pushed
-        }
-        
-        // Update the dataSource with the combined data
-        this.dataSource.data = tempData;
-      }
-    });
-  }
-  
-  
-
-  calculateactualData(actualData: any[]): void {
-    const sumPrincipal = actualData.reduce((acc, obj) => {
-      acc.principal += parseFloat(obj.principal) || 0;
-      acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
-      return acc;
-    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
-    
-    this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
-  
-    // Calculate rptRatio only if unimpairedCap is not zero
-    if (this.unimpairedCap !== 0) {
-      const percentage = `${((this.rptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
-      this.rptRatio = percentage;
-      this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
-    } else {
-      this.rptRatio = 'N/A';
-      this.availRptRatio = 'N/A';
-    }
-  
-    this.ttlRPTOL = sumPrincipal.principal;
-    this.ttlRPTOB = sumPrincipal.principal_bal;
-    this.approvedCapital = this.unimpairedCap * 0.5;
-    
-    // Recalculate available balance only if approvedCapital is not zero
-    if (this.approvedCapital !== 0) {
-      this.availBal = this.approvedCapital - this.rptBal;
-    } else {
-      this.availBal = 0;
-    }
-  }
-  
-  calculateSimulatedData(tempData: any[]): void {
-    // Calculate sums and ratios based on the filtered data
-    const sumPrincipal = tempData.reduce((acc, obj) => {
-      acc.principal += parseFloat(obj.principal) || 0;
-      acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
-      return acc;
-    }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
-  
-    // Update simulated balance
-    this.SimulatedrptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
-  
-    // Calculate ratios only if unimpairedCap is not zero
-    if (this.unimpairedCap !== 0) {
-      const percentage = `${((this.SimulatedrptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
-      this.SimulatedrptRatio = percentage;
-      this.SimulatedavailRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
-    } else {
-      this.SimulatedrptRatio = 'N/A';
-      this.SimulatedavailRptRatio = 'N/A';
-    }
-  
-    this.SimulatedttlRPTOL = sumPrincipal.principal;
-    this.SimulatedttlRPTOB = sumPrincipal.principal_bal;
-    this.SimulatedapprovedCapital = this.unimpairedCap * 0.5;
-    
-    // Recalculate available balance only if SimulatedapprovedCapital is not zero
-    if (this.SimulatedapprovedCapital !== 0) {
-      this.updateSimulatedBalances();
-    } else {
-      this.SimulatedavailBal = 0;
-    }
-  }
-  
-  updateSimulatedBalances(): void {
-    // Recalculate available balance after adding temporary loan data only if SimulatedrptBal is not zero
-    if (this.SimulatedrptBal !== 0) {
-      const simulatedavailBal = Math.max(0, this.SimulatedapprovedCapital - this.SimulatedrptBal);
-      
-      // Update available balance
-      this.SimulatedavailBal = simulatedavailBal;
-    
-    } else {
-      this.SimulatedavailBal = 0;
-    }
-  }
-  
-  
-
-
-
-
-    getUnimpairedCap(): void {
-      this.get.getUnimpairedCapital((unimpairedCap) => {
-          
-          this.UnimpairedDate = unimpairedCap[0].date;
-          this.unimpairedCap = unimpairedCap[0].impared_capital;
-
-      })
-    }
-
-
-    // openSimulation() {
-    //   this.simulatedDataService.openSimulation(this.ngOnInit.bind(this), 
-    //   this.calculateSimulatedData.bind(this), 
-    //   this.dataSource.data, this.availBal);
-    // }
-
-   
-    
-
-
-    // openChecker() {
-    //   const dialogRef = this._dialog.open(RptCheckerModalComponent, {
-    //     data: {
-    //       rptListComponentInstance: this // Pass the instance of RPTListComponent to ModalComponent3
-    //     },
-    //     width: '40%', // Set the width as per your requirement
-    //     // Other MatDialog options can be specified here
-    //   });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     if (result === 'openSimulation') {
-    //       this.openSimulation();
-    //     }
-    //   });
-    // }
-
-  
-    allocateHoldOut(data: any) {
-      this.selectedPN = data;
-      const dialogRef = this._dialog.open(HoldoutAllocationModalComponent, {
-        width: '40%', // Set the width as per your requirement
-        // Other MatDialog options can be specified here
-        data,
       });
-      dialogRef.afterClosed().subscribe({
-        next: (val) => {
-          if (val) {
-            this.ngOnInit();
-            this.selectedPN = null;
-            // this.updateTableData();
-          }
-        },
-      });
-    }
 
-    downloadCSV(): void {
-      const currentDate = new Date();
-      let selectedDateFormatted: string = '';
+      // Push temporary loan data only once outside the forEach loop
+      const tempData = PNData.slice();
       
-      if (this.selectedDate) {
-        selectedDateFormatted = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+        // Create a shallow copy of PNData
+      if (this.temporaryLoans) {
+        tempData.push(...this.temporaryLoans);
+        tempData.forEach((loan) => {
+          // get the Value for netBal
+          loan.netBal = (loan.principal_bal || 0) - (loan.holdoutdata || 0);
+        });
+          this.calculateSimulatedData(tempData); // Spread the temporary loans array to push each loan individually
+          // Only calculate simulated data if temporary loan data is pushed
       }
       
-      const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-      const filename = `RPT_List_${formattedDate}.csv`;
-     
-      const data = this.dataSource.data.map(item => ({
-        'CIS NUMBER': item.cis_no,
-        'PN/LOAN NUMBER': item.loan_no,
-        'BORROWER/GROUP': item.name,
-        'ORIGINAL LOAN': item.principal,
-        'OUTSTANDING BALANCE': item.principal_bal,
-        'DEPOSIT HOLDOUT': item.holdoutdata,
-        'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
-        'LOAN SECURITY': item.loan_security,
-        'INTEREST RATE': item.int_rate,
-        'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-      }));
-    
-      // Specify the columns to include in the CSV
-      const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'INTEREST RATE', 'TRANSACTION DATE'];
-    
-      this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+      // Update the dataSource with the combined data
+      this.dataSource.data = tempData;
     }
+  });
+}
 
 
-    // generatePDF(): void {
-    //   const elementId = 'htmlData'; // Replace 'htmlData' with the ID of the element you want to convert to PDF
-    //   const fileName = 'your-file-name.pdf'; // Replace 'your-file-name' with the desired file name
+
+calculateactualData(actualData: any[]): void {
+  const sumPrincipal = actualData.reduce((acc, obj) => {
+    acc.principal += parseFloat(obj.principal) || 0;
+    acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+    acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
+    return acc;
+  }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
   
-    //   this.pdfExportService.generatePDF(elementId, fileName);
-    // }
+  this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
 
-    generatePDF(): void {
-      const currentDate = new Date();
-      let selectedDateFormatted: string = '';
+  // Calculate rptRatio only if unimpairedCap is not zero
+  if (this.unimpairedCap !== 0) {
+    const percentage = `${((this.rptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
+    this.rptRatio = percentage;
+    this.availRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+  } else {
+    this.rptRatio = 'N/A';
+    this.availRptRatio = 'N/A';
+  }
+
+  this.ttlRPTOL = sumPrincipal.principal;
+  this.ttlRPTOB = sumPrincipal.principal_bal;
+  this.approvedCapital = this.unimpairedCap * 0.5;
+  
+  // Recalculate available balance only if approvedCapital is not zero
+  if (this.approvedCapital !== 0) {
+    this.availBal = this.approvedCapital - this.rptBal;
+  } else {
+    this.availBal = 0;
+  }
+}
+
+calculateSimulatedData(tempData: any[]): void {
+  // Calculate sums and ratios based on the filtered data
+  const sumPrincipal = tempData.reduce((acc, obj) => {
+    acc.principal += parseFloat(obj.principal) || 0;
+    acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+    acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
+    return acc;
+  }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
+
+  // Update simulated balance
+  this.SimulatedrptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
+
+  // Calculate ratios only if unimpairedCap is not zero
+  if (this.unimpairedCap !== 0) {
+    const percentage = `${((this.SimulatedrptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
+    this.SimulatedrptRatio = percentage;
+    this.SimulatedavailRptRatio = `${(this.definedRptRatio - parseFloat(percentage.replace('%', ''))).toFixed(2)}%`;
+  } else {
+    this.SimulatedrptRatio = 'N/A';
+    this.SimulatedavailRptRatio = 'N/A';
+  }
+
+  this.SimulatedttlRPTOL = sumPrincipal.principal;
+  this.SimulatedttlRPTOB = sumPrincipal.principal_bal;
+  this.SimulatedapprovedCapital = this.unimpairedCap * 0.5;
+  
+  // Recalculate available balance only if SimulatedapprovedCapital is not zero
+  if (this.SimulatedapprovedCapital !== 0) {
+    this.updateSimulatedBalances();
+  } else {
+    this.SimulatedavailBal = 0;
+  }
+}
+
+updateSimulatedBalances(): void {
+  // Recalculate available balance after adding temporary loan data only if SimulatedrptBal is not zero
+  if (this.SimulatedrptBal !== 0) {
+    const simulatedavailBal = Math.max(0, this.SimulatedapprovedCapital - this.SimulatedrptBal);
+    
+    // Update available balance
+    this.SimulatedavailBal = simulatedavailBal;
+  
+  } else {
+    this.SimulatedavailBal = 0;
+  }
+}
+
+
+getUnimpairedCap(): void {
+  this.get.getUnimpairedCapital((unimpairedCap) => {
       
-      if (this.selectedDate) {
-        selectedDateFormatted = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+      this.UnimpairedDate = unimpairedCap[0].date;
+      this.unimpairedCap = unimpairedCap[0].impared_capital;
+
+  })
+}
+
+  
+allocateHoldOut(data: any) {
+  this.selectedPN = data;
+  const dialogRef = this._dialog.open(HoldoutAllocationModalComponent, {
+    width: '40%', // Set the width as per your requirement
+    // Other MatDialog options can be specified here
+    data,
+  });
+  dialogRef.afterClosed().subscribe({
+    next: (val) => {
+      if (val) {
+        this.ngOnInit();
+        this.selectedPN = null;
+        // this.updateTableData();
       }
-      
-      const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-      const filename = `RPT_List_${formattedDate}.pdf`;
-      const headerText = formattedDate;
+    },
+  });
+}
 
-      const data = this.dataSource.data.map(item => ({
-        'CIS NUMBER': item.cis_no,
-        'PN/LOAN NUMBER': item.loan_no,
-        'BORROWER/GROUP': item.name,
-        'ORIGINAL LOAN': item.principal,
-        'OUTSTANDING BALANCE': item.principal_bal,
-        'DEPOSIT HOLDOUT': item.holdoutdata,
-        'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
-        'LOAN SECURITY': item.loan_security,
-        'INTEREST RATE': item.int_rate,
-        'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
-      }));
+downloadCSV(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+  if (this.selectedDate) {
+    selectedDateFormatted = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  }
+  
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `RPT_List_${formattedDate}.csv`;
+  
+  const data = this.dataSource.data.map(item => ({
+    'CIS NUMBER': item.cis_no,
+    'PN/LOAN NUMBER': item.loan_no,
+    'BORROWER/GROUP': item.name,
+    'ORIGINAL LOAN': item.principal,
+    'OUTSTANDING BALANCE': item.principal_bal,
+    'DEPOSIT HOLDOUT': item.holdoutdata,
+    'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
+    'LOAN SECURITY': item.loan_security,
+    'INTEREST RATE': item.int_rate,
+    'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+  }));
 
-      const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'INTEREST RATE', 'TRANSACTION DATE'];
-      this.pdfExportService.exportToPDF(data, filename, columnsToInclude, headerText);
-    }
+  // Specify the columns to include in the CSV
+  const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'INTEREST RATE', 'TRANSACTION DATE'];
+
+  this.csvExportService.exportToCSV(data, filename, columnsToInclude);
+}
+
+
+
+generatePDF(): void {
+  const currentDate = new Date();
+  let selectedDateFormatted: string = '';
+  
+  if (this.selectedDate) {
+    selectedDateFormatted = this.selectedDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  }
+  
+  const formattedDate = selectedDateFormatted || currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  const filename = `RPT_List_${formattedDate}.pdf`;
+  const headerText = formattedDate;
+
+  const data = this.dataSource.data.map(item => ({
+    'CIS NUMBER': item.cis_no,
+    'PN/LOAN NUMBER': item.loan_no,
+    'BORROWER/GROUP': item.name,
+    'ORIGINAL LOAN': item.principal,
+    'OUTSTANDING BALANCE': item.principal_bal,
+    'DEPOSIT HOLDOUT': item.holdoutdata,
+    'NET BALANCE': item.netBal || '', // If netBal is undefined, make it blank
+    'LOAN SECURITY': item.loan_security,
+    'INTEREST RATE': item.int_rate,
+    'TRANSACTION DATE': item.date_granted ? new Date(item.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '', // Format date as MM/dd/yyyy if not blank
+  }));
+
+  const columnsToInclude = ['CIS NUMBER', 'PN/LOAN NUMBER', 'BORROWER/GROUP', 'ORIGINAL LOAN', 'OUTSTANDING BALANCE', 'DEPOSIT HOLDOUT', 'NET BALANCE', 'LOAN SECURITY', 'INTEREST RATE', 'TRANSACTION DATE'];
+  this.pdfExportService.exportToPDF(data, filename, columnsToInclude, headerText);
+}
     
     
     
     // Event handler for date selection
-    onDateSelected(event: MatDatepickerInputEvent<Date>) {
-      if (event.value) {
-        this.selectedDate = event.value;
-        // Determine whether to display historical data based on the selected date
-        this.displayHistoricalData = this.selectedDate <= new Date();
-        // Update the data source for the DataTable
-        this.updateTableData();
-      }
-    }
+onDateSelected(event: MatDatepickerInputEvent<Date>) {
+  if (event.value) {
+    this.selectedDate = event.value;
+    // Determine whether to display historical data based on the selected date
+    this.displayHistoricalData = this.selectedDate <= new Date();
+    // Update the data source for the DataTable
+    this.updateTableData();
+  }
+}
 
-source: any;
-  
 
   openSimulation() {
-      console.log("Opening Simulation from RPT-List");
       this.simulatedDataService.openSimulation(this.ngOnInit.bind(this), 
       this.calculateSimulatedData.bind(this), 
       this.dataSource.data, this.availBal, this.source );
@@ -473,64 +435,6 @@ source: any;
     }
 
 
-
-    // openSimulationinLookup(dataToPass: any) {
-    //     if (this.RptCheckdata && this.RptCheckdata.length > 0) { // Check if RptCheckdata is not null/undefined and has elements
-                
-    //       let formData = this.RptCheckdata[0];
-  
-    //       // console.log(formData);
-    //       let IndiData = [
-    //           {
-    //           cis_no: formData.cis_number,
-    //           fname: formData.fname,
-    //           lname: formData.lname,
-    //           fullname: formData.firstName + ' ' + formData.lastName,
-    //           officer_related: ""
-    //           }
-    //       ]
-  
-    //       this.simulatedDataService.triggerFunction(this.RptCheckdata);
-    //       this.simulatedDataService.sendData(this.RptCheckdata);
-    //   } else {
-    //       let formData = this.checkRPTForm.value;
-  
-    //       let IndiData = [
-    //           {
-    //           cis_no: "",
-    //           fname: formData.firstName,
-    //           lname: formData.lastName,
-    //           fullname: formData.firstName + ' ' + formData.lastName,
-    //           officer_related: ""
-    //           }
-    //       ]
-  
-    //       this.simulatedDataService.triggerFunction(IndiData);
-    //       this.simulatedDataService.sendData(IndiData);
-    //   }
-    // }
-    
-    
-
-
-  // openSimulation() {
-  //   console.log(this.availBal);
-  //   const dialogRef = this._dialog.open(RPTSimulationModalComponent, {
-  //     width: '50%', // Set the width as per your requirement
-  //     // Other MatDialog options can be specified here
-  //   });
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (val) => {
-  //       if (val) {
-  //         this.ngOnInit();
-          
-  //         this.calculateSimulatedData(this.dataSource.data);
-  //       }
-  //     },
-  //   });
-  // }
-    
-  
 
     resetSimulation(): void {
       this.simulationPerformed = false;   
