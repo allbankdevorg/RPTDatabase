@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./manuals.component.scss']
 })
 export class ManualsComponent {
-
+  pdfSrc = '../../../../assets/files/pdf/RPTUserManual.pdf';
 }
