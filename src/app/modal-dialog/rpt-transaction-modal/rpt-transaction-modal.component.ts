@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, Output, EventEmitter,ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
 import Swal from 'sweetalert2';
@@ -78,7 +78,7 @@ export class RptTransactionModalComponent {
     //         Validators.maxLength(50), Validators.pattern(/\S+/)]]
     //     });
     this.checkRPTForm = this.formBuilder.group({
-        firstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+        firstName: ['', [Validators.required, Validators.pattern(/\S+/), this.customValidators()]],
         lastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
         companyName: ['', [Validators.required, Validators.pattern(/\S+/)]]
       });
@@ -90,9 +90,9 @@ export class RptTransactionModalComponent {
   ngOnInit() {
     this.checkRPTForm = this.fb.group({
       selectedOption: ['individual'],
-      firstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      lastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      companyName: ['', [Validators.required, Validators.pattern(/\S+/)]]
+      firstName: ['', [Validators.required, Validators.pattern(/\S+/), this.customValidators()]],
+      lastName: ['', [Validators.required, Validators.pattern(/\S+/), this.customValidators()]],
+      companyName: ['', [Validators.required, Validators.pattern(/\S+/), this.customValidators()]]
     });
 
     // Listen to the selectedOption form control value changes
@@ -225,6 +225,29 @@ export class RptTransactionModalComponent {
   
   
 
+// Custom Validator
+customValidators(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value: string = control.value;
+
+    if (value && value.length > 0 ) {
+
+        // Check for the minimum length (4 characters)
+        if (value.length < 4) {
+          return { 'minLength': true };
+        }
+
+        //Check for the Maximum Length (20 characters)
+        if (value.length > 50) {
+          return { 'maxLength': true };
+        }
+    }
+    
+
+    // Password is valid
+    return null;
+  };
+}
  
 
 

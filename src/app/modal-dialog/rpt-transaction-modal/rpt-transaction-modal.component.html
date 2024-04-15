@@ -38,7 +38,9 @@
             type="text" placeholder="First Name" formControlName="firstName" appCaps appLetters maxlength="150">
             <mat-error *ngIf="checkRPTForm.get('firstName')?.hasError('required')" class="error-msg">First Name is Required</mat-error>
             <mat-error *ngIf="checkRPTForm.get('firstName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
-          </mat-form-field>
+            <mat-error *ngIf="checkRPTForm.get('firstName')?.hasError('minLength')" class="error-msg">Field must be at least 4 characters long.</mat-error>
+            <mat-error *ngIf="checkRPTForm.get('firstName')?.hasError('maxLength')" class="error-msg">Fiel should not exceed 20 characters in length.</mat-error>
+            </mat-form-field>
         </c-col>
   
         <c-col [sm]="6">
@@ -51,7 +53,9 @@
             type="text" placeholder="Last Name" formControlName="lastName" appCaps appLetters maxlength="150">
             <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
             <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
-          </mat-form-field>
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('minLength')" class="error-msg">Field must be at least 4 characters long.</mat-error>
+            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('maxLength')" class="error-msg">Fiel should not exceed 20 characters in length.</mat-error>
+             </mat-form-field>
         </c-col> 
       </c-row>
     </div>
@@ -66,9 +70,11 @@
           <mat-form-field appearance="fill" [style.width.%]=100> 
             <input matInput id="companyName"  name="companyName"
             type="text" placeholder="Company Name" formControlName="companyName" appCaps appLetters maxlength="150">
-            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
-            <mat-error *ngIf="checkRPTForm.get('lastName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
-          </mat-form-field>
+            <mat-error *ngIf="checkRPTForm.get('companyName')?.hasError('required')" class="error-msg">Company Name is Required</mat-error>
+            <mat-error *ngIf="checkRPTForm.get('companyName')?.hasError('pattern')" class="error-msg">Field cannot be just whitespace</mat-error>
+            <mat-error *ngIf="checkRPTForm.get('companyName')?.hasError('minLength')" class="error-msg">Field must be at least 4 characters long.</mat-error>
+            <mat-error *ngIf="checkRPTForm.get('companyName')?.hasError('maxLength')" class="error-msg">Fiel should not exceed 20 characters in length.</mat-error>
+             </mat-form-field>
         </c-col> 
       </c-row>
     </ng-template>
