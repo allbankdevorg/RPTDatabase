@@ -187,7 +187,7 @@ export class DosriModalComponent implements OnInit {
   updateFormControls(accName: string) {
     this.dosriForm.patchValue({
       com_account_name: accName,
-      com_company_name: accName // Assuming you have company_name in the response
+      // com_company_name: accName // Assuming you have company_name in the response
       // Add other form controls if needed
     });
   }
