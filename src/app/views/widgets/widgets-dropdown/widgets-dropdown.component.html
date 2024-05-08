@@ -1,14 +1,15 @@
 <c-row>
   <c-col sm="6" xl="3">
     <c-widget-stat-a
+      [title]="'RPT Gross Balance'"
       class="mb-4 px-2 widget_card"
-      color="primary"
-      title="Number of RPT Loans"
+      color="info"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
-         {{numberLoans}}
+        <span>{{grossrptBal | currency: 'PHP'}}</span>
+        
         <span class="fs-6 fw-normal">
-          <!-- (-12.4% <svg cIcon name="cilArrowBottom"></svg>) -->
+          <!-- (40.9%<svg cIcon name="cilArrowTop"></svg>) -->
         </span>
       </ng-template>
       <!-- <ng-template cTemplateId="widgetActionTemplate">
@@ -20,19 +21,15 @@
             <li><a routerLink="./" cDropdownItem>Action</a></li>
             <li><a routerLink="./" cDropdownItem>Another action</a></li>
             <li><a routerLink="./" cDropdownItem>Something else here</a></li>
-            <li>
-              <hr cDropdownDivider>
-            </li>
-            <li>
-              <button cDropdownItem>Separated link</button>
-            </li>
+            <li><a [disabled]="true" routerLink="./" cDropdownItem>Disabled</a></li>
           </ul>
         </c-dropdown>
       </ng-template> -->
       <ng-template cTemplateId="widgetChartTemplate">
         <span class="fs-6 fw-normal">
-          <!-- (-23.6% <svg cIcon name="cilArrowBottom"></svg>) -->
-        </span>
+          <!-- {{ (((yesterdayrptBal - rptBal) / rptBal) * 100 ).toFixed(2) }}% 
+          <svg cIcon name="{{ (((yesterdayrptBal - rptBal) / rptBal) * 100 > 0) ? 'cilArrowBottom' : 'cilArrowTop' }}"></svg> -->
+        </span> 
       </ng-template>
     </c-widget-stat-a>
   </c-col>
@@ -71,6 +68,7 @@
       </ng-template>
     </c-widget-stat-a>
   </c-col>
+
   <c-col sm="6" xl="3">
     <c-widget-stat-a
       [title]="'Available Balance'"
@@ -104,9 +102,10 @@
       </ng-template>
     </c-widget-stat-a>
   </c-col>
+
   <c-col sm="6" xl="3">
     <c-widget-stat-a
-      [title]="'Unimpaired Capital'"
+      [title]="'Unimpaired Capital As Of ' + (UnimpairedDate | date: 'MMMM dd, yyyy')"
       class="mb-4 px-2 widget_card"
       color="danger"
     >
@@ -124,6 +123,45 @@
             <li><a routerLink="./" cDropdownItem>Another action</a></li>
             <li><a routerLink="./" cDropdownItem>Something else here</a></li>
             <li><a [disabled]="true" routerLink="./" cDropdownItem>Disabled</a></li>
+          </ul>
+        </c-dropdown>
+      </ng-template> -->
+      <ng-template cTemplateId="widgetChartTemplate">
+        <span class="fs-6 fw-normal">
+          <!-- (-23.6% <svg cIcon name="cilArrowBottom"></svg>) -->
+        </span>
+      </ng-template>
+    </c-widget-stat-a>
+  </c-col>
+
+  
+  <c-col sm="6" xl="3">
+    <c-widget-stat-a
+      class="mb-4 px-2 widget_card"
+      color="primary"
+      title="Number of RPT Loans"
+    >
+      <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
+         {{numberLoans}}
+        <span class="fs-6 fw-normal">
+          <!-- (-12.4% <svg cIcon name="cilArrowBottom"></svg>) -->
+        </span>
+      </ng-template>
+      <!-- <ng-template cTemplateId="widgetActionTemplate">
+        <c-dropdown alignment="end" variant="btn-group">
+          <button [caret]="false" cButton cDropdownToggle class="p-0" color="transparent">
+            <svg cIcon class="text-high-emphasis-inverse" name="cilOptions"></svg>
+          </button>
+          <ul cDropdownMenu>
+            <li><a routerLink="./" cDropdownItem>Action</a></li>
+            <li><a routerLink="./" cDropdownItem>Another action</a></li>
+            <li><a routerLink="./" cDropdownItem>Something else here</a></li>
+            <li>
+              <hr cDropdownDivider>
+            </li>
+            <li>
+              <button cDropdownItem>Separated link</button>
+            </li>
           </ul>
         </c-dropdown>
       </ng-template> -->
