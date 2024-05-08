@@ -148,24 +148,39 @@ ngAfterViewInit() {
 
 applyFilter(filterValue: string) {
   filterValue = filterValue.trim().toLowerCase(); // Datasource defaults to lowercase matches
+  
+  // Define a custom filter predicate
+  // const customFilter = (data: any): boolean => {
+  //   for (const column of this.displayedColumns) {
+  //     const columnValue = data[column]?.toString().toLowerCase();
+  //     if (columnValue && columnValue.includes(filterValue)) {
+  //       return true; // If any of the specified columns match, return true
+  //     }
+  //   }
+  //   return false; // If no match is found in any column, return false
+  // };
+
+  // Set the custom filter predicate for the specified columns
+  // this.dataSource.filterPredicate = customFilter;
+  
   this.dataSource.filter = filterValue;
 
-  // Calculate sums and ratios based on the filtered data
-  const filteredData = this.dataSource.filteredData;
-  const sumPrincipal = filteredData.reduce((acc, obj) => {
-    acc.principal += parseFloat(obj.principal) || 0;
-    acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-    acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
-    return acc;
-  }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
+  // // Calculate sums and ratios based on the filtered data
+  // const filteredData = this.dataSource.filteredData;
+  // const sumPrincipal = filteredData.reduce((acc, obj) => {
+  //   acc.principal += parseFloat(obj.principal) || 0;
+  //   acc.principal_bal += parseFloat(obj.principal_bal) || 0;
+  //   acc.holdoutdata += parseFloat(obj.holdoutdata) || 0;
+  //   return acc;
+  // }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
 
-  this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
-  const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
-  this.rptRatio = percentage;
-  this.subtlOL = sumPrincipal.principal;
-  this.subtlOB = this.rptBal
-  this.ttlRPTOL = sumPrincipal.principal;
-  this.ttlRPTOB = sumPrincipal.principal_bal;
+  // this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
+  // const percentage = `${(this.rptBal / 1214764186.16 * 100).toFixed(2)}%`;
+  // this.rptRatio = percentage;
+  // this.subtlOL = sumPrincipal.principal;
+  // this.subtlOB = this.rptBal
+  // this.ttlRPTOL = sumPrincipal.principal;
+  // this.ttlRPTOB = sumPrincipal.principal_bal;
 
   // this.availBal = this.approvedCapital - this.rptBal;
 }
