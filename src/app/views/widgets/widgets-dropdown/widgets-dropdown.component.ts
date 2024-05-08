@@ -27,6 +27,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
 
   yesterdayrptBal: number = 0;
   rptBal: number = 0;      // => RPT Balance (Net of Hold-out)
+  grossrptBal: number = 0;
   rptRatio: any;    // => RPT Ratio
   subtlOL: any;     // => SUB-TOTAL Original Loan
   subtlOB: any;     // => SUB-TOTAL Outstanding Balance
@@ -227,7 +228,8 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
                   return acc;
                 }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
                 
-                this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata
+                this.grossrptBal = sumPrincipal.principal_bal;
+                this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
                 // Calculate rptRatio only if unimpairedCap is not zero
                 if (this.unimpairedCap !== 0) {
                   const percentage = `${((this.rptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
