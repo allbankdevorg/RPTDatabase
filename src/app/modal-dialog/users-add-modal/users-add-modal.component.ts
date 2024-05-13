@@ -69,10 +69,10 @@ export class UsersAddModalComponent {
     private renderer: Renderer2) 
   {
     this.userForm = this.formBuilder.group({
-      fName: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      mName: ['', [Validators.pattern(/\S+/)]],
-      lName: ['', [Validators.required, Validators.pattern(/\S+/)]],
-      email: ['', [Validators.required, Validators.email, Validators.pattern(/\S+/)]],
+      // fName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      // mName: ['', [Validators.pattern(/\S+/)]],
+      // lName: ['', [Validators.required, Validators.pattern(/\S+/)]],
+      // email: ['', [Validators.required, Validators.email, Validators.pattern(/\S+/)]],
       mobile: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern(/\S+/)]],
       role: ['', [Validators.required]],
       commandControl: [''],
