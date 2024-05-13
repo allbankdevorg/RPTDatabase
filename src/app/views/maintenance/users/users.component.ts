@@ -75,6 +75,7 @@ export interface Permissions {
 })
 export class UsersComponent {
   
+  userAccess: [] = [];
 
 
   buttonConfigurations = {
@@ -163,6 +164,7 @@ export class UsersComponent {
     this.get.getUserList((usersList) => {
       if (usersList) {
         this.userDataSource.data = usersList;
+        
       } else {
         
       }
@@ -170,17 +172,35 @@ export class UsersComponent {
   }
 
 
+
   getUserAccess(row): void {
-    const userid = row.username
-    userAccess(userid) // Pass the entire formData object
+    // const userid = this.userAccessService.getUserID();
+    const userid = row.username;
+  
+    userAccess(userid)
       .then((response) => {
-        this.permissionDataSource.data = response.result[0].user_access;
-        const userPerm = response.result[0].user_access
+        this.userAccess = response.result[0].user_access;
+        this.permissionDataSource.data = [...this.userAccess]; // Ensure that you are copying the data
       })
       .catch((error) => {
-       
+        // Handle Eror here
       });
   }
+  
+
+  // getUserAccess(row): void {
+  //   const userid = row.username
+  //   userAccess(userid) // Pass the entire formData object
+  //     .then((response) => {
+  //       this.permissionDataSource.data = response.result[0].user_access;
+
+  //       console.log(this.permissionDataSource.data)
+  //       // const userPerm = response.result[0].user_access
+  //     })
+  //     .catch((error) => {
+       
+  //     });
+  // }
   
 
   setUserID(row) {
