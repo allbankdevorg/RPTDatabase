@@ -319,11 +319,11 @@ function createAffilDir(directData, comp_CIS, session, userID) {
           "session": session,
           "userid": userID,
           "request": {
-                "cis_number": directData.affildcisNumber,       // Use form data
-                "fname": directData.affildFirstName, 
-                "mname": directData.affildMiddleName, 
-                "lname": directData.affildLastName,
-                "position": directData.affildPosition,    // Use form data
+                "cis_number": directData.dir_CisNumber,       // Use form data
+                "fname": directData.off_fname, 
+                "mname": directData.off_mname, 
+                "lname": directData.off_lname,
+                "position": directData.Position,    // Use form data
                 "com_cisnumber": comp_CIS    // Use form data
               }
         }),
