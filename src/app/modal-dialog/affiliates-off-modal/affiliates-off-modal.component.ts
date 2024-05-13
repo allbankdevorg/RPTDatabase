@@ -44,7 +44,7 @@ export class AffiliatesOffModalComponent implements OnInit {
     private auditTrailService: AuditTrailService)
     {
       this.affilOfficerForm = this.formBuilder.group({
-        off_CisNumber: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
+        off_CisNumber: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
         off_fname: ['', [Validators.required, Validators.pattern(/\S+/)]],
         off_mname: ['', [Validators.pattern(/\S+/)]],
         off_lname: ['', [Validators.required, Validators.pattern(/\S+/)]],
@@ -55,6 +55,7 @@ export class AffiliatesOffModalComponent implements OnInit {
 
     async  ngOnInit() {
       this.affilOfficerForm.patchValue(this.data);
+      console.log(this.data);
     }
 
 
