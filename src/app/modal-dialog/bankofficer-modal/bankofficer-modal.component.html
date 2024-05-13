@@ -16,6 +16,7 @@
               id="boCisNumber" name="boCisNumber"
               placeholder="CIS Number" 
               type="text" formControlName="boCisNumber" (keyup.enter)="CISlookup()">
+              <mat-error *ngIf="boForm.get('boCisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
               <mat-error *ngIf="boForm.get('boCisNumber')?.hasError('pattern')" class="error-msg">Only AlphaNumeric characters allowed</mat-error>
             </mat-form-field>
           </c-col>
