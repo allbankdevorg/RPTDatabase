@@ -191,7 +191,7 @@ export class BankstockholdersComponent {
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
-          // this.getEmployeeList();
+          this.updateTableData();
         }
       },
     });
