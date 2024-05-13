@@ -26,6 +26,7 @@ import { AffiliatesService } from 'src/app/services/affiliates/affiliates.servic
 import Swal from 'sweetalert2';
 
 import {createUser} from '../../functions-files/add/postAPI';
+import {updateUserAccess} from '../../functions-files/update/updateAPI';
 import { userAccess} from '../../functions-files/add/postAPI';
 
 
@@ -50,8 +51,8 @@ export  interface Permissions {
 export class UsersModalComponent {
 
   userForm: FormGroup;
-
- 
+  stateText: string = 'Active';
+  isChecked: any = '';
 
   userrole = [
     {value: 1, viewValue: "Maker"},
@@ -95,25 +96,19 @@ export class UsersModalComponent {
     private userAccessService: EditUserAccessService,) 
   {
     this.userForm = this.formBuilder.group({
-      fName: ['', [Validators.required]],
-      mName: ['', [Validators.required]],
-      lName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      // fName: ['', [Validators.required]],
+      // mName: ['', [Validators.required]],
+      // lName: ['', [Validators.required]],
+      // email: ['', [Validators.required, Validators.email]],
       mobile_no: ['', [Validators.required]],
       role: ['', [Validators.required]],
       commandControl: [''],
       username: ['', [Validators.required]],
+      status: [],
     });
     _dialogRef.disableClose = true;
   }
 
-
-
-
-  updateCheckboxValue(event: any, controlName: string, access: any): void {
-    access[controlName] = event.checked ? 1 : 0;
-  }
-  
 
   
   editdata: any;
@@ -145,18 +140,38 @@ export class UsersModalComponent {
    onUserSubmit() {
     if (this.userForm.valid) {
       const formData = this.userForm.value;
+      const user = this.data.id;
       const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
 
-      // Call the JavaScript function with form data
-      createUser(formData, userID, session) // Pass the entire formData object
-      .then((response) => {
-        this.logAction('Add', 'Successfuly Added User', true, 'users');
-        this.close();
-      })
-      .catch((error) => {
-        this.logAction('Add', 'Failed Adding User', false, 'users');
-      });
+      if (this.data) {
+
+        let userAccesUpdate = [this.permissionDataSource.data];
+        console.log(userAccesUpdate);
+        // updateUser(userAccesUpdate, user, session, userID)
+        //   .then((response) => {
+        //     this.ngOnInit();
+        //     this.logAction('Update', 'Updated User', true, 'Users');
+        //     this.close();
+        //   })
+        //   .catch((error) => {
+
+        //   })
+        // console.log(formData);
+        // console.log(this.permissionDataSource.data);
+      }
+      else {
+         // Call the JavaScript function with form data
+          createUser(formData, userID, session) // Pass the entire formData object
+          .then((response) => {
+            this.logAction('Add', 'Successfuly Added User', true, 'users');
+            this.close();
+          })
+          .catch((error) => {
+            this.logAction('Add', 'Failed Adding User', false, 'users');
+          });
+          }
+
       }
 
       this.ngZone.run(() => {
@@ -186,7 +201,56 @@ export class UsersModalComponent {
     this._dialogRef.close(true); 
   }
 
-  updateDatabase(permission: Permissions, propertyName: any) {}
+  // updateDatabase(permission: Permissions, propertyName: any) {}
+
+
+  // Update User Access and Show user Status
+  
+  toggleStatus(event: any): void {
+    
+    let statusValue = event.checked ? 0 : 1; // Invert the value for true and false
+    this.isChecked = statusValue;
+    this.stateText = this.isChecked ? 'Disabled' : 'Active';
+    this.userForm.patchValue({ status: this.isChecked}); // Patch only the status control
+    
+    
+}
+
+  updateCheckboxValue(event: any, controlName: string, access: any): void {
+    const user = this.data.id;
+    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    
+    access[controlName] = event.checked ? 1 : 0;
+    
+    const data = {
+      userid: access.userid,
+      nav_id: access.nav_id,
+      add: access.add,
+      edit: access.edit,
+      update: access.update,
+      delete: access.delete,
+      view: access.view,
+      approver: access.approver,
+      maker: access.maker,
+      id: access.id
+  };
+
+  updateUserAccess(data, user, session, userID)
+          .then((response) => {
+            // this.ngOnInit();
+            this.logAction('Update', 'Updated User', true, 'Users');
+            // this.close();
+          })
+          .catch((error) => {
+
+          })
+
+  }
+
+
+
+
 
 
 
