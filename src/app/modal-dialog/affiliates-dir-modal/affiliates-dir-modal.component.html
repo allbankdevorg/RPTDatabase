@@ -15,9 +15,9 @@
                 aria-describedby="passwordHelpInline-3" matInput
                 id="affildcisNumber" name="affildcisNumber"
                 placeholder="CIS Number"
-                type="text" formControlName="affildcisNumber" (keyup.enter)="CISlookup()">
-                <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
-                <mat-error *ngIf="affilDrctrForm.get('affildcisNumber')?.hasError('pattern')" class="error-msg">
+                type="text" formControlName="dir_CisNumber" (keyup.enter)="CISlookup()">
+                <mat-error *ngIf="affilDrctrForm.get('dir_CisNumber')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                <mat-error *ngIf="affilDrctrForm.get('dir_CisNumber')?.hasError('pattern')" class="error-msg">
                   Only AlphaNumeric characters allowed
                 </mat-error>
               </mat-form-field>
@@ -34,11 +34,11 @@
           aria-describedby="passwordHelpInline-3" matInput
           id="affildFirstName" name="affildFirstName"
           placeholder="First Name"
-          type="text" formControlName="affildFirstName" appTitleCase appLetters maxlength="50">
-          <mat-error *ngIf="affilDrctrForm.get('affildFirstName')?.hasError('required')" class="error-msg">
+          type="text" formControlName="off_fname" appTitleCase appLetters maxlength="50">
+          <mat-error *ngIf="affilDrctrForm.get('off_fname')?.hasError('required')" class="error-msg">
             First Name is Required
           </mat-error>
-          <mat-error *ngIf="affilDrctrForm.get('affildFirstName')?.hasError('pattern')" class="error-msg">
+          <mat-error *ngIf="affilDrctrForm.get('off_fname')?.hasError('pattern')" class="error-msg">
             Field cannot be just whitespace
           </mat-error>
         </mat-form-field>
@@ -51,8 +51,8 @@
                 aria-describedby="passwordHelpInline-3" matInput
                 id="affildMiddleName" name="affildMiddleName"
                 placeholder="Middle Name"
-                type="text" formControlName="affildMiddleName" appTitleCase appLetters maxlength="50">
-                <mat-error *ngIf="affilDrctrForm.get('affildMiddleName')?.hasError('pattern')" class="error-msg">
+                type="text" formControlName="off_mname" appTitleCase appLetters maxlength="50">
+                <mat-error *ngIf="affilDrctrForm.get('off_mname')?.hasError('pattern')" class="error-msg">
                   Field cannot be just whitespace
                 </mat-error></mat-form-field>
         </c-col>
@@ -67,9 +67,9 @@
               aria-describedby="passwordHelpInline-3" matInput
               id="affildLastName" name="affildLastName"
               placeholder="Last Name"
-              type="text" formControlName="affildLastName" appTitleCase appLetters maxlength="50">
-              <mat-error *ngIf="affilDrctrForm.get('affildLastName')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
-              <mat-error *ngIf="affilDrctrForm.get('affildLastName')?.hasError('pattern')" class="error-msg">
+              type="text" formControlName="off_lname" appTitleCase appLetters maxlength="50">
+              <mat-error *ngIf="affilDrctrForm.get('off_lname')?.hasError('required')" class="error-msg">Last Name is Required</mat-error>
+              <mat-error *ngIf="affilDrctrForm.get('off_lname')?.hasError('pattern')" class="error-msg">
                 Field cannot be just whitespace
               </mat-error></mat-form-field>
         </c-col>
@@ -81,9 +81,9 @@
               matInput
               id="affildPosition" name="affildPosition"
               placeholder="Position"
-              type="text" formControlName="affildPosition" appTitleCase appLetters>
-              <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('required')" class="error-msg">Position is Required</mat-error>
-              <mat-error *ngIf="affilDrctrForm.get('affildPosition')?.hasError('pattern')" class="error-msg">
+              type="text" formControlName="Position" appTitleCase appLetters>
+              <mat-error *ngIf="affilDrctrForm.get('Position')?.hasError('required')" class="error-msg">Position is Required</mat-error>
+              <mat-error *ngIf="affilDrctrForm.get('Position')?.hasError('pattern')" class="error-msg">
                 Field cannot be just whitespace
               </mat-error>
             </mat-form-field>
