@@ -196,7 +196,6 @@ export class RPOfficerRIComponent implements AfterViewInit {
       next: (val) => {
         if (val) {
           this.updateTableData();
-          // this.getEmployeeList();
         }
       },
     });
