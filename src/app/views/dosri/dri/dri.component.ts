@@ -171,6 +171,7 @@ export class DriComponent {
         });
 
         this.compDataSource.data = companiesWithDirectors;
+
       }
     });
 
@@ -266,6 +267,7 @@ openEditForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
+        this.updateTableData();
       }
     },
   });
