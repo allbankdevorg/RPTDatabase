@@ -158,7 +158,6 @@ async login() {
     const sessionId = uuidv4();
     const otpGen = this.authService.generateAndSaveOtp()
 
-    // console.log(otpGen);
     // this.otpGene = otpGen;
 
     
@@ -185,19 +184,30 @@ async login() {
         const userID = this.uD;
         const session = this.sID;
 
-        if (modal) {
-          
-          this.renderer.addClass(modal, 'show');
-          this.renderer.setStyle(modal, 'display', 'block');  
 
-          try {
-            const sendotp = await sendOTP(mobile, otpGen, userID, session);
-          } catch (error: any) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-          }          
+        if (response.result[0].user_details[0].status === 0) {
+          if (modal) {
+          
+            this.renderer.addClass(modal, 'show');
+            this.renderer.setStyle(modal, 'display', 'block');  
+  
+            try {
+              const sendotp = await sendOTP(mobile, otpGen, userID, session);
+            } catch (error: any) {
+              const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            }          
+          }
+          // Log successful login
+          this.logAction('login', 'Login success', true, 'Login');
         }
-        // Log successful login
-        this.logAction('login', 'Login success', true, 'Login');
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Account Disabled!',
+            text: 'Contact System Administrator to activate your account',
+          });
+
+        }
       } else {
         // Log unsuccessful login
         this.logAction('login', 'Invalid username or password', false, 'Login');
