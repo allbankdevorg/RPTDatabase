@@ -72,7 +72,7 @@ export class AffiliatesDirModalComponent implements OnInit{
 
     async  ngOnInit() {
       this.affilDrctrForm.patchValue(this.data);
-      console.log(this.data);
+      
     }
 
 
