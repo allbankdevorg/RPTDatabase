@@ -70,7 +70,7 @@
                                     <ng-container *ngFor="let motherName of element['MothersName']">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon"  color="warn" (click)="delAffilOffRI(element, motherName.cisNumber, motherName.dirRelated)" *ngIf="element.MothersName">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon"  color="warn" (click)="delAffilDirRI(element, motherName.id, motherName.dirRelated)" *ngIf="element.MothersName">remove_circle</mat-icon>
                                             </ng-container> 
                                                 {{motherName.fullName}}
                                         </div>
@@ -90,7 +90,7 @@
                                     <ng-container *ngFor="let fathersName of element.FathersName">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn"  (click)="delAffilDirRI(element, fathersName.cisNumber, fathersName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn"  (click)="delAffilDirRI(element, fathersName.id, fathersName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{fathersName.fullName}}
                                         </div>  
@@ -108,7 +108,7 @@
                                     <ng-container *ngFor="let sibling of element.Siblings">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, sibling.cisNumber, sibling.dirRelated)" *ngIf="element.Siblings">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, sibling.id, sibling.dirRelated)" *ngIf="element.Siblings">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{sibling.fullName}}
                                         </div>
@@ -127,7 +127,7 @@
                                     <ng-container *ngFor="let spouse of element.Spouse">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, spouse.cisNumber, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, spouse.id, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ spouse.fullName}}
                                         </div>
@@ -144,7 +144,7 @@
                                     <ng-container *ngFor="let Child of element['Children']">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Child.cisNumber, Child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Child.id, Child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Child.fullName}}
                                         </div>
@@ -161,7 +161,7 @@
                                     <ng-container *ngFor="let motherInLaw of element['MotherinLaw']">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, motherInLaw.cisNumber, motherInLaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, motherInLaw.id, motherInLaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ motherInLaw.fullName}}
                                         </div>
@@ -178,7 +178,7 @@
                                     <ng-container *ngFor="let fatherInLaw of element['FatherinLaw']">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, fatherInLaw.cisNumber, fatherInLaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, fatherInLaw.id, fatherInLaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ fatherInLaw.fullName}}
                                         </div>
@@ -195,7 +195,7 @@
                                     <ng-container *ngFor="let Stepchild of element.stepChild">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Stepchild.cisNumber, Stepchild.dirRelated)" *ngIf="element.stepChild">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Stepchild.id, Stepchild.dirRelated)" *ngIf="element.stepChild">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Stepchild.fullName}}
                                         </div>
@@ -212,7 +212,7 @@
                                     <ng-container *ngFor="let SonDaughterinlaw of element.sonDaughterInLaw">
                                         <div class="d-flex d-sub-icon">    
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, SonDaughterinlaw.cisNumber, SonDaughterinlaw.dirRelated)" *ngIf="element.sonDaughterInLaw">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, SonDaughterinlaw.id, SonDaughterinlaw.dirRelated)" *ngIf="element.sonDaughterInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ SonDaughterinlaw.fullName}}
                                         </div>
@@ -229,7 +229,7 @@
                                     <ng-container *ngFor="let Grandparents of element.grandParents">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandparents.cisNumber, Grandparents.dirRelated)" *ngIf="element.grandParents">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandparents.id, Grandparents.dirRelated)" *ngIf="element.grandParents">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandparents.fullName}}
                                         </div>
@@ -246,7 +246,7 @@
                                     <ng-container *ngFor="let Grandparentsinlaw of element.grandParentsInLaw">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandparentsinlaw.cisNumber, Grandparentsinlaw.dirRelated)" *ngIf="element.grandParentsInLaw">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandparentsinlaw.id, Grandparentsinlaw.dirRelated)" *ngIf="element.grandParentsInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandparentsinlaw.fullName}}
                                         </div>
@@ -263,7 +263,7 @@
                                     <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Sistersinlaw.cisNumber, Sistersinlaw.dirRelated)" *ngIf="element.sistersInLaw">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Sistersinlaw.id, Sistersinlaw.dirRelated)" *ngIf="element.sistersInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Sistersinlaw.fullName}}
                                         </div>
@@ -280,7 +280,7 @@
                                     <ng-container *ngFor="let Brothersinlaw of element.brothersInLaw">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Brothersinlaw.cisNumber, Brothersinlaw.dirRelated)" *ngIf="element.brothersInLaw">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Brothersinlaw.id, Brothersinlaw.dirRelated)" *ngIf="element.brothersInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Brothersinlaw.fullName}}
                                         </div>
@@ -297,7 +297,7 @@
                                     <ng-container *ngFor="let Grandchildren of element.grandChildren">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandchildren.cisNumber, Grandchildren.dirRelated)" *ngIf="element.grandChildren">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandchildren.id, Grandchildren.dirRelated)" *ngIf="element.grandChildren">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandchildren.fullName}}
                                         </div>
@@ -314,7 +314,7 @@
                                     <ng-container *ngFor="let Grandchildreninlaw of element.grandChildrenInLaw">
                                         <div class="d-flex d-sub-icon">
                                             <ng-container *appHasPermission="'delete'">
-                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandchildreninlaw.cisNumber, Grandchildreninlaw.dirRelated)" *ngIf="element.grandChildrenInLaw">remove_circle</mat-icon>
+                                                <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandchildreninlaw.id, Grandchildreninlaw.dirRelated)" *ngIf="element.grandChildrenInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandchildreninlaw.fullName}}
                                         </div>
