@@ -19,7 +19,7 @@
 function delDosri(cis_id) {
     return Swal.fire({
       title: 'Are you sure?',
-      text: "Do you want to Remove this DOSRI Company?",
+      text: "Do you want to remove this DOSRI company?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -67,7 +67,7 @@ function delDosri(cis_id) {
 function delDosriDIR(cis_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Unlink this DOSRI Company Director?",
+    text: "Do you want to unlink this DOSRI company director?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -115,7 +115,7 @@ function delDosriDIR(cis_id) {
 function delDosriDRI(data_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Unlink this Related Interest?",
+    text: "Do you want to unlink this related interest?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -163,7 +163,7 @@ function delDosriDRI(data_id) {
 function delBankOff(cis_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Remove this Officer?",
+    text: "Do you want to remove this officer?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -259,7 +259,7 @@ function delBankOff(cis_id) {
 function delBankOffRI(data_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Unlink this Officer's Related Interest?",
+    text: "Do you want to unlink this officer's related interest?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -310,7 +310,7 @@ function delBankOffRI(data_id) {
 function delAffilComp(cis_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Remove this Company?",
+    text: "Do you want to remove this company?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -358,7 +358,7 @@ function delAffilComp(cis_id) {
 function delAffilComDIR(cis_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Unassign this Director?",
+    text: "Do you want to unlink this director?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -406,7 +406,7 @@ function delAffilComDIR(cis_id) {
 function delAffilOff(data_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Remove this Officer's Related Interest?",
+    text: "Do you want to remove this officer's related interest?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -455,7 +455,7 @@ function delAffilOff(data_id, session, userID) {
 function delAffilOffRI(data_id) {
   return Swal.fire({
     title: 'Are you sure?',
-    text: "Do you want to Unlink this Officer's Related Interest?",
+    text: "Do you want to unlink this officer's related interest?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -495,6 +495,49 @@ function delAffilOffRI(data_id) {
   });
 }
 
+
+function delAffilDirRI(data_id) {
+  return Swal.fire({
+    title: 'Are you sure?',
+    text: "Do you want to unlink this director's related interest?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Returning the promise here
+      return new Promise((resolve, reject) => {
+        var settings = {
+          "url": "http://10.232.236.15:8092/api/updateData",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            "cmd": 806,
+            "request": {
+              "id": data_id
+            }
+          }),
+        };
+        
+
+        $.ajax(settings).done(function (response) {
+
+          Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+          if (response.result[0].status === 'success') {
+            resolve(response);
+          } else {
+            reject(response);
+          }
+        });
+      });
+    }
+  });
+}
   
 
 
@@ -510,6 +553,8 @@ function delAffilOffRI(data_id) {
     delAffilComDIR,
 
     delAffilOff,
-    delAffilOffRI
+    delAffilOffRI,
+
+    delAffilDirRI
 
   }
