@@ -46,7 +46,7 @@ export class AffiliatesRPModalComponent implements OnInit{
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: [''],
+      aff_com_cis_number: ['', [Validators.required]],
       aff_com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       aff_com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       managing_company: [''],
@@ -125,32 +125,32 @@ export class AffiliatesRPModalComponent implements OnInit{
 
 
 
-  onFormSubmit() {
-    if (this.affForm.valid) {
-      const formData = this.affForm.value;
+  // onFormSubmit() {
+  //   if (this.affForm.valid) {
+  //     const formData = this.affForm.value;
 
-      if (this.data) {
-        this._dosriService
-          .updateEmployee(this.data.id, this.affForm.value)
-          .subscribe({
-            next: (val: any) => {
-              this._coreService.openSnackBar('Employee detail updated!');
-              this._dialogRef.close(true);
-            },
-            error: (err: any) => {
-            },
-          });
-      } else {
-        this._dosriService.createDosri(formData).subscribe({
-          next: (val: any) => {
-            this._coreService.openSnackBar('Employee added successfully');
-          },
-          error: (err: any) => {
-          },
-        });
-      }
-    }
-  }
+  //     if (this.data) {
+  //       this._dosriService
+  //         .updateEmployee(this.data.id, this.affForm.value)
+  //         .subscribe({
+  //           next: (val: any) => {
+  //             this._coreService.openSnackBar('Employee detail updated!');
+  //             this._dialogRef.close(true);
+  //           },
+  //           error: (err: any) => {
+  //           },
+  //         });
+  //     } else {
+  //       this._dosriService.createDosri(formData).subscribe({
+  //         next: (val: any) => {
+  //           this._coreService.openSnackBar('Employee added successfully');
+  //         },
+  //         error: (err: any) => {
+  //         },
+  //       });
+  //     }
+  //   }
+  // }
 
   close() {
     this._dialogRef.close(true); 
