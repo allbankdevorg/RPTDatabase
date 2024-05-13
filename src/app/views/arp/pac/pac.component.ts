@@ -20,7 +20,7 @@ import {AffiliatesService} from '../../../services/affiliates/affiliates.service
 import { createAffilOff, createAffilOffRI} from '../../../functions-files/add/postAPI';
 import {getCompany, getAffiliatesCompany, getAffiliatesDirectors, getAffiliatesOfficers } from '../../../functions-files/getFunctions';
 import {deleteAffilDir, deleteAffilOff, deleteAffilDirRI, deleteAffilOffRI} from '../../../functions-files/delFunctions'
-import {delAffilComDIR} from '../../../functions-files/delete/deleteAPI.js';
+import {delAffilComDIR, delAffilDirRI} from '../../../functions-files/delete/deleteAPI.js';
 
 // For Exporting to CSV and PDF
 import { CsvExportService } from './../../../services/data_extraction/csvexport/csvexport.service';
@@ -258,17 +258,19 @@ async  ngOnInit() {
                 if (director.related_interest) {
                     // Filter 'director.related_interest' array to get related names based on the relation index
                     const relatedData = director.related_interest
+                    
+
                     .filter(related => related.relation === index + 1)
                     // Create an object with the required properties
                     .map(related => ({
                         fullName: `${related.fname} ${related.mname} ${related.lname}`,
                         cisNumber: related.cis_number,
-                        dirRelated: related.dir_related
+                        dirRelated: related.dir_related,
+                        id: related.id
                     }))
                     // Filter out objects with empty names (names with only whitespace)
                     .filter(data => typeof data.fullName === 'string' && data.fullName.trim() !== '');
 
-            
                     // Assign the 'relatedNames' array to the 'row' object with the key as 'relationName'
                     row[relationName] = relatedData;
                 } else {
@@ -285,7 +287,7 @@ async  ngOnInit() {
   
         // Assign tableData to dataSource.data
         this.dataSource.data = tableData;
-        console.log(this.dataSource.data);
+        
 
           this.changeDetectorRef.detectChanges();
     });
@@ -506,26 +508,21 @@ delAffilDirector(row: any, dirAffilCIS: any, dirRelatComCIS: any): void {
 }
 
 
-delAffilDirRI(element: any, cisNum: any, dirRelated: any): void {
- deleteAffilDirRI((dosriId) => {
-
- })
+delAffilDirRI(element: any, id: any, dirRelated: any): void {
+  const data_id = id;
+  
+  delAffilDirRI(data_id)
+  .then((response) => {
+    this.ngOnInit();
+  })
+  .catch((error) => {
+   
+  })
 } 
 
 
-delAffilOfficer(element: any, dirAffilCIS: any, offRelatComCIS: any): void {
- deleteAffilOff((dosriId) => {
-
- })
-}
 
 
-
-delAffilOffRI(element: any, cisNum: any, offRelated: any): void {
- deleteAffilOffRI((dosriId) => {
-
- })
-}
 
 
 // For export
