@@ -47,10 +47,10 @@
                   <th mat-header-cell *matHeaderCellDef>Status</th>
                   <td mat-cell *matCellDef="let element">
                     <ng-container *ngIf="element.status === 1; else offline">
-                      <c-badge color="success" shape="rounded-pill">Online</c-badge>
+                      <c-badge color="danger" shape="rounded-pill">Disabled</c-badge>
                     </ng-container>
                     <ng-template #offline>
-                      <c-badge color="danger" shape="rounded-pill">Offline</c-badge>
+                      <c-badge color="success" shape="rounded-pill">Active</c-badge>
                     </ng-template>
                   </td>
                   
