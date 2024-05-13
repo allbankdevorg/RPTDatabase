@@ -6,6 +6,7 @@ import { CoreService } from '../../services/core/core.service';
 
 // Functions Imports
 import {createDosri, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
+import {updateDOSRI} from '../../functions-files/update/updateAPI'
 
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
@@ -44,7 +45,7 @@ export class DosriModalComponent implements OnInit {
     private auditTrailService: AuditTrailService
   ) {
     this.dosriForm = this._fb.group({
-      com_cis_number: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
+      com_cis_number: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
       com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]]
       });
@@ -52,61 +53,72 @@ export class DosriModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.foodCtrl = new FormControl({value: '', disabled: this.disabled})
-
-  // Attempt to patch the form
-  this.dosriForm.patchValue(this.data);
-
+    this.foodCtrl = new FormControl({value: '', disabled: this.disabled});
+    
+    // Attempt to patch the form if data is provided
+    if (this.data) {
+      this.patchFormWithData(this.data);
+    }
+  }
+  
+  patchFormWithData(data: any) {
+    // Patch the form with data if available
+    this.dosriForm.patchValue({
+      com_cis_number: data.com_cis_number || '', // Assuming com_cis_number is a field in your data object
+      com_account_name: data.com_account_name || '', // Assuming com_account_name is a field in your data object
+      com_company_name: data.com_company_name || '' // Assuming com_company_name is a field in your data object
+    });
   }
 
   isFieldDisabled(): boolean {
     return true;
   }
 
-  onSubmit() {
-    if (this.dosriForm.valid) {
-      const formData = this.dosriForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
-      const holdOUT = formData.depoHoldOut;
 
-      // Call the JavaScript function with form data
-      createDosri(formData, session, userID)
-        .then((response) => {
-          // Log the response when the promise is resolved
-          this.ngOnInit();
-          this.logAction('Add', 'Added Company', true, 'DRI');
-          this.close();
+  // onSubmit() {
+  //   if (this.dosriForm.valid) {
+  //     const formData = this.dosriForm.value;
+  //     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+  //     const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+  //     const holdOUT = formData.depoHoldOut;
 
-          const resultData = this.cisLookUpResult;
-          addPNData(resultData, holdOUT, session, userID)
-          .then((response) => {
+  //     // Call the JavaScript function with form data
+  //     createDosri(formData, session, userID)
+  //       .then((response) => {
+  //         // Log the response when the promise is resolved
+  //         this.ngOnInit();
+  //         this.logAction('Add', 'Added Company', true, 'DRI');
+  //         this.close();
 
-          })
-          .catch((error) => {
+  //         const resultData = this.cisLookUpResult;
+  //         addPNData(resultData, holdOUT, session, userID)
+  //         .then((response) => {
 
-          });
+  //         })
+  //         .catch((error) => {
+
+  //         });
           
-        })
-        .catch((error) => {
-          if (error && error.result && error.result[0] && error.result[0].status === "error" &&
-                  error.result[0].message === "CISNumber already define") {
-                this._dialogRef.close(true);
-                    // Handle other error conditions 
-                this.logAction('Add', 'Adding DOSRI Company Failed. CIS Number is already Define', false, 'DRI');
+  //       })
+  //       .catch((error) => {
+  //         if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+  //                 error.result[0].message === "CISNumber already define") {
+  //               this._dialogRef.close(true);
+  //                   // Handle other error conditions 
+  //               this.logAction('Add', 'Adding DOSRI Company Failed. CIS Number is already Define', false, 'DRI');
              
-              } else {
-                // Handle other error conditions 
-                this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
-                // this._dialogRef.close(false);
-              }
+  //             } else {
+  //               // Handle other error conditions 
+  //               this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
+  //               // this._dialogRef.close(false);
+  //             }
          
-          this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
+  //         this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
          
-          // Swal.fire('Error occurred', '', 'error');
-        });
-    }
-  }
+  //         // Swal.fire('Error occurred', '', 'error');
+  //       });
+  //   }
+  // }
   
     
 
@@ -114,27 +126,58 @@ export class DosriModalComponent implements OnInit {
   onFormSubmit() {
     if (this.dosriForm.valid) {
       const formData = this.dosriForm.value;
+      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      const holdOUT = formData.depoHoldOut;
+
 
       if (this.data) {
-        this._dosriService
-          .updateEmployee(this.data.id, this.dosriForm.value)
-          .subscribe({
-            next: (val: any) => {
-              this._coreService.openSnackBar('Employee detail updated!');
-              this._dialogRef.close(true);
-            },
-            error: (err: any) => {
-            },
-          });
+        updateDOSRI(formData)
+          .then((response) => {
+            console.log("Update");
+            this.ngOnInit();
+            this.logAction('Update', 'Updated Company', true, 'DRI');
+            this.close();
+          })
+          .catch((error) => {
+
+          })
       } else {
-        this._dosriService.createDosri(formData).subscribe({
-          next: (val: any) => {
-            this._coreService.openSnackBar('Employee added successfully');
-            this._dialogRef.close(true);
-          },
-          error: (err: any) => {
-          },
-        });
+          // Call the JavaScript function with form data
+          createDosri(formData, session, userID)
+          .then((response) => {
+            // Log the response when the promise is resolved
+            this.ngOnInit();
+            this.logAction('Add', 'Added Company', true, 'DRI');
+            this.close();
+
+            const resultData = this.cisLookUpResult;
+            addPNData(resultData, holdOUT, session, userID)
+            .then((response) => {
+
+            })
+            .catch((error) => {
+
+            });
+            
+          })
+          .catch((error) => {
+            if (error && error.result && error.result[0] && error.result[0].status === "error" &&
+                    error.result[0].message === "CISNumber already define") {
+                  this._dialogRef.close(true);
+                      // Handle other error conditions 
+                  this.logAction('Add', 'Adding DOSRI Company Failed. CIS Number is already Define', false, 'DRI');
+              
+                } else {
+                  // Handle other error conditions 
+                  this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
+                  // this._dialogRef.close(false);
+                }
+          
+            this.logAction('Add', 'Adding DOSRI Company Failed', false, 'DRI');
+          
+            // Swal.fire('Error occurred', '', 'error');
+          });
       }
     }
   }
