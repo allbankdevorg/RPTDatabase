@@ -55,7 +55,7 @@ export class AffiliatesOffModalComponent implements OnInit {
 
     async  ngOnInit() {
       this.affilOfficerForm.patchValue(this.data);
-      console.log(this.data);
+      
     }
 
 
