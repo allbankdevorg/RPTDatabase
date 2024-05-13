@@ -9,6 +9,7 @@ import {callJSFun} from '../../functions-files/javascriptfun.js';
 import {FetchDataService} from '../../services/fetch/fetch-data.service';
 // import {getCompany, getDirectors} from '../../../functions-files/getFunctions'
 import {createAffil, cisLookUP, addPNData} from '../../functions-files/add/postAPI.js'
+import {updateAffiliates} from '../../functions-files/update/updateAPI';
 import {deleteDosri, deleteDirector, deleteRelationship} from '../../functions-files/delFunctions'
 
 // Audit Trail
@@ -40,7 +41,7 @@ export class AffiliatesModalComponent implements OnInit {
     private _coreService: CoreService,
     private auditTrailService: AuditTrailService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
+      aff_com_cis_number: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
       aff_com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       aff_com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       // commandControl: ['', [Validators.required]]
@@ -66,7 +67,19 @@ export class AffiliatesModalComponent implements OnInit {
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
       const holdOUT = formData.depoHoldOut;
 
-      createAffil(formData, moduleV, session, userID)
+      if (this.data) {
+        updateAffiliates(formData, session, userID)
+        .then((response) => {
+          this.ngOnInit();
+          this.logAction('Update', 'Updated Affiliates', true, 'Affiliates');
+          this.close();
+        })
+        .catch((error) => {
+
+        })
+      }
+      else {
+        createAffil(formData, moduleV, session, userID)
       .then((response) => {
         this.ngOnInit();
         this.logAction('Add', 'Added Affiliates', true, 'Affiliates');
@@ -97,36 +110,37 @@ export class AffiliatesModalComponent implements OnInit {
        
         // Swal.fire('Error occurred', '', 'error');
       });
+      }
     }
   }
   
   
-    onFormSubmit() {
-      if (this.affForm.valid) {
-        const formData = this.affForm.value;
+    // onFormSubmit() {
+    //   if (this.affForm.valid) {
+    //     const formData = this.affForm.value;
   
-        if (this.data) {
-          this._dosriService
-            .updateEmployee(this.data.id, this.affForm.value)
-            .subscribe({
-              next: (val: any) => {
-                this._coreService.openSnackBar('Employee detail updated!');
-                this._dialogRef.close(true);
-              },
-              error: (err: any) => {
-              },
-            });
-        } else {
-          this._dosriService.createDosri(formData).subscribe({
-            next: (val: any) => {
-              this._coreService.openSnackBar('Employee added successfully');
-            },
-            error: (err: any) => {
-            },
-          });
-        }
-      }
-    }
+    //     if (this.data) {
+    //       this._dosriService
+    //         .updateEmployee(this.data.id, this.affForm.value)
+    //         .subscribe({
+    //           next: (val: any) => {
+    //             this._coreService.openSnackBar('Employee detail updated!');
+    //             this._dialogRef.close(true);
+    //           },
+    //           error: (err: any) => {
+    //           },
+    //         });
+    //     } else {
+    //       this._dosriService.createDosri(formData).subscribe({
+    //         next: (val: any) => {
+    //           this._coreService.openSnackBar('Employee added successfully');
+    //         },
+    //         error: (err: any) => {
+    //         },
+    //       });
+    //     }
+    //   }
+    // }
   
     close() {
       this._dialogRef.close(true); 
