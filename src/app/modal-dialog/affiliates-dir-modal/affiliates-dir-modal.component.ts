@@ -10,6 +10,7 @@ import { patternValidator } from '../../validator/pattern.validator'
 
 // Imports for Functions
 import {createAffilDir, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
+import {updateAffiliatesDir} from '../../functions-files/update/updateAPI';
 
 import Swal from 'sweetalert2';
 // Audit Trail
@@ -48,19 +49,19 @@ export class AffiliatesDirModalComponent implements OnInit{
     private auditTrailService: AuditTrailService)
     {
       this.affilDrctrForm = this.formBuilder.group({
-        affildcisNumber: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
-        affildFirstName: ['', [
+        dir_CisNumber: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
+        off_fname: ['', [
           Validators.required,
           Validators.maxLength(50),
           Validators.pattern(/\S+/),
         ]],
-        affildMiddleName: ['', [Validators.pattern(/\S+/)]],
-        affildLastName: ['', [
+        off_mname: ['', [Validators.pattern(/\S+/)]],
+        off_lname: ['', [
           Validators.required,
           Validators.maxLength(50),
           Validators.pattern(/\S+/),
         ]],
-        affildPosition: ['', [
+        Position: ['', [
           Validators.required,
           Validators.maxLength(50),
           Validators.pattern(/\S+/),
@@ -71,6 +72,7 @@ export class AffiliatesDirModalComponent implements OnInit{
 
     async  ngOnInit() {
       this.affilDrctrForm.patchValue(this.data);
+      console.log(this.data);
     }
 
 
@@ -90,26 +92,41 @@ export class AffiliatesDirModalComponent implements OnInit{
     const comp_CIS = this.dataService.getCompCIS();
     const holdOUT = directData.depoHoldOut;
     
-    // Call the JavaScript function with form data
-    createAffilDir(directData, comp_CIS, session, userID)
+    if (this.data) {
+      const data_id = this.data.id;
+      const old_cis = this.data.off_CisNumber;
+      updateAffiliatesDir(directData, data_id, old_cis, session, userID)
       .then((response) => {
-        this.logAction('Add', 'Successfuly Added Director', true, 'directorsrelated');
+        this.ngOnInit();
+        this.logAction('Update', 'Updated Affiliates', true, 'Affiliates');
         this.close();
-
-        const resultData = this.cisLookUpResult;
-        addPNData(resultData, holdOUT, session, userID)
-        .then((response) => {
-
-        })
-        .catch((error) => {
-
-        });
       })
       .catch((error) => {
-        this.logAction('Add', 'Failed Adding Director', false, 'directorsrelated');
-      
-      });
 
+      })
+    }
+    else {
+      // Call the JavaScript function with form data
+    createAffilDir(directData, comp_CIS, session, userID)
+    .then((response) => {
+      this.logAction('Add', 'Successfuly Added Director', true, 'directorsrelated');
+      this.close();
+
+      const resultData = this.cisLookUpResult;
+      addPNData(resultData, holdOUT, session, userID)
+      .then((response) => {
+
+      })
+      .catch((error) => {
+
+      });
+    })
+    .catch((error) => {
+      this.logAction('Add', 'Failed Adding Director', false, 'directorsrelated');
+    
+    });
+
+    }
     
   }
 
