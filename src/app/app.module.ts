@@ -25,6 +25,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  MatSlideToggleModule,
+  _MatSlideToggleRequiredValidatorModule,
+} from '@angular/material/slide-toggle';
 
 
 
@@ -217,6 +221,8 @@ const APP_CONTAINERS = [
     MatPaginatorModule,
     MatFormFieldModule,
     MatTableModule,
+    MatSlideToggleModule,
+    _MatSlideToggleRequiredValidatorModule,
     TableModule,
     ModalModule,
     AppRoutingModule,
