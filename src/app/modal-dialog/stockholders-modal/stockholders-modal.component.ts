@@ -5,8 +5,8 @@ import { CoreService } from '../../services/core/core.service';
 // import { EmployeeService } from '../services/employee.service';
 
 // Functions Imports
-import {createStockHolders, cisLookUP} from '../../functions-files/add/postAPI.js'
-
+import {createStockHolders, cisLookUP} from '../../functions-files/add/postAPI.js';
+import {updateStocksHolder} from '../../functions-files/update/updateAPI';
 // Audit Trail
 import { AuditTrailService } from '../../services/auditTrail/audit-trail.service';
 import {AuditTrail} from '../../model/audit-trail.model';
@@ -34,11 +34,12 @@ export class StockholdersModalComponent {
     private auditTrailService: AuditTrailService
   ) {
     this.stockHoldersForm = this._fb.group({
-      cis_number: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
+      cis_number: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
       name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       shares: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
       amount: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
-      percentage: ['', [Validators.required, Validators.pattern(/^[\d]+$/)]],
+      percentage: ['', [Validators.required, Validators.pattern(/^[\d]+(\.[\d]+)?$/)
+    ]],
       });
     _dialogRef.disableClose = true;
   }
@@ -59,7 +60,19 @@ export class StockholdersModalComponent {
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
   
       // Call the JavaScript function with form data
-      createStockHolders(formData, session, userID)
+      if (this.data) {
+        updateStocksHolder(formData, session, userID)
+        .then((response) => {
+          this.ngOnInit();
+          this.logAction('Update', 'Updated Stockholders', true, 'bankstockholders');
+          this.close();
+        })
+        .catch((error) => {
+
+        })
+      }
+      else {
+        createStockHolders(formData, session, userID)
         .then((response) => {
           // Log the response when the promise is resolved
           // this.ngOnInit();
@@ -83,6 +96,8 @@ export class StockholdersModalComponent {
          
           // Swal.fire('Error occurred', '', 'error');
         });
+      }
+      
     }
   }
 
