@@ -244,6 +244,9 @@ async  ngOnInit() {
               const row: Record<string, any> = {
                   'id': director.id,
                   'FullName': `${director.fname} ${director.mname}  ${director.lname}`,
+                  'off_fname': director.fname,
+                  'off_mname': director.mname,
+                  'off_lname': director.lname,
                   'Company': this.Company,
                   'Position': director.position,
                   'dir_CisNumber': director.dir_cisnumber,
@@ -369,7 +372,7 @@ async  ngOnInit() {
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
-          // this.getEmployeeList();
+          this.updateTableData();
         }
       },
     });
