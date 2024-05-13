@@ -354,7 +354,7 @@ openEditForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
+        this.updateTableData();
       }
     },
   });
