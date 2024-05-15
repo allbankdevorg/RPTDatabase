@@ -44,7 +44,7 @@ export class AddChildModalComponent implements OnInit {
     private auditTrailService: AuditTrailService,
     private get: FetchDataService) {
     this.affForm = this.formBuilder.group({
-      aff_com_cis_number: ['', [Validators.pattern(/^[A-Za-z\d]+$/)]],
+      aff_com_cis_number: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
       aff_com_account_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       aff_com_company_name: ['', [Validators.required, Validators.pattern(/\S+/)]],
       managing_company: [{value: '', disabled: true}],
