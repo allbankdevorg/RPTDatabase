@@ -63,6 +63,7 @@ export class UpdateJMNComponent {
     this.getParentCompany();//load dropdown Company list
   // Attempt to patch the form
   this.affForm.patchValue(this.data);
+
   }
 
 
@@ -75,6 +76,7 @@ export class UpdateJMNComponent {
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
       
       if (this.data) {
+        
         
         updateManagingCompany(formData)
           .then((response) => {

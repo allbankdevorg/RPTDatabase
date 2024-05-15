@@ -348,7 +348,7 @@ generateBondsPDF(data: any[], filename: string, columnsToInclude: string[], head
     const formattedDate = new Date(headerText).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
     // Add the header text with the formatted date
-    doc.text(`Relate Party Officers`, centerX, 20);
+    doc.text(`Related Party Officers`, centerX, 20);
 
     // Modify data to include PHP currency symbol
     const modifiedData = this.formatPDFBody(data, columnsToInclude);
