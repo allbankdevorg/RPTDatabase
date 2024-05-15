@@ -15,7 +15,8 @@ function updateManagingCompany(formData, session, userID) {
                 "request": {
                     "cis_number": formData.aff_com_cis_number,
                     "managing_company": formData.managing_company,
-                    "account_name": formData.aff_com_comp_name,
+                    "account_name": formData.aff_com_account_name,
+                    "company_name": formData.aff_com_comp_name,
                     "hold_out": formData.hold_out   
                 }
                 }),
