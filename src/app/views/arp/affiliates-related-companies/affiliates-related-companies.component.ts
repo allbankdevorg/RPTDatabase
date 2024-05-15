@@ -234,6 +234,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
   updateNodeDetails(selectedItem) {
     
+
     const transformedData = {
       aff_com_comp_name: selectedItem.name,
       aff_com_account_name: selectedItem.compName,
@@ -283,6 +284,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
     this.fetchDataService.getManagingCompany((mngComp) => {
       if (mngComp) {
         
+        
         const dataArr: CompData[] = [];
         const cisToIdMap: { [key: string]: number } = {};
         
@@ -294,7 +296,7 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
             id: item.id,
             comCisNum: item.aff_com_cis_number,
             name: item.aff_com_account_name,
-            compName: item.aff_com_account_name,
+            compName: item.aff_com_company_name,
             parent_cis: item.managing_company,
             // Update parent field to use the corresponding ID from the map
             parent: cisToIdMap[item.managing_company]?.toString() || "",
