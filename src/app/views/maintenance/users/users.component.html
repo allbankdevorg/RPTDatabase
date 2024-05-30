@@ -13,10 +13,11 @@
             <c-container fluid class="my-1 d-flex justify-content-between align-items-center">
               <!-- <c-row> -->
                   <div></div>
-                  <button mat-fab extended color="primary"  (click)="openAddEditUserForm()" *appHasPermission="'add'"  >
-                    <mat-icon>add</mat-icon>
+                  <button (click)="openAddEditUserForm()" class="c-add" color="primary" *accessControl="{ moduleName: 'Users', accessType: 'add' }">
+                    <mat-icon aria-hidden="false" aria-label="Example add icon" fontIcon="add"></mat-icon>
                     ADD
-                </button>
+                  </button>
+                  
               <!-- </c-row> -->
             </c-container>
             <c-container fluid>
@@ -70,11 +71,13 @@
                   <th mat-header-cell *matHeaderCellDef> Action </th>
                   <td mat-cell *matCellDef="let row">
                     <div class="d-flex justify-content-center">
-                      <button mat-icon-button (click)="openViewUserModal(row, $event)" (click)="setUserID(row)" aria-label="View Users Info" *appHasPermission="'view'">
-                        <mat-icon>visibility</mat-icon>
+                      <button mat-icon-button (click)="openViewUserModal(row, $event)" (click)="setUserID(row)" aria-label="View Users Info" *accessControl="{ moduleName: 'Users', accessType: 'view' }">
+                        
+                    <mat-icon aria-hidden="false" aria-label="Example Visibility icon" fontIcon="visibility"></mat-icon>
                       </button>
-                      <button mat-icon-button (click)="openEditForm(row, $event)" (click)="setUserID(row)" aria-label="Edit Users Info" *appHasPermission="'edit'">
-                        <mat-icon>create</mat-icon>
+                      <button mat-icon-button (click)="openEditForm(row, $event)" (click)="setUserID(row)" aria-label="Edit Users Info" *accessControl="{ moduleName: 'Users', accessType: 'edit' }">
+                        
+                          <mat-icon aria-hidden="false" aria-label="Example Create icon" fontIcon="create"></mat-icon>
                       </button>
                       <!-- <button mat-icon-button color="warn" (click)="delUser()" aria-label="Delete Users" *appHasPermission="'delete'">
                         <mat-icon>delete</mat-icon>
@@ -120,9 +123,16 @@
                             <mat-checkbox [(ngModel)]="permission.delete" (change)="updateDatabase(permission, 'delete')"></mat-checkbox>
                           </td>
                         </ng-container>
+
+                        <ng-container matColumnDef="update">
+                          <th mat-header-cell *matHeaderCellDef> Export </th>
+                          <td mat-cell *matCellDef="let permission">
+                            <mat-checkbox [(ngModel)]="permission.update" (change)="updateDatabase(permission, 'update')"></mat-checkbox>
+                          </td>
+                        </ng-container>
                         
                         
-                        <ng-container matColumnDef="maker">
+                        <!-- <ng-container matColumnDef="maker">
                           <th mat-header-cell *matHeaderCellDef> Maker </th>
                           <td mat-cell *matCellDef="let permission">
                             <mat-checkbox [(ngModel)]="permission.maker" (change)="updateDatabase(permission, 'maker')"></mat-checkbox>
@@ -141,7 +151,7 @@
                           <td mat-cell *matCellDef="let permission">
                             <mat-checkbox [(ngModel)]="permission.reviewer" (change)="updateDatabase(permission, 'reviewer')"></mat-checkbox>
                           </td>
-                        </ng-container>
+                        </ng-container> -->
                         
                         
 
