@@ -124,9 +124,10 @@
                                 <th>Add</th>
                                 <th>Update</th>
                                 <th>Delete</th>
-                                <th>Maker</th>
+                                <th>Export</th>
+                                <!-- <th>Maker</th>
                                 <th>Approver</th>
-                                <th>Reviewer</th>
+                                <th>Reviewer</th> -->
                                 <!-- Add more headers as needed -->
                               </tr>
                             </thead>
@@ -136,11 +137,12 @@
                                 <td>{{ access.navigation_name }}</td>                              
                                 <td><mat-checkbox [checked]="+access.view === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
                                 <td><mat-checkbox [checked]="+access.add === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
-                                <td><mat-checkbox [checked]="+access.update === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.edit === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
                                 <td><mat-checkbox [checked]="+access.delete === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
-                                <td><mat-checkbox [checked]="+access.maker === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.update === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <!-- <td><mat-checkbox [checked]="+access.maker === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
                                 <td><mat-checkbox [checked]="+access.approver === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
-                                <td><mat-checkbox [checked]="+access.reviewer === 1" [disabled]="true" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox [checked]="+access.reviewer === 1" [disabled]="true" class="example-margin"></mat-checkbox></td> -->
                             </tr>
                             
                             </tbody>
