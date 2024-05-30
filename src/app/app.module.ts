@@ -115,7 +115,7 @@ import { ShowIfPermissionDirective } from './directives/authority.directive';
 import { HasPermissionDirective} from './directives/permission.directive';
 import { PreventSpecialCharactersDirective } from './directives/preventSpeChar.directive';
 import { AlphanumericOnlyDirective } from './directives/alphaNumeric.directive';
-
+import { AccessControlDirective } from './directives/accessControl.directive';
 
 // Modal
 import { DosriModalComponent } from './modal-dialog/dosri-modal/dosri-modal.component';
@@ -178,7 +178,7 @@ const APP_CONTAINERS = [
     // DraggableDirective, ResizableDirective, 
     LettersOnlyDirective, PreventSpecialCharactersDirective, AlphanumericOnlyDirective, 
     LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,
-    HasPermissionDirective,
+    HasPermissionDirective, AccessControlDirective,
     DosriModalComponent,
     BankofficerModalComponent,
     DirectorsRIModalComponent,
@@ -214,9 +214,9 @@ const APP_CONTAINERS = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatIconModule,
     MatSortModule,
     MatFormFieldModule,
-    MatIconModule,
     MatInputModule,
     MatPaginatorModule,
     MatFormFieldModule,
