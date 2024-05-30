@@ -27,19 +27,19 @@
                           <div style="display: flex; align-items: center;">
                             <div>
                               
-                              <button (click)="openChecker()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                              <button (click)="openChecker()" mat-fab extended color="primary" *accessControl="{ moduleName: 'RPT List Report', accessType: 'add' }" style="margin-right: 10px;">
                               <mat-icon>search</mat-icon>
                               RPT LookUp
                               </button>
-                              <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                              <button (click)="downloadCSV()" mat-fab extended color="primary" *accessControl="{ moduleName: 'RPT List Report', accessType: 'update' }" style="margin-right: 10px;">
                                 <mat-icon>file_download</mat-icon>
                                 CSV
                               </button>
-                              <button (click)="generatePDF()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                              <button (click)="generatePDF()" mat-fab extended color="primary" *accessControl="{ moduleName: 'RPT List Report', accessType: 'update' }" style="margin-right: 10px;">
                                 <mat-icon>file_download</mat-icon>
                                 PDF
                               </button>
-                              <button (click)="openSimulation()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                              <button (click)="openSimulation()" mat-fab extended color="primary" *accessControl="{ moduleName: 'RPT List Report', accessType: 'add' }" style="margin-right: 10px;">
                                 <mat-icon>play_arrow</mat-icon>
                                 Simulate
                               </button>

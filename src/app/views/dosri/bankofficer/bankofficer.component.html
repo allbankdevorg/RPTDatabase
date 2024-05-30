@@ -18,11 +18,11 @@
                 </div>
                 <div class="d-flex justify-content-end w-50">
                   <div style="display: flex; align-items: center;">
-                    <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                    <button (click)="downloadCSV()" mat-fab extended color="primary" *accessControl="{ moduleName: 'Bank Officer', accessType: 'update' }" style="margin-right: 10px;">
                       <mat-icon>file_download</mat-icon>
                       CSV
                     </button>
-                    <button (click)="generatePDF()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                    <button (click)="generatePDF()" mat-fab extended color="primary" *accessControl="{ moduleName: 'Bank Officer', accessType: 'update' }" style="margin-right: 10px;">
                       <mat-icon>file_download</mat-icon>
                       PDF
                     </button>
@@ -40,7 +40,7 @@
                         
                         [attr.colspan]="3"> 
                     Officers
-                    <button (click)="openAddEditOffForm()" mat-fab extended color="primary" class="add-btn-icon" (click)="onButtonClick()"  *appHasPermission="'add'">
+                    <button (click)="openAddEditOffForm()" mat-fab extended color="primary" class="add-btn-icon" (click)="onButtonClick()"  *accessControl="{ moduleName: 'Bank Officer', accessType: 'add' }">
                       <mat-icon>add</mat-icon>
                       ADD
                     </button>  
@@ -69,7 +69,7 @@
                   <td mat-cell *matCellDef="let element"> 
                     <div class="d-flex justify-content-left">
                       {{element.FullName}} 
-                      <mat-icon *appHasPermission="'delete'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Officer." color="warn" class="add-button" (click)="delOfficer(element, element.comp_CIS, element.offc_CisNumber)" aria-label="Delete Users">
+                      <mat-icon *accessControl="{ moduleName: 'Bank Officer', accessType: 'delete' }" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Officer." color="warn" class="add-button" (click)="delOfficer(element, element.comp_CIS, element.offc_CisNumber)" aria-label="Delete Users">
                         <!-- <mat-icon>link_off</mat-icon> -->
                         link_off
                       </mat-icon>
@@ -96,14 +96,14 @@
                   <td mat-cell *matCellDef="let element">
                     <ng-container *ngFor="let motherName of element['MothersName']">
                       <div class="d-flex d-sub-icon">
-                          <ng-container *appHasPermission="'delete'">
+                          <ng-container *accessControl="{ moduleName: 'Bank Officer', accessType: 'delete' }">
                             <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherName.id, motherName.offRelated)" *ngIf="element.MothersName">remove_circle</mat-icon>
                           </ng-container>
                           {{motherName.fullName}}
                       </div>
                       <br>
                     </ng-container> 
-                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(1, element.offc_CisNumber)" (click)="setoffcRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                      <mat-icon *accessControl="{ moduleName: 'Bank Officer', accessType: 'add' }" (click)="openRIForm()" (click)="setButtonId(1, element.offc_CisNumber)" (click)="setoffcRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                     </td>
               </ng-container>
         
@@ -113,14 +113,14 @@
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let fatherName of element['FathersName']">
                         <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
+                            <ng-container *accessControl="{ moduleName: 'Bank Officer', accessType: 'delete' }">
                                 <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherName.id, fatherName.offRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
                             </ng-container>
                                 {{fatherName.fullName}}
                         </div>
                         <br>
                       </ng-container>
-                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(2, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                      <mat-icon *accessControl="{ moduleName: 'Bank Officer', accessType: 'add' }" (click)="openRIForm()" (click)="setButtonId(2, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                   </td>
               </ng-container>
               
@@ -130,14 +130,14 @@
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let spouse of element['Spouse']">
                         <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
+                            <ng-container *accessControl="{ moduleName: 'Bank Officer', accessType: 'delete' }">
                                 <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, spouse.id, spouse.offRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
                             </ng-container>
                                 {{spouse.fullName}}
                         </div>
                         <br>
                       </ng-container>
-                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(3, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                      <mat-icon *accessControl="{ moduleName: 'Bank Officer', accessType: 'add' }" (click)="openRIForm()" (click)="setButtonId(3, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                   </td>
               </ng-container>
         
@@ -147,14 +147,14 @@
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let child of element['Children']">
                         <div class="d-flex d-sub-icon">
-                         <ng-container *appHasPermission="'delete'">   
+                         <ng-container *accessControl="{ moduleName: 'Bank Officer', accessType: 'delete' }">   
                             <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, child.id, child.offRelated)" *ngIf="element.Children">remove_circle</mat-icon>
                          </ng-container>
                             {{ child.fullName }} 
                         </div>
                           <br>
                       </ng-container>
-                      <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(4, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
+                      <mat-icon *accessControl="{ moduleName: 'Bank Officer', accessType: 'add' }" (click)="openRIForm()" (click)="setButtonId(4, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon> 
                   </td>
               </ng-container>
         
@@ -164,14 +164,14 @@
                   <td mat-cell *matCellDef="let element"> 
                       <ng-container *ngFor="let motherinlaw of element['MotherinLaw']">
                             <div class="d-flex d-sub-icon">
-                                <ng-container *appHasPermission="'delete'">
+                                <ng-container *accessControl="{ moduleName: 'Bank Officer', accessType: 'delete' }">
                                     <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, motherinlaw.id, motherinlaw.offRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
                                 </ng-container>
                                     {{motherinlaw.fullName}}
                             </div>
                             <br>
                       </ng-container>
-                        <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(5, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        <mat-icon *accessControl="{ moduleName: 'Bank Officer', accessType: 'add' }" (click)="openRIForm()" (click)="setButtonId(5, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                       </td>
               </ng-container>
         
@@ -181,14 +181,14 @@
                   <td mat-cell *matCellDef="let element">
                       <ng-container *ngFor="let fatherinlaw of element['FatherinLaw']">
                         <div class="d-flex d-sub-icon">
-                            <ng-container *appHasPermission="'delete'">
+                            <ng-container *accessControl="{ moduleName: 'Bank Officer', accessType: 'delete' }">
                                 <mat-icon class="sub-icon" color="warn" (click)="delRelationship(element, fatherinlaw.id, fatherinlaw.offRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon> 
                             </ng-container>
                                 {{fatherinlaw.fullName}}
                         </div>
                         <br>
                       </ng-container>  
-                        <mat-icon *appHasPermission="'add'" (click)="openRIForm()" (click)="setButtonId(6, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
+                        <mat-icon *accessControl="{ moduleName: 'Bank Officer', accessType: 'add' }" (click)="openRIForm()" (click)="setButtonId(6, element.offc_CisNumber)" class="add-icon" color="primary">add_circle</mat-icon>
                       </td>
               </ng-container>
                 

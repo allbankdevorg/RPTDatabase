@@ -18,11 +18,11 @@
                               </div>
                               <div class="d-flex justify-content-end w-50">
                                 <div style="display: flex; align-items: center;">
-                                    <button  (click)="openAffilDirectorsForm()" mat-fab extended color="primary" (click)="setAffilComp()" *appHasPermission="'add'" style="margin-right: 10px;">
+                                    <button  (click)="openAffilDirectorsForm()" mat-fab extended color="primary" (click)="setAffilComp()" *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" style="margin-right: 10px;">
                                         <mat-icon>add</mat-icon>
                                         ADD
                                     </button>
-                                  <button (click)="downloadCSV()" mat-fab extended color="primary" *appHasPermission="'add'" style="margin-right: 10px;">
+                                  <button (click)="downloadCSV()" mat-fab extended color="primary" *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'update' }" style="margin-right: 10px;">
                                     <mat-icon>file_download</mat-icon>
                                     CSV
                                   </button>
@@ -46,11 +46,11 @@
                             <ng-container matColumnDef="FullName" sticky>
                                 <th mat-header-cell *matHeaderCellDef> Full Name </th>
                                 <td mat-cell *matCellDef="let element"> 
-                                    <button *appHasPermission="'edit'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Update this Officer." color="warn" class="update-button" (click)="openEditAffilDirForm(element, $event)" aria-label="Delete Users">
+                                    <button *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'edit' }" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Update this Officer." color="warn" class="update-button" (click)="openEditAffilDirForm(element, $event)" aria-label="Delete Users">
                                         <mat-icon>create</mat-icon>
                                     </button> 
                                     {{element.FullName}} 
-                                    <button *appHasPermission="'delete'" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Affiliates Officer." color="warn" class="add-button" (click)="delAffilDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
+                                    <button *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Affiliates Officer." color="warn" class="add-button" (click)="delAffilDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
                                         <mat-icon>link_off</mat-icon>
                                     </button>
                                 </td>
@@ -69,14 +69,14 @@
                                 <td mat-cell *matCellDef="let element"> 
                                     <ng-container *ngFor="let motherName of element['MothersName']">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon"  color="warn" (click)="delAffilDirRI(element, motherName.id, motherName.dirRelated)" *ngIf="element.MothersName">remove_circle</mat-icon>
                                             </ng-container> 
                                                 {{motherName.fullName}}
                                         </div>
                                         <br>
                                     </ng-container>
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
                                     (click)="setButtonId(1, element.dir_CisNumber)" 
                                     (click)="setdirRelated()">add_circle</mat-icon>
                                 </td>
@@ -89,14 +89,14 @@
                                 <td mat-cell *matCellDef="let element"> 
                                     <ng-container *ngFor="let fathersName of element.FathersName">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn"  (click)="delAffilDirRI(element, fathersName.id, fathersName.dirRelated)" *ngIf="element.FathersName">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{fathersName.fullName}}
                                         </div>  
                                         <br>
                                     </ng-container>
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
                                     (click)="setButtonId(2, element.dir_CisNumber)" 
                                     (click)="setdirRelated()">add_circle</mat-icon>
                                 </td>
@@ -107,14 +107,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let sibling of element.Siblings">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, sibling.id, sibling.dirRelated)" *ngIf="element.Siblings">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{sibling.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" class="add-icon"  color="primary" 
                                     (click)="setButtonId(3, element.dir_CisNumber)" 
                                     (click)="setdirRelated()">add_circle</mat-icon>
                                 </td>
@@ -126,14 +126,14 @@
                                 <td mat-cell *matCellDef="let element"> 
                                     <ng-container *ngFor="let spouse of element.Spouse">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, spouse.id, spouse.dirRelated)" *ngIf="element.Spouse">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ spouse.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(4, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(4, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>
                             </ng-container>
                         
@@ -143,14 +143,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let Child of element['Children']">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Child.id, Child.dirRelated)" *ngIf="element.Children">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Child.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(5, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(5, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>
                             </ng-container>
                         
@@ -160,14 +160,14 @@
                                 <td mat-cell *matCellDef="let element"> 
                                     <ng-container *ngFor="let motherInLaw of element['MotherinLaw']">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, motherInLaw.id, motherInLaw.dirRelated)" *ngIf="element.MotherinLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ motherInLaw.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(6, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(6, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>        
                             </ng-container>
                         
@@ -177,14 +177,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let fatherInLaw of element['FatherinLaw']">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, fatherInLaw.id, fatherInLaw.dirRelated)" *ngIf="element.FatherinLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ fatherInLaw.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(7, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(7, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -194,14 +194,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let Stepchild of element.stepChild">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Stepchild.id, Stepchild.dirRelated)" *ngIf="element.stepChild">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Stepchild.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(8, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -211,14 +211,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let SonDaughterinlaw of element.sonDaughterInLaw">
                                         <div class="d-flex d-sub-icon">    
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, SonDaughterinlaw.id, SonDaughterinlaw.dirRelated)" *ngIf="element.sonDaughterInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ SonDaughterinlaw.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(9, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -228,14 +228,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let Grandparents of element.grandParents">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandparents.id, Grandparents.dirRelated)" *ngIf="element.grandParents">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandparents.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(10, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(10, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>        
                             </ng-container>
                         
@@ -245,14 +245,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let Grandparentsinlaw of element.grandParentsInLaw">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandparentsinlaw.id, Grandparentsinlaw.dirRelated)" *ngIf="element.grandParentsInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandparentsinlaw.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(11, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(11, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>
                             </ng-container>
                         
@@ -262,14 +262,14 @@
                                 <td mat-cell *matCellDef="let element"> 
                                     <ng-container *ngFor="let Sistersinlaw of element.sistersInLaw">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Sistersinlaw.id, Sistersinlaw.dirRelated)" *ngIf="element.sistersInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Sistersinlaw.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(12, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(12, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>    
                             </ng-container>
                         
@@ -279,14 +279,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let Brothersinlaw of element.brothersInLaw">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Brothersinlaw.id, Brothersinlaw.dirRelated)" *ngIf="element.brothersInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Brothersinlaw.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(13, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(13, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>      
                             </ng-container>
                             
@@ -296,14 +296,14 @@
                                 <td mat-cell *matCellDef="let element">
                                     <ng-container *ngFor="let Grandchildren of element.grandChildren">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandchildren.id, Grandchildren.dirRelated)" *ngIf="element.grandChildren">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandchildren.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(14, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(14, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>  
                             </ng-container>
                         
@@ -313,14 +313,14 @@
                                 <td mat-cell *matCellDef="let element" class="rowdata">
                                     <ng-container *ngFor="let Grandchildreninlaw of element.grandChildrenInLaw">
                                         <div class="d-flex d-sub-icon">
-                                            <ng-container *appHasPermission="'delete'">
+                                            <ng-container *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'delete' }">
                                                 <mat-icon class="sub-icon" color="warn" (click)="delAffilDirRI(element, Grandchildreninlaw.id, Grandchildreninlaw.dirRelated)" *ngIf="element.grandChildrenInLaw">remove_circle</mat-icon>
                                             </ng-container>
                                                 {{ Grandchildreninlaw.fullName}}
                                         </div>
                                         <br>
                                     </ng-container> 
-                                    <mat-icon *appHasPermission="'add'" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(15, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
+                                    <mat-icon *accessControl="{ moduleName: 'Person Affiliated Company', accessType: 'add' }" (click)="openAffilDirectorsRIForm()" (click)="setButtonId(15, element.dir_CisNumber)" (click)="setdirRelated()" class="add-icon" color="primary">add_circle</mat-icon>
                                 </td>      
                             </ng-container>
                         
