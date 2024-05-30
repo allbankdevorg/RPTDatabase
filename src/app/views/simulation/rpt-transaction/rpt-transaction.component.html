@@ -11,7 +11,7 @@
                         <!-- <c-row> -->
                           <div>
 
-                            <button (click)="openChecker()" mat-fab extended color="primary"  style="margin-right: 10px;">
+                            <button (click)="openChecker()" mat-fab extended color="primary" *accessControl="{ moduleName: 'Reports/Simulation', accessType: 'add' }"  style="margin-right: 10px;">
                                 <mat-icon>search</mat-icon>
                                 RPT Database Search
                                 </button>

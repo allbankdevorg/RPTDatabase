@@ -32,11 +32,11 @@
                         <mat-icon>refresh</mat-icon>
                         Reset Simulation
                       </button>
-                      <button (click)="generateCSV()" mat-fab extended color="primary" style="margin-right: 10px;">
+                      <button (click)="generateCSV()" mat-fab extended color="primary" *accessControl="{ moduleName: 'SBL List Report', accessType: 'update' }" style="margin-right: 10px;">
                         <mat-icon>description</mat-icon>
                         CSV  
                       </button>
-                      <button (click)="exportPDF()" mat-fab extended color="primary" style="margin-right: 10px;">
+                      <button (click)="exportPDF()" mat-fab extended color="primary" *accessControl="{ moduleName: 'SBL List Report', accessType: 'update' }" style="margin-right: 10px;">
                         <mat-icon>picture_as_pdf</mat-icon>
                         PDF
                       </button>
@@ -59,7 +59,7 @@
                     <c-card class="mb-4">
                       <c-card-header class="d-flex justify-content-between align-items-center" id="{{ account.account_name }}">
                         <div>  
-                          {{ account.account_name }} <button (click)="openSimulation(i); calculateAvailable(sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal, calculateTotalNetHoldOut(account.loan_list))" mat-fab extended color="primary" class="add-btn-icon">Simulate</button>
+                          {{ account.account_name }} <button (click)="openSimulation(i); calculateAvailable(sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal, calculateTotalNetHoldOut(account.loan_list))" mat-fab extended color="primary" class="add-btn-icon" *accessControl="{ moduleName: 'SBL List Report', accessType: 'add' }">Simulate</button>
                         </div>
                         <div class="mt-1">
                           <mat-form-field [style.width.%]=100>
