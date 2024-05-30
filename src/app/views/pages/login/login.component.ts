@@ -149,20 +149,98 @@ export class LoginComponent implements OnInit {
   
 
 
+// async login() {
+//   // Simulate login with username and password
+//   if (this.loginForm.valid) {
+//     const username = this.loginForm.get('username')?.value;
+//     const password = this.loginForm.get('password')?.value;
+//     const userID = this.uD;
+//     const sessionId = uuidv4();
+//     const otpGen = this.authService.generateAndSaveOtp()
+
+//     // this.otpGene = otpGen;
+
+    
+
+
+//     try {
+//       const response = await Loginuser(username, password, sessionId, otpGen, userID);
+//       this.uD = response.result[0].user_details[0].id;
+//       this.userName = response.result[0].user_details[0].username;
+//       this.sID = sessionId;
+//       this.uA = response.result[0].user_access;
+//       this.urole = response.result[0].user_details[0].role;
+//       this.userName = username;
+//       this.password = password;
+
+//       // this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
+
+//       const modal = this.otpModal.nativeElement;
+
+//       if (response.result[0].message === 'success') {
+//         const mobile = response.result[0].user_details[0].mobile_no;
+//         this.mobileNum = mobile;
+//         this.userName = response.result[0].user_details[0].username;
+//         const userID = this.uD;
+//         const session = this.sID;
+
+
+//         if (response.result[0].user_details[0].status === 0) {
+//           if (modal) {
+          
+//             this.renderer.addClass(modal, 'show');
+//             this.renderer.setStyle(modal, 'display', 'block');  
+  
+//             try {
+//               const sendotp = await sendOTP(mobile, otpGen, userID, session);
+//             } catch (error: any) {
+//               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+//             }          
+//           }
+//           // Log successful login
+//           this.logAction('login', 'Login success', true, 'Login');
+//         }
+//         else {
+//           Swal.fire({
+//             icon: 'error',
+//             title: 'Account Disabled!',
+//             text: 'Contact System Administrator to activate your account',
+//           });
+
+//         }
+
+//       } else {
+//         // Log unsuccessful login
+//         this.logAction('login', 'Invalid username or password', false, 'Login');
+
+//         Swal.fire({
+//           icon: 'error',
+//           title: 'Login Failed',
+//           text: 'Invalid username or password',
+//         });
+//       }
+//     } catch (error: any) {
+//       // Log unsuccessful login with error message
+//       const errorMessage = error instanceof Error ? error.message : 'Failed to connect to the server. Please try again later';
+//         Swal.fire({
+//           icon: 'error',
+//           title: 'Login Failed',
+//           text: errorMessage
+//         });
+//     }
+//   }
+// }
+
+
+
 async login() {
-  // Simulate login with username and password
   if (this.loginForm.valid) {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
     const userID = this.uD;
     const sessionId = uuidv4();
-    const otpGen = this.authService.generateAndSaveOtp()
-
-    // this.otpGene = otpGen;
-
+    const otpGen = this.authService.generateAndSaveOtp();
     
-
-
     try {
       const response = await Loginuser(username, password, sessionId, otpGen, userID);
       this.uD = response.result[0].user_details[0].id;
@@ -173,7 +251,6 @@ async login() {
       this.userName = username;
       this.password = password;
 
-      // this.authService.setAuthToken('yourAuthToken'); // Replace with an actual token
 
       const modal = this.otpModal.nativeElement;
 
@@ -184,52 +261,126 @@ async login() {
         const userID = this.uD;
         const session = this.sID;
 
-
         if (response.result[0].user_details[0].status === 0) {
           if (modal) {
-          
             this.renderer.addClass(modal, 'show');
             this.renderer.setStyle(modal, 'display', 'block');  
-  
+
             try {
               const sendotp = await sendOTP(mobile, otpGen, userID, session);
             } catch (error: any) {
               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             }          
           }
-          // Log successful login
           this.logAction('login', 'Login success', true, 'Login');
-        }
-        else {
+        } else {
           Swal.fire({
             icon: 'error',
             title: 'Account Disabled!',
             text: 'Contact System Administrator to activate your account',
           });
-
         }
       } else {
-        // Log unsuccessful login
         this.logAction('login', 'Invalid username or password', false, 'Login');
-
         Swal.fire({
           icon: 'error',
           title: 'Login Failed',
-          // text: 'Invalid username or password',
+          text: 'Invalid username or password',
         });
       }
     } catch (error: any) {
-      // Log unsuccessful login with error message
       const errorMessage = error instanceof Error ? error.message : 'Failed to connect to the server. Please try again later';
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: errorMessage
-        });
+      this.logAction('login', errorMessage, false, 'Login');
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: errorMessage,
+      });
     }
   }
 }
 
+
+
+// async verifyOtp() {
+//   if (this.otp !== '') {
+//     const enteredOTP = this.otp;
+//     const user = this.userName;
+//     const userID = this.uD;
+//     const session = this.sID;
+//     const role = this.urole;
+//     // const loadingModal = Swal.fire({
+//     //   title: 'Verifying...',
+//     //   allowOutsideClick: false,
+//     //   didOpen: () => {
+//     //     Swal.showLoading();
+//     //   }
+//     // });
+
+//     try {
+//       // Perform OTP verification asynchronously
+//       const verificationPromise = await checkOTP(user, enteredOTP, userID, session);
+//       const sessionExpireTime = Date.now() + 300000;
+
+//       if (verificationPromise.result[0].message === 'success') {
+//         // OTP verification completed successfully
+
+//          // Navigate to the dashboard
+
+//         // Store user data in local storage
+//         localStorage.setItem('user', JSON.stringify(this.uD));
+//         localStorage.setItem('sessionID', JSON.stringify(this.sID));
+//         localStorage.setItem('userAcces', JSON.stringify(this.uA));
+//         localStorage.setItem('userID', JSON.stringify(this.userName));
+//         localStorage.setItem('role', JSON.stringify(this.urole));
+
+
+//         // Initialize ng2-idle
+
+//         // Start watching for user activity
+//         this.IdleLib.watch();
+
+//         await this.router.navigate(['/dashboard']);
+       
+
+//         // Close the loading modal
+//         Swal.close();
+//       } else if (verificationPromise.result[0].status === 'failed') {
+//         // Log unsuccessful OTP verification
+//         this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
+
+//         console.log("Invalid Otp")
+//         // Invalid OTP, show error 
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Error',
+//             text: 'Invalid OTP verification. Please try again.',
+//           });
+//       }
+//     } catch (error) {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Error',
+//         text: 'Please try again.',
+//       });
+//       // Handle OTP verification errors
+//       this.logAction('otpVerification', 'Error during OTP verification', false, 'Login');
+//       // console.error('Error during OTP verification:', error);
+      
+//     } finally {
+//       // Close the loading modal
+//       Swal.close();
+//     }
+//   } else {
+//     // Handle the case where the OTP is empty
+//     this.logAction('otpVerification', 'OTP is Empty', false, 'Login');
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'OTP is Empty!',
+//       text: 'OTP is required',
+//     });
+//   }
+// }
 
 async verifyOtp() {
   if (this.otp !== '') {
@@ -238,71 +389,70 @@ async verifyOtp() {
     const userID = this.uD;
     const session = this.sID;
     const role = this.urole;
-    // const loadingModal = Swal.fire({
-    //   title: 'Verifying...',
-    //   allowOutsideClick: false,
-    //   didOpen: () => {
-    //     Swal.showLoading();
-    //   }
-    // });
 
     try {
+      // Show loading modal
+      Swal.fire({
+        title: 'Verifying...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       // Perform OTP verification asynchronously
       const verificationPromise = await checkOTP(user, enteredOTP, userID, session);
       const sessionExpireTime = Date.now() + 300000;
 
+      
       if (verificationPromise.result[0].message === 'success') {
         // OTP verification completed successfully
-
-         // Navigate to the dashboard
 
         // Store user data in local storage
         localStorage.setItem('user', JSON.stringify(this.uD));
         localStorage.setItem('sessionID', JSON.stringify(this.sID));
-        localStorage.setItem('userAcces', JSON.stringify(this.uA));
+        // localStorage.setItem('userAcces', JSON.stringify(this.uA));
         localStorage.setItem('userID', JSON.stringify(this.userName));
         localStorage.setItem('role', JSON.stringify(this.urole));
 
-
-        // Initialize ng2-idle
-
-        // Start watching for user activity
+        // Initialize ng2-idle and start watching for user activity
         this.IdleLib.watch();
 
+        // Navigate to the dashboard
         await this.router.navigate(['/dashboard']);
-       
 
         // Close the loading modal
         Swal.close();
-      } else if (verificationPromise.result[0].status === 'failed') {
+      } else {
         // Log unsuccessful OTP verification
         this.logAction('otpVerification', 'Entered invalid OTP', false, 'Login');
 
-        console.log("Invalid Otp")
-        // Invalid OTP, show error 
+        // Invalid OTP, show error message
         Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Invalid OTP verification. Please try again.',
-          });
+          icon: 'error',
+          title: 'Error',
+          text: 'Invalid OTP verification. Please try again.',
+        });
       }
     } catch (error) {
-      // Swal.fire({
-      //   icon: 'error',
-      //   title: 'Error',
-      //   text: 'Invalid OTP verification. Please try again.',
-      // });
-      // Handle OTP verification errors
+      // Show error message
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please try again.',
+      });
+
+      // Log the error action
       this.logAction('otpVerification', 'Error during OTP verification', false, 'Login');
-      console.error('Error during OTP verification:', error);
-      
     } finally {
-      // Close the loading modal
-      Swal.close();
+      // Close the loading modal if still open
+      
     }
   } else {
-    // Handle the case where the OTP is empty
+    // Log the action for empty OTP
     this.logAction('otpVerification', 'OTP is Empty', false, 'Login');
+    
+    // Show error message for empty OTP
     Swal.fire({
       icon: 'error',
       title: 'OTP is Empty!',
@@ -310,6 +460,7 @@ async verifyOtp() {
     });
   }
 }
+
 
 
 
