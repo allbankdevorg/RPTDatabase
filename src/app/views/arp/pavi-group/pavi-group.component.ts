@@ -233,7 +233,6 @@ export class PaviGroupComponent {
         this.dataLoaded = true;
         this.drawOrgChart(dataArr);
         this.exportData = dataArr;
-        console.log(this.exportData);
         
       }
     });
