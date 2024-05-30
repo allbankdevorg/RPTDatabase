@@ -98,9 +98,10 @@
                                 <th>Add</th>
                                 <th>Update</th>
                                 <th>Delete</th>
-                                <th>Maker</th>
+                                <th>Export</th>
+                                <!-- <th>Maker</th>
                                 <th>Approver</th>
-                                <th>Reviewer</th>
+                                <th>Reviewer</th> -->
                                 <!-- Add more headers as needed -->
                               </tr>
                             </thead>
@@ -110,11 +111,12 @@
                                 <td>{{ access.navigation_name }}</td>                              
                                 <td><mat-checkbox (change)="updateCheckboxValue($event, 'view', access)" [checked]="+access.view === 1" class="example-margin"></mat-checkbox></td>
                                 <td><mat-checkbox (change)="updateCheckboxValue($event, 'add', access)" [checked]="+access.add === 1" class="example-margin"></mat-checkbox></td>
-                                <td><mat-checkbox (change)="updateCheckboxValue($event, 'update', access)" [checked]="+access.update === 1" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox (change)="updateCheckboxValue($event, 'edit', access)" [checked]="+access.edit === 1" class="example-margin"></mat-checkbox></td>
                                 <td><mat-checkbox (change)="updateCheckboxValue($event, 'delete', access)" [checked]="+access.delete === 1" class="example-margin"></mat-checkbox></td>
-                                <td><mat-checkbox (change)="updateCheckboxValue($event, 'maker', access)" [checked]="+access.maker === 1" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox (change)="updateCheckboxValue($event, 'update', access)" [checked]="+access.update === 1" class="example-margin"></mat-checkbox></td>
+                                <!-- <td><mat-checkbox (change)="updateCheckboxValue($event, 'maker', access)" [checked]="+access.maker === 1" class="example-margin"></mat-checkbox></td>
                                 <td><mat-checkbox (change)="updateCheckboxValue($event, 'approver', access)" [checked]="+access.approver === 1" class="example-margin"></mat-checkbox></td>
-                                <td><mat-checkbox (change)="updateCheckboxValue($event, 'reviewer', access)" [checked]="+access.reviewer === 1" class="example-margin"></mat-checkbox></td>
+                                <td><mat-checkbox (change)="updateCheckboxValue($event, 'reviewer', access)" [checked]="+access.reviewer === 1" class="example-margin"></mat-checkbox></td> -->
                                 
                                  
                                 <!-- Add more columns for other properties -->
