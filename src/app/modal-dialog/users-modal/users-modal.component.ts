@@ -79,7 +79,7 @@ export class UsersModalComponent {
   matSelect: any;
 
   
-  DdisplayedColumns: string[] = ['navigation_name', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
+  DdisplayedColumns: string[] = ['navigation_name', 'view', 'add', 'edit', 'delete', 'update', 'maker', 'approver', 'reviewer'];
   permissionDataSource = new MatTableDataSource<Permissions>();
   userAccess: [] = [];
 
