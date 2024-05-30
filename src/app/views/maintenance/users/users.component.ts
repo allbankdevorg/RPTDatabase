@@ -102,7 +102,7 @@ export class UsersComponent {
   columnsToDisplayWithExpand = [...this.columnsToDisplay,];
   expandedElement: Users | null = null;
 
-  DdisplayedColumns: string[] = ['navigation_name', 'view', 'add', 'edit', 'delete', 'maker', 'approver', 'reviewer'];
+  DdisplayedColumns: string[] = ['navigation_name', 'view', 'add', 'edit', 'delete', 'update'];
   permissionDataSource = new MatTableDataSource<Permissions>();
 
   @ViewChild('usersModal') usersModal!: ElementRef;
