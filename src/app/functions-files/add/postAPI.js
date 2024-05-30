@@ -529,59 +529,110 @@ function createStockHolders(formData, session, userID) {
  * @param {any} password - The password of the user.
  * @param {any} sessionID - The session ID of the user when the login process is successful.
 */
-function Loginuser(username, password, sessionId, otpGen, userID) {
-    return new Promise((resolve, reject) => {
-      Swal.fire({
-        title: 'Processing...',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
+// function Loginuser(username, password, sessionId, otpGen, userID) {
+//     return new Promise((resolve, reject) => {
+//       Swal.fire({
+//         title: 'Processing...',
+//         allowOutsideClick: false,
+//         didOpen: () => {
+//             Swal.showLoading();
+//         }
+//     });
 
-        var settings = {
+//         var settings = {
+//           "url": "http://10.232.236.15:8092/api/userManagement",
+//           "method": "POST",
+//           "timeout": 0,
+//           "headers": {
+//             "Content-Type": "application/json"
+//           },
+//           "data": JSON.stringify({
+//             "cmd": 2,
+//             "session": sessionId,
+//             "userid": userID,
+//             "request": {
+//                 "username": username,
+//                 "password": password,
+//                 // "role": 1,
+//                 "session": sessionId,
+//                 "otp": otpGen,
+//             }
+//           }),
+//         };
+    
+//         $.ajax(settings).done(function (response) {
+            
+//             // Check the status and resolve/reject the promise accordingly
+//             Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+//             if (response.result[0].message === 'success') {
+//               console.log(response);
+//               resolve(response);
+              
+//             } else {
+//               reject(response);
+//             }
+//           })
+
+//           .fail(function(jqXHR, textStatus, errorThrown) {
+//             // Handle AJAX errors here
+//             reject({
+//                 message: textStatus,
+//                 status: errorThrown
+//             });
+//         });
+
+        
+//       });
+// }
+
+function Loginuser(username, password, sessionId, otpGen, userID) {
+  return new Promise((resolve, reject) => {
+      Swal.fire({
+          title: 'Processing...',
+          allowOutsideClick: false,
+          didOpen: () => {
+              Swal.showLoading();
+          }
+      });
+
+      var settings = {
           "url": "http://10.232.236.15:8092/api/userManagement",
           "method": "POST",
           "timeout": 0,
           "headers": {
-            "Content-Type": "application/json"
+              "Content-Type": "application/json"
           },
           "data": JSON.stringify({
-            "cmd": 2,
-            "session": sessionId,
-            "userid": userID,
-            "request": {
-                "username": username,
-                "password": password,
-                // "role": 1,
-                "session": sessionId,
-                "otp": otpGen,
-            }
+              "cmd": 2,
+              "session": sessionId,
+              "userid": userID,
+              "request": {
+                  "username": username,
+                  "password": password,
+                  "session": sessionId,
+                  "otp": otpGen
+              }
           }),
-        };
-    
-        $.ajax(settings).done(function (response) {
-            
-            // Check the status and resolve/reject the promise accordingly
-            Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-            if (response.result[0].message === 'success') {
+      };
+
+      $.ajax(settings).done(function (response) {
+          
+          if (response.result && response.result[0].message === 'success') {
+              Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
               resolve(response);
-            } else {
-              reject(response);
-            }
-          })
-
-          .fail(function(jqXHR, textStatus, errorThrown) {
-            // Handle AJAX errors here
-            reject({
-                message: textStatus,
-                status: errorThrown
-            });
-        });
-
-        
+          } else {
+              Swal.fire('Error', response.result ? response.result[0].message : 'Unknown error', 'error');
+              reject(new Error(response.result ? response.result[0].message : 'Unknown error'));
+          }
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+          Swal.fire('AJAX Error', textStatus, 'error');
+          console.error("AJAX error:", textStatus, errorThrown);
+          reject(new Error(textStatus === 'timeout' ? 'Request timed out' : 'Failed to connect to the server. Please try again later'));
       });
+  });
 }
+
+
 
 
 
@@ -650,14 +701,20 @@ function checkOTP(user, enteredOTP, userID, session) {
       };
   
       $.ajax(settings).done(function (response) {
-          
-          // Check the status and resolve/reject the promise accordingly
-          Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
-          if (response.result[0].message === 'success') {
-            resolve(response);
-          } else {
-            reject(response);
+
+          if (response.result && response.result[0].message === 'success') {
+            Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+            resolve(response)
           }
+          else {
+            
+            Swal.fire('Error', response.result ? response.result[0].message : 'Unknown error', 'error');
+            reject(new Error(response.result ? response.result[0].message : 'Unknown error'));
+          }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+          Swal.fire('AJAX Error', textStatus, 'error');
+          console.error("AJAX error:", textStatus, errorThrown);
+          reject(new Error(textStatus === 'timeout' ? 'Request timed out' : 'Failed to connect to the server. Please try again later'));
         });
     });
 }
