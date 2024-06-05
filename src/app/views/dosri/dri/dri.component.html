@@ -88,9 +88,6 @@
                         <button mat-icon-button (click)="onRowClick(row, $event)" aria-label="View Users Info" *accessControl="{ moduleName: 'DRI', accessType: 'view' }">
                           <mat-icon>visibility</mat-icon>
                         </button>
-                        <!-- <button mat-icon-button (click)="editDosri(row, $event)" aria-label="Edit Users Info" *appHasPermission="'edit'">
-                          <mat-icon>create</mat-icon>
-                        </button> -->
                         <button mat-icon-button (click)="openEditForm(row, $event)" aria-label="Edit Users Info" *accessControl="{ moduleName: 'DRI', accessType: 'edit' }">
                           <mat-icon>create</mat-icon>
                         </button>
@@ -98,8 +95,6 @@
                           <mat-icon>delete</mat-icon>
                         </button>
                       </div>
-                          <!-- <button class="mx-1 my-1" ></button> -->
-                          <!-- <button class="mx-1 my-1" (click)="onRowClick(row)"></button> -->
                     </td>
                   </ng-container>
   
