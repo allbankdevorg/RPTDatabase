@@ -26,7 +26,7 @@ import { AffiliatesService } from 'src/app/services/affiliates/affiliates.servic
 import Swal from 'sweetalert2';
 
 import {createUser} from '../../functions-files/add/postAPI';
-import {updateUserAccess} from '../../functions-files/update/updateAPI';
+import {updateUserAccess, updateUserInfo} from '../../functions-files/update/updateAPI';
 import { userAccess} from '../../functions-files/add/postAPI';
 
 
@@ -103,7 +103,7 @@ export class UsersModalComponent {
       mobile_no: ['', [Validators.required]],
       role: ['', [Validators.required]],
       commandControl: [''],
-      username: ['', [Validators.required]],
+      username: [''],
       status: [],
     });
     _dialogRef.disableClose = true;
@@ -145,10 +145,32 @@ export class UsersModalComponent {
       const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
 
       if (this.data) {
+        updateUserInfo(formData, user, session, userID)
+        .then((jqXHR) => {
+          // Assuming your Angular component code looks like this
+          if (jqXHR) {
+            // If response is not empty, process the response
+            this.ngOnInit();
+            this.logAction('Update', 'Updated User', true, 'Users');
+            this.close();
+          } else {
+            // If response is empty, handle accordingly
+            Swal.fire('Success', 'Update Successfull', 'success');
+            this.ngOnInit();
+            this.logAction('Update', 'Updated User', true, 'Users');
+            this.close();
+          }
+        })
+        .catch((error) => {
+          // Handle errors
+          Swal.fire(`Update Failed: ${error.status}`, error.error, 'error');
+        });
 
-        let userAccesUpdate = [this.permissionDataSource.data];
-        console.log(userAccesUpdate);
-        // updateUser(userAccesUpdate, user, session, userID)
+
+
+        // let userAccesUpdate = [this.permissionDataSource.data];
+        // console.log(userAccesUpdate);
+        // updateUserInfo(formData, user, session, userID)
         //   .then((response) => {
         //     this.ngOnInit();
         //     this.logAction('Update', 'Updated User', true, 'Users');
@@ -157,8 +179,6 @@ export class UsersModalComponent {
         //   .catch((error) => {
 
         //   })
-        // console.log(formData);
-        // console.log(this.permissionDataSource.data);
       }
       else {
          // Call the JavaScript function with form data
