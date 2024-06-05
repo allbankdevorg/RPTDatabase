@@ -158,6 +158,10 @@ export class DriComponent {
   }
   
 
+/************ ********* ******** */
+
+/************ ********* ******** */
+
   // All Functions below
   updateTableData(): void {
     // Assuming `getCompany` and `getDirectors` return Observables
