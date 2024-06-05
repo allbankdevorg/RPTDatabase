@@ -164,7 +164,6 @@ export class UsersComponent {
     this.get.getUserList((usersList) => {
       if (usersList) {
         this.userDataSource.data = usersList;
-        
       } else {
         
       }
@@ -187,20 +186,6 @@ export class UsersComponent {
       });
   }
   
-
-  // getUserAccess(row): void {
-  //   const userid = row.username
-  //   userAccess(userid) // Pass the entire formData object
-  //     .then((response) => {
-  //       this.permissionDataSource.data = response.result[0].user_access;
-
-  //       console.log(this.permissionDataSource.data)
-  //       // const userPerm = response.result[0].user_access
-  //     })
-  //     .catch((error) => {
-       
-  //     });
-  // }
   
 
   setUserID(row) {
@@ -253,7 +238,7 @@ openEditForm(data: any, event: any) {
   dialogRef.afterClosed().subscribe({
     next: (val) => {
       if (val) {
-        // this.getEmployeeList();
+        this.updateTableData();
       }
     },
   });
