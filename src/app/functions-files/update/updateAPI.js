@@ -338,6 +338,59 @@ function updateUserAccess(data, user, session, userID) {
 }
 
 
+function updateUserInfo(data, user, session, userID) {
+    return new Promise((resolve, reject) => {
+        var settings = {
+            "url": "http://10.232.236.15:8092/api/updateData",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "cmd": 809,
+                "session": session,
+                "userid": userID,
+                "request": {
+                    "username": data.username,
+                    "mobile_no": data.mobile_no,
+                    "role": data.role,
+                    "status": data.status
+                }
+            }),
+        };
+
+        $.ajax(settings)
+            .done(function (response, textStatus, jqXHR) {
+                const statusCode = jqXHR.status;
+                console.log('jqXHR Status (Success):', statusCode);
+
+                // Handle different status codes
+                if (statusCode === 200 || statusCode === 201 || statusCode === 204) {
+                    Swal.fire('Request Successful', '', 'success');
+                    resolve(response); // Resolve the promise if successful
+                } else {
+                    Swal.fire(`Request Failed: ${jqXHR.statusText}`, '', 'error');
+                    reject(jqXHR.statusText); // Reject the promise if failed
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                const statusCode = jqXHR.status;
+                console.log('jqXHR Status (Fail):', statusCode);
+
+                if (statusCode === 201) {
+                    Swal.fire('Request Successful', '', 'success');
+                    resolve(jqXHR.responseText); // Resolve the promise if status is 201
+                } else {
+                    Swal.fire(`Request Failed: ${textStatus}`, errorThrown, 'error');
+                    reject(errorThrown); // Reject the promise if an error occurs
+                }
+            });
+    });
+}
+
+
+
 
 module.exports = {
     updateManagingCompany,
@@ -349,5 +402,6 @@ module.exports = {
     updateStocksHolder,
     updateAffiliates,
     updateAffiliatesDir,
-    updateUserAccess
+    updateUserAccess,
+    updateUserInfo
 }
