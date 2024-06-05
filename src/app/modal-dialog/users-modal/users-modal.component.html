@@ -40,7 +40,7 @@
                   <mat-form-field appearance="fill" [style.width.%]=100>
                     
                     <input matInput #accDinput id="userName" name="userName"
-                    type="text" placeholder="User Name" formControlName="username">
+                    type="text" placeholder="User Name" formControlName="username" readonly>
                     
                     <mat-error *ngIf="userForm.get('username')?.hasError('required')" class="error-msg">User Name is Required</mat-error>
                   </mat-form-field>
