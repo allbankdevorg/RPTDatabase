@@ -4,7 +4,7 @@
         <h3 cModalTitle>Users Form</h3>
     </c-modal-header>
 </div>
-<form cForm class="mb-2" [formGroup]="userForm"  (ngSubmit)="onUserSubmit()">    
+<form cForm class="mb-2" [formGroup]="userForm">    
     <div mat-dialog-content class="content">
         <!-- Modal Form -->
         <c-modal-body>
@@ -151,7 +151,7 @@
         <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
         <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
         
-        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">{{data ? 'Update': 'Save'}}</button>
+        <button mat-raised-button color="primary" (click)="onUserSubmit()" type="submit" [disabled]="!userForm.valid">{{data ? 'Update': 'Save'}}</button>
     </div>
 </form>
 
