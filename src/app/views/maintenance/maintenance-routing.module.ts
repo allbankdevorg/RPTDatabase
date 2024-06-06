@@ -26,13 +26,13 @@ const routes: Routes = [
                 title: 'Users ',
               },
             },
-            {
-              path: 'settings',
-              component: SettingsComponent,
-              data: {
-                title: 'Settings ',
-              },
-            },
+            // {
+            //   path: 'settings',
+            //   component: SettingsComponent,
+            //   data: {
+            //     title: 'Settings ',
+            //   },
+            // },
             {
               path: 'manuals',
               component: ManualsComponent,
