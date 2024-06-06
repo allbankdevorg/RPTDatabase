@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, NgZone, Renderer2} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../../services/core/core.service';
 import { ChangeDetectorRef } from '@angular/core';
@@ -100,7 +100,7 @@ export class UsersModalComponent {
       // mName: ['', [Validators.required]],
       // lName: ['', [Validators.required]],
       // email: ['', [Validators.required, Validators.email]],
-      mobile_no: ['', [Validators.required]],
+      mobile_no: ['', [Validators.required, this.mobileNumValidator()]],
       role: ['', [Validators.required]],
       commandControl: [''],
       username: [''],
@@ -269,6 +269,36 @@ export class UsersModalComponent {
   }
 
 
+
+
+
+  mobileNumValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value: string = control.value;
+  
+      if (value && value.length > 0) {
+        // Check for the exact length (11 characters)
+        if (value.length !== 11) {
+          return { 'length': true };
+        }
+  
+        // Check if it starts with "09"
+        const startsWith09Regex = /^09/;
+        if (!startsWith09Regex.test(value)) {
+          return { 'startsWith09': true };
+        }
+  
+        // Check if it contains only numbers
+        const numberOnlyRegex = /^\d+$/;
+        if (!numberOnlyRegex.test(value)) {
+          return { 'numberOnly': true };
+        }
+      }
+  
+      // Mobile number is valid
+      return null;
+    };
+  }
 
 
 

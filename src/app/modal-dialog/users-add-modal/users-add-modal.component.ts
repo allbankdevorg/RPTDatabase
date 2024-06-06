@@ -73,7 +73,7 @@ export class UsersAddModalComponent {
       // mName: ['', [Validators.pattern(/\S+/)]],
       // lName: ['', [Validators.required, Validators.pattern(/\S+/)]],
       // email: ['', [Validators.required, Validators.email, Validators.pattern(/\S+/)]],
-      mobile: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern(/\S+/)]],
+      mobile: ['', [Validators.required, this.mobileNumValidator()]],
       role: ['', [Validators.required]],
       commandControl: [''],
       userName: ['', [Validators.required, Validators.pattern(/\S+/)]],
@@ -203,6 +203,36 @@ passwordValidator(): ValidatorFn {
     
 
     // Password is valid
+    return null;
+  };
+}
+
+
+
+mobileNumValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value: string = control.value;
+
+    if (value && value.length > 0) {
+      // Check for the exact length (11 characters)
+      if (value.length !== 11) {
+        return { 'length': true };
+      }
+
+      // Check if it starts with "09"
+      const startsWith09Regex = /^09/;
+      if (!startsWith09Regex.test(value)) {
+        return { 'startsWith09': true };
+      }
+
+      // Check if it contains only numbers
+      const numberOnlyRegex = /^\d+$/;
+      if (!numberOnlyRegex.test(value)) {
+        return { 'numberOnly': true };
+      }
+    }
+
+    // Mobile number is valid
     return null;
   };
 }

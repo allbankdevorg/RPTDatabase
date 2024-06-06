@@ -69,12 +69,11 @@
                       
                       <input matInput #accDinput id="uMobile" name="uMobile"
                       type="text" placeholder="Mobile Number" formControlName="mobile" appNum>
-                      <mat-error *ngIf="userForm.get('mobile')?.hasError('required')" class="error-msg">Mobile Number is Required</mat-error>
-                      <mat-error *ngIf="userForm.get('mobile')?.hasError('minLength')" class="error-msg">Mobile Number must be 11 digit long</mat-error>
-                      <mat-error *ngIf="userForm.get('mobile')?.hasError('maxLength')" class="error-msg">Mobile Number must be only 11 digit long</mat-error>
-                      <mat-error *ngIf="userForm.get('mobile')?.hasError('pattern')" class="error-msg">
-                        Field cannot be just whitespace
-                      </mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('required')" class="error-msg">Mobile # is Required</mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('length')" class="error-msg">Number must be max of 11 character</mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('startsWith09')" class="error-msg">Number must be at 09********* format</mat-error>
+                      <mat-error *ngIf="userForm.get('mobile')?.hasError('numberOnly')" class="error-msg">Only numbers are allowed</mat-error>
+                      
                     </mat-form-field>
                 </c-col>
 
