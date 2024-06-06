@@ -54,7 +54,7 @@
                     <ng-container matColumnDef="FullName" class="position-reative">
                         <th mat-header-cell *matHeaderCellDef> Full Name </th>
                         <td mat-cell *matCellDef="let element"> {{element.FullName}} 
-                          <mat-icon a*accessControl="{ moduleName: 'Directors Related Interest', accessType: 'delete' }" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
+                          <mat-icon *accessControl="{ moduleName: 'Directors Related Interest', accessType: 'delete' }" mat-icon-button mat-raised [matTooltipPosition]="positionOptions" matTooltip="Click to Unassign this Director." color="warn" class="add-button" (click)="delDirector(element, element.comp_CIS, element.dir_CisNumber)" aria-label="Delete Users">
                             <!-- <mat-icon>link_off</mat-icon> -->
                             link_off
                           </mat-icon>
