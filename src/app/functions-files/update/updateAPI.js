@@ -87,7 +87,7 @@ function updateHoldOut(formData, session, userID) {
                 "userid": userID,
                 "request": {
                     "pn_no": formData.loan_no,
-                    "hold_out": formData.deposit_holdout   
+                    "hold_out": formData.holdoutdata   
                 }
                 }),
             };

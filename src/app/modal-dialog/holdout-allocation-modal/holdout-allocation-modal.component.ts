@@ -26,7 +26,7 @@ export class HoldoutAllocationModalComponent implements OnInit {
     private auditTrailService: AuditTrailService) {
     this.hldOTForm = this.formBuilder.group({
         loan_no: [''],
-        deposit_holdout: [0, [Validators.required]]
+        holdoutdata: [0, [Validators.required]]
       // commandControl: ['', [Validators.required]]
       });
       _dialogRef.disableClose = true;

@@ -28,8 +28,8 @@
                   <!-- <mat-label>CIS Number</mat-label> -->
                   <input matInput #accDinput id="holdOutVal" name="holdOutVal"
                   type="text" placeholder="Amount" 
-                  formControlName="deposit_holdout" appNum>
-                  <mat-error *ngIf="hldOTForm.get('deposit_holdout')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
+                  formControlName="holdoutdata" appNum>
+                  <mat-error *ngIf="hldOTForm.get('holdoutdata')?.hasError('required')" class="error-msg">CIS Number is Required</mat-error>
                 </mat-form-field>
             </c-col>
           </c-row>
