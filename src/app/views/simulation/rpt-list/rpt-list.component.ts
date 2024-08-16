@@ -254,7 +254,7 @@ calculateactualData(actualData: any[]): void {
     return acc;
   }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
   
-  this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
+  this.rptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata) + 30000000;
 
   // Calculate rptRatio only if unimpairedCap is not zero
   if (this.unimpairedCap !== 0) {
@@ -272,7 +272,7 @@ calculateactualData(actualData: any[]): void {
   
   // Recalculate available balance only if approvedCapital is not zero
   if (this.approvedCapital !== 0) {
-    this.availBal = this.approvedCapital - this.rptBal;
+    this.availBal = (this.approvedCapital - this.rptBal);
   } else {
     this.availBal = 0;
   }
@@ -288,7 +288,7 @@ calculateSimulatedData(tempData: any[]): void {
   }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
 
   // Update simulated balance
-  this.SimulatedrptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
+  this.SimulatedrptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata) + 30000000;
 
   // Calculate ratios only if unimpairedCap is not zero
   if (this.unimpairedCap !== 0) {
