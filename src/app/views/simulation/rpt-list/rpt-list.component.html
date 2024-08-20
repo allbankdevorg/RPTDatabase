@@ -66,36 +66,48 @@
                                     <tr>
                                       <th colspan="3" class="center-header"><h3>Actual Data</h3></th>
                                     </tr>
-                                    <tr>
-                                      <th scope="col">Unimpaired Capital as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</th>
-                                      <th scope="col">RPT Balance (Net of Hold-out)</th>
-                                      <th scope="col">RPT Ratio</th>
-                                    </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>{{unimpairedCap | currency:'PHP'}}</td>
-                                      <td>{{rptBal | currency:'PHP'}}</td>
+                                      <td>RPT Balance(Loans)</td>
+                                      <td>{{ttlRPTOB | currency:'PHP'}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>INVESTMENT/BONDS</td>
+                                       <td>{{bonds | currency:'PHP'}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>DEPOSIT-HOLD OUT</td>
+                                      <td>( {{totalHoldOut | currency:'PHP'}} )</td>
+                                    </tr>
+                                    <tr>
+                                      <th>NET RPT BALANCE</th>
+                                       <th>{{rptBal | currency:'PHP'}}</th>
+                                    </tr>
+                                    <td></td>
+                                    <tr>
+                                      <th>Unimpaired Capital as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</th>
+                                      <th>{{unimpairedCap | currency:'PHP'}}</th>
+                                    </tr>
+                                    <td></td>
+                                    <tr>
+                                      <td>Board Approved RPT Limit</td>
+                                      <td>{{approvedCapital | currency:'PHP'}}</td>
+                                      <th>50% of unimpaired Capital</th>
+                                    </tr>
+                                    <tr>
+                                      <td>RPT Ratio</td>
                                       <td>{{rptRatio}}</td>
                                     </tr>
                                     <tr>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
-                                    <tr>
-                                      <td><p class="color-red">Board Approved RPT Limit</p></td>
-                                      <td><p class="color-red">{{approvedCapital | currency:'PHP'}}</p></td>
-                                      <td><p class="color-red">50%</p></td>
-                                    </tr>
-                                    <tr>
-                                      <td><p class="color-blue">Available Balance</p></td>
-                                      <td [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}">
-                                      <p>{{availBal | currency:'PHP'}}</p></td>
-                                      <td [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}"
-                                      ><p>{{availRptRatio}}</p></td>
+                                      <th><p class="color-blue">Available Balance</p></th>
+                                      <th [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}">
+                                      <p>{{availBal | currency:'PHP'}}</p></th>
+                                      <th [ngClass]="{'green-text': availBal > 0, 'red-text': availBal <= 0}"
+                                      ><p>{{availRptRatio}}</p></th>
                                     </tr>
                                   </tbody>
+
                                 </table>
                               </c-card-body>
                             </c-card>
@@ -107,6 +119,54 @@
                               <c-card-body>
                                 <div *ngIf="simulationPerformed">
                                   <table [responsive]="true" [cBorder]="1" cTable bordered>
+                                  <thead cTableColor="success">
+                                    <tr>
+                                      <th colspan="3" class="center-header"><h3>Actual Data</h3></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>RPT Balance(Loans)</td>
+                                      <td>{{SimulatedttlRPTOB | currency:'PHP'}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>INVESTMENT/BONDS</td>
+                                       <td>{{bonds | currency:'PHP'}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>DEPOSIT-HOLD OUT</td>
+                                      <td>( {{totalHoldOut | currency:'PHP'}} )</td>
+                                    </tr>
+                                    <tr>
+                                      <th>NET RPT BALANCE</th>
+                                       <th>{{SimulatedrptBal | currency:'PHP'}}</th>
+                                    </tr>
+                                    <td></td>
+                                    <tr>
+                                      <th>Unimpaired Capital as of {{UnimpairedDate | date: 'MMMM dd, yyyy'}}</th>
+                                      <th>{{unimpairedCap | currency:'PHP'}}</th>
+                                    </tr>
+                                    <td></td>
+                                    <tr>
+                                      <td>Board Approved RPT Limit</td>
+                                      <td>{{approvedCapital | currency:'PHP'}}</td>
+                                      <th>50% of unimpaired Capital</th>
+                                    </tr>
+                                    <tr>
+                                      <td>RPT Ratio</td>
+                                      <td>{{rptRatio}}</td>
+                                    </tr>
+                                    <tr>
+                                      <th><p class="color-blue">Available Balance</p></th>
+                                      <th [ngClass]="{'green-text': SimulatedavailBal > 0, 'red-text': SimulatedavailBal <= 0}">
+                                      <p>{{SimulatedavailBal | currency:'PHP'}}</p></th>
+                                      <th [ngClass]="{'green-text': SimulatedavailBal > 0, 'red-text': SimulatedavailBal <= 0}"
+                                      ><p>{{SimulatedavailRptRatio}}</p></th>
+                                    </tr>
+                                  </tbody>
+
+                                </table>
+                                  <!-- <table [responsive]="true" [cBorder]="1" cTable bordered>
                                     <thead cTableColor="success">
                                       <tr>
                                         <th colspan="3" class="center-header"><h3>Simulated Data</h3></th>
@@ -141,7 +201,7 @@
                                         ><p>{{SimulatedavailRptRatio}}</p></td>
                                       </tr>
                                     </tbody>
-                                  </table>
+                                  </table> -->
                                 </div>
                               </c-card-body>
                             </c-card>
