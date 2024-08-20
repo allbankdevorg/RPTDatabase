@@ -71,6 +71,8 @@ export class RptListComponent {
   selectedPN: any;
   UnimpairedDate: any;
 
+  bonds: number = 0;
+
   // Simulation
   SimulatedrptBal: any;
   SimulatedrptRatio: any;
@@ -190,6 +192,7 @@ applyFilter(filterValue: string) {
 
 ngOnInit() {
   this.updateTableData();
+  this.getBonds();
   this.getUnimpairedCap();
   this.temporaryLoans = this.simulatedDataService.getTemporaryLoans();
   this.simulationPerformed = this.simulatedDataService.isSimulationPerformed();
@@ -254,7 +257,8 @@ calculateactualData(actualData: any[]): void {
     return acc;
   }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
   
-  this.rptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata) + 30000000;
+  this.totalHoldOut = sumPrincipal.holdoutdata
+  this.rptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata) + this.bonds;
 
   // Calculate rptRatio only if unimpairedCap is not zero
   if (this.unimpairedCap !== 0) {
@@ -288,7 +292,7 @@ calculateSimulatedData(tempData: any[]): void {
   }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
 
   // Update simulated balance
-  this.SimulatedrptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata) + 30000000;
+  this.SimulatedrptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata) + this.bonds;
 
   // Calculate ratios only if unimpairedCap is not zero
   if (this.unimpairedCap !== 0) {
@@ -334,6 +338,22 @@ getUnimpairedCap(): void {
 
   })
 }
+
+
+
+getBonds() {
+  this.get.getBonds((bondsInvestment) => {
+    if (bondsInvestment && Array.isArray(bondsInvestment)) {
+      // Calculate the sum of `amount_placed`
+      const totalAmount = bondsInvestment.reduce((sum, bond) => sum + bond.amount_placed, 0);
+      this.bonds = totalAmount;
+      // console.log(`Total Amount Placed: ${totalAmount}`);
+    } else {
+      // console.log('No bonds investment data found or data is not an array.');
+    }
+  });
+}
+
 
   
 allocateHoldOut(data: any) {
