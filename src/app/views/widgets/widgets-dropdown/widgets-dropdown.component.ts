@@ -45,6 +45,8 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   //Variable to hold the selected date
   selectedDate: Date | null = null;
   numberLoans: number = 0;
+  
+  bonds: number = 0;
 
  balDiff: any;
 
@@ -149,6 +151,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   ngOnInit(): void {
     this.setData();
     this.updateTableData();
+    this.getBonds();
     this.getUnimpairedCap();
     this.balDiff = this.rptBal - this.yesterdayrptBal;
   }
@@ -209,7 +212,8 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
     const currentDate = new Date();
     // Get yesterday's date
     const yesterday = new Date(currentDate);
-    yesterday.setDate(currentDate.getDate() - 1);
+    // yesterday.setDate(currentDate.getDate() - 1);
+    yesterday.setDate(currentDate.getDate());
 
     let ydate = yesterday.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     let date = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
@@ -229,7 +233,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
                 }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
                 
                 this.grossrptBal = sumPrincipal.principal_bal;
-                this.rptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata;
+                this.rptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata) + this.bonds;
                 // Calculate rptRatio only if unimpairedCap is not zero
                 if (this.unimpairedCap !== 0) {
                   const percentage = `${((this.rptBal / this.unimpairedCap) * 100).toFixed(2)}%`;
@@ -277,7 +281,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
                   return acc;
                 }, { principal: 0, principal_bal: 0, holdoutdata: 0 });
                 
-                this.yesterdayrptBal = sumPrincipal.principal_bal - sumPrincipal.holdoutdata
+                this.yesterdayrptBal = (sumPrincipal.principal_bal - sumPrincipal.holdoutdata)+ this.bonds;
 
                 
                 // Calculate rptRatio only if unimpairedCap is not zero
@@ -328,6 +332,20 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
 
     })
   }
+
+  getBonds() {
+    this.get.getBonds((bondsInvestment) => {
+      if (bondsInvestment && Array.isArray(bondsInvestment)) {
+        // Calculate the sum of `amount_placed`
+        const totalAmount = bondsInvestment.reduce((sum, bond) => sum + bond.amount_placed, 0);
+        this.bonds = totalAmount;
+        // console.log(`Total Amount Placed: ${totalAmount}`);
+      } else {
+        // console.log('No bonds investment data found or data is not an array.');
+      }
+    });
+  }
+  
 
 
  
