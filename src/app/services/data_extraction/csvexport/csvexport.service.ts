@@ -107,8 +107,8 @@ export class CsvExportService {
           loan.principal,
           new Date(loan.date_granted).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
           loan.principal_bal,
-          loan.deposit_holdout,
-          loan.principal_bal - loan.deposit_holdout,
+          loan.hold_out,
+          loan.principal_bal - loan.hold_out,
           loan.payment_status ||  '',
           // Add more properties as needed
         ];
