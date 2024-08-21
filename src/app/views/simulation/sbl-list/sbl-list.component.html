@@ -115,15 +115,15 @@
                             <mat-cell *matCellDef="let element"> {{element.principal_bal | currency:'PHP'}} </mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="deposit_holdout" >
+                          <ng-container matColumnDef="hold_out" >
                             <mat-header-cell *matHeaderCellDef> Hold-Out </mat-header-cell>
-                            <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.deposit_holdout | number: '1.2-2'}} </mat-cell>
+                            <mat-cell *matCellDef="let element" (click)="allocateHoldOut(element)"> {{element.hold_out | number: '1.2-2'}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="net_holdout">
                             <mat-header-cell *matHeaderCellDef> Net of Hold-Out </mat-header-cell>
                             <mat-cell *matCellDef="let element"> 
-                              {{ (element.principal_bal || 0) - (element.deposit_holdout || 0) | currency:'PHP' }}
+                              {{ (element.principal_bal || 0) - (element.hold_out || 0) | currency:'PHP' }}
                             </mat-cell>
                           </ng-container>
 

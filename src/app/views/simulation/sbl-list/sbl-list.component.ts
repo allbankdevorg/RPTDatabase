@@ -61,7 +61,7 @@ export interface ResultItem {
 })
 export class SBLListComponent implements OnInit{
   dataSource = new MatTableDataSource<ResultItem>();
-  displayedColumns: string[] = ['loan_no', 'account_name', 'loan_security', 'amount_granted', 'date_granted', 'principal_bal', 'deposit_holdout', 'net_holdout', 'payment_status'];
+  displayedColumns: string[] = ['loan_no', 'account_name', 'loan_security', 'amount_granted', 'date_granted', 'principal_bal', 'hold_out', 'net_holdout', 'payment_status'];
 
   searchTextLoanList?: FormControl;
   index: any; // to get where should the temporary loan will be push
@@ -127,6 +127,7 @@ export class SBLListComponent implements OnInit{
       this.getUnimpairedCap();
       this.updateTableData(['1480005220', '1480005206', '1480012730', '1480000958', '1480007708',
       '1480012027', '1480009097', '1480006526']);
+      // this.updateTableData();
       this.temporaryLoans = this.SimulatedtempSBLloan.getTemporaryLoans();
       this.simulationPerformed = this.SimulatedtempSBLloan.isSimulationPerformed();  
       this.availBal = this.internalSBL 
@@ -187,7 +188,8 @@ export class SBLListComponent implements OnInit{
     
                 // Calculate net_holdout for each loan in the account's loan_list
                 account.loan_list.forEach((loan) => {
-                  loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
+                  // loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
+                  loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.hold_out) || 0);
                 });
               } else {
                 // console.error('Index out of bounds:', index);
@@ -204,6 +206,64 @@ export class SBLListComponent implements OnInit{
       });
     }
     
+    // updateTableData(): void {
+    //   // Fetch SBL data and update table
+    //   this.get.getSBL((sblData) => {
+    //     if (sblData) {
+
+    //       console.log(sblData)
+    //       // Use a Set to store unique loan numbers
+    //       const uniqueLoanNumbers = new Set<string>();
+    
+    //       // Filter out duplicate loans with the same loan_no within each company's SBL data
+    //       sblData.forEach((entry) => {
+    //         entry.loan_list = entry.loan_list.filter((loan) => {
+    //           if (uniqueLoanNumbers.has(loan.loan_no) || loan.loan_no.includes('2021-02-002354')) {
+    //             // Return false if it's a duplicate
+    //             return false;
+    //           } else {
+                
+    //             // Add the loan number to the Set and return true
+    //             uniqueLoanNumbers.add(loan.loan_no);
+    //             return true;
+    //           }
+    //         });
+    
+    //         // Filter the loan list based on the array of CIS numbers
+    //         // entry.loan_list = entry.loan_list.filter((loan) => {
+    //         //   return cisNumbers.includes(loan.cis_no);
+    //         // });
+    //       });
+    
+    //       // Push temporary loan data only once outside the forEach loop
+    //       const tempData = sblData.slice(); // Create a shallow copy of sblData
+    //       if (this.temporaryLoans && this.temporaryLoans.length > 0) {
+    //         // Iterate over each LoanWrapper object and its index
+    //         this.temporaryLoans.forEach((loanWrapper) => {
+    //           const { index, loan } = loanWrapper;
+    //           if (index < tempData.length) {
+    //             // Check if the index is within the bounds of tempData
+    //             const account = tempData[index];
+    //             account.loan_list.push(loan);
+    
+    //             // Calculate net_holdout for each loan in the account's loan_list
+    //             account.loan_list.forEach((loan) => {
+    //               loan.net_holdout = (parseFloat(loan.principal_bal) || 0) - (parseFloat(loan.deposit_holdout) || 0);
+    //             });
+    //           } else {
+    //             // console.error('Index out of bounds:', index);
+    //           }
+    //         });
+    
+    //         this.calculateSimulatedData(tempData); // Calculate simulated data
+    //       }
+    
+    //       // Update the MatTableDataSource
+    //       this.dataSource.data = tempData;
+    
+    //     }
+    //   });
+    // }
 
 
     applyFilterLoanList(account: any): any[] | undefined {
@@ -238,7 +298,9 @@ export class SBLListComponent implements OnInit{
   calculateTotalNetHoldOut(loanList): number {
     let sum = 0;
     for (const element of loanList) {
-      sum += (element.principal_bal || 0) - (element.deposit_holdout || 0);
+      // sum += (element.principal_bal || 0) - (element.deposit_holdout || 0);
+      sum += (element.principal_bal || 0) - (element.hold_out || 0);
+
     }
     this.NetBal = this.sbl - sum;
     return sum;
@@ -256,9 +318,11 @@ export class SBLListComponent implements OnInit{
     const sumPrincipal = tempData.reduce((acc, obj) => {
       acc.principal += parseFloat(obj.principal) || 0;
       acc.principal_bal += parseFloat(obj.principal_bal) || 0;
-      acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
+      // acc.deposit_holdout += parseFloat(obj.deposit_holdout) || 0;
+      acc.hold_out += parseFloat(obj.hold_out) || 0;
       return acc;
-    }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+    // }, { principal: 0, principal_bal: 0, deposit_holdout: 0 });
+  }, { principal: 0, principal_bal: 0, hold_out: 0 });
 
   }
 
