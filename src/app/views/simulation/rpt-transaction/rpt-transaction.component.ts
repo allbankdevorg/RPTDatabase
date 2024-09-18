@@ -37,11 +37,11 @@ export class RptTransactionComponent {
 
 
  displayedColumns1: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security',
- 'deposit_holdout', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate', 'int_rate1', 'int_rate2', 'int_rate3'];
+ 'holdoutdata', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate', 'int_rate1', 'int_rate2', 'int_rate3'];
 
 
  displayedColumns2: string[] = ['cis_no', 'loan_no', 'name', 'principal', 'principal_bal', 'loan_security',
-  'deposit_holdout', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate'];
+  'holdoutdata', 'net_bal', 'date_granted', 'term', 'purpose', 'int_rate'];
 
  displayedColumns3: string[] = ['id', 'branch', 'lessor', 'address', 'payee', 
  'floor_area', 'rent_vat', 'cusa_vat', 'mktg_support', 'monthly', 'annual'];
