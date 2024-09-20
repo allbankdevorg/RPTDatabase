@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 // Functions Import
 import {createBankOfficer, cisLookUP, addPNData} from '../../functions-files/add/postAPI';
+import {updateBankOfficer} from '../../functions-files/update/updateAPI';
 import {deleteDOSRIOfficer, deleteDOSRIOfficerRI} from '../../functions-files/delFunctions'
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
@@ -32,11 +33,11 @@ export class BankofficerModalComponent implements OnInit{
     private get: FetchDataService,) {
       
         this.boForm = this.formBuilder.group({
-          boCisNumber: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
-          boFirstName: ['', [Validators.required, Validators.pattern(/\S+/)]],
-          boMiddleName: ['', [Validators.pattern(/\S+/)]],
-          boLastName: ['', [Validators.required, Validators.pattern(/\S+/)]],
-          boPosition: ['', [Validators.required, Validators.pattern(/\S+/)]],
+          cis_num: ['', [Validators.required, Validators.pattern(/^[A-Za-z\d]+$/)]],
+          fname: ['', [Validators.required, Validators.pattern(/\S+/)]],
+          mname: ['', [Validators.pattern(/\S+/)]],
+          lname: ['', [Validators.required, Validators.pattern(/\S+/)]],
+          Position: ['', [Validators.required, Validators.pattern(/\S+/)]],
       });
     _dialogRef.disableClose = true;
   }
@@ -74,30 +75,47 @@ export class BankofficerModalComponent implements OnInit{
  
     if (this.boForm.valid) {
       const boData = this.boForm.value;
-      
-      
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
-      // Call the JavaScript function with form data
-      createBankOfficer(boData, session, userID)
-      .then((response) => {
-        // this.updateTableData();
-        this.logAction('Add Bank Officer', 'Successfuly Added Bank Officer', true, 'bankofficer');
-        this.close();
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"","");
 
-        const resultData = this.cisLookUpResult;
-          addPNData(resultData, session, userID)
+      if (this.data) {
+        const data_id = this.data.id;
+        const old_cis = this.data.cis_num;
+        updateBankOfficer(boData, data_id, old_cis, session, userID)
+        .then((response) => {
+          this.ngOnInit();
+          this.logAction('Update', 'Updated Affiliates', true, 'Affiliates');
+          this.close();
+        })
+        .catch((error) => {
+
+        })
+      }
+
+      else {
+           // Call the JavaScript function with form data
+          createBankOfficer(boData, session, userID)
           .then((response) => {
+            // this.updateTableData();
+            this.logAction('Add Bank Officer', 'Successfuly Added Bank Officer', true, 'bankofficer');
+            this.close();
 
+            const resultData = this.cisLookUpResult;
+              addPNData(resultData, session, userID)
+              .then((response) => {
+
+              })
+              .catch((error) => {
+
+              });
           })
           .catch((error) => {
-
-          });
-      })
-      .catch((error) => {
-        this.logAction('Add Bank Officer', 'Failed Adding Bank Officer', false, 'bankofficer');
-        // this.updateTableData();
-      }) // Pass the entire formData object
+            this.logAction('Add Bank Officer', 'Failed Adding Bank Officer', false, 'bankofficer');
+            // this.updateTableData();
+          }) // Pass the entire formData object
+      }
+      
+     
     }
     
   }
