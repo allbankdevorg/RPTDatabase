@@ -184,6 +184,8 @@ function updateDOSRI(formData, session, userID) {
 
 
 
+
+
 function updateStocksHolder(formData, session, userID) {
     return new Promise((resolve, reject) => {
         var settings = {
@@ -389,6 +391,47 @@ function updateUserInfo(data, user, session, userID) {
     });
 }
 
+function updateBankOfficer(boData, data_id, old_cis, session, userID) {
+    return new Promise((resolve, reject) => {
+        var settings = {
+            "url": "http://10.232.236.15:8092/api/updateData",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({
+                "cmd": 810,
+                "session": session,
+                "userid": userID,
+                "request": {
+                    "id": data_id,
+                    "cis_number": boData.cis_num,
+                    "fname": boData.fname,
+                    "mname": boData.mname,
+                    "lname": boData.lname,
+                    "position": boData.Position,
+                }
+                }),
+            };
+
+            $.ajax(settings).done(function (response) {
+                
+                // Check the status and resolve/reject the promise accordingly
+                Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+                if (response.result[0].status === 'success') {
+                resolve(response);
+                } else {
+                reject(response);
+                }
+            });
+    })
+}
+
+
+
+
+
 
 
 
@@ -403,5 +446,6 @@ module.exports = {
     updateAffiliates,
     updateAffiliatesDir,
     updateUserAccess,
-    updateUserInfo
+    updateUserInfo,
+    updateBankOfficer
 }
