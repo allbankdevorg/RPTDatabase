@@ -179,6 +179,9 @@ export class BankofficerComponent implements AfterViewInit{
               'id': officer.id,
               'cis_num': officer.off_cisnumber,
               'FullName': `${officer.fname} ${officer.mname}  ${officer.lname}`,
+              'fname': officer.fname,
+              'mname': officer.mname,
+              'lname': officer.lname,
               'Company': companyName,
               'Position': officer.position,
               'offc_CisNumber': officer.off_cisnumber,
@@ -251,12 +254,13 @@ export class BankofficerComponent implements AfterViewInit{
   openEditForm(data: any, event: any) {
     event.stopPropagation();
     const dialogRef = this._dialog.open(BankofficerModalComponent, {
-      data,    
+      data,  
     });
   
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
+          this.updateTableData();
         }
       },
     });
