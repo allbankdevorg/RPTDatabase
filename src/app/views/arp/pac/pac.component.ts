@@ -471,8 +471,8 @@ async  ngOnInit() {
      const offData = this.affilOfficerForm.value;
      const directorId = this.sharedService.getDirectorId();
      const companyName = this.sharedService.getCompName();
-     const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
-     const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+     const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+     const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
       
      // Call the JavaScript function with form data
      createAffilOff(offData, this.compId, session, userID); // Pass the entire formData object
@@ -494,7 +494,10 @@ async  ngOnInit() {
 // Unlink Directors of the Affiliates Company
 delAffilDirector(row: any, dirAffilCIS: any, dirRelatComCIS: any): void {
   const cis_id = row.dir_CisNumber;
-  delAffilComDIR(cis_id)
+  const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+  const userID = localStorage.getItem('userID')?.replaceAll("\"","");
+
+  delAffilComDIR(cis_id, session, userID)
     .then((response) => {
       this.ngOnInit();
     })
@@ -510,8 +513,10 @@ delAffilDirector(row: any, dirAffilCIS: any, dirRelatComCIS: any): void {
 
 delAffilDirRI(element: any, id: any, dirRelated: any): void {
   const data_id = id;
+  const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+  const userID = localStorage.getItem('userID')?.replaceAll("\"","");
   
-  delAffilDirRI(data_id)
+  delAffilDirRI(data_id, session, userID)
   .then((response) => {
     this.ngOnInit();
   })

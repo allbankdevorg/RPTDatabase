@@ -56,8 +56,8 @@ export class StockholdersModalComponent {
   onSubmit() {
     if (this.stockHoldersForm.valid) {
       const formData = this.stockHoldersForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
   
       // Call the JavaScript function with form data
       if (this.data) {

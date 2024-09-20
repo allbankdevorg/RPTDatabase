@@ -141,8 +141,8 @@ export class UsersModalComponent {
     if (this.userForm.valid) {
       const formData = this.userForm.value;
       const user = this.data.id;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"","");
 
       if (this.data) {
         updateUserInfo(formData, user, session, userID)
@@ -238,8 +238,8 @@ export class UsersModalComponent {
 
   updateCheckboxValue(event: any, controlName: string, access: any): void {
     const user = this.data.id;
-    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
     
     access[controlName] = event.checked ? 1 : 0;
     
@@ -258,6 +258,9 @@ export class UsersModalComponent {
 
   updateUserAccess(data, user, session, userID)
           .then((response) => {
+            console.log(session);
+            console.log(userID);
+    
             // this.ngOnInit();
             this.logAction('Update', 'Updated User', true, 'Users');
             // this.close();

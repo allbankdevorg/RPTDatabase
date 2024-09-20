@@ -126,8 +126,8 @@ export class DosriModalComponent implements OnInit {
   onFormSubmit() {
     if (this.dosriForm.valid) {
       const formData = this.dosriForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
       const holdOUT = formData.depoHoldOut;
 
 

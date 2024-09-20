@@ -12,7 +12,7 @@ export class ShareddataService {
   userData$ = this.userDataSubject.asObservable();
 
   getUserData(): any {
-    const storedUserData = sessionStorage.getItem(this.userDataKey);
+    const storedUserData = localStorage.getItem(this.userDataKey);
     return storedUserData ? JSON.parse(storedUserData) : null;
   }
 

@@ -66,8 +66,8 @@ export class AffiliatesDirRIModalComponent implements OnInit {
   
   if (this.affilDirRiForm.valid) {
     const riData = this.affilDirRiForm.value;
-    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
     const holdOUT = riData.depoHoldOut;
     // Call the JavaScript function with form data
     createAffilDirectorsRelatedInterest(riData, buttonId, selectedDirCisNumber, session, userID) // Pass the entire formData object

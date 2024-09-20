@@ -233,9 +233,11 @@ export class DriComponent {
 
     delDosri(row: any, comCIS: any, event: Event): void {
       const cis_id = row.com_cis_number
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"","");
       event.stopPropagation();
 
-        delDosri(cis_id)
+        delDosri(cis_id, session, userID)
         .then((response) => {
           this.ngOnInit();
         })

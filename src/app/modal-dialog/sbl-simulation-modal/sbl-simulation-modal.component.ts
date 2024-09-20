@@ -107,8 +107,8 @@ export class SBLSimulationModalComponent implements OnInit{
 
   onSubmit() {
     
-    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
     const dataLookup = this.sblSimulateForm.value;
 
     console.log(this.availBal);

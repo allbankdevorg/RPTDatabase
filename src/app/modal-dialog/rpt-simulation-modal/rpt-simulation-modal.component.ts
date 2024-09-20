@@ -357,8 +357,8 @@ export class RPTSimulationModalComponent implements OnInit{
 
 
   onSubmit() {
-    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
     const dataLookup = this.rptSimulateForm.value;
 
     if (this.rptSimulateForm.valid) {

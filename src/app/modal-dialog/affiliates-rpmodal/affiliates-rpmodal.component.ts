@@ -70,8 +70,8 @@ export class AffiliatesRPModalComponent implements OnInit{
 
     if (this.affForm.valid) {
       const formData = this.affForm.value; 
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
       const holdOUT = formData.depoHoldOut;
       
       

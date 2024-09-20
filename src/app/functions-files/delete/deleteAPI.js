@@ -16,7 +16,7 @@
  * Remove a DOSRI Company
  * @param {any} cis_id - Contain the cisNumber as reference for the removimg
  */
-function delDosri(cis_id) {
+function delDosri(cis_id, session, userID) {
     return Swal.fire({
       title: 'Are you sure?',
       text: "Do you want to remove this DOSRI company?",
@@ -38,6 +38,8 @@ function delDosri(cis_id) {
             },
             "data": JSON.stringify({
               "cmd": 1,
+              "session": session,
+              "userid": userID,
               "request": {
                 "cis_number": cis_id
               }
@@ -64,7 +66,7 @@ function delDosri(cis_id) {
  * Unlink a DOSRI Company DIrector
  * @param {any} cis_id - Contain the cisNumber as reference for the unlinking
  */
-function delDosriDIR(cis_id) {
+function delDosriDIR(cis_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to unlink this DOSRI company director?",
@@ -86,6 +88,8 @@ function delDosriDIR(cis_id) {
           },
           "data": JSON.stringify({
             "cmd": 2,
+            "session": session,
+            "userid": userID,
             "request": {
               "cis_number": cis_id
             }
@@ -112,7 +116,7 @@ function delDosriDIR(cis_id) {
  * Unlink a Director's Related Interest
  * @param {any} data_id - Contain the cisNumber as reference for the unlinking
  */
-function delDosriDRI(data_id) {
+function delDosriDRI(data_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to unlink this related interest?",
@@ -134,6 +138,8 @@ function delDosriDRI(data_id) {
           },
           "data": JSON.stringify({
             "cmd": 3,
+            "session": session,
+            "userid": userID,
             "request": {
               "data_id": data_id
             }
@@ -160,7 +166,7 @@ function delDosriDRI(data_id) {
  * Remove Bank Officer
  * @param {any} cis_id - Contain the cisNumber as reference for the unlinking
  */
-function delBankOff(cis_id) {
+function delBankOff(cis_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to remove this officer?",
@@ -182,6 +188,8 @@ function delBankOff(cis_id) {
           },
           "data": JSON.stringify({
             "cmd": 4,
+            "session": session,
+            "userid": userID,
             "request": {
               "cis_number": cis_id
             }
@@ -256,7 +264,7 @@ function delBankOff(cis_id) {
  * Remove Bank Officer Related Interest
  * @param {any} data_id - Contain the cisNumber as reference for the unlinking
  */
-function delBankOffRI(data_id) {
+function delBankOffRI(data_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to unlink this officer's related interest?",
@@ -278,6 +286,8 @@ function delBankOffRI(data_id) {
           },
           "data": JSON.stringify({
             "cmd": 5,
+            "session": session,
+            "userid": userID,
             "request": {
               "data_id": data_id
             }
@@ -307,7 +317,7 @@ function delBankOffRI(data_id) {
  * Remove Affiliates Company
  * @param {any} cis_id - Contain the cisNumber as reference for the unlinking
  */
-function delAffilComp(cis_id) {
+function delAffilComp(cis_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to remove this company?",
@@ -329,6 +339,8 @@ function delAffilComp(cis_id) {
           },
           "data": JSON.stringify({
             "cmd": 6,
+            "session": session,
+            "userid": userID,
             "request": {
               "cis_number": cis_id
             }
@@ -355,7 +367,7 @@ function delAffilComp(cis_id) {
  * Remove Affiliates Director
  * @param {any} cis_id - Contain the cisNumber as reference for the unlinking
  */
-function delAffilComDIR(cis_id) {
+function delAffilComDIR(cis_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to unlink this director?",
@@ -377,6 +389,8 @@ function delAffilComDIR(cis_id) {
           },
           "data": JSON.stringify({
             "cmd": 7,
+            "session": session,
+            "userid": userID,
             "request": {
               "cis_number": cis_id
             }
@@ -425,8 +439,8 @@ function delAffilOff(data_id, session, userID) {
           },
           "data": JSON.stringify({
             "cmd": 71,
-            // "session": session,
-            // "userid": userID, 
+            "session": session,
+            "userid": userID, 
             "request": {
               "cis_number": data_id
             }
@@ -452,7 +466,7 @@ function delAffilOff(data_id, session, userID) {
  * Remove Affiliates Officers Related Interest
  * @param {any} id - Contain the cisNumber as reference for the unlinking
  */
-function delAffilOffRI(data_id) {
+function delAffilOffRI(data_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to unlink this officer's related interest?",
@@ -474,6 +488,8 @@ function delAffilOffRI(data_id) {
           },
           "data": JSON.stringify({
             "cmd": 12,
+            "session": session,
+            "userid": userID,
             "request": {
               "data_id": data_id
             }
@@ -496,7 +512,7 @@ function delAffilOffRI(data_id) {
 }
 
 
-function delAffilDirRI(data_id) {
+function delAffilDirRI(data_id, session, userID) {
   return Swal.fire({
     title: 'Are you sure?',
     text: "Do you want to unlink this director's related interest?",
@@ -518,6 +534,8 @@ function delAffilDirRI(data_id) {
           },
           "data": JSON.stringify({
             "cmd": 806,
+            "session": session,
+            "userid": userID,
             "request": {
               "id": data_id
             }

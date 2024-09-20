@@ -64,8 +64,8 @@ export class AffiliatesOffModalComponent implements OnInit {
     onAffilOffSubmit() {
       if (this.affilOfficerForm.valid) {
         const offData = this.affilOfficerForm.value;
-        const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-        const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+        const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+        const userID = localStorage.getItem('userID')?.replaceAll("\"","");
         const comp_CIS = this.dataService.getCompCIS();
         
         if (this.data) {

@@ -41,8 +41,8 @@ export class HoldoutAllocationModalComponent implements OnInit {
 
     if (this.hldOTForm.valid) {
       const formData = this.hldOTForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"","");
 
       updateHoldOut(formData)
           .then((response) => {

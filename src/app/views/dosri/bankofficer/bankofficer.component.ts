@@ -277,7 +277,10 @@ export class BankofficerComponent implements AfterViewInit{
 
   delOfficer(row: any, cisNumber: any, offc_CisNumber: any): void {
     const cis_id = row.offc_CisNumber;
-    delBankOff(cis_id)
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
+
+    delBankOff(cis_id, session, userID)
     .then((response) => {
       this.ngOnInit();
     })
@@ -288,7 +291,10 @@ export class BankofficerComponent implements AfterViewInit{
 
   delRelationship(row: any, id: any, officer_related: any): void {
     const data_id = id;
-    delBankOffRI(data_id)
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
+
+    delBankOffRI(data_id, session, userID)
     .then((response) => {
       this.ngOnInit();
     })

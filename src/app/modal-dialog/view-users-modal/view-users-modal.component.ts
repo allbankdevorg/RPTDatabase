@@ -151,8 +151,8 @@ export class ViewUsersModalComponent {
    onUserSubmit() {
     if (this.userForm.valid) {
       const formData = this.userForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"","");
 
       // Call the JavaScript function with form data
       createUser(formData, userID, session) // Pass the entire formData object

@@ -252,8 +252,8 @@ export class RPOfficerRIComponent implements AfterViewInit {
 
   // Delete Functions
   delAffilOfficer(element: any): void {
-    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
     
     const data_id = element.off_CisNumber;
     console.log(data_id);
@@ -270,8 +270,10 @@ export class RPOfficerRIComponent implements AfterViewInit {
   
   deleteAffilOffRI(element: any, id: any, offRelated: any): void {
     const data_id = id;
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
     
-    delAffilOffRI(data_id)
+    delAffilOffRI(data_id, session, userID)
     .then((response) => {
       this.ngOnInit();
     })

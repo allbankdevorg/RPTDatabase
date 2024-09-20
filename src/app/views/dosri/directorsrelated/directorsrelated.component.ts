@@ -96,6 +96,9 @@ export class DirectorsrelatedComponent {
 
   tableData: Record<string, any>[] = []; // Define tableData as a class property
 
+  session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+  userID = localStorage.getItem('userID')?.replaceAll("\"", "");
+
   
   // Populating the dataSource
   dataSource = new MatTableDataSource<any>();
@@ -245,7 +248,10 @@ export class DirectorsrelatedComponent {
  
   delDirector(row: any, comp_cis: any, dir_cis: any): void {
     const cis_id = row.dir_CisNumber;
-    delDosriDIR(cis_id)
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
+
+    delDosriDIR(cis_id, session, userID)
     .then((response) => {
       this.ngOnInit();
     })
@@ -256,7 +262,10 @@ export class DirectorsrelatedComponent {
 
   delRelationship(row: any, id: string, dir_related: any): void {
     const data_id = id;
-    delDosriDRI(data_id)
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
+
+    delDosriDRI(data_id, session, userID)
     .then((response) => {
       this.ngOnInit();
     })

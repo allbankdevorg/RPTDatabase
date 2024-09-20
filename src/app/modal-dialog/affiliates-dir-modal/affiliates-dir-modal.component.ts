@@ -87,8 +87,8 @@ export class AffiliatesDirModalComponent implements OnInit{
     const directData = this.affilDrctrForm.value;
     const directorId = this.sharedService.getDirectorId();
     const companyName = this.sharedService.getCompName();
-    const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-    const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
     const comp_CIS = this.dataService.getCompCIS();
     const holdOUT = directData.depoHoldOut;
     

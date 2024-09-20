@@ -41,7 +41,7 @@ export class FetchDataService {
    // Define the API URL as a private member variable
   private apiUrl = 'http://10.232.236.15:8092/api/dataTables';
 
-  userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+  userID = localStorage.getItem('userID')?.replaceAll("\"", "");
   
   // Constructor to inject the HttpClient dependency
   constructor(private httpClient: HttpClient) { }

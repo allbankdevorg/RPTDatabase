@@ -298,7 +298,6 @@ function updateAffiliatesDir(directData, data_id, old_cis, session, userID) {
 
 
 function updateUserAccess(data, user, session, userID) {
-    
     return new Promise((resolve, reject) => {
         var settings = {
             "url": "http://10.232.236.15:8092/api/updateData",
@@ -310,7 +309,7 @@ function updateUserAccess(data, user, session, userID) {
                 "data": JSON.stringify({
                 "cmd": 808,
                 "session": session,
-                "userid": userID,
+                "user_id": userID,
                 "request": {
                     "userid": data.userid,
                     "nav_id": data.nav_id,
@@ -378,7 +377,6 @@ function updateUserInfo(data, user, session, userID) {
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 const statusCode = jqXHR.status;
-                console.log('jqXHR Status (Fail):', statusCode);
 
                 if (statusCode === 201) {
                     Swal.fire('Request Successful', '', 'success');

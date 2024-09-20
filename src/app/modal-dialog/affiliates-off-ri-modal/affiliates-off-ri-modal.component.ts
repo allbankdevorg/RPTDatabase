@@ -65,8 +65,8 @@ export class AffiliatesOffRIModalComponent implements OnInit{
     
     if (this.affilOfficerRIForm.valid) {
       const riData = this.affilOfficerRIForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"","");
-      const userID = sessionStorage.getItem('userID')?.replaceAll("\"","");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+      const userID = localStorage.getItem('userID')?.replaceAll("\"","");
       const holdOUT = riData.depoHoldOut;
 
       // Call the JavaScript function with form data

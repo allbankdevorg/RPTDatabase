@@ -321,8 +321,8 @@ this.updateTableData();
   onSubmit() {
     if (this.affForm.valid) {
       const formData = this.affForm.value;
-      const session = sessionStorage.getItem('sessionID')?.replaceAll("\"", "");
-     const userID = sessionStorage.getItem('userID')?.replaceAll("\"", "");
+      const session = localStorage.getItem('sessionID')?.replaceAll("\"", "");
+     const userID = localStorage.getItem('userID')?.replaceAll("\"", "");
       
       // Call the JavaScript function with form data
       createAffil(formData, session, userID); // Pass the entire formData object
@@ -351,10 +351,11 @@ this.updateTableData();
 
   delAffiliates(row: any, aff_com_cis_number: any, event: Event) {
     event.stopPropagation();
-    const cis_id = row.aff_com_cis_number
-    event.stopPropagation();
+    const cis_id = row.aff_com_cis_number;
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
     
-    delAffilComp(cis_id)
+    delAffilComp(cis_id, session, userID)
       .then((response) => {
         this.ngOnInit();
       })
