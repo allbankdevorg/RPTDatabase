@@ -12,7 +12,7 @@ import { AbstractControl, ControlContainer, NG_VALIDATORS, ValidationErrors, Val
   ]
 })
 export class LettersOnlyDirective implements Validator, AfterViewInit {
-  private regex: RegExp = /^[a-zA-Z\s-.,()]*$/;
+  private regex: RegExp = /^[a-zA-ZÑñ\s-.,()]*$/;
   private control!: AbstractControl;
   private previousValue: string = '';
 
