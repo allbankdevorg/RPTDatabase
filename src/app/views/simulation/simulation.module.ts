@@ -7,6 +7,7 @@ import {SIMULATIONRoutingModule } from './simulation-routing.module';
 @NgModule({
   declarations: [
     
+  
   ],
   imports: [
     CommonModule,

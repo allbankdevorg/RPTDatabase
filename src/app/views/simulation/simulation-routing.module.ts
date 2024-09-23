@@ -6,6 +6,7 @@ import { SBLListComponent } from './sbl-list/sbl-list.component';
 import { RptTransactionComponent } from './rpt-transaction/rpt-transaction.component';
 import { LeaseContractsComponent } from './lease-contracts/lease-contracts.component';
 import { BondsInvestmentComponent } from './bonds-investment/bonds-investment.component';
+import { AuditTrailComponent } from './audit-trail/audit-trail.component';
 
 const routes: Routes = [
         {
@@ -52,6 +53,13 @@ const routes: Routes = [
               component: BondsInvestmentComponent,
               data: {
                   title: 'Bonds And Investment ',
+              },
+            },
+            {
+              path: 'audit-trail',
+              component: AuditTrailComponent,
+              data: {
+                  title: 'Audit Trail Logs ',
               },
             },
             
