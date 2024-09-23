@@ -162,6 +162,7 @@ import { RptTransactionModalComponent } from './modal-dialog/rpt-transaction-mod
 
 import { LeaseContractsComponent } from './../app/views/simulation/lease-contracts/lease-contracts.component';
 import { BondsInvestmentComponent } from './../app/views/simulation/bonds-investment/bonds-investment.component';
+import { AuditTrailComponent } from './../app/views/simulation/audit-trail/audit-trail.component';
 
 
 
@@ -194,6 +195,7 @@ const APP_CONTAINERS = [
     RptTransactionComponent,
     BondsInvestmentComponent,
     LeaseContractsComponent, 
+    AuditTrailComponent,
     AffiliatesDirModalComponent, 
     AffiliatesDirRIModalComponent, 
     AffiliatesOffModalComponent, 
