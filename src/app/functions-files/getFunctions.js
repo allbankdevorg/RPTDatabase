@@ -360,8 +360,8 @@ function getOfficers(callback) {
           "Content-Type": "application/json"
         },
         "data": JSON.stringify({
-          "cmd": 901,
-          "userid": "Admin"
+          "cmd": 904,
+          // "userid": "Admin"
         }),
       };
       
