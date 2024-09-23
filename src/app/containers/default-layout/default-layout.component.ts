@@ -41,7 +41,7 @@ export class DefaultLayoutComponent {
         const url = item && item.url;
   
         // Exclude the "Maintenance" menu and its children for roles other than 4
-        if (url.startsWith('/maintenance') && userRole !== '4') {
+        if (url.startsWith('/maintenance') && userRole !== '4' || url.startsWith('/simulation') && userRole !== '4') {
           return false;
         }
   
@@ -51,7 +51,7 @@ export class DefaultLayoutComponent {
             const childUrl = childItem && childItem.url;
   
             // Exclude the child items under "Maintenance" for roles other than 4
-            if (childUrl.startsWith('/maintenance') && userRole !== '4') {
+            if (childUrl.startsWith('/maintenance') && userRole !== '4' || childUrl.startsWith('/simulation/audit-trail') && userRole !== '4') {
               return false;
             }
   
