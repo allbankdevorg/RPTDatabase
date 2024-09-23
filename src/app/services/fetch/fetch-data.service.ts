@@ -18,6 +18,7 @@
  * 117 - getUnimpairedCapital            => fetch the Unimpaired Capital and Date as Of
  * 119 - getBonds                        => fetch the Bonds and Investments
  * 120 - getLease                        => fetch the Lease and Contracts
+ * 904 - getAuditTrail                   => fetch the Audit Trail Logs
  */
 
 
@@ -211,47 +212,77 @@ export class FetchDataService {
     );
   }
 
-
-
   getAuditLogs(callback: (data: any) => void): void {
-    const userid = this.userID
-  const settings = {
-    url: 'http://10.232.236.15:8092/api/dataTables',
-    method: 'POST',
-    timeout: 0,
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-    data: {
-      cmd: 901,
-      userid: userid,
-    },
-  };
+    const settings = {
+      url: 'http://10.232.236.15:8092/api/dataTables',
+      method: 'POST',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      data: {
+        cmd: 904,
+        // Uncomment and set userid if needed
+        // userid: this.userID,
+      },
+    };
 
-  this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
-    next: (response: any) => {
+    this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+      next: (response: any) => {
+        // Check if the response contains the expected structure
+        const auditLogs = response?.result?.[0]?.audit_logs || null;
 
-      if (response && response.result && response.result.length > 0 && response.result[0].audit_logs) {
-        const auditLogs = response.result[0].audit_logs;
-      
-        if (callback) {
-          callback(auditLogs);
-        }
-      } else {
-      
-        if (callback) {
-          callback(null);
-        }
-      }
-    },
-    error: (error) => {
-
-      if (callback) {
+        // Call the callback with auditLogs or null
+        callback(auditLogs);
+      },
+      error: (error) => {
+        console.error('Error fetching audit logs:', error);
+        // Call the callback with null in case of an error
         callback(null);
-      }
-    },
-  });
-}
+      },
+    });
+  }
+
+
+
+//   getAuditLogs(callback: (data: any) => void): void {
+//     const userid = this.userID
+//   const settings = {
+//     url: 'http://10.232.236.15:8092/api/dataTables',
+//     method: 'POST',
+//     timeout: 0,
+//     headers: new HttpHeaders({
+//       'Content-Type': 'application/json',
+//     }),
+//     data: {
+//       cmd: 904,
+//       // userid: userid,
+//     },
+//   };
+
+//   this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+//     next: (response: any) => {
+
+//       if (response && response.result && response.result.length > 0 && response.result[0].audit_logs) {
+//         const auditLogs = response.result[0].audit_logs;
+      
+//         if (callback) {
+//           callback(auditLogs);
+//         }
+//       } else {
+      
+//         if (callback) {
+//           callback(null);
+//         }
+//       }
+//     },
+//     error: (error) => {
+
+//       if (callback) {
+//         callback(null);
+//       }
+//     },
+//   });
+// }
 
 
 getStckHolders(callback: (data: any) => void): void {
@@ -643,6 +674,8 @@ getUserList(callback: (data: any) => void): void {
   getPavi(callback: (PaviComp: any) => void): void {
     this.getData(118, callback);
   }
+
+ 
 
   
 }
