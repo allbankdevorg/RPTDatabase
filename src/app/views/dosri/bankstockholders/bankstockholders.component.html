@@ -84,6 +84,10 @@
                   <button mat-icon-button (click)="openEditForm(element, $event)" aria-label="Edit Users Info" *accessControl="{ moduleName: 'Bank Stock Holder', accessType: 'edit' }">
                     <mat-icon>create</mat-icon>
                   </button>
+
+                  <button mat-icon-button color="warn" (click)="delStockholders(element, element.id, $event)" aria-label="Delete Users" *accessControl="{ moduleName: 'Bank Stock Holder', accessType: 'delete' }">
+                    <mat-icon>delete</mat-icon>
+                  </button>
                 </td>
             </ng-container>
     

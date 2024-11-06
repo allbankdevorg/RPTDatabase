@@ -9,7 +9,7 @@ import { MatSort } from '@angular/material/sort';
 // Functions Import
 import {updateShares} from '../../../functions-files/updateFunctions'
 
-
+import {delStockholder} from '../../../functions-files/delete/deleteAPI.js';
 //Import for Function
 import { FetchDataService } from 'src/app/services/fetch/fetch-data.service';
 
@@ -195,6 +195,28 @@ export class BankstockholdersComponent {
         }
       },
     });
+  }
+
+
+  delStockholders(element: any, aff_com_cis_number: any, event: Event) {
+    event.stopPropagation();
+    const cis_id = element.cis_number;
+    
+    console.table(element)
+    const session = localStorage.getItem('sessionID')?.replaceAll("\"","");
+    const userID = localStorage.getItem('userID')?.replaceAll("\"","");
+    
+    delStockholder(element, session, userID)
+      .then((response) => {
+        this.ngOnInit();
+      })
+      .catch((error) => {
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'No CIS Found!',
+        //   // text: 'Invalid username or password',
+        // });
+      })
   }
   
 

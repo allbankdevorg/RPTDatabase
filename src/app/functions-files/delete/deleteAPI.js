@@ -7,7 +7,8 @@
  *  - delBankOffRI                        => Unlink Bank Officer's Related Interest
  *  - delAffilComp                        => Unlink Affiliates Company
  *  - delAffilComDIR                      => Unlink Affilitiates Directors
- *  - 11 delAffilOffRI                       => Unlink Affiliates Officers RI
+ *  - 11 delAffilOffRI                    => Unlink Affiliates Officers RI
+ *  - deleteStockholder                   => Delete Stockhold
  */
  
 
@@ -556,6 +557,59 @@ function delAffilDirRI(data_id, session, userID) {
     }
   });
 }
+
+
+/**
+ * Remove Affiliates Officers Related Interest
+ * @param {any} id - Contain the cisNumber as reference for the unlinking
+ */
+function delStockholder(element, session, userID) {
+  return Swal.fire({
+    title: 'Are you sure?',
+    text: "Delete this Stockholder?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log(element);
+      // Returning the promise here
+      return new Promise((resolve, reject) => {
+        var settings = {
+          "url": "http://10.232.236.15:8092/api/updateData",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            "cmd": 9,
+            "session": session,
+            "userid": userID,
+            "request": {
+              "cis_number": element.cis_number,
+              "name": element.name
+            }
+          }),
+        };
+        
+
+        $.ajax(settings).done(function (response) {
+          console.log(response.result);
+
+          Swal.fire(`${response.result[0].message}`, ``, `${response.result[0].status}`);
+          if (response.result[0].status === 'success') {
+            resolve(response);
+          } else {
+            reject(response);
+          }
+        });
+      });
+    }
+  });
+}
   
 
 
@@ -572,7 +626,7 @@ function delAffilDirRI(data_id, session, userID) {
 
     delAffilOff,
     delAffilOffRI,
-
+    delStockholder,
     delAffilDirRI
 
   }

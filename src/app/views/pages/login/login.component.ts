@@ -240,7 +240,7 @@ async login() {
     const userID = this.uD;
     const sessionId = uuidv4();
     const otpGen = this.authService.generateAndSaveOtp();
-    
+    console.log(otpGen);
     try {
       const response = await Loginuser(username, password, sessionId, otpGen, userID);
       this.uD = response.result[0].user_details[0].id;
