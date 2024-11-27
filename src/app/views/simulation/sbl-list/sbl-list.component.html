@@ -164,7 +164,7 @@
                                             <td>  {{sbl | currency:'PHP'}} </td>
                                            </tr>
                                            
-                                           <tr cTableColor="info" [ngClass]="{'green-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': sbl - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
+                                           <tr cTableColor="info" [ngClass]="{'green-text': NetBal > 0, 'red-text': NetBal <= 0}">
                                             <th>AVAILABLE</th>
                                             <td> 
                                               <!-- {{ sbl - calculateTotalNetHoldOut(account.loan_list | filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }}  -->
@@ -185,10 +185,30 @@
                                             <td> {{internalSBL | currency:'PHP'}} </td>
                                            </tr>
                                            
-                                           <tr cTableColor="info" [ngClass]="{'green-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
+                                           <!-- <tr cTableColor="info" [ngClass]="{'green-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal > 0, 'red-text': internalSBL - calculateLoanListSummary(account.loan_list).totalPrincipalBal <= 0}">
                                             <th>AVAILABLE</th>
                                             <td>{{internalSBL - calculateTotalNetHoldOut(account.loan_list| filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }}</td>
-                                           </tr>
+                                           </tr> -->
+
+                                           <!-- <tr cTableColor="info">
+                                            <th [ngClass]="{
+                                              'green-text': (internalSBL - calculateTotalNetHoldOut(account.loan_list | filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value }, ['loan_no', 'name'])) > 0,
+                                              'red-text': (internalSBL - calculateTotalNetHoldOut(account.loan_list | filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value }, ['loan_no', 'name'])) < 0
+                                            }">
+                                              AVAILABLE</th>
+                                            <td>{{internalSBL - calculateTotalNetHoldOut(account.loan_list| filterLoanList: { loan_no: accountFilterInput.value, name: accountFilterInput.value } : ['loan_no', 'name']) | currency:'PHP' }}</td>
+                                           </tr> -->
+
+                                           <tr cTableColor="info">
+                                            <th>AVAILABLE</th>
+                                            <td [ngClass]="{
+                                                  'green-text': (internalSBL - calculateTotalNetHoldOut((account.loan_list | filterLoanList: accountFilterInput.value : ['loan_no', 'name']))) > 0,
+                                                  'red-text': (internalSBL - calculateTotalNetHoldOut((account.loan_list | filterLoanList: accountFilterInput.value : ['loan_no', 'name']))) < 0
+                                                }">
+                                              {{ (internalSBL - calculateTotalNetHoldOut(account.loan_list | filterLoanList: accountFilterInput.value : ['loan_no', 'name'])) | currency:'PHP' }}
+                                            </td>
+                                          </tr>
+                                          
                                            
                                            
                                         </tbody>
