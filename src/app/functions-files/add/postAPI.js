@@ -182,11 +182,11 @@ function createBankOfficer(boData, session, userID) {
         "session": session,
         "userid": userID,
         "request": {
-          "cis_number": boData.boCisNumber,
-          "fname": boData.boFirstName,
-          "mname": boData.boMiddleName,
-          "lname": boData.boLastName,
-          "position": boData.boPosition,
+          "cis_number": boData.cis_num,
+          "fname": boData.fname,
+          "mname": boData.mname,
+          "lname": boData.lname,
+          "position": boData.Position,
           "com_cisnumber": "1480013726"
         }
       }),
