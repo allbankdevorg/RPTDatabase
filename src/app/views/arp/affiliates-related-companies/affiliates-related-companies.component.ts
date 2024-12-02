@@ -280,26 +280,28 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
 
   }
 
+
+
   fetchAssocCompany() {
     this.fetchDataService.getManagingCompany((mngComp) => {
       if (mngComp) {
-        
-        
         const dataArr: CompData[] = [];
-        const cisToIdMap: { [key: string]: number } = {};
-        
+        const cisToIdMap: { [key: string]: string } = {};
+  
+        // First pass: populate cisToIdMap
         mngComp.forEach((item) => {
-          
           cisToIdMap[item.aff_com_cis_number] = item.id.toString();
-
+        });
+  
+        // Second pass: build data array with correct parent references
+        mngComp.forEach((item) => {
           const company: CompData = {
             id: item.id,
             comCisNum: item.aff_com_cis_number,
             name: item.aff_com_account_name,
             compName: item.aff_com_company_name,
             parent_cis: item.managing_company,
-            // Update parent field to use the corresponding ID from the map
-            parent: cisToIdMap[item.managing_company]?.toString() || "",
+            parent: cisToIdMap[item.managing_company] || "",
             manager: item.manager || "",
             date_inserted: item.date_inserted,
             status: item.status,
@@ -307,19 +309,55 @@ export class AffiliatesRelatedCompaniesComponent implements OnInit{
             hold_out: item.hold_out || 0.00
           };
           dataArr.push(company);
-          
         });
-        // this.Dataorig = dataArr;
-        
+  
         this.dataLoaded = true;
         this.drawOrgChart(dataArr);
         this.exportData = dataArr;
-        // this.drawOrgChart(this.testdataArr);
-
-        
       }
     });
   }
+
+  // fetchAssocCompany() {
+  //   this.fetchDataService.getManagingCompany((mngComp) => {
+  //     if (mngComp) {
+        
+        
+  //       const dataArr: CompData[] = [];
+  //       const cisToIdMap: { [key: string]: number } = {};
+        
+  //       mngComp.forEach((item) => {
+          
+  //         cisToIdMap[item.aff_com_cis_number] = item.id.toString();
+
+  //         const company: CompData = {
+  //           id: item.id,
+  //           comCisNum: item.aff_com_cis_number,
+  //           name: item.aff_com_account_name,
+  //           compName: item.aff_com_company_name,
+  //           parent_cis: item.managing_company,
+  //           // Update parent field to use the corresponding ID from the map
+  //           parent: cisToIdMap[item.managing_company]?.toString() || "",
+  //           manager: item.manager || "",
+  //           date_inserted: item.date_inserted,
+  //           status: item.status,
+  //           module: item.module,
+  //           hold_out: item.hold_out || 0.00
+  //         };
+  //         dataArr.push(company);
+          
+  //       });
+  //       // this.Dataorig = dataArr;
+        
+  //       this.dataLoaded = true;
+  //       this.drawOrgChart(dataArr);
+  //       this.exportData = dataArr;
+  //       // this.drawOrgChart(this.testdataArr);
+
+        
+  //     }
+  //   });
+  // }
 
 
 

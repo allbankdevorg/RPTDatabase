@@ -199,22 +199,21 @@ export class OtherRelatedPartiesComponent {
 
   }
 
-  
 
-  fetchAssocCompany() {
+
+   fetchAssocCompany() {
     this.fetchDataService.getOtherCompany((OtherComp) => {
       if (OtherComp) {
-
-        
         const dataArr: CompData[] = [];
         const cisToIdMap: { [key: string]: number } = {};
-        
-        OtherComp.forEach((item) => {
-          
-          // Populate the map with CIS numbers and IDs
-           OtherComp.forEach((item) => {
-        cisToIdMap[item.aff_com_cis_number] = item.id;});
 
+        // First pass: populate cisToIdMap
+        OtherComp.forEach((item) => {
+          cisToIdMap[item.aff_com_cis_number] = item.id.toString();
+        });
+        
+        // Second pass: build data array with correct parent references
+        OtherComp.forEach((item) => {
           const company: CompData = {
             id: item.id,
             comCisNum: item.aff_com_cis_number,
@@ -242,6 +241,49 @@ export class OtherRelatedPartiesComponent {
       }
     });
   }
+  
+
+  // fetchAssocCompany() {
+  //   this.fetchDataService.getOtherCompany((OtherComp) => {
+  //     if (OtherComp) {
+
+        
+  //       const dataArr: CompData[] = [];
+  //       const cisToIdMap: { [key: string]: number } = {};
+        
+  //       OtherComp.forEach((item) => {
+          
+  //         // Populate the map with CIS numbers and IDs
+  //          OtherComp.forEach((item) => {
+  //       cisToIdMap[item.aff_com_cis_number] = item.id;});
+
+  //         const company: CompData = {
+  //           id: item.id,
+  //           comCisNum: item.aff_com_cis_number,
+  //           name: item.aff_com_account_name,
+  //           compName: item.aff_com_account_name,
+  //           parent_cis: item.managing_company,
+  //           // Update parent field to use the corresponding ID from the map
+  //           parent: cisToIdMap[item.managing_company]?.toString() || "",
+  //           manager: item.manager || "",
+  //           date_inserted: item.date_inserted,
+  //           status: item.status,
+  //           module: item.module,
+  //           hold_out: item.hold_out || 0.00
+  //         };
+  //         dataArr.push(company);
+          
+  //       });
+  //       // this.Dataorig = dataArr;
+  //       // console.log(this.Dataorig);
+        
+  //       this.dataLoaded = true;
+  //       this.drawOrgChart(dataArr);
+  //       this.exportData = dataArr;
+
+  //     }
+  //   });
+  // }
 
 
   

@@ -205,14 +205,17 @@ export class PaviGroupComponent {
   fetchAssocCompany() {
     this.fetchDataService.getPavi((PaviComp) => {
       if (PaviComp) {
-        
         const dataArr: CompData[] = [];
         const cisToIdMap: { [key: string]: number } = {};
-  
+        
+        // First pass: populate cisToIdMap
         PaviComp.forEach((item) => {
           // Populate the map with CIS numbers and IDs
           cisToIdMap[item.aff_com_cis_number] = item.id.toString();
-  
+        });
+
+      // Second pass: build data array with correct parent references
+       PaviComp.forEach((item) => {
           const company: CompData = {
             id: item.id,
             comCisNum: item.aff_com_cis_number,
@@ -237,6 +240,43 @@ export class PaviGroupComponent {
       }
     });
   }
+
+
+  // fetchAssocCompany() {
+  //   this.fetchDataService.getPavi((PaviComp) => {
+  //     if (PaviComp) {
+        
+  //       const dataArr: CompData[] = [];
+  //       const cisToIdMap: { [key: string]: number } = {};
+  
+  //       PaviComp.forEach((item) => {
+  //         // Populate the map with CIS numbers and IDs
+  //         cisToIdMap[item.aff_com_cis_number] = item.id.toString();
+  
+  //         const company: CompData = {
+  //           id: item.id,
+  //           comCisNum: item.aff_com_cis_number,
+  //           name: item.aff_com_account_name,
+  //           compName: item.aff_com_account_name,
+  //           parent_cis: item.managing_company,
+  //           // Update parent field to use the corresponding ID from the map
+  //           parent: cisToIdMap[item.managing_company]?.toString() || "",
+  //           manager: item.manager || "",
+  //           date_inserted: item.date_inserted,
+  //           status: item.status,
+  //           module: item.module,
+  //           hold_out: item.hold_out || 0.00,
+  //         };
+  //         dataArr.push(company);
+  //       });
+  
+  //       this.dataLoaded = true;
+  //       this.drawOrgChart(dataArr);
+  //       this.exportData = dataArr;
+        
+  //     }
+  //   });
+  // }
   
 
   onButtonClick(module: any) {
