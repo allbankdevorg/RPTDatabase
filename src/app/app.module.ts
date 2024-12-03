@@ -163,7 +163,7 @@ import { RptTransactionModalComponent } from './modal-dialog/rpt-transaction-mod
 import { LeaseContractsComponent } from './../app/views/simulation/lease-contracts/lease-contracts.component';
 import { BondsInvestmentComponent } from './../app/views/simulation/bonds-investment/bonds-investment.component';
 import { AuditTrailComponent } from './../app/views/simulation/audit-trail/audit-trail.component';
-
+import { ORPtransactionsComponent } from './views/simulation/orptransactions/orptransactions.component';
 
 
 
@@ -176,6 +176,7 @@ const APP_CONTAINERS = [
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS, BankofficerComponent, DirectorsrelatedComponent, AffiliatesComponent, AffiliatesRelatedCompaniesComponent, OtherRelatedPartiesComponent,
     BankstockholdersComponent, RpOfficerComponent, PacComponent, RPOfficerRIComponent, DIR2ndDegRelativesComponent, Officer2ndDegRelativesComponent,
+    ORPtransactionsComponent,
     // DraggableDirective, ResizableDirective, 
     LettersOnlyDirective, PreventSpecialCharactersDirective, AlphanumericOnlyDirective, 
     LoginComponent, DriComponent, UsersComponent, SettingsComponent, ManualsComponent, AuditLogsComponent, TitleCaseDirective, NumericOnlyDirective, CapsLockFormatDirective, ShowIfPermissionDirective,

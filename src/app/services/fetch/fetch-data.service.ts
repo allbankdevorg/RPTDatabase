@@ -19,6 +19,7 @@
  * 119 - getBonds                        => fetch the Bonds and Investments
  * 120 - getLease                        => fetch the Lease and Contracts
  * 904 - getAuditTrail                   => fetch the Audit Trail Logs
+ * 905 - getORPT                         => fetch the Other RP Transactions
  */
 
 
@@ -221,6 +222,37 @@ export class FetchDataService {
       }),
       data: {
         cmd: 904,
+        // Uncomment and set userid if needed
+        // userid: this.userID,
+      },
+    };
+
+    this.httpClient.post(settings.url, settings.data, { headers: settings.headers }).subscribe({
+      next: (response: any) => {
+        // Check if the response contains the expected structure
+        const auditLogs = response?.result?.[0]?.audit_logs || null;
+
+        // Call the callback with auditLogs or null
+        callback(auditLogs);
+      },
+      error: (error) => {
+        console.error('Error fetching audit logs:', error);
+        // Call the callback with null in case of an error
+        callback(null);
+      },
+    });
+  }
+
+
+  getORPT(callback: (data: any) => void): void {
+    const settings = {
+      url: 'http://10.232.236.15:8092/api/dataTables',
+      method: 'POST',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      data: {
+        cmd: 905,
         // Uncomment and set userid if needed
         // userid: this.userID,
       },
