@@ -7,6 +7,7 @@ import { RptTransactionComponent } from './rpt-transaction/rpt-transaction.compo
 import { LeaseContractsComponent } from './lease-contracts/lease-contracts.component';
 import { BondsInvestmentComponent } from './bonds-investment/bonds-investment.component';
 import { AuditTrailComponent } from './audit-trail/audit-trail.component';
+import { ORPtransactionsComponent } from './orptransactions/orptransactions.component';
 
 const routes: Routes = [
         {
@@ -53,6 +54,13 @@ const routes: Routes = [
               component: BondsInvestmentComponent,
               data: {
                   title: 'Bonds And Investment ',
+              },
+            },
+            {
+              path: 'orptransactions',
+              component: ORPtransactionsComponent,
+              data: {
+                  title: 'ORP Transactions ',
               },
             },
             {
