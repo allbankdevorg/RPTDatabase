@@ -10,6 +10,43 @@
           </c-card-header>
           <c-card-body>
 
+            <div class="date-range-container mat-elevation-z2 p-2">
+              <div class="date-fields">
+                <mat-form-field appearance="outline" class="date-field">
+                  <mat-label>Start Date</mat-label>
+                  <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" [matDatepickerFilter]="dateFilter" [max]="maxDate" placeholder="Select start date">
+                  <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+            
+                <mat-form-field appearance="outline" class="date-field">
+                  <mat-label>End Date</mat-label>
+                  <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate" [matDatepickerFilter]="dateFilter" [max]="maxDate" placeholder="Select end date">
+                  <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <button mat-fab extended color="primary" (click)="loadAuditLogs()" [disabled]="!startDate || !endDate">
+                  <mat-icon>file_download</mat-icon>
+                  Generate Logs
+                </button>
+
+                <button (click)="downloadCSV()" mat-fab extended color="primary" *accessControl="{ moduleName: 'Audit Logs', accessType: 'edit' }" style="margin-left: 10px;">
+                  <mat-icon>file_download</mat-icon>
+                  CSV
+                </button>
+              
+                
+            </div>
+            
+              <div class="actions">
+                
+              </div>
+            </div>
+            
+            
+            
+            
                     
             <c-container fluid class="my-3">
   
