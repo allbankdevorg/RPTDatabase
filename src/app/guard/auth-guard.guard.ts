@@ -37,7 +37,7 @@ export class AuthGuard {
 
     if (
       (this.url.startsWith('/maintenance') && this.authService.getRole() !== '4') ||
-      (this.url.startsWith('/simulation/audit-trail') && this.authService.getRole() !== '3')
+      (this.url.startsWith('/simulation/audit-trail') && this.authService.getRole() !== '4')
     ) {
       this.router.navigate(['/dashboard']);
       return false;
