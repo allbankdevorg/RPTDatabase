@@ -164,6 +164,7 @@ import { LeaseContractsComponent } from './../app/views/simulation/lease-contrac
 import { BondsInvestmentComponent } from './../app/views/simulation/bonds-investment/bonds-investment.component';
 import { AuditTrailComponent } from './../app/views/simulation/audit-trail/audit-trail.component';
 import { ORPtransactionsComponent } from './views/simulation/orptransactions/orptransactions.component';
+import { ORPTModalUpdateComponent } from './modal-dialog/ORPTransactions/orptmodal-update/orptmodal-update.component';
 
 
 
@@ -212,7 +213,7 @@ const APP_CONTAINERS = [
     FilterPipe, 
     ForapprovalComponent, 
     ForreviewComponent, 
-    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent, PaviGroupComponent, RptCheckerModalComponent, RptTransactionModalComponent],
+    DeniedComponent, AffiliatesRpmodalDetailsComponent, AddChildModalComponent, AddJMNChildModalComponent, PaviGroupComponent, RptCheckerModalComponent, RptTransactionModalComponent, ORPTModalUpdateComponent],
     
   imports: [
     BrowserModule,
