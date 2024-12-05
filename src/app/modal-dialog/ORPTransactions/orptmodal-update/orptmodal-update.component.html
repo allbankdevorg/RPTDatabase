@@ -1,0 +1,68 @@
+<!-- ADD Affiliates FORM -->
+<div mat-dialog-title>
+    <c-modal-header>
+        <h3 cModalTitle>Other Related Party Transactions</h3>
+    </c-modal-header>
+</div>
+<form cForm class="mb-2" [formGroup]="ORPTForm">    
+    <div mat-dialog-content class="content">
+        <!-- Modal Form -->
+        <c-modal-body>
+            
+              <c-row class="align-items-center my-1">
+
+                <c-col [sm]="12">
+                    <mat-form-field appearance="outline" [style.width.%]=100>
+                    <mat-label>Related Party</mat-label>
+                      <input matInput #accDinput type="text"  formControlName="rp" appLetters>
+                      <mat-error *ngIf="ORPTForm.get('rp')?.hasError('required')" class="error-msg">This field is Required</mat-error>
+                      <!--<mat-error *ngIf="ORPTForm.get('mobile')?.hasError('length')" class="error-msg">Number must be max of 11 character</mat-error>
+                      <mat-error *ngIf="ORPTForm.get('mobile')?.hasError('startsWith09')" class="error-msg">Number must be at 09********* format</mat-error>
+                      <mat-error *ngIf="ORPTForm.get('mobile')?.hasError('numberOnly')" class="error-msg">Only numbers are allowed</mat-error>
+                       -->
+                    </mat-form-field>
+                </c-col>
+              </c-row>
+
+              <c-row class="align-items-center my-1">
+                <c-col [sm]="12">
+                  <mat-form-field appearance="fill" [style.width.%]=100>
+                    <mat-label>Related Party Type</mat-label>
+                    <input matInput #accDinput type="text" formControlName="rptype" appLetters>
+                    
+                    <mat-error *ngIf="ORPTForm.get('rptype')?.hasError('required')" class="error-msg">This field is Required</mat-error>
+                    <mat-error *ngIf="ORPTForm.get('rptype')?.hasError('pattern')" class="error-msg">
+                      Field cannot be just whitespace
+                    </mat-error>
+                  </mat-form-field>
+                </c-col>
+              </c-row>
+
+              <c-row class="align-items-center my-1">
+
+                <c-col [sm]="12">
+                    <mat-form-field appearance="fill" [style.width.%]=100>
+                      <mat-label>Nature of Engagement</mat-label>
+                      <input matInput #accDinput type="text" formControlName="nature_of_engagement">
+                      <mat-error *ngIf="ORPTForm.get('nature_of_engagement')?.hasError('pattern')" class="error-msg">Only AlphaNumeric and ,.- characters are allowed</mat-error>
+                     <mat-error *ngIf="ORPTForm.get('nature_of_engagement')?.hasError('required')" class="error-msg">This field is Required</mat-error>
+                     <!-- 
+                      <mat-error *ngIf="userForm.get('nature_of_engagement')?.hasError('length')" class="error-msg">Number must be max of 11 character</mat-error>
+                      <mat-error *ngIf="userForm.get('nature_of_engagement')?.hasError('startsWith09')" class="error-msg">Number must be at 09********* format</mat-error>
+                      <mat-error *ngIf="userForm.get('nature_of_engagement')?.hasError('numberOnly')" class="error-msg">Only numbers are allowed</mat-error> -->
+                      
+                    </mat-form-field>
+                </c-col>
+              </c-row>
+
+        </c-modal-body>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+        <!-- <button mat-raised-button type="submit" cButton color="primary" class="proceed" [disabled]="!dosriForm.valid">Proceed</button> -->
+        
+        <button mat-raised-button color="primary" type="submit" (click)="handleClick()" [disabled]="!ORPTForm.valid">{{data ? 'Update': 'Save'}}</button>
+    
+    </div>
+</form>
+
